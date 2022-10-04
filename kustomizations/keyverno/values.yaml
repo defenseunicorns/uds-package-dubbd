@@ -1,0 +1,361 @@
+registryCredentials:
+  registry: "${ZARF_REGISTRY}"
+  username: "zarf-pull"
+  password: "${ZARF_REGISTRY_AUTH_PULL}"
+
+git:
+  existingSecret: "private-git-server"
+
+networkPolicies:
+  enabled: true
+  # When in prod use a real CIDR. Don't do this, it isn't secure.
+  controlPlaneCidr: "0.0.0.0/0"
+  nodeCidr: "0.0.0.0/0"
+  vpcCidr: "0.0.0.0/0"
+
+# Disable block
+twistlock:
+  enabled: false
+
+gatekeeper:
+  enabled: false
+
+logging:
+  enabled: false
+
+eckoperator:
+  enabled: false
+
+fluentbit:
+  enabled: false
+
+# Enable block
+istio:
+  enabled: true
+  git:
+    repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__core__istio-controlplane.git
+    # istio.ingressGateways.passthrough-ingressgateway and istio.gateways.passthrough
+  ingressGateways:
+    passthrough-ingressgateway:
+      type: "LoadBalancer"
+    public-ingressgateway:
+      type: "LoadBalancer"
+      kubernetesResourceSpec:
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "512Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+  values:
+    istiod:
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "1Gi"
+        limits:
+          cpu: "500m"
+          memory: "1Gi"
+      hpaSpec:
+        maxReplicas: 1
+  gateways:
+    passthrough:
+      ingressGateway: passthrough-ingressgateway
+      hosts:
+        - "*.{{ .Values.domain }}"
+      autoHttpRedirect:
+        enabled: true
+      tls:
+        mode: "PASSTHROUGH"
+    public:
+      ingressGateway: public-ingressgateway
+        - registry.{{ .Values.domain }}
+
+istiooperator:
+  enabled: true
+  git:
+    repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__core__istio-operator.git
+  values:
+    hub: "${ZARF_REGISTRY}/ironbank/opensource/istio"
+    operator:
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "256Mi"
+        requests:
+          cpu: "100m"
+          memory: "256Mi"
+
+jaeger:
+  enabled: true
+  git:
+    repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__core__jaeger.git
+  values:
+    istio:
+      mtls:
+        mode: PERMISSIVE
+    jaeger:
+      spec:
+        allInOne:
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "128Mi"
+        collector:
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "128Mi"
+    resources:
+      limits:
+        cpu: "500m"
+        memory: "128Mi"
+      requests:
+        cpu: "100m"
+        memory: "128Mi"
+
+kiali:
+  enabled: true
+  git:
+    repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__core__kiali.git
+  values:
+    istio:
+      mtls:
+        mode: PERMISSIVE
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "512Mi"
+      limits:
+        cpu: "500m"
+        memory: "512Mi"
+    cr:
+      spec:
+        deployment:
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "512Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+
+clusterAuditor:
+  enabled: true
+  git:
+    repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__core__cluster-auditor.git
+  values:
+    istio:
+      mtls:
+        mode: PERMISSIVE
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "512Mi"
+      limits:
+        cpu: "500m"
+        memory: "512Mi"
+
+loki:
+  enabled: true
+  git:
+    repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__sandbox__loki.git
+  strategy: "monolith"
+  objectStorage:
+    endpoint: minio.minio.svc.cluster.local
+    region: "us-east-1"
+    # accessKey: "" -- Added in environment-bb/values.yaml
+    # accessSecret: "" -- Added in environment-bb/values.yaml
+    bucketNames: "loki-logs"
+  values:
+    minio:
+      enabled: false
+    istio:
+      mtls:
+        mode: PERMISSIVE
+
+promtail:
+  enabled: true
+  git:
+    repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__sandbox__promtail.git
+  values:
+    istio:
+      mtls:
+        mode: PERMISSIVE
+    resources:
+      limits:
+        cpu: "500m"
+        memory: "750Mi"
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+
+monitoring:
+  enabled: true
+  git:
+    repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__core__monitoring.git
+  values:
+    istio:
+      mtls:
+        mode: PERMISSIVE
+    cleanUpgrade:
+      resources:
+        requests:
+          memory: "128Mi"
+          cpu: "100m"
+        limits:
+          memory: "256Mi"
+          cpu: "200m"
+    alertmanager:
+      alertmanagerSpec:
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+    grafana:
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "512Mi"
+        requests:
+          cpu: "100m"
+          memory: "256Mi"
+      sidecar:
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "100Mi"
+          requests:
+            cpu: "50m"
+            memory: "50Mi"
+      downloadDashboards:
+        resources:
+          limits:
+            cpu: "20m"
+            memory: "20Mi"
+          requests:
+            cpu: "20m"
+            memory: "20Mi"
+    kube-state-metrics:
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "128Mi"
+        requests:
+          cpu: "10m"
+          memory: "128Mi"
+    prometheus-node-exporter:
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "128Mi"
+        requests:
+          cpu: "100m"
+          memory: "128Mi"
+    prometheusOperator:
+      admissionWebhooks:
+        patch:
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+        cleanupProxy:
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "512Mi"
+        requests:
+          cpu: "100m"
+          memory: "512Mi"
+      prometheusConfigReloader:
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "128Mi"
+          limits:
+            cpu: "100m"
+            memory: "128Mi"
+    prometheus:
+      prometheusSpec:
+        resources:
+          limits:
+            cpu: "300m"
+            memory: "2Gi"
+          requests:
+            cpu: "100m"
+            memory: "2Gi"
+
+addons:
+  minioOperator:
+    enabled: true
+    git:
+      repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__application-utilities__minio-operator.git
+    values:
+      operator:
+        resources:
+          requests:
+            cpu: 200m
+            memory: 256Mi
+            ephemeral-storage: 500Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+      istio:
+        enabled: true
+        mtls:
+          mode: PERMISSIVE
+ 
+  minio:
+    enabled: true
+    git:
+      repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__application-utilities__minio.git
+    values:
+      istio:
+        mtls:
+          mode: PERMISSIVE
+      # https://github.com/minio/operator/blob/master/docs/crd.adoc
+      tenant:
+        # Required to be here due to a weird quirk in bucket creation. See https://github.com/minio/operator/issues/1002#issuecomment-1028394242
+        users:
+          - name: minio-user-credentials
+        buckets:
+          - name: "loki-logs"
+            region: "minio"
+            objectLock: true
+        pools:
+          - servers: 3
+            volumesPerServer: 2
+            size: 5Gi
+ 
+  kyverno:
+    enabled: true
+    git:
+      repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__sandbox__keyverno.git
+ 
+  keycloak:
+    enabled: true
+    git:
+      repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__security-tools__keycloak.git
+    ingress:
+      key: ""
+      cert: ""

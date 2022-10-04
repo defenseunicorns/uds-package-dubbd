@@ -1,0 +1,57 @@
+# The version of Big Bang to use.
+BIGBANG_VERSION := 1.39.0
+
+# The version of Zarf to use. To keep this repo as portable as possible the Zarf binary will be downloaded and added to
+# the build folder.
+ZARF_VERSION := v0.21.3
+
+# The version of the build harness container to use
+BUILD_HARNESS_VERSION := 0.0.13
+
+# Figure out which Zarf binary we should use based on the operating system we are on
+ZARF_BIN := zarf
+UNAME_S := $(shell uname -s)
+UNAME_P := $(shell uname -p)
+ifneq ($(UNAME_S),Linux)
+	ifeq ($(UNAME_S),Darwin)
+		ZARF_BIN := $(addsuffix -mac,$(ZARF_BIN))
+	endif
+	ifeq ($(UNAME_P),i386)
+		ZARF_BIN := $(addsuffix -intel,$(ZARF_BIN))
+	endif
+	ifeq ($(UNAME_P),arm64)
+		ZARF_BIN := $(addsuffix -apple,$(ZARF_BIN))
+	endif
+endif
+
+# Optionally add the "-it" flag for docker run commands if the env var "CI" is not set (meaning we are on a local machine and not in github actions)
+TTY_ARG :=
+ifndef CI
+	TTY_ARG := -it
+endif
+
+.DEFAULT_GOAL := help
+
+# Idiomatic way to force a target to always run, by having it depend on this dummy target
+FORCE:
+
+.PHONY: help
+help: ## Show a list of all targets
+	@grep -E '^\S*:.*##.*$$' $(MAKEFILE_LIST) \
+	| sed -n 's/^\(.*\): \(.*\)##\(.*\)/\1:\3/p' \
+	| column -t -s ":"
+
+.PHONY: clean
+clean: ## Clean up build files
+	@rm -rf ./build
+
+.PHONY: all
+all: | build/zarf-package-big-bang-amd64.tar.zst 
+
+build:
+	@mkdir -p build
+
+build/zarf-package-big-bang-amd64.tar.zst:
+	@echo "Creating the deploy package"
+	@$(ZARF_BIN) package create --skip-sbom --confirm
+	@mv zarf-package-big-bang-amd64.tar.zst build/zarf-package-big-bang-amd64.tar.zst
