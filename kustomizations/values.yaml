@@ -13,11 +13,31 @@ networkPolicies:
   nodeCidr: "0.0.0.0/0"
   vpcCidr: "0.0.0.0/0"
 
+# Disabled components
+twistlock:
+  enabled: false
+
+gatekeeper:
+  enabled: false
+
+logging:
+  enabled: false
+
+eckoperator:
+  enabled: false
+
+fluentbit:
+  enabled: false
+
+# Enabled components
 istio:
   enabled: true
   git:
     repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__core__istio-controlplane.git
+    # istio.ingressGateways.passthrough-ingressgateway and istio.gateways.passthrough
   ingressGateways:
+    passthrough-ingressgateway:
+      type: "LoadBalancer"
     public-ingressgateway:
       type: "LoadBalancer"
       kubernetesResourceSpec:
@@ -40,6 +60,14 @@ istio:
       hpaSpec:
         maxReplicas: 1
   gateways:
+    passthrough:
+      ingressGateway: passthrough-ingressgateway
+      hosts:
+        - "*.{{ .Values.domain }}"
+      autoHttpRedirect:
+        enabled: true
+      tls:
+        mode: "PASSTHROUGH"
     public:
       ingressGateway: public-ingressgateway
         - registry.{{ .Values.domain }}
@@ -134,78 +162,6 @@ clusterAuditor:
       limits:
         cpu: "500m"
         memory: "512Mi"
-
-gatekeeper:
-  enabled: true
-  git:
-    repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__core__policy.git
-  values:
-    istio:
-      mtls:
-        mode: PERMISSIVE
-    controllerManager:
-      resources:
-        limits:
-          cpu: "2"
-          memory: "4Gi"
-        requests:
-          cpu: "250m"
-          memory: "1Gi"
-    audit:
-      resources:
-        limits:
-          cpu: "2"
-          memory: "4Gi"
-        requests:
-          cpu: "250m"
-          memory: "1Gi"
-    violations:
-      allowedDockerRegistries:
-        match:
-          # Make Kind/K3d happy
-          excludedNamespaces:
-            - "kube-sytem"
-            - "istio-system"
-            - "local-path-storage"
-        parameters:
-          repos:
-            - "${ZARF_REGISTRY}"
-          excludedResources:
-            # K3s needs this if you are doing K3s-specific "HelmRelease"-type CRDs
-            - ".*/helm-install-.*"
-            - ".*/helm"
-      allowedHostFilesystem:
-        match:
-          # Make Kind/K3d happy
-          excludedNamespaces:
-            - "kube-sytem"
-            - "local-path-storage"
-      hostNetworking:
-        match:
-          excludedNamespaces:
-            - "kube-system"
-            - "istio-system"
-      restrictedTaint:
-        match:
-          # Make Kind/K3d happy
-          excludedNamespaces:
-            - "kube-sytem"
-            - "local-path-storage"
-      volumeTypes:
-        match:
-          # Make Kind/K3d happy
-          excludedNamespaces:
-            - "kube-sytem"
-            - "local-path-storage"
-
-logging:
-  enabled: false
-
-eckoperator:
-  enabled: false
-
-fluentbit:
-  enabled: false
 
 loki:
   enabled: true
@@ -349,46 +305,57 @@ monitoring:
             cpu: "100m"
             memory: "2Gi"
 
-twistlock:
-  enabled: false
-
-minioOperator:
-  enabled: true
-  git:
-    repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__application-utilities__minio-operator.git
-  values:
-    operator:
-      resources:
-        requests:
-          cpu: 200m
-          memory: 256Mi
-          ephemeral-storage: 500Mi
-        limits:
-          cpu: 200m
-          memory: 256Mi
-    istio:
-      enabled: true
-      mtls:
-        mode: PERMISSIVE
-
-minio:
-  enabled: true
-  git:
-    repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__application-utilities__minio.git
-  values:
-    istio:
-      mtls:
-        mode: PERMISSIVE
-    # https://github.com/minio/operator/blob/master/docs/crd.adoc
-    tenant:
-      # Required to be here due to a weird quirk in bucket creation. See https://github.com/minio/operator/issues/1002#issuecomment-1028394242
-      users:
-        - name: minio-user-credentials
-      buckets:
-        - name: "loki-logs"
-          region: "minio"
-          objectLock: true
-      pools:
-        - servers: 3
-          volumesPerServer: 2
-          size: 5Gi
+addons:
+  minioOperator:
+    enabled: true
+    git:
+      repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__application-utilities__minio-operator.git
+    values:
+      operator:
+        resources:
+          requests:
+            cpu: 200m
+            memory: 256Mi
+            ephemeral-storage: 500Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+      istio:
+        enabled: true
+        mtls:
+          mode: PERMISSIVE
+ 
+  minio:
+    enabled: true
+    git:
+      repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__application-utilities__minio.git
+    values:
+      istio:
+        mtls:
+          mode: PERMISSIVE
+      # https://github.com/minio/operator/blob/master/docs/crd.adoc
+      tenant:
+        # Required to be here due to a weird quirk in bucket creation. See https://github.com/minio/operator/issues/1002#issuecomment-1028394242
+        users:
+          - name: minio-user-credentials
+        buckets:
+          - name: "loki-logs"
+            region: "minio"
+            objectLock: true
+        pools:
+          - servers: 3
+            volumesPerServer: 2
+            size: 5Gi
+ 
+  kyverno:
+    enabled: true
+    git:
+      repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__sandbox__keyverno.git
+ 
+  keycloak:
+    enabled: true
+    git:
+      repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__security-tools__keycloak.git
+    ingress:
+      key: ""
+      cert: ""

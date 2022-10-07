@@ -1,3 +1,5 @@
+# Big Bang v1.43.0
+#
 kind: ZarfPackageConfig
 metadata:
   name: big-bang
@@ -10,7 +12,7 @@ metadata:
 
 components:
   - name: flux
-    required: false
+    required: true
     manifests:
       - name: flux-installer
         kustomizations:
@@ -21,9 +23,9 @@ components:
       - registry1.dso.mil/ironbank/fluxcd/notification-controller:v0.25.1
       - registry1.dso.mil/ironbank/fluxcd/source-controller:v0.26.1
 
-  - name: big-bang-core
+  - name: big-bang
     description: "Git repositories and OCI images used by Big Bang Core"
-    required: false
+    required: true
     repos:
       - https://repo1.dso.mil/platform-one/big-bang/bigbang.git@1.43.0
       - https://repo1.dso.mil/platform-one/big-bang/apps/core/istio-controlplane.git@1.14.3-bb.4
@@ -32,15 +34,10 @@ components:
       - https://repo1.dso.mil/platform-one/big-bang/apps/core/kiali.git@1.56.1-bb.1
       - https://repo1.dso.mil/platform-one/big-bang/apps/core/cluster-auditor.git@1.4.0-bb.10
       - https://repo1.dso.mil/platform-one/big-bang/apps/core/policy.git@3.9.0-bb.2
-      - https://repo1.dso.mil/platform-one/big-bang/apps/core/monitoring.git@40.0.0-bb.0
-
     images:
-      # base
       - "registry1.dso.mil/ironbank/big-bang/base:2.0.0"
       - "registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.6"
       - "registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.24.4"
-
-      # istio:
       - "registry1.dso.mil/ironbank/opensource/istio/pilot:1.14.3"
       - "registry1.dso.mil/ironbank/opensource/istio/proxyv2:1.14.3"
       - "registry1.dso.mil/ironbank/opensource/istio/install-cni:1.14.3"
@@ -48,19 +45,29 @@ components:
       - "registry1.dso.mil/ironbank/tetrate/istio/proxyv2:1.13.5-tetratefips-v0"
       - "registry1.dso.mil/ironbank/tetrate/istio/pilot:1.13.5-tetratefips-v0"
       - "registry1.dso.mil/ironbank/tetrate/istio/install-cni:1.13.5-tetratefips-v0"
-      - "registry1.dso.mil/ironbank/big-bang/base:2.0.0"
-
-      # istiooperator:
       - "registry1.dso.mil/ironbank/opensource/istio/operator:1.14.3"
       - "registry1.dso.mil/ironbank/tetrate/istio/operator:1.13.5-tetratefips-v0"
-
-      # clusterAuditor:
+      - "registry1.dso.mil/ironbank/opensource/jaegertracing/all-in-one:1.37.0"
+      - "registry1.dso.mil/ironbank/opensource/jaegertracing/jaeger-operator:1.37.0"
+      - "registry1.dso.mil/ironbank/opensource/kiali/kiali-operator:v1.56.1"
+      - "registry1.dso.mil/ironbank/opensource/kiali/kiali:v1.56.1"
       - "registry1.dso.mil/ironbank/bigbang/cluster-auditor/opa-exporter:v0.0.4"
-
-      # policy (OPA Gatekeeper)
       - "registry1.dso.mil/ironbank/opensource/openpolicyagent/gatekeeper:v3.9.0"
 
-      # monitoring:
+  - name: keycloak
+    description: "Git repositories and OCI images used by Keycloak"
+    required: true
+    repos:
+      - https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/keycloak.git@18.2.1-bb.3
+    images:
+      - "registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/keycloak-ib:18.0.2-1.2.0-1"
+
+  - name: log-eck
+    description: "Git repositories and OCI images used by PLG"
+    required: false
+    repos:
+      - https://repo1.dso.mil/platform-one/big-bang/apps/core/monitoring.git@40.0.0-bb.0
+    images:
       - "registry1.dso.mil/ironbank/big-bang/grafana/grafana-plugins:9.1.3"
       - "registry1.dso.mil/ironbank/kiwigrid/k8s-sidecar:1.19.4"
       - "registry1.dso.mil/ironbank/opensource/ingress-nginx/kube-webhook-certgen:v1.3.0"
@@ -71,17 +78,9 @@ components:
       - "registry1.dso.mil/ironbank/opensource/prometheus/node-exporter:v1.3.1"
       - "registry1.dso.mil/ironbank/opensource/prometheus/prometheus:v2.38.0"
 
-  - name: sso
+  - name: log-plg
     description: "Git repositories and OCI images used by PLG"
-    required: false
-    repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/keycloak.git@18.2.1-bb.3
-    images:
-      - "registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/keycloak-ib:18.0.2-1.2.0-1"
-
-  - name: logging
-    description: "Git repositories and OCI images used by PLG"
-    required: false
+    required: true
     repos:
       - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/loki.git
       - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/promtail.git
@@ -94,7 +93,7 @@ components:
 
   - name: kyverno
     description: "Git repositories and OCI images used by Kyverno Policy Engine"
-    required: false
+    required: true
     repos:
       - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno.git
       - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno-policies.git
@@ -102,4 +101,12 @@ components:
     images:
       - "registry1.dso.mil/ironbank/nirmata/kyverno:v1.7.3"
       - "registry1.dso.mil/ironbank/nirmata/kyvernopre:v1.7.3"
+
+  - name: big-bang-custom
+    description: "Deploy a custom version of Big Bang Core using Keyverno and Keycloak"
+    group: big-bang-variant
+    manifests:
+      - name: big-bang-config
+        kustomizations:
+          - "kustomizations"
 
