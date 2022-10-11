@@ -73,6 +73,7 @@ components:
       - https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/keycloak.git@18.2.1-bb.3
     images:
       - "registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/keycloak-ib:18.0.2-1.2.0-1"
+      - "registry1.dso.mil/ironbank/opensource/postgres/postgresql12:12.11"
 
   - name: monitoring
     description: "Git repositories and OCI images used by PLG"

@@ -51,7 +51,7 @@ all: | build/zarf-package-big-bang-amd64.tar.zst
 build:
 	@mkdir -p build
 
-build/zarf-package-big-bang-amd64.tar.zst:
+build/zarf-package-big-bang-amd64.tar.zst: build
 	@echo "Creating the deploy package"
 	@$(ZARF_BIN) package create --skip-sbom --confirm
 	@mv zarf-package-big-bang-amd64.tar.zst build/zarf-package-big-bang-amd64.tar.zst

@@ -519,6 +519,8 @@ addons:
     enabled: true
     git:
       repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__security-tools__keycloak.git
+    values:
+      replicas: 1
     ingress:
       # THIS VALUE MUST BE TREATED AS A SECRET! It is unencrypted for example purposes only since the domain *.bigbang.dev has its A record set to "127.0.0.1"
       # If you customize this cert/key you must encrypt this file with SOPS!
