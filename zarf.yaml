@@ -95,9 +95,9 @@ components:
     description: "Git repositories and OCI images used by PLG"
     required: true
     repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/loki.git
-      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/promtail.git
-      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/tempo.git
+      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/loki.git@1.8.10-bb.2
+      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/promtail.git@6.2.2-bb.2
+      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/tempo.git@0.16.1-bb.2
     images:
       - "registry1.dso.mil/ironbank/opensource/grafana/loki:2.6.1"
       - "registry1.dso.mil/ironbank/opensource/grafana/promtail:v2.6.1"
@@ -108,12 +108,19 @@ components:
     description: "Git repositories and OCI images used by Kyverno Policy Engine"
     required: true
     repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno.git
-      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno-policies.git
-      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno-reporter.git
+      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno.git@2.5.3-bb.0
+      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno-policies.git@1.0.1-bb.5
     images:
       - "registry1.dso.mil/ironbank/nirmata/kyverno:v1.7.3"
       - "registry1.dso.mil/ironbank/nirmata/kyvernopre:v1.7.3"
+
+  - name: metrics-server
+    description: "Git repositories and OCI images used by Kubernetes Metrics Server"
+    required: true
+    repos:
+      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/metrics-server.git@3.8.0-bb.4
+    images:
+      - "registry1.dso.mil/ironbank/opensource/kubernetes-sigs/metrics-server:0.6.1"
 
   - name: big-bang-custom
     description: "Deploy a custom version of Big Bang Core using Keyverno and Keycloak"
