@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/v0.22.1/zarf.schema.json
+kind: ZarfPackageConfig
+metadata:
+  name: podinfo
+  description: "Zarf deployment of PodInfo demo application"
+  architecture: amd64
+
+components:
+  - name: podinfo
+    required: true
+    manifests:
+      - name: podinfo-config
+        files:
+          - base.yaml
+          - gitrepository.yaml
+          - kustomization.yaml
+    repos:
+      - https://github.com/stefanprodan/podinfo.git
+    images:
+      - ghcr.io/stefanprodan/podinfo:6.2.1
