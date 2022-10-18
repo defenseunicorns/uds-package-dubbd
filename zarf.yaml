@@ -34,7 +34,7 @@ components:
       - https://repo1.dso.mil/platform-one/big-bang/apps/core/kiali.git@1.56.1-bb.1
       - https://repo1.dso.mil/platform-one/big-bang/apps/core/cluster-auditor.git@1.4.0-bb.10
       - https://repo1.dso.mil/platform-one/big-bang/apps/core/policy.git@3.9.0-bb.2
-
+      - https://repo1.dso.mil/platform-one/big-bang/apps/core/authservice.git@0.5.2-bb.0
     images:
       - "registry1.dso.mil/ironbank/big-bang/base:2.0.0"
       - "registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.6"
@@ -54,6 +54,8 @@ components:
       - "registry1.dso.mil/ironbank/opensource/kiali/kiali:v1.56.1"
       - "registry1.dso.mil/ironbank/bigbang/cluster-auditor/opa-exporter:v0.0.4"
       - "registry1.dso.mil/ironbank/opensource/openpolicyagent/gatekeeper:v3.9.0"
+      - "registry1.dso.mil/ironbank/bitnami/redis:7.0.0-debian-10-r3"
+      - "registry1.dso.mil/ironbank/istio-ecosystem/authservice:0.5.2"
 
   - name: minio
     description: "Git repositories and OCI images used by Minio"
