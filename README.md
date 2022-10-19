@@ -52,3 +52,9 @@ bigbang     minio-operator    71m   True    Release reconciliation succeeded
 bigbang     monitoring        71m   True    Release reconciliation succeeded
 bigbang     promtail          71m   True    Release reconciliation succeeded
 ```
+
+## Day 2.
+### Enable SSO
+
+Navigate to the Day 2 sections of the `kustomizations/values.yaml` file and fill in the details in the `sso` and `authservice` sections to
+enable SSO for your application.

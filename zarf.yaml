@@ -1,5 +1,4 @@
-# Big Bang v1.43.0
-#
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/v0.21.3/zarf.schema.json
 kind: ZarfPackageConfig
 metadata:
   name: big-bang
@@ -125,11 +124,10 @@ components:
       - "registry1.dso.mil/ironbank/opensource/kubernetes-sigs/metrics-server:0.6.1"
 
   - name: big-bang-custom
-    description: "Deploy a custom version of Big Bang Core using Keyverno and Keycloak"
-      #group: big-bang-variant
+    description: "Deploy a version of Big Bang Core with Keycloak deployed in-cluster"
     required: true
     manifests:
       - name: big-bang-config
         kustomizations:
-          - "kustomizations"
+          - kustomizations
 
