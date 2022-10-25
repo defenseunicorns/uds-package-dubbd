@@ -46,6 +46,16 @@ components:
       - "registry1.dso.mil/ironbank/tetrate/istio/operator:1.14.4-tetratefips-v0"
       - "registry1.dso.mil/ironbank/opensource/kubernetes/kube-state-metrics:v2.6.0"
 
+  - name: policy-kyverno
+    description: "Git repositories and OCI images used by Kyverno Policy Engine"
+    required: true
+    repos:
+      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno.git@2.5.4-bb.0
+      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno-policies.git@1.0.1-bb.5
+    images:
+      - "registry1.dso.mil/ironbank/nirmata/kyverno:v1.7.4"
+      - "registry1.dso.mil/ironbank/nirmata/kyvernopre:v1.7.4"
+      
   - name: observability-tracing
     description: "Git repositories and OCI images used by Big Bang observability & tracing"
     required: true
@@ -85,16 +95,6 @@ components:
     images:
       - "registry1.dso.mil/ironbank/opensource/grafana/loki:2.6.1"
       - "registry1.dso.mil/ironbank/opensource/grafana/promtail:v2.6.1"
-
-  - name: policy-kyverno
-    description: "Git repositories and OCI images used by Kyverno Policy Engine"
-    required: true
-    repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno.git@2.5.4-bb.0
-      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno-policies.git@1.0.1-bb.5
-    images:
-      - "registry1.dso.mil/ironbank/nirmata/kyverno:v1.7.4"
-      - "registry1.dso.mil/ironbank/nirmata/kyvernopre:v1.7.4"
 
   - name: keycloak
     description: "Git repositories and OCI images used by Keycloak"
