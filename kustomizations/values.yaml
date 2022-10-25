@@ -156,7 +156,7 @@ kiali:
 
 # Cluster-Auditor default values: https://repo1.dso.mil/platform-one/big-bang/apps/core/cluster-auditor/-/blob/1.4.0-bb.10/chart/values.yaml
 clusterAuditor:
-  enabled: true
+  enabled: false
   git:
     repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__core__cluster-auditor.git
   values:
@@ -173,7 +173,7 @@ clusterAuditor:
 
 # Gatekeeper default values: https://repo1.dso.mil/platform-one/big-bang/apps/core/policy/-/blob/3.9.0-bb.2/chart/values.yaml
 gatekeeper:
-  enabled: true
+  enabled: false
   git:
     repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__core__policy.git
   values:
@@ -574,3 +574,8 @@ addons:
       replicas: 1
     ingress:
       gateway: "passthrough"
+
+  # neuvector:
+  #   enabled: true
+  #   git:
+  #     repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__sandbox__neuvector.git
