@@ -46,28 +46,6 @@ components:
       - "registry1.dso.mil/ironbank/tetrate/istio/operator:1.14.4-tetratefips-v0"
       - "registry1.dso.mil/ironbank/opensource/kubernetes/kube-state-metrics:v2.6.0"
 
-  - name: big-bang-storage
-    description: "Git repositories and OCI images need for Big Bang storage"
-    required: true
-    repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/application-utilities/minio-operator.git@4.4.28-bb.2
-      - https://repo1.dso.mil/platform-one/big-bang/apps/application-utilities/minio.git@4.4.28-bb.1
-    images:
-      - "registry1.dso.mil/ironbank/opensource/minio/operator:v4.5.1"
-      - "registry1.dso.mil/ironbank/opensource/minio/console:v0.20.4"
-      - "registry1.dso.mil/ironbank/opensource/minio/minio:RELEASE.2022-08-26T19-53-15Z"
-
-  - name: big-bang-backup
-    description: "Git repositories and OCI images used by Velero backup"
-    required: true
-    repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/cluster-utilities/velero.git@2.31.8-bb.1
-    images:
-      - "registry1.dso.mil/ironbank/opensource/velero/velero:v1.9.2"
-      # - "velero/velero-plugin-for-csi:v0.3.1"
-      # - "velero/velero-plugin-for-aws:v1.5.1"
-      # - "registry1.dso.mil/ironbank/opensource/velero/velero-plugin-for-microsoft-azure:v1.5.1"
-
   - name: observability-tracing
     description: "Git repositories and OCI images used by Big Bang observability & tracing"
     required: true
@@ -82,26 +60,6 @@ components:
       - "registry1.dso.mil/ironbank/opensource/kiali/kiali:v1.57.1"
       - "registry1.dso.mil/ironbank/opensource/grafana/tempo-query:1.5.0"
       - "registry1.dso.mil/ironbank/opensource/grafana/tempo:1.5.0"
-
-  - name: keycloak
-    description: "Git repositories and OCI images used by Keycloak"
-    required: true
-    repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/keycloak.git@18.2.1-bb.4
-      - https://repo1.dso.mil/platform-one/big-bang/apps/core/authservice.git@0.5.2-bb.0
-    images:
-      - "registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/keycloak-ib:18.0.2-1.2.0-1"
-      - "registry1.dso.mil/ironbank/istio-ecosystem/authservice:0.5.2"
-      - "registry1.dso.mil/ironbank/opensource/postgres/postgresql12:12.12"
-      - "registry1.dso.mil/ironbank/bitnami/redis:7.0.0-debian-10-r3"
-
-  - name: authsvc
-    description: "Git repositories and OCI images used by Keycloak"
-    required: true
-    repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/core/authservice.git@0.5.2-bb.0
-    images:
-      - "registry1.dso.mil/ironbank/istio-ecosystem/authservice:0.5.2"
 
   - name: monitoring
     description: "Git repositories and OCI images used by monitoring"
@@ -138,9 +96,29 @@ components:
       - "registry1.dso.mil/ironbank/nirmata/kyverno:v1.7.4"
       - "registry1.dso.mil/ironbank/nirmata/kyvernopre:v1.7.4"
 
+  - name: keycloak
+    description: "Git repositories and OCI images used by Keycloak"
+    required: false
+    repos:
+      - https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/keycloak.git@18.2.1-bb.4
+      - https://repo1.dso.mil/platform-one/big-bang/apps/core/authservice.git@0.5.2-bb.0
+    images:
+      - "registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/keycloak-ib:18.0.2-1.2.0-1"
+      - "registry1.dso.mil/ironbank/istio-ecosystem/authservice:0.5.2"
+      - "registry1.dso.mil/ironbank/opensource/postgres/postgresql12:12.12"
+      - "registry1.dso.mil/ironbank/bitnami/redis:7.0.0-debian-10-r3"
+
+  - name: authsvc
+    description: "Git repositories and OCI images used by Keycloak"
+    required: false
+    repos:
+      - https://repo1.dso.mil/platform-one/big-bang/apps/core/authservice.git@0.5.2-bb.0
+    images:
+      - "registry1.dso.mil/ironbank/istio-ecosystem/authservice:0.5.2"
+      
   - name: neuvector
     description: "Git repositories and OCI images used by Neuvector runtime security"
-    required: true
+    required: false
     repos:
       - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/neuvector.git@2.2.2-bb.0
     images:
@@ -149,11 +127,32 @@ components:
       - "registry1.dso.mil/ironbank/neuvector/neuvector/scanner:5"
       - "registry1.dso.mil/ironbank/neuvector/neuvector/controller:5.0.2"
 
-  - name: big-bang-custom
+  - name: big-bang-storage
+    description: "Git repositories and OCI images need for Big Bang storage"
+    required: false
+    repos:
+      - https://repo1.dso.mil/platform-one/big-bang/apps/application-utilities/minio-operator.git@4.4.28-bb.2
+      - https://repo1.dso.mil/platform-one/big-bang/apps/application-utilities/minio.git@4.4.28-bb.1
+    images:
+      - "registry1.dso.mil/ironbank/opensource/minio/operator:v4.5.1"
+      - "registry1.dso.mil/ironbank/opensource/minio/console:v0.20.4"
+      - "registry1.dso.mil/ironbank/opensource/minio/minio:RELEASE.2022-08-26T19-53-15Z"
+
+  - name: big-bang-backup
+    description: "Git repositories and OCI images used by Velero backup"
+    required: false
+    repos:
+      - https://repo1.dso.mil/platform-one/big-bang/apps/cluster-utilities/velero.git@2.31.8-bb.1
+    images:
+      - "registry1.dso.mil/ironbank/opensource/velero/velero:v1.9.2"
+      # - "velero/velero-plugin-for-csi:v0.3.1"
+      # - "velero/velero-plugin-for-aws:v1.5.1"
+      # - "registry1.dso.mil/ironbank/opensource/velero/velero-plugin-for-microsoft-azure:v1.5.1"
+
+  - name: big-bang-umbrella-chart
     description: "Deploy a version of Big Bang Core with Keycloak deployed in-cluster"
     required: true
     manifests:
       - name: big-bang-config
         kustomizations:
           - kustomizations
-
