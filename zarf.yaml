@@ -152,7 +152,12 @@ components:
   - name: big-bang-umbrella-chart
     description: "Deploy a version of Big Bang Core with Keycloak deployed in-cluster"
     required: true
+      #    manifests:
+      #- name: big-bang-config
+      #  kustomizations:
+      #    - kustomizations
     manifests:
       - name: big-bang-config
-        kustomizations:
-          - kustomizations
+        files:
+          - manifests/big-bang.yaml
+

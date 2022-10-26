@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m
-  path: "./kustomizations/bigbang"
+  path: "./kustomizations"
   prune: true
   sourceRef:
     kind: GitRepository
