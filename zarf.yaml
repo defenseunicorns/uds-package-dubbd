@@ -152,12 +152,11 @@ components:
   - name: big-bang-umbrella-chart
     description: "Deploy a version of Big Bang Core with Keycloak deployed in-cluster"
     required: true
-      #    manifests:
-      #- name: big-bang-config
-      #  kustomizations:
-      #    - kustomizations
+    repos:
+      - https://github.com/defenseunicorns/zarf-package-big-bang.git
     manifests:
       - name: big-bang-config
         files:
+          - manifests/setup.yaml
           - manifests/big-bang.yaml
 

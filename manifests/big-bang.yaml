@@ -9,7 +9,7 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: zarf-package-software-factory
+    name: zarf-package-big-bang
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
       kind: HelmRelease
@@ -43,11 +43,6 @@ spec:
       kind: HelmRelease
       namespace: bigbang
       name: monitoring
-    # Disabling Twistlock for now since Big Bang now needs a license to be specified for Twistlock to initialize successfully. Will re-evaluate turning it back on later, or possibly swap it out for Neuvector once that becomes available.
-    # - apiVersion: helm.toolkit.fluxcd.io/v2beta1
-    #   kind: HelmRelease
-    #   namespace: bigbang
-    #   name: twistlock
     - apiVersion: helm.toolkit.fluxcd.io/v2beta1
       kind: HelmRelease
       namespace: bigbang
@@ -65,10 +60,6 @@ spec:
       namespace: bigbang
       name: gitlab-runner
   timeout: 15m
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-gpg
   postBuild:
     substitute:
       ZARF_REGISTRY: "###ZARF_REGISTRY###"

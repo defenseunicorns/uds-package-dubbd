@@ -9,13 +9,12 @@ metadata:
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: GitRepository
 metadata:
-  name: zarf-package-software-factory
+  name: zarf-package-big-bang
   namespace: flux-system
 spec:
   interval: 1m
-  url: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__github.com__defenseunicorns__zarf-package-software-factory.git
+  url: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__github.com__defenseunicorns__zarf-package-big-bang.git
   ref:
-    branch: not-the-real-branch-name
-  #    tag: X.Y.Z
+    branch: main
   secretRef:
     name: private-git-server
