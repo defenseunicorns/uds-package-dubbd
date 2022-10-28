@@ -105,7 +105,7 @@ components:
     images:
       - "registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/keycloak-ib:18.0.2-1.2.0-1"
       - "registry1.dso.mil/ironbank/istio-ecosystem/authservice:0.5.2"
-      - "registry1.dso.mil/ironbank/opensource/postgres/postgresql12:12.12"
+      - "registry1.dso.mil/ironbank/opensource/postgres/postgresql12:12.11"
       - "registry1.dso.mil/ironbank/bitnami/redis:7.0.0-debian-10-r3"
 
   - name: authsvc
