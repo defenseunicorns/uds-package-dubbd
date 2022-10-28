@@ -63,12 +63,7 @@ istio:
     public:
       ingressGateway: public-ingressgateway
       hosts:
-        - gitlab.{{ .Values.domain }}
-        - jenkins.{{ .Values.domain }}
-        - jira.{{ .Values.domain }}
-        - confluence.{{ .Values.domain }}
         - registry.{{ .Values.domain }}
-        - artifactory.{{ .Values.domain }}
     passthrough:
       ingressGateway: passthrough-ingressgateway
       hosts:
@@ -83,6 +78,8 @@ istiooperator:
     repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__core__istio-operator.git
   values:
     hub: "###ZARF_REGISTRY###/ironbank/opensource/istio"
+    image: operator
+    tag: 1.15.0
     operator:
       resources:
         limits:
@@ -174,66 +171,6 @@ clusterAuditor:
 # Gatekeeper default values: https://repo1.dso.mil/platform-one/big-bang/apps/core/policy/-/blob/3.9.0-bb.2/chart/values.yaml
 gatekeeper:
   enabled: false
-  git:
-    repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__core__policy.git
-  values:
-    istio:
-      mtls:
-        mode: PERMISSIVE
-    controllerManager:
-      resources:
-        limits:
-          cpu: "2"
-          memory: "4Gi"
-        requests:
-          cpu: "250m"
-          memory: "1Gi"
-    audit:
-      resources:
-        limits:
-          cpu: "2"
-          memory: "4Gi"
-        requests:
-          cpu: "250m"
-          memory: "1Gi"
-    violations:
-      allowedDockerRegistries:
-        match:
-          # Make Kind/K3d happy
-          excludedNamespaces:
-            - "kube-sytem"
-            - "istio-system"
-            - "local-path-storage"
-        parameters:
-          repos:
-            - "###ZARF_REGISTRY###"
-          excludedResources:
-            # K3s needs this if you are doing K3s-specific "HelmRelease"-type CRDs
-            - ".*/helm-install-.*"
-            - ".*/helm"
-      allowedHostFilesystem:
-        match:
-          # Make Kind/K3d happy
-          excludedNamespaces:
-            - "kube-sytem"
-            - "local-path-storage"
-      hostNetworking:
-        match:
-          excludedNamespaces:
-            - "kube-system"
-            - "istio-system"
-      restrictedTaint:
-        match:
-          # Make Kind/K3d happy
-          excludedNamespaces:
-            - "kube-sytem"
-            - "local-path-storage"
-      volumeTypes:
-        match:
-          # Make Kind/K3d happy
-          excludedNamespaces:
-            - "kube-sytem"
-            - "local-path-storage"
 
 logging:
   enabled: false
@@ -509,60 +446,9 @@ addons:
 
   velero:
     enabled: false
-    git:
-      repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__cluster-utilities__velero.git
-    plugins:
-      - aws
-    values:
-      initContainers:
-       - name: velero-plugin-for-aws
-         image: registry1.dso.mil/ironbank/opensource/velero/velero-plugin-for-aws:v1.5.0
-         imagePullPolicy: IfNotPresent
-         volumeMounts:
-           - mountPath: /target
-             name: plugins
-         resources:
-           requests:
-             memory: 512Mi
-             cpu: 100m
-           limits:
-             memory: 512Mi
-             cpu: 100m
-      resources:
-        # Demo/PoC values. Adjust for production
-        requests:
-          cpu: 100m
-          memory: 256Mi
-        limits:
-          cpu: 10
-          memory: 512Mi
-      configuration:
-        provider: aws
-        backupStorageLocation:
-          bucket: velero-backups
-          config:
-            region: minio
-            s3ForcePathStyle: "true"
-            s3Url: http://minio.minio.svc.cluster.local:80
-        volumeSnapshotLocation:
-          name: default
-          config:
-            region: minio
-        defaultVolumesToRestic: true
-        defaultResticPruneFrequency: 168h
-      deployRestic: true
-      restic:
-        # Demo/PoC values. Adjust for production
-        resources:
-          requests:
-            cpu: 100m
-            memory: 256Mi
-          limits:
-            cpu: 10
-            memory: 1024Mi
 
   kyverno:
-    enabled: false
+    enabled: true
     git:
       repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__sandbox__keyverno.git
  
