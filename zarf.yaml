@@ -98,7 +98,7 @@ components:
 
   - name: keycloak
     description: "Git repositories and OCI images used by Keycloak"
-    required: false
+    required: true
     repos:
       - https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/keycloak.git@18.2.1-bb.4
       - https://repo1.dso.mil/platform-one/big-bang/apps/core/authservice.git@0.5.2-bb.0
@@ -129,10 +129,10 @@ components:
 
   - name: big-bang-storage
     description: "Git repositories and OCI images need for Big Bang storage"
-    required: false
+    required: true
     repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/application-utilities/minio-operator.git@4.4.28-bb.2
-      - https://repo1.dso.mil/platform-one/big-bang/apps/application-utilities/minio.git@4.4.28-bb.1
+      - https://repo1.dso.mil/platform-one/big-bang/apps/application-utilities/minio-operator.git@4.5.1-bb.0
+      - https://repo1.dso.mil/platform-one/big-bang/apps/application-utilities/minio.git@4.5.1-bb.0
     images:
       - "registry1.dso.mil/ironbank/opensource/minio/operator:v4.5.1"
       - "registry1.dso.mil/ironbank/opensource/minio/console:v0.20.4"
