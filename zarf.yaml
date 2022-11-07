@@ -9,10 +9,6 @@ metadata:
   # Big Bang / Iron Bank are only amd64
   architecture: amd64
 
-variables:
-  - name: BIGBANG_VERSION
-    default: ###ZARF_PKG_VAR_BIGBANG_VERSION###
-
 components:
   - name: flux
     required: true
