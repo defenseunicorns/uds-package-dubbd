@@ -21,7 +21,7 @@ help: ## Show a list of all targets
 
 .PHONY: clean
 clean: ## Clean up build files
-	@rm -rf ./build
+	@rm -rf ./build zarf-sbom
 
 mkdir: 
 	@mkdir -p build
