@@ -155,7 +155,7 @@ components:
     description: "Deploy a version of Big Bang Core with Keycloak deployed in-cluster"
     required: true
     repos:
-      - https://github.com/defenseunicorns/zarf-package-big-bang.git
+      - https://github.com/defenseunicorns/zarf-package-big-bang.git@###ZARF_PKG_VAR_BIGBANG_VERSION###
     manifests:
       - name: big-bang-config
         files:
