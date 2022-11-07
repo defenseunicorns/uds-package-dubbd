@@ -1,3 +1,6 @@
+# The version of Big Bang to use.
+BIGBANG_VERSION := 1.46.0
+
 ZARF_BIN := zarf
 
 .DEFAULT_GOAL := help
@@ -13,7 +16,7 @@ help: ## Show a list of all targets
 
 .PHONY: update
 update: ## Build the day2 package and immediately deploy it
-	$(ZARF_BIN) package create --confirm
+	$(ZARF_BIN) package create --skip-sbom --set BIGBANG_VERSION=$(BIGBANG_VERSION) --confirm
 	$(ZARF_BIN) package deploy zarf-package-day-two-update-amd64.tar.zst --confirm
 
 .PHONY: k9s

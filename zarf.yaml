@@ -34,7 +34,7 @@ components:
     images:
       - "registry1.dso.mil/ironbank/big-bang/base:2.0.0"
       - "registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.6"
-      - "registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.24.4"
+      - "registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.25.3"
       - "registry1.dso.mil/ironbank/opensource/istio/pilot:1.15.0"
       - "registry1.dso.mil/ironbank/opensource/istio/proxyv2:1.15.0"
       - "registry1.dso.mil/ironbank/opensource/istio/install-cni:1.15.0"
@@ -50,24 +50,24 @@ components:
     description: "Git repositories and OCI images used by Kyverno Policy Engine"
     required: true
     repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno.git@2.5.4-bb.0
-      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno-policies.git@1.0.1-bb.5
+      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno.git@2.6.0-bb.0
+      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno-policies.git@1.0.1-bb.6
     images:
-      - "registry1.dso.mil/ironbank/nirmata/kyverno:v1.7.4"
-      - "registry1.dso.mil/ironbank/nirmata/kyvernopre:v1.7.4"
+      - "registry1.dso.mil/ironbank/nirmata/kyverno:v1.8.0"
+      - "registry1.dso.mil/ironbank/nirmata/kyvernopre:v1.8.0"
       
   - name: observability-tracing
     description: "Git repositories and OCI images used by Big Bang observability & tracing"
     required: true
     repos:
       - https://repo1.dso.mil/platform-one/big-bang/apps/core/jaeger.git@2.36.0-bb.1
-      - https://repo1.dso.mil/platform-one/big-bang/apps/core/kiali.git@1.57.1-bb.0
+      - https://repo1.dso.mil/platform-one/big-bang/apps/core/kiali.git@1.58.0-bb.0
       - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/tempo.git@0.16.1-bb.2
     images:
       - "registry1.dso.mil/ironbank/opensource/jaegertracing/all-in-one:1.38.0"
       - "registry1.dso.mil/ironbank/opensource/jaegertracing/jaeger-operator:1.38.0"
-      - "registry1.dso.mil/ironbank/opensource/kiali/kiali-operator:v1.57.1"
-      - "registry1.dso.mil/ironbank/opensource/kiali/kiali:v1.57.1"
+      - "registry1.dso.mil/ironbank/opensource/kiali/kiali-operator:v1.58.0"
+      - "registry1.dso.mil/ironbank/opensource/kiali/kiali:v1.58.0"
       - "registry1.dso.mil/ironbank/opensource/grafana/tempo-query:1.5.0"
       - "registry1.dso.mil/ironbank/opensource/grafana/tempo:1.5.0"
 
@@ -75,22 +75,22 @@ components:
     description: "Git repositories and OCI images used by monitoring"
     required: true
     repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/core/monitoring.git@40.4.0-bb.1
+      - https://repo1.dso.mil/platform-one/big-bang/apps/core/monitoring.git@41.5.0-bb.1
     images:
-      - "registry1.dso.mil/ironbank/big-bang/grafana/grafana-plugins:9.1.6"
+      - "registry1.dso.mil/ironbank/big-bang/grafana/grafana-plugins:9.2.0"
       - "registry1.dso.mil/ironbank/kiwigrid/k8s-sidecar:1.19.5"
       - "registry1.dso.mil/ironbank/opensource/ingress-nginx/kube-webhook-certgen:v1.3.0"
-      - "registry1.dso.mil/ironbank/opensource/prometheus-operator/prometheus-config-reloader:v0.59.2"
-      - "registry1.dso.mil/ironbank/opensource/prometheus-operator/prometheus-operator:v0.59.2"
+      - "registry1.dso.mil/ironbank/opensource/prometheus-operator/prometheus-config-reloader:v0.60.1"
+      - "registry1.dso.mil/ironbank/opensource/prometheus-operator/prometheus-operator:v0.60.1"
       - "registry1.dso.mil/ironbank/opensource/prometheus/alertmanager:v0.24.0"
       - "registry1.dso.mil/ironbank/opensource/prometheus/node-exporter:v1.4.0"
-      - "registry1.dso.mil/ironbank/opensource/prometheus/prometheus:v2.39.0"
+      - "registry1.dso.mil/ironbank/opensource/prometheus/prometheus:v2.39.1"
 
   - name: logging-plg
     description: "Git repositories and OCI images used by PLG"
     required: true
     repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/loki.git@1.8.10-bb.2
+      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/loki.git@3.2.1-bb.1
       - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/promtail.git@6.2.2-bb.2
     images:
       - "registry1.dso.mil/ironbank/opensource/grafana/loki:2.6.1"
@@ -100,11 +100,9 @@ components:
     description: "Git repositories and OCI images used by Keycloak"
     required: true
     repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/keycloak.git@18.2.1-bb.4
-      - https://repo1.dso.mil/platform-one/big-bang/apps/core/authservice.git@0.5.2-bb.0
+      - https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/keycloak.git@18.2.1-bb.5
     images:
       - "registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/keycloak-ib:18.0.2-1.2.0-1"
-      - "registry1.dso.mil/ironbank/istio-ecosystem/authservice:0.5.2"
       - "registry1.dso.mil/ironbank/opensource/postgres/postgresql12:12.11"
       - "registry1.dso.mil/ironbank/bitnami/redis:7.0.0-debian-10-r3"
 
@@ -112,7 +110,7 @@ components:
     description: "Git repositories and OCI images used by Keycloak"
     required: false
     repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/core/authservice.git@0.5.2-bb.0
+      - https://repo1.dso.mil/platform-one/big-bang/apps/core/authservice.git@0.5.2-bb.1
     images:
       - "registry1.dso.mil/ironbank/istio-ecosystem/authservice:0.5.2"
       
@@ -131,18 +129,18 @@ components:
     description: "Git repositories and OCI images need for Big Bang storage"
     required: true
     repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/application-utilities/minio-operator.git@4.5.1-bb.0
-      - https://repo1.dso.mil/platform-one/big-bang/apps/application-utilities/minio.git@4.5.1-bb.0
+      - https://repo1.dso.mil/platform-one/big-bang/apps/application-utilities/minio-operator.git@4.5.3-bb.0
+      - https://repo1.dso.mil/platform-one/big-bang/apps/application-utilities/minio.git@4.5.3-bb.1
     images:
-      - "registry1.dso.mil/ironbank/opensource/minio/operator:v4.5.1"
-      - "registry1.dso.mil/ironbank/opensource/minio/console:v0.20.4"
-      - "registry1.dso.mil/ironbank/opensource/minio/minio:RELEASE.2022-08-26T19-53-15Z"
+      - "registry1.dso.mil/ironbank/opensource/minio/operator:v4.5.3"
+      - "registry1.dso.mil/ironbank/opensource/minio/console:v0.21.1"
+      - "registry1.dso.mil/ironbank/opensource/minio/minio:RELEASE.2022-10-15T19-57-03Z"
 
   - name: big-bang-backup
     description: "Git repositories and OCI images used by Velero backup"
     required: false
     repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/cluster-utilities/velero.git@2.31.8-bb.1
+      - https://repo1.dso.mil/platform-one/big-bang/apps/cluster-utilities/velero.git@2.31.8-bb.2
     images:
       - "registry1.dso.mil/ironbank/opensource/velero/velero:v1.9.2"
       # - "velero/velero-plugin-for-csi:v0.3.1"
