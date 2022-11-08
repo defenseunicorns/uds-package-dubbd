@@ -44,7 +44,7 @@ components:
       - "registry1.dso.mil/ironbank/tetrate/istio/pilot:1.14.4-tetratefips-v0"
       - "registry1.dso.mil/ironbank/tetrate/istio/install-cni:1.14.4-tetratefips-v0"
       - "registry1.dso.mil/ironbank/tetrate/istio/operator:1.14.4-tetratefips-v0"
-      - "registry1.dso.mil/ironbank/opensource/kubernetes/kube-state-metrics:v2.6.0"
+      - "registry1.dso.mil/ironbank/opensource/kubernetes-sigs/metrics-server:0.6.1"
 
   - name: policy-kyverno
     description: "Git repositories and OCI images used by Kyverno Policy Engine"
