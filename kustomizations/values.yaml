@@ -15,12 +15,6 @@ networkPolicies:
   nodeCidr: "0.0.0.0/0"
   vpcCidr: "0.0.0.0/0"
 
-metricsServer:
-  enabled: false
-
-# Default values set by Big Bang: https://repo1.dso.mil/platform-one/big-bang/bigbang/-/blob/1.43.0/chart/values.yaml
-#
-# Istio default values: https://repo1.dso.mil/platform-one/big-bang/apps/core/istio-controlplane/-/blob/1.14.3-bb.4/chart/values.yaml
 istio:
   enabled: true
   git:
@@ -71,7 +65,6 @@ istio:
       tls:
         mode: "PASSTHROUGH"
 
-# Istio-Operator default values: https://repo1.dso.mil/platform-one/big-bang/apps/core/istio-operator/-/blob/1.14.3-bb.0/chart/values.yaml
 istiooperator:
   enabled: true
   git:
@@ -86,7 +79,6 @@ istiooperator:
           cpu: "100m"
           memory: "256Mi"
 
-# Jaeger default values: https://repo1.dso.mil/platform-one/big-bang/apps/core/jaeger/-/blob/2.35.0-bb.1/chart/values.yaml
 jaeger:
   enabled: true
   git:
@@ -121,7 +113,6 @@ jaeger:
         cpu: "100m"
         memory: "128Mi"
 
-# Kiali default values: https://repo1.dso.mil/platform-one/big-bang/apps/core/kiali/-/blob/1.56.1-bb.1/chart/values.yaml
 kiali:
   enabled: true
   git:
@@ -148,7 +139,6 @@ kiali:
               cpu: "500m"
               memory: "512Mi"
 
-# Cluster-Auditor default values: https://repo1.dso.mil/platform-one/big-bang/apps/core/cluster-auditor/-/blob/1.4.0-bb.10/chart/values.yaml
 clusterAuditor:
   enabled: false
   git:
@@ -165,7 +155,6 @@ clusterAuditor:
         cpu: "500m"
         memory: "512Mi"
 
-# Gatekeeper default values: https://repo1.dso.mil/platform-one/big-bang/apps/core/policy/-/blob/3.9.0-bb.2/chart/values.yaml
 gatekeeper:
   enabled: false
 
@@ -178,7 +167,6 @@ eckoperator:
 fluentbit:
   enabled: false
 
-# Loki default values: https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/loki/-/blob/1.8.10-bb.2/chart/values.yaml
 loki:
   enabled: true
   git:
@@ -204,7 +192,6 @@ loki:
       mtls:
         mode: PERMISSIVE
 
-# Promtail default values: https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/promtail/-/blob/6.2.2-bb.2/chart/values.yaml
 promtail:
   enabled: true
   git:
@@ -221,7 +208,6 @@ promtail:
         cpu: "100m"
         memory: "256Mi"
 
-# Monitoring default values: https://repo1.dso.mil/platform-one/big-bang/apps/core/monitoring/-/blob/40.0.0-bb.0/chart/values.yaml
 monitoring:
   enabled: true
   git:
@@ -461,3 +447,7 @@ addons:
   #   enabled: true
   #   git:
   #     repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__sandbox__neuvector.git
+
+  metricsServer:
+    enabled: false
+
