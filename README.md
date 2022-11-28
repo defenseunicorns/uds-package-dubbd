@@ -1,5 +1,5 @@
 # zarf-package-big-bang
-Pre-built Zarf Package of Big Bang core. The current version of Big Bang supported is 1.46.0
+Pre-built Zarf Package of Big Bang core. The current version of Big Bang supported is 1.47.0
 
 ## Prerequisites
 - Zarf is installed. Current version used is: [v0.21.3](https://github.com/defenseunicorns/zarf/releases/tag/v0.21.3)

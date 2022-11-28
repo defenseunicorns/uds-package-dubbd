@@ -197,6 +197,8 @@ promtail:
   git:
     repo: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__sandbox__promtail.git
   values:
+    initContainer:
+      fsInotifyMaxUserInstances: 1024
     istio:
       mtls:
         mode: PERMISSIVE
