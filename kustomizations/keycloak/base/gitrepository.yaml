@@ -1,0 +1,12 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: GitRepository
+metadata:
+  name: keycloak
+  namespace: keycloak
+spec:
+  interval: 5m
+  url: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__security-tools__keycloak.git
+  ref:
+    tag: 18.2.1-bb.5
+  secretRef:
+    name: private-git-server

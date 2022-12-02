@@ -1,0 +1,9 @@
+configurations:
+  - transformer.yaml
+
+commonLabels:
+  owner: bigbang
+
+resources:
+  - gitrepository.yaml
+  - helmrelease.yaml

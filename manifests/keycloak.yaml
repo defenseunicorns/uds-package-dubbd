@@ -1,0 +1,22 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: keycloak
+  namespace: flux-system
+spec:
+  interval: 5m
+  path: "./kustomizations/keycloak"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: zarf-package-big-bang
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2beta1
+      kind: HelmRelease
+      namespace: bigbang
+      name: keycloak
+  timeout: 15m
+  postBuild:
+    substitute:
+      ZARF_REGISTRY: "###ZARF_REGISTRY###"
+      ZARF_REGISTRY_AUTH_PULL: "###ZARF_REGISTRY_AUTH_PULL###"

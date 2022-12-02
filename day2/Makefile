@@ -1,5 +1,5 @@
 # The version of Big Bang to use.
-BIGBANG_VERSION := 1.47.0
+BIGBANG_VERSION := 1.48.0
 
 ZARF_BIN := zarf
 
