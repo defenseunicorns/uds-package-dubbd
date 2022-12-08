@@ -171,3 +171,15 @@ components:
         files:
           - manifests/setup.yaml
           - manifests/big-bang.yaml
+
+  - name: podinfo-demo-app
+    description: "Tiny web application that showcases best practices of running microservices"
+    required: false
+    images:
+      - registry.dso.mil/platform-one/big-bang/apps/sandbox/podinfo/podinfo:6.0.0
+    charts:
+      - name: podinfo
+        url: https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/podinfo.git
+        gitPath: chart
+        namespace: podinfo
+        version: 6.0.0-bb.5
