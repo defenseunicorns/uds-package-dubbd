@@ -23,8 +23,7 @@ istio:
     enabled: true
   ingressGateways:
     public-ingressgateway:
-      #type: "LoadBalancer"
-      type: "NodePort"
+      type: "LoadBalancer"
       kubernetesResourceSpec:
         resources:
           requests:
@@ -34,8 +33,7 @@ istio:
             cpu: "500m"
             memory: "512Mi"
     passthrough-ingressgateway:
-      #type: "LoadBalancer"
-      type: "NodePort"
+      type: "LoadBalancer"
   values:
     istiod:
       resources:
