@@ -172,7 +172,7 @@ components:
           - manifests/setup.yaml
           - manifests/big-bang.yaml
 
-  - name: podinfo-demo-app
+  - name: podinfo
     description: "Tiny web application that showcases best practices of running microservices"
     required: false
     images:
