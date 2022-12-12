@@ -692,7 +692,7 @@ addons:
           stringData:
             customreg.yaml: '{{ .Files.Get "resources/dev/baby-yoda.yaml" }}'
         realm:
-          stringData: |-
+          stringData: |
             {
               "id": "baby-yoda",
               "realm": "baby-yoda",
