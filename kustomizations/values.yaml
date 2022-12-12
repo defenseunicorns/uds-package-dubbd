@@ -688,9 +688,6 @@ addons:
         certauthority:
           stringData:
             cas.pem: '{{ .Files.Get "resources/dev/dod_cas.pem" }}'
-        customreg:
-          stringData:
-            customreg.yaml: '{{ .Files.Get "resources/dev/baby-yoda.yaml" }}'
         realm:
           stringData: |
             {
@@ -4609,3 +4606,6 @@ addons:
                 "policies": []
               }
             }
+        customreg:
+          stringData:
+            customreg.yaml: '{{ .Files.Get "resources/dev/baby-yoda.yaml" }}'
