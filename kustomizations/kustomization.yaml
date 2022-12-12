@@ -1,4 +1,5 @@
 resources:
+  - namespace.yaml
   - git::https://repo1.dso.mil/platform-one/big-bang/bigbang.git/base?ref=tags/1.48.0
 
 configMapGenerator:
