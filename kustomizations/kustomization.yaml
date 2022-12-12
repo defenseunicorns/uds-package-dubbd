@@ -7,3 +7,12 @@ configMapGenerator:
     behavior: merge
     files:
       - values.yaml
+
+secretGenerator:
+  - name: realm
+    namespace: keycloak
+    files:
+      - ./files/realm.json
+
+generatorOptions:
+  disableNameSuffixHash: true

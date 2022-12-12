@@ -47,15 +47,6 @@ components:
       - registry1.dso.mil/ironbank/opensource/kubernetes-sigs/metrics-server:0.6.1
       - registry1.dso.mil/ironbank/opensource/kubernetes/kube-state-metrics:v2.6.0
 
-  - name: setup
-    required: true
-    repos:
-      - https://github.com/defenseunicorns/zarf-package-big-bang.git@###ZARF_PKG_VAR_BIGBANG_VERSION###
-    manifests:
-      - name: big-bang-config
-        files:
-          - manifests/setup.yaml
-
   - name: policy-kyverno
     description: "Git repositories and OCI images used by Kyverno Policy Engine"
     required: true
@@ -109,10 +100,6 @@ components:
   - name: keycloak
     description: "Git repositories and OCI images used by Keycloak"
     required: false
-    manifests:
-      - name: keycloak
-        files:
-          - manifests/keycloak.yaml
     repos:
       - https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/keycloak.git
     images:
@@ -165,7 +152,7 @@ components:
     description: "Deploy a version of Big Bang Core with Keycloak deployed in-cluster"
     required: true
     repos:
-      - https://github.com/defenseunicorns/zarf-package-big-bang.git@###ZARF_PKG_VAR_BIGBANG_VERSION###
+      - https://github.com/defenseunicorns/zarf-package-big-bang.git@###ZARF_PKG_VAR_BIGBANG_VERSION###-test
     manifests:
       - name: big-bang-config
         files:
