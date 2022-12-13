@@ -424,9 +424,9 @@ sso:
   oidc:
     host: keycloak.bigbang.dev
     realm: baby-yoda
-  token_url: "https://{{ .Values.sso.oidc.host }}/auth/realms/{{ .Values.sso.oidc.realm }}/protocol/openid-connect/token"
-  auth_url: "https://{{ .Values.sso.oidc.host }}/auth/realms/{{ .Values.sso.oidc.realm }}/protocol/openid-connect/auth"
-  jwks_uri: "https://{{ .Values.sso.oidc.host }}/auth/realms/{{ .Values.sso.oidc.realm }}/protocol/openid-connect/certs"
+  token_url: "https://keycloak.bigbang.dev/auth/realms/baby-yoda/protocol/openid-connect/token"
+  auth_url: "https://keycloak.bigbang.dev/auth/realms/baby-yoda/protocol/openid-connect/auth"
+  jwks_uri: "https://keycloak.bigbang.dev/auth/realms/baby-yoda/protocol/openid-connect/certs"
   certificate_authority: |
     -----BEGIN CERTIFICATE-----
     MIIFazCCA1OgAwIBAgIRAIIQz7DSQONZRGPgu2OCiwAwDQYJKoZIhvcNAQELBQAw
