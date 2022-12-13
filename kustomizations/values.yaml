@@ -665,7 +665,7 @@ addons:
             secretName: {{ include "keycloak.fullname" . }}-customreg
         - name: realm
           secret:
-            secretName: realm
+            secretName: {{ include "keycloak.fullname" . }}-realm
       extraVolumeMounts: |-
         - name: certauthority
           mountPath: /etc/x509/https/cas.pem
