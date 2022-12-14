@@ -164,11 +164,7 @@ components:
     required: false
     images:
       - registry.dso.mil/platform-one/big-bang/apps/sandbox/podinfo/podinfo:6.0.0
-    charts:
+    manifests:
       - name: podinfo
-        url: https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/podinfo.git
-        gitPath: chart
-        namespace: podinfo
-        version: 6.0.0-bb.5
-        valuesFiles:
-          - kustomizations/podinfo/values.yaml
+        files:
+          - manifests/podinfo.yaml

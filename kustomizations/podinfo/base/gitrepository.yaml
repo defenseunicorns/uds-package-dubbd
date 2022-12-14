@@ -1,0 +1,12 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: GitRepository
+metadata:
+  name: podinfo
+  namespace: podinfo
+spec:
+  interval: 5m
+  url: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__repo1.dso.mil__platform-one__big-bang__apps__sandbox__podinfo.git
+  ref:
+    tag: 6.0.0-bb.5
+  secretRef:
+    name: private-git-server
