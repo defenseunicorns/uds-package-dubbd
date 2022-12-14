@@ -162,6 +162,8 @@ components:
   - name: podinfo
     description: "Tiny web application that showcases best practices of running microservices"
     required: false
+    repos:
+      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/podinfo.git
     images:
       - registry.dso.mil/platform-one/big-bang/apps/sandbox/podinfo/podinfo:6.0.0
     manifests:
