@@ -170,3 +170,5 @@ components:
         gitPath: chart
         namespace: podinfo
         version: 6.0.0-bb.5
+        valuesFiles:
+          - kustomizations/podinfo/values.yaml
