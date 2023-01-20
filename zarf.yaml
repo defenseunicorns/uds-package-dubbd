@@ -11,11 +11,11 @@ metadata:
 
 components:
   - name: flux
-    required: false
+    required: true
     manifests:
       - name: flux-installer
         kustomizations:
-          - https://repo1.dso.mil/platform-one/big-bang/bigbang.git/base/flux?ref=###ZARF_PKG_VAR_BIGBANG_VERSION###
+          - https://repo1.dso.mil/big-bang/bigbang.git/base/flux?ref=###ZARF_PKG_VAR_BIGBANG_VERSION###
     images:
       - registry1.dso.mil/ironbank/fluxcd/helm-controller:v0.27.0
       - registry1.dso.mil/ironbank/fluxcd/kustomize-controller:v0.31.0
@@ -44,7 +44,7 @@ components:
       - registry1.dso.mil/ironbank/tetrate/istio/operator:1.15.1-tetratefips-v1
       - registry1.dso.mil/ironbank/tetrate/istio/pilot:1.15.1-tetratefips-v1
       - registry1.dso.mil/ironbank/tetrate/istio/proxyv2:1.15.1-tetratefips-v1
-      - registry1.dso.mil/ironbank/opensource/kubernetes-sigs/metrics-server:0.6.2
+      - registry1.dso.mil/ironbank/opensource/kubernetes-sigs/metrics-server:v0.6.2
       - registry1.dso.mil/ironbank/opensource/kubernetes/kube-state-metrics:v2.7.0
 
   - name: policy-kyverno
@@ -54,8 +54,8 @@ components:
       - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno.git
       - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno-policies.git
     images:
-      - registry1.dso.mil/ironbank/nirmata/kyverno:v1.8.1
-      - registry1.dso.mil/ironbank/nirmata/kyvernopre:v1.8.1
+      - registry1.dso.mil/ironbank/nirmata/kyverno:v1.8.5
+      - registry1.dso.mil/ironbank/nirmata/kyvernopre:v1.8.5
       
   - name: observability-tracing
     description: "Git repositories and OCI images used by Big Bang observability & tracing"
@@ -103,8 +103,8 @@ components:
     repos:
       - https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/keycloak.git
     images:
-      - registry.dso.mil/platform-one/big-bang/apps/security-tools/keycloak/keycloak-ib:18.0.2-1.2.0-1
-      - registry1.dso.mil/ironbank/opensource/postgres/postgresql12:12.11
+      - registry1.dso.mil/ironbank/opensource/keycloak/keycloak:20.0.2
+      - registry1.dso.mil/ironbank/opensource/postgres/postgresql12:12.13
       - registry1.dso.mil/ironbank/bitnami/redis:7.0.0-debian-10-r3
 
   - name: authsvc
@@ -128,7 +128,7 @@ components:
 
   - name: big-bang-storage
     description: "Git repositories and OCI images need for Big Bang storage"
-    required: false
+    required: true
     repos:
       - https://repo1.dso.mil/platform-one/big-bang/apps/application-utilities/minio-operator.git
       - https://repo1.dso.mil/platform-one/big-bang/apps/application-utilities/minio.git
@@ -143,16 +143,16 @@ components:
     repos:
       - https://repo1.dso.mil/platform-one/big-bang/apps/cluster-utilities/velero.git
     images:
-      - registry1.dso.mil/ironbank/opensource/velero/velero:v1.9.3
-      # - "velero/velero-plugin-for-csi:v0.3.2"
-      # - "velero/velero-plugin-for-aws:v1.5.2"
-      # - "registry1.dso.mil/ironbank/opensource/velero/velero-plugin-for-microsoft-azure:v1.5.2"
+      - registry1.dso.mil/ironbank/opensource/velero/velero:v1.10.0
+      # - registry1.dso.mil/ironbank/opensource/velero/velero-plugin-for-csi:v0.4.0
+      # - registry1.dso.mil/ironbank/opensource/velero/velero-plugin-for-aws:v1.6.0
+      # - registry1.dso.mil/ironbank/opensource/velero/velero-plugin-for-microsoft-azure:v1.6.0
 
   - name: big-bang-umbrella-chart
     description: "Deploy a version of Big Bang Core with Keycloak deployed in-cluster"
     required: true
     repos:
-      - https://github.com/defenseunicorns/zarf-package-big-bang.git@###ZARF_PKG_VAR_BIGBANG_VERSION###-test
+      - https://github.com/defenseunicorns/zarf-package-big-bang.git@###ZARF_PKG_VAR_BIGBANG_VERSION###
     manifests:
       - name: big-bang-config
         files:
@@ -163,9 +163,9 @@ components:
     description: "Tiny web application that showcases best practices of running microservices"
     required: false
     repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/podinfo.git
+      - https://repo1.dso.mil/big-bang/apps/sandbox/podinfo.git
     images:
-      - registry.dso.mil/platform-one/big-bang/apps/sandbox/podinfo/podinfo:6.0.0
+      - ghcr.io/stefanprodan/podinfo:6.0.0
     manifests:
       - name: podinfo
         files:

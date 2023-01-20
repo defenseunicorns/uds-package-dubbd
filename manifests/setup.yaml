@@ -20,8 +20,8 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1m
-  url: http://zarf-gitea-http.zarf.svc.cluster.local:3000/zarf-git-user/mirror__github.com__defenseunicorns__zarf-package-big-bang.git
+  url: https://github.com/defenseunicorns/zarf-package-big-bang.git
   ref:
-    branch: main
+    tag: 1.51.0
   secretRef:
     name: private-git-server
