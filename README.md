@@ -8,7 +8,7 @@ Pre-built Zarf Package of [DoD-Platform-One/big-bang](https://github.com/DoD-Pla
 
 ## Build the package
 
-``` bash
+```bash
 $ make build
 ...
 $ ls -l build/
@@ -20,14 +20,13 @@ $
 ## Deploy the package
 
 1. Download and deploy Zarf's init package.
-
-``` bash
-zarf package deploy ~/Downloads/zarf-init-amd64.tar.zst --components git-server --confirm
+```bash
+$ zarf package deploy ~/Downloads/zarf-init-amd64.tar.zst --components git-server --confirm
 ```
 
 Optionally, if a Kubernetes cluster is not installed, we can tell Zarf to install one for us:
 
-``` bash
+```bash
 zarf package deploy ~/Downloads/zarf-init-amd64.tar.zst --components k3s,git-server --confirm
 ```
 
@@ -61,7 +60,7 @@ flux-system   bigbang   23m   True    Applied revision: 1.51.0/74f7a52a33b8f9120
 flux-system   podinfo   23m   True    Applied revision: 1.51.0/74f7a52a33b8f912020fa69599dae1d75200c479
 ```
 
-## Day 2
+## Day 2.
 
 ### Enable SSO
 
