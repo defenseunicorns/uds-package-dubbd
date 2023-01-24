@@ -1,0 +1,12 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: GitRepository
+metadata:
+  name: podinfo
+  namespace: podinfo
+spec:
+  interval: 5m
+  url: https://repo1.dso.mil/big-bang/apps/sandbox/podinfo.git
+  ref:
+    tag: 6.0.0-bb.7
+  secretRef:
+    name: private-git-server

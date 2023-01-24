@@ -1,9 +1,5 @@
 # The version of Big Bang to use.
-BIGBANG_VERSION := 1.46.0
-
-# The version of Zarf to use. To keep this repo as portable as possible the Zarf binary will be downloaded and added to
-# the build folder.
-ZARF_VERSION := v0.21.3
+BIGBANG_VERSION := 1.51.0
 
 # Figure out which Zarf binary we should use based on the operating system we are on
 ZARF_BIN := zarf
@@ -30,4 +26,4 @@ mkdir:
 build: mkdir ## Build the Big Bang Zarf Package
 	@echo "Creating the deploy package"
 	@$(ZARF_BIN) package create --skip-sbom --set BIGBANG_VERSION=$(BIGBANG_VERSION) --confirm
-	@mv zarf-package-big-bang-amd64.tar.zst build/zarf-package-big-bang-amd64.tar.zst
+	@mv zarf-package-big-bang-amd64-$(BIGBANG_VERSION).tar.zst build/zarf-package-big-bang-amd64.tar.zst
