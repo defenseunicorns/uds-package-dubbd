@@ -17,10 +17,10 @@ components:
         kustomizations:
           - https://repo1.dso.mil/big-bang/bigbang.git/base/flux?ref=###ZARF_PKG_VAR_BIGBANG_VERSION###
     images:
-      - registry1.dso.mil/ironbank/fluxcd/helm-controller:v0.27.0
-      - registry1.dso.mil/ironbank/fluxcd/kustomize-controller:v0.31.0
-      - registry1.dso.mil/ironbank/fluxcd/notification-controller:v0.29.0
-      - registry1.dso.mil/ironbank/fluxcd/source-controller:v0.32.1
+      - registry1.dso.mil/ironbank/fluxcd/helm-controller:v0.28.1
+      - registry1.dso.mil/ironbank/fluxcd/kustomize-controller:v0.32.0
+      - registry1.dso.mil/ironbank/fluxcd/notification-controller:v0.30.2
+      - registry1.dso.mil/ironbank/fluxcd/source-controller:v0.33.0
 
   - name: big-bang-base
     description: "Git repositories and OCI images used by Big Bang"
@@ -65,8 +65,8 @@ components:
       - https://repo1.dso.mil/platform-one/big-bang/apps/core/kiali.git
       - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/tempo.git
     images:
-      - registry1.dso.mil/ironbank/opensource/jaegertracing/all-in-one:1.39.0
-      - registry1.dso.mil/ironbank/opensource/jaegertracing/jaeger-operator:1.39.0
+      - registry1.dso.mil/ironbank/opensource/jaegertracing/all-in-one:1.41.0
+      - registry1.dso.mil/ironbank/opensource/jaegertracing/jaeger-operator:1.41.0
       - registry1.dso.mil/ironbank/opensource/kiali/kiali-operator:v1.60.0
       - registry1.dso.mil/ironbank/opensource/kiali/kiali:v1.60.0
       - registry1.dso.mil/ironbank/opensource/grafana/tempo-query:1.5.0
@@ -121,10 +121,10 @@ components:
     repos:
       - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/neuvector.git
     images:
-      - registry1.dso.mil/ironbank/neuvector/neuvector/enforcer:5.0.2
-      - registry1.dso.mil/ironbank/neuvector/neuvector/manager:5.0.2
-      - registry1.dso.mil/ironbank/neuvector/neuvector/scanner:latest
-      - registry1.dso.mil/ironbank/neuvector/neuvector/controller:5.0.2
+      - registry1.dso.mil/ironbank/neuvector/neuvector/enforcer:5.1.0
+      - registry1.dso.mil/ironbank/neuvector/neuvector/manager:5.1.0
+      - registry1.dso.mil/ironbank/neuvector/neuvector/scanner:5
+      - registry1.dso.mil/ironbank/neuvector/neuvector/controller:5.1.0
 
   - name: big-bang-storage
     description: "Git repositories and OCI images need for Big Bang storage"
