@@ -1,6 +1,6 @@
 # zarf-package-big-bang
 
-Pre-built Zarf Package of [DoD-Platform-One/big-bang](https://github.com/DoD-Platform-One/big-bang) core. The current version of Big Bang supported is 1.51.0
+Pre-built Zarf Package of [DoD-Platform-One/big-bang](https://github.com/DoD-Platform-One/big-bang) core. The current version of Big Bang supported is 1.52.0
 
 ## Prerequisites
 - Zarf is installed. Current version used is: [v0.23.5](https://github.com/defenseunicorns/zarf/releases/tag/v0.23.5)
@@ -56,8 +56,8 @@ bigbang     monitoring       9m16s   True    Release reconciliation succeeded
 bigbang     promtail         9m16s   True    Release reconciliation succeeded
 $ kubectl get kustomization -A
 NAMESPACE     NAME      AGE   READY   STATUS
-flux-system   bigbang   23m   True    Applied revision: 1.51.0/74f7a52a33b8f912020fa69599dae1d75200c479
-flux-system   podinfo   23m   True    Applied revision: 1.51.0/74f7a52a33b8f912020fa69599dae1d75200c479
+flux-system   bigbang   23m   True    Applied revision: 1.52.0/74f7a52a33b8f912020fa69599dae1d75200c479
+flux-system   podinfo   23m   True    Applied revision: 1.52.0/74f7a52a33b8f912020fa69599dae1d75200c479
 ```
 
 ## Day 2.
