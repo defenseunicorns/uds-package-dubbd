@@ -17,8 +17,6 @@ networkPolicies:
 
 istio:
   enabled: true
-  keycloak:
-    enabled: true
   ingressGateways:
     public-ingressgateway:
       type: "LoadBalancer"
@@ -527,10 +525,9 @@ addons:
   velero:
     enabled: false
 
-  # neuvector:
-  #   enabled: true
-  #  git:
-  #    repo: https://repo1.dso.mil/big-bang/apps/sandbox/neuvector.git
+  neuvector:
+    enabled: true
+
   keycloak:
     enabled: true
     ingress:
