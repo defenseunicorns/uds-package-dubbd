@@ -466,11 +466,6 @@ neuvector:
   values:
     containerd:
       enabled: true
-    istio:
-      enabled: true
-      neuvector:
-        gateways:
-          - istio-system/public
 
 addons:
   authservice:
