@@ -463,6 +463,14 @@ sso:
 
 neuvector:
   enabled: true
+  values:
+    containerd:
+      enabled: true
+    istio:
+      enabled: true
+      neuvector:
+        gateways:
+          - istio-system/public
 
 addons:
   authservice:
