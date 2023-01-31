@@ -461,6 +461,9 @@ sso:
     emyPxgcYxn/eR44/KJ4EBs+lVDR3veyJm+kXQ99b21/+jh5Xos1AnX5iItreGCc=
     -----END CERTIFICATE-----
 
+neuvector:
+  enabled: true
+
 addons:
   authservice:
     enabled: true
@@ -545,9 +548,6 @@ addons:
 
   velero:
     enabled: false
-
-  neuvector:
-    enabled: true
 
   keycloak:
     enabled: true
