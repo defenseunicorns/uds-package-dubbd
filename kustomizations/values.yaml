@@ -410,12 +410,6 @@ kyvernopolicies:
           - resources:
               namespaces:
               - "zarf"
-      disallow-privilege-escalation:
-        exclude:
-          any:
-          - resources:
-              names:
-              - "acid*"
       restrict-host-path-mount:
         exclude:
           any:
@@ -426,6 +420,7 @@ kyvernopolicies:
               - "zarf"
         parameters:
           allow:
+          - "/var/local-path-provisioner/*"
           - "/var/lib/rancher/k3s/storage/*"
       restrict-host-path-write:
         exclude:
@@ -437,6 +432,7 @@ kyvernopolicies:
               - "zarf"
         parameters:
           allow:
+          - "/var/local-path-provisioner/*"
           - "/var/lib/rancher/k3s/storage/*"
       restrict-host-path-mount-pv:
         exclude:
@@ -448,6 +444,7 @@ kyvernopolicies:
               - "zarf"
         parameters:
           allow:
+          - "/var/local-path-provisioner/*"
           - "/var/lib/rancher/k3s/storage/*"
       restrict-image-registries:
         skipOverlayMerge: true
@@ -590,8 +587,8 @@ addons:
                 cpu: 250m
                 memory: 2Gi
               limits:
-                cpu: 250m
-                memory: 2Gi
+                cpu: 10
+                memory: 4Gi
             securityContext:
               runAsUser: 1001
               runAsGroup: 1001
