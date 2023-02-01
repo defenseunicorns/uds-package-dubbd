@@ -406,7 +406,7 @@ kyvernopolicies:
     policies:
       disallow-shared-subpath-volume-writes:
         validationFailureAction: audit
-      restrict-host-ports: 
+      restrict-host-ports:
         validationFailureAction: audit
       restrict-capabilities:
         validationFailureAction: audit
@@ -687,7 +687,7 @@ addons:
           value: ispn
         - name: KC_CACHE_STACK
           value: kubernetes
-      extraVolumes: |-              
+      extraVolumes: |-
         - name: certauthority
           secret:
             secretName: {{ include "keycloak.fullname" . }}-certauthority
@@ -751,7 +751,7 @@ addons:
               quarkus.kc-routing-redirects.path-filters./oauth/token=/auth/realms/baby-yoda/protocol/openid-connect/token
 
         realm:
-          data: 
+          data:
             realm.json: |
               ewogICJpZCI6ICJiYWJ5LXlvZGEiLAogICJyZWFsbSI6ICJiYWJ5LXlvZGEiLAogICJkaXNwbGF5
               TmFtZSI6ICJEb0QgUGxhdGZvcm0gT25lIiwKICAiZGlzcGxheU5hbWVIdG1sIjogIkRldlNlY09w
