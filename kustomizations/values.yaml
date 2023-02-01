@@ -420,6 +420,12 @@ kyvernopolicies:
         validationFailureAction: audit
       restrict-host-path-mount-pv:
         validationFailureAction: audit
+      restrict-host-path-mount:
+        validationFailureAction: audit
+      restrict-host-path-write:
+        validationFailureAction: audit
+      restrict-volume-types:
+        validationFailureAction: audit
 
 sso:
   oidc:
