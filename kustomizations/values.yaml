@@ -46,9 +46,9 @@ istio:
         proxy:
           resources:
             requests:
-              memory: "2Gi"
+              memory: "1Gi"
             limits:
-              memory: "2Gi"
+              memory: "1Gi"
   gateways:
     public:
       tls:
