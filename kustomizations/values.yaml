@@ -404,22 +404,71 @@ kyvernopolicies:
   enabled: true
   values:
     policies:
-      disallow-shared-subpath-volume-writes:
-        validationFailureAction: audit
-      restrict-host-ports: 
-        validationFailureAction: audit
-      restrict-capabilities:
-        validationFailureAction: audit
-      restrict-image-registries:
-        validationFailureAction: audit
-      disallow-host-namespaces:
-        validationFailureAction: audit
-      disallow-privileged-containers:
-        validationFailureAction: audit
-      require-non-root-user:
-        validationFailureAction: audit
+      disallow-nodeport-services:
+        exclude:
+          any:
+          - resources:
+              namespaces:
+              - "zarf"
+      disallow-privilege-escalation:
+        exclude:
+          any:
+          - resources:
+              names:
+              - "acid*"
+      restrict-host-path-mount:
+        exclude:
+          any:
+          - resources:
+              namespaces:
+              - "kube-system"
+              - "local-path-storage"
+              - "zarf"
+        parameters:
+          allow:
+          - "/var/lib/rancher/k3s/storage/*"
+      restrict-host-path-write:
+        exclude:
+          any:
+          - resources:
+              namespaces:
+              - "kube-system"
+              - "local-path-storage"
+              - "zarf"
+        parameters:
+          allow:
+          - "/var/lib/rancher/k3s/storage/*"
       restrict-host-path-mount-pv:
-        validationFailureAction: audit
+        exclude:
+          any:
+          - resources:
+              namespaces:
+              - "kube-system"
+              - "local-path-storage"
+              - "zarf"
+        parameters:
+          allow:
+          - "/var/lib/rancher/k3s/storage/*"
+      restrict-image-registries:
+        skipOverlayMerge: true
+        exclude:
+          any:
+          - resources:
+              namespaces:
+              - "kube-system"
+              - "local-path-storage"
+              - "zarf"
+        parameters:
+          allow:
+            - "${ZARF_REGISTRY}"
+      restrict-volume-types:
+        exclude:
+          any:
+          - resources:
+              namespaces:
+              - "kube-system"
+              - "local-path-storage"
+              - "zarf"
 
 sso:
   oidc:
