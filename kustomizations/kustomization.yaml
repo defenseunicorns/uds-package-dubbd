@@ -1,5 +1,5 @@
 bases:
-  - git::https://repo1.dso.mil/big-bang/bigbang.git/base?ref=tags/1.52.0
+  - git::https://repo1.dso.mil/big-bang/bigbang.git/base?ref=tags/1.53.0
 
 configMapGenerator:
   - name: common

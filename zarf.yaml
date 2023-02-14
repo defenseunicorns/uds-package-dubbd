@@ -103,7 +103,7 @@ components:
     repos:
       - https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/keycloak.git
     images:
-      - registry1.dso.mil/ironbank/opensource/keycloak/keycloak:20.0.2
+      - registry1.dso.mil/ironbank/opensource/keycloak/keycloak:20.0.3
       - registry1.dso.mil/ironbank/opensource/postgres/postgresql12:12.13
       - registry1.dso.mil/ironbank/bitnami/redis:7.0.0-debian-10-r3
 
@@ -165,7 +165,7 @@ components:
     repos:
       - https://repo1.dso.mil/big-bang/apps/sandbox/podinfo.git
     images:
-      - ghcr.io/stefanprodan/podinfo:6.0.0
+      - ghcr.io/stefanprodan/podinfo:6.3.3
     manifests:
       - name: podinfo
         files:
