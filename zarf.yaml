@@ -26,7 +26,7 @@ components:
     description: "Git repositories and OCI images used by Big Bang"
     required: true
     repos:
-      - https://repo1.dso.mil/platform-one/big-bang/bigbang.git@###ZARF_PKG_VAR_BIGBANG_VERSION###
+      - https://repo1.dso.mil/big-bang/bigbang.git@###ZARF_PKG_VAR_BIGBANG_VERSION###
       - https://repo1.dso.mil/platform-one/big-bang/apps/core/istio-controlplane.git
       - https://repo1.dso.mil/platform-one/big-bang/apps/core/istio-operator.git
       - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/metrics-server.git
@@ -34,7 +34,7 @@ components:
     images:
       - registry1.dso.mil/ironbank/big-bang/base:2.0.0
       - registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.7
-      - registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.25.5
+      - registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.25.6
       - registry1.dso.mil/ironbank/opensource/istio/install-cni:1.16.1
       - registry1.dso.mil/ironbank/opensource/istio/operator:1.16.1
       - registry1.dso.mil/ironbank/opensource/istio/pilot:1.16.1
@@ -95,7 +95,7 @@ components:
       - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/promtail.git
     images:
       - registry1.dso.mil/ironbank/opensource/grafana/loki:2.7.0
-      - registry1.dso.mil/ironbank/opensource/grafana/promtail:v2.7.0
+      - registry1.dso.mil/ironbank/opensource/grafana/promtail:v2.7.1
 
   - name: keycloak
     description: "Git repositories and OCI images used by Keycloak"
