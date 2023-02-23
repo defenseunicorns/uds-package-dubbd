@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/v0.21.3/zarf.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/bigbang-component/zarf.schema.json
 kind: ZarfPackageConfig
 metadata:
   name: big-bang
@@ -9,164 +9,38 @@ metadata:
   # Big Bang / Iron Bank are only amd64
   architecture: amd64
 
+variables:
+- name: BIGBANG_VERSION
+  default: 1.53.0
+
 components:
-  - name: flux
+  - name: bigbang
     required: true
-    manifests:
-      - name: flux-installer
-        kustomizations:
-          - https://repo1.dso.mil/big-bang/bigbang.git/base/flux?ref=###ZARF_PKG_VAR_BIGBANG_VERSION###
-    images:
-      - registry1.dso.mil/ironbank/fluxcd/helm-controller:v0.28.1
-      - registry1.dso.mil/ironbank/fluxcd/kustomize-controller:v0.32.0
-      - registry1.dso.mil/ironbank/fluxcd/notification-controller:v0.30.2
-      - registry1.dso.mil/ironbank/fluxcd/source-controller:v0.33.0
+    extensions:
+      bigbang:
+        version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
+        valuesFiles:
+        - values/values.yaml
+        - values/kyverno.yaml
+        - values/istio.yaml
+        - values/loki.yaml
+        - values/promtail.yaml
+        - values/kiali.yaml
+        - values/monitoring.yaml
+        - values/neuvector.yaml
+        - values/tempo.yaml
+        - values/authservice.yaml
+        - values/loki.yaml
+        - values/keycloak.yaml
 
-  - name: big-bang-base
-    description: "Git repositories and OCI images used by Big Bang"
-    required: true
-    repos:
-      - https://repo1.dso.mil/platform-one/big-bang/bigbang.git@###ZARF_PKG_VAR_BIGBANG_VERSION###
-      - https://repo1.dso.mil/platform-one/big-bang/apps/core/istio-controlplane.git
-      - https://repo1.dso.mil/platform-one/big-bang/apps/core/istio-operator.git
-      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/metrics-server.git
-
-    images:
-      - registry1.dso.mil/ironbank/big-bang/base:2.0.0
-      - registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.7
-      - registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.25.5
-      - registry1.dso.mil/ironbank/opensource/istio/install-cni:1.16.1
-      - registry1.dso.mil/ironbank/opensource/istio/operator:1.16.1
-      - registry1.dso.mil/ironbank/opensource/istio/pilot:1.16.1
-      - registry1.dso.mil/ironbank/opensource/istio/proxyv2:1.16.1
-      - registry1.dso.mil/ironbank/tetrate/istio/install-cni:1.15.1-tetratefips-v1
-      - registry1.dso.mil/ironbank/tetrate/istio/istioctl:1.15.1-tetratefips-v1
-      - registry1.dso.mil/ironbank/tetrate/istio/operator:1.15.1-tetratefips-v1
-      - registry1.dso.mil/ironbank/tetrate/istio/pilot:1.15.1-tetratefips-v1
-      - registry1.dso.mil/ironbank/tetrate/istio/proxyv2:1.15.1-tetratefips-v1
-      - registry1.dso.mil/ironbank/opensource/kubernetes-sigs/metrics-server:v0.6.2
-      - registry1.dso.mil/ironbank/opensource/kubernetes/kube-state-metrics:v2.7.0
-
-  - name: policy-kyverno
-    description: "Git repositories and OCI images used by Kyverno Policy Engine"
-    required: true
-    repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno.git
-      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno-policies.git
-    images:
-      - registry1.dso.mil/ironbank/nirmata/kyverno:v1.8.5
-      - registry1.dso.mil/ironbank/nirmata/kyvernopre:v1.8.5
-      
-  - name: observability-tracing
-    description: "Git repositories and OCI images used by Big Bang observability & tracing"
-    required: true
-    repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/core/jaeger.git
-      - https://repo1.dso.mil/platform-one/big-bang/apps/core/kiali.git
-      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/tempo.git
-    images:
-      - registry1.dso.mil/ironbank/opensource/jaegertracing/all-in-one:1.41.0
-      - registry1.dso.mil/ironbank/opensource/jaegertracing/jaeger-operator:1.41.0
-      - registry1.dso.mil/ironbank/opensource/kiali/kiali-operator:v1.60.0
-      - registry1.dso.mil/ironbank/opensource/kiali/kiali:v1.60.0
-      - registry1.dso.mil/ironbank/opensource/grafana/tempo-query:1.5.0
-      - registry1.dso.mil/ironbank/opensource/grafana/tempo:1.5.0
-
-  - name: monitoring
-    description: "Git repositories and OCI images used by monitoring"
-    required: true
-    repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/core/monitoring.git
-    images:
-      - registry1.dso.mil/ironbank/big-bang/grafana/grafana-plugins:9.3.2
-      - registry1.dso.mil/ironbank/kiwigrid/k8s-sidecar:1.21.0
-      - registry1.dso.mil/ironbank/opensource/ingress-nginx/kube-webhook-certgen:v1.3.0
-      - registry1.dso.mil/ironbank/opensource/prometheus-operator/prometheus-config-reloader:v0.61.1
-      - registry1.dso.mil/ironbank/opensource/prometheus-operator/prometheus-operator:v0.61.1
-      - registry1.dso.mil/ironbank/opensource/prometheus/alertmanager:v0.24.0
-      - registry1.dso.mil/ironbank/opensource/prometheus/node-exporter:v1.5.0
-      - registry1.dso.mil/ironbank/opensource/prometheus/prometheus:v2.40.5
-
-  - name: logging-plg
-    description: "Git repositories and OCI images used by PLG"
-    required: true
-    repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/loki.git
-      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/promtail.git
-    images:
-      - registry1.dso.mil/ironbank/opensource/grafana/loki:2.7.0
-      - registry1.dso.mil/ironbank/opensource/grafana/promtail:v2.7.0
-
-  - name: keycloak
-    description: "Git repositories and OCI images used by Keycloak"
-    required: false
-    repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/keycloak.git
-    images:
-      - registry1.dso.mil/ironbank/opensource/keycloak/keycloak:20.0.2
-      - registry1.dso.mil/ironbank/opensource/postgres/postgresql12:12.13
-      - registry1.dso.mil/ironbank/bitnami/redis:7.0.0-debian-10-r3
-
-  - name: authsvc
-    description: "Git repositories and OCI images used by Keycloak"
-    required: false
-    repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/core/authservice.git
-    images:
-      - registry1.dso.mil/ironbank/istio-ecosystem/authservice:0.5.3
-      
-  - name: neuvector
-    description: "Git repositories and OCI images used by Neuvector runtime security"
-    required: false
-    repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/neuvector.git
-    images:
-      - registry1.dso.mil/ironbank/neuvector/neuvector/enforcer:5.1.0
-      - registry1.dso.mil/ironbank/neuvector/neuvector/manager:5.1.0
-      - registry1.dso.mil/ironbank/neuvector/neuvector/scanner:5
-      - registry1.dso.mil/ironbank/neuvector/neuvector/controller:5.1.0
-
-  - name: big-bang-storage
-    description: "Git repositories and OCI images need for Big Bang storage"
-    required: true
-    repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/application-utilities/minio-operator.git
-      - https://repo1.dso.mil/platform-one/big-bang/apps/application-utilities/minio.git
-    images:
-      -  registry1.dso.mil/ironbank/opensource/minio/console:v0.21.3
-      -  registry1.dso.mil/ironbank/opensource/minio/minio:RELEASE.2022-11-26T22-43-32Z
-      -  registry1.dso.mil/ironbank/opensource/minio/operator:v4.5.4
-
-  - name: big-bang-backup
-    description: "Git repositories and OCI images used by Velero backup"
-    required: false
-    repos:
-      - https://repo1.dso.mil/platform-one/big-bang/apps/cluster-utilities/velero.git
-    images:
-      - registry1.dso.mil/ironbank/opensource/velero/velero:v1.10.0
-      # - registry1.dso.mil/ironbank/opensource/velero/velero-plugin-for-csi:v0.4.0
-      # - registry1.dso.mil/ironbank/opensource/velero/velero-plugin-for-aws:v1.6.0
-      # - registry1.dso.mil/ironbank/opensource/velero/velero-plugin-for-microsoft-azure:v1.6.0
-
-  - name: big-bang-umbrella-chart
-    description: "Deploy a version of Big Bang Core with Keycloak deployed in-cluster"
-    required: true
-    repos:
-      - https://github.com/defenseunicorns/zarf-package-big-bang.git@###ZARF_PKG_VAR_BIGBANG_VERSION###
-    manifests:
-      - name: big-bang-config
-        files:
-          - manifests/setup.yaml
-          - manifests/big-bang.yaml
-
-  - name: podinfo
-    description: "Tiny web application that showcases best practices of running microservices"
-    required: false
-    repos:
-      - https://repo1.dso.mil/big-bang/apps/sandbox/podinfo.git
-    images:
-      - ghcr.io/stefanprodan/podinfo:6.0.0
-    manifests:
-      - name: podinfo
-        files:
-          - manifests/podinfo.yaml
+  # - name: podinfo
+  #   description: "Tiny web application that showcases best practices of running microservices"
+  #   required: false
+  #   repos:
+  #     - https://repo1.dso.mil/big-bang/apps/sandbox/podinfo.git
+  #   images:
+  #     - ghcr.io/stefanprodan/podinfo:6.0.0
+  #   manifests:
+  #     - name: podinfo
+  #       files:
+  #         - manifests/podinfo.yaml

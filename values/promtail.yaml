@@ -1,0 +1,14 @@
+
+promtail:
+  enabled: true
+  values:
+    istio:
+      mtls:
+        mode: PERMISSIVE
+    resources:
+      limits:
+        cpu: "500m"
+        memory: "750Mi"
+      requests:
+        cpu: "100m"
+        memory: "256Mi"

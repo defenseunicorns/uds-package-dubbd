@@ -1,0 +1,13 @@
+
+addons:
+  authservice:
+    enabled: true
+    values:
+      chains:
+        podinfo:
+          match:
+            header: ":authority"
+            prefix: "podinfo"
+          callback_uri: https://podinfo.bigbang.dev/login/generic_oauth
+          client_id: "demo-env_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_podinfo"
+          client_secret: "l50TlHvzDgz8W3vPrdloO59drXPOerrg"
