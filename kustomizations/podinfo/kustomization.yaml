@@ -6,15 +6,3 @@ configMapGenerator:
     namespace: podinfo
     files:
       - values.yaml=files/values.yaml
-
-patchesStrategicMerge:
-- |-
-  apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    name: *
-  spec:
-    template:
-      metadata:
-        labels:
-          protect: keycloak
