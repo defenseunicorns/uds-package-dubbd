@@ -124,6 +124,7 @@ components:
       - registry1.dso.mil/ironbank/neuvector/neuvector/manager:5.1.0
       - registry1.dso.mil/ironbank/neuvector/neuvector/scanner:5
       - registry1.dso.mil/ironbank/neuvector/neuvector/controller:5.1.0
+      - registry1.dso.mil/ironbank/neuvector/neuvector/prometheus-exporter:5.1.0
 
   - name: big-bang-storage
     description: "Git repositories and OCI images need for Big Bang storage"

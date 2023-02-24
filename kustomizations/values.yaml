@@ -148,7 +148,7 @@ istio:
           -----END CERTIFICATE-----
       ingressGateway: public-ingressgateway
       hosts:
-        - registry.{{ .Values.domain }}
+        - podinfo.{{ .Values.domain }}
     passthrough:
       ingressGateway: passthrough-ingressgateway
       hosts:
