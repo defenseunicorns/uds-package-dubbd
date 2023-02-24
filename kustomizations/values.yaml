@@ -658,6 +658,12 @@ addons:
         -----END CERTIFICATE-----
     values:
       replicas: 1
+      command:
+        - "/opt/keycloak/bin/kc.sh"
+      args:
+        - "start"
+        - "--import-realm"
+
       extraEnv: |-
         - name: KC_HTTPS_CERTIFICATE_FILE
           value: /opt/keycloak/conf/tls.crt
@@ -710,11 +716,11 @@ addons:
           subPath: cas.pem
           readOnly: true
         - name: customreg
-          mountPath: /opt/jboss/keycloak/customreg.yaml
+          mountPath: /opt/keycloak/conf/customreg.yaml
           subPath: customreg.yaml
           readOnly: true
         - name: realm
-          mountPath: /opt/jboss/keycloak/realm.json
+          mountPath: /opt/keycloak/data/import/realm.json
           subPath: realm.json
           readOnly: true
         - name: truststore
@@ -726,8 +732,7 @@ addons:
       secrets:
         env:
           stringData:
-            CUSTOM_REGISTRATION_CONFIG: /opt/jboss/keycloak/customreg.yaml
-            KEYCLOAK_IMPORT: /opt/jboss/keycloak/realm.json
+            CUSTOM_REGISTRATION_CONFIG: /opt/keycloak/conf/customreg.yaml
             X509_CA_BUNDLE: /etc/x509/https/cas.pem
         certauthority:
           stringData:
