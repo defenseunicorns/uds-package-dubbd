@@ -469,6 +469,12 @@ neuvector:
     containerd:
       enabled: true
 
+neuvector:
+  enabled: true
+  values:
+    containerd:
+      enabled: true
+
 addons:
   authservice:
     enabled: true

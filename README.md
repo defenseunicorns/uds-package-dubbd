@@ -31,13 +31,14 @@ zarf package deploy ~/Downloads/zarf-init-amd64.tar.zst --components k3s,git-ser
 ```
 
 2. Deploy the Big Bang package created in the Build step above:
+
 ```bash
 zarf package deploy ./build/zarf-package-big-bang-amd64.tar.zst --components keycloak,authsvc --confirm
 ```
 
-Check whether the deployement succeeded. If the deployment is successful, then you should see this message from the HelmRelease resource in the cluster.
+Check whether the deployment succeeded. If the deployment is successful, then you should see this message from the HelmRelease resource in the cluster.
 
-```
+``` bash
 $ kubectl get helmrelease -A
 NAMESPACE   NAME             AGE     READY   STATUS
 bigbang     authservice      9m16s   True    Release reconciliation succeeded
