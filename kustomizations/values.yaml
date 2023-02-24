@@ -416,7 +416,7 @@ kyvernopolicies:
         validationFailureAction: audit
       disallow-privileged-containers:
         validationFailureAction: audit
-curl https://keycloak.bigbang.dev/auth/realms/baby-yoda/protocol/openid-connect/certs | sed 's@"@\\"@g'      require-non-root-user:
+      require-non-root-user:
         validationFailureAction: audit
       restrict-host-path-mount-pv:
         validationFailureAction: audit
