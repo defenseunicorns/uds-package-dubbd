@@ -35,3 +35,15 @@ spec:
     - kind: ConfigMap
       name: podinfo-config
       valuesKey: values.yaml
+  postRenderers:
+  - kustomize: 
+       patchesStrategicMerge:
+       -  kind: Deployment
+          apiVersion: apps/v1
+          metadata:
+            name: ".*"
+            namespace: podinfo
+          spec:
+            template:
+              labels:
+                protect: keycloak
