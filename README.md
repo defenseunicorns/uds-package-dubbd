@@ -60,9 +60,8 @@ flux-system   bigbang   23m   True    Applied revision: 1.54.0/74f7a52a33b8f9120
 flux-system   podinfo   23m   True    Applied revision: 1.54.0/74f7a52a33b8f912020fa69599dae1d75200c479
 ```
 
-## Day 2.
+## Access Keycloak and Podinfo endpoints
 
-### Enable SSO
-
-Navigate to the Day 2 sections of the `kustomizations/values.yaml` file and fill in the details in the `sso` and `authservice` sections to
-enable SSO for your application.
+Make note of the IPs of Istio gateways representing passthrough and public gateways for Keycloak and Podinfo respectively. If DNS resolution of the IPs is enabled in the cloud provider, open the browser and connect to:
+- https://keycloak.bigbang.dev/
+- https://podinfo.big.bang.dev
