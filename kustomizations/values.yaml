@@ -52,7 +52,7 @@ istio:
   gateways:
     public:
       tls:
-        key:
+        key: |
           -----BEGIN PRIVATE KEY-----
           MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDDvKUzWiZucm6/
           8D2Nx4KVe8t6uHtARpw112f4yGv7xKcOJkbxLbVtor8pj/HS5tRSZq2ziIQl9y98
