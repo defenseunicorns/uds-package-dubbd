@@ -17,10 +17,10 @@ components:
         kustomizations:
           - https://repo1.dso.mil/big-bang/bigbang.git/base/flux?ref=###ZARF_PKG_VAR_BIGBANG_VERSION###
     images:
-      - registry1.dso.mil/ironbank/fluxcd/helm-controller:v0.28.1
-      - registry1.dso.mil/ironbank/fluxcd/kustomize-controller:v0.32.0
-      - registry1.dso.mil/ironbank/fluxcd/notification-controller:v0.30.2
-      - registry1.dso.mil/ironbank/fluxcd/source-controller:v0.33.0
+      - registry1.dso.mil/ironbank/fluxcd/helm-controller:v0.29.0
+      - registry1.dso.mil/ironbank/fluxcd/kustomize-controller:v0.33.0
+      - registry1.dso.mil/ironbank/fluxcd/notification-controller:v0.31.0
+      - registry1.dso.mil/ironbank/fluxcd/source-controller:v0.34.0
 
   - name: big-bang-base
     description: "Git repositories and OCI images used by Big Bang"
@@ -35,15 +35,13 @@ components:
       - registry1.dso.mil/ironbank/big-bang/base:2.0.0
       - registry1.dso.mil/ironbank/redhat/ubi/ubi8-minimal:8.7
       - registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.25.6
-      - registry1.dso.mil/ironbank/opensource/istio/install-cni:1.16.1
-      - registry1.dso.mil/ironbank/opensource/istio/operator:1.16.1
-      - registry1.dso.mil/ironbank/opensource/istio/pilot:1.16.1
-      - registry1.dso.mil/ironbank/opensource/istio/proxyv2:1.16.1
-      - registry1.dso.mil/ironbank/tetrate/istio/install-cni:1.15.1-tetratefips-v1
-      - registry1.dso.mil/ironbank/tetrate/istio/istioctl:1.15.1-tetratefips-v1
-      - registry1.dso.mil/ironbank/tetrate/istio/operator:1.15.1-tetratefips-v1
-      - registry1.dso.mil/ironbank/tetrate/istio/pilot:1.15.1-tetratefips-v1
-      - registry1.dso.mil/ironbank/tetrate/istio/proxyv2:1.15.1-tetratefips-v1
+      - registry1.dso.mil/ironbank/opensource/istio/install-cni:1.16.2
+      - registry1.dso.mil/ironbank/opensource/istio/operator:1.16.2
+      - registry1.dso.mil/ironbank/opensource/istio/pilot:1.16.2
+      - registry1.dso.mil/ironbank/opensource/istio/proxyv2:1.16.2
+      - registry1.dso.mil/ironbank/tetrate/istio/operator:1.16.1-tetratefips-v1
+      - registry1.dso.mil/ironbank/tetrate/istio/pilot:1.16.1-tetratefips-v1
+      - registry1.dso.mil/ironbank/tetrate/istio/proxyv2:1.16.1-tetratefips-v1
       - registry1.dso.mil/ironbank/opensource/kubernetes-sigs/metrics-server:v0.6.2
       - registry1.dso.mil/ironbank/opensource/kubernetes/kube-state-metrics:v2.7.0
 
@@ -56,6 +54,7 @@ components:
     images:
       - registry1.dso.mil/ironbank/nirmata/kyverno:v1.8.5
       - registry1.dso.mil/ironbank/nirmata/kyvernopre:v1.8.5
+      - registry1.dso.mil/ironbank/opensource/kubernetes/kubectl:v1.26.1
       
   - name: observability-tracing
     description: "Git repositories and OCI images used by Big Bang observability & tracing"
@@ -69,8 +68,8 @@ components:
       - registry1.dso.mil/ironbank/opensource/jaegertracing/jaeger-operator:1.41.0
       - registry1.dso.mil/ironbank/opensource/kiali/kiali-operator:v1.60.0
       - registry1.dso.mil/ironbank/opensource/kiali/kiali:v1.60.0
-      - registry1.dso.mil/ironbank/opensource/grafana/tempo-query:1.5.0
-      - registry1.dso.mil/ironbank/opensource/grafana/tempo:1.5.0
+      - registry1.dso.mil/ironbank/opensource/grafana/tempo-query:2.0.0
+      - registry1.dso.mil/ironbank/opensource/grafana/tempo:2.0.0
 
   - name: monitoring
     description: "Git repositories and OCI images used by monitoring"
@@ -94,7 +93,7 @@ components:
       - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/loki.git
       - https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/promtail.git
     images:
-      - registry1.dso.mil/ironbank/opensource/grafana/loki:2.7.0
+      - registry1.dso.mil/ironbank/opensource/grafana/loki:2.7.3
       - registry1.dso.mil/ironbank/opensource/grafana/promtail:v2.7.1
 
   - name: keycloak
@@ -125,6 +124,7 @@ components:
       - registry1.dso.mil/ironbank/neuvector/neuvector/manager:5.1.0
       - registry1.dso.mil/ironbank/neuvector/neuvector/scanner:5
       - registry1.dso.mil/ironbank/neuvector/neuvector/controller:5.1.0
+      - registry1.dso.mil/ironbank/neuvector/neuvector/prometheus-exporter:5.1.0
 
   - name: big-bang-storage
     description: "Git repositories and OCI images need for Big Bang storage"
@@ -143,7 +143,7 @@ components:
     repos:
       - https://repo1.dso.mil/platform-one/big-bang/apps/cluster-utilities/velero.git
     images:
-      - registry1.dso.mil/ironbank/opensource/velero/velero:v1.10.0
+      - registry1.dso.mil/ironbank/opensource/velero/velero:v1.10.1
       # - registry1.dso.mil/ironbank/opensource/velero/velero-plugin-for-csi:v0.4.0
       # - registry1.dso.mil/ironbank/opensource/velero/velero-plugin-for-aws:v1.6.0
       # - registry1.dso.mil/ironbank/opensource/velero/velero-plugin-for-microsoft-azure:v1.6.0
@@ -165,7 +165,7 @@ components:
     repos:
       - https://repo1.dso.mil/big-bang/apps/sandbox/podinfo.git
     images:
-      - ghcr.io/stefanprodan/podinfo:6.3.3
+      - ghcr.io/stefanprodan/podinfo:6.3.4
     manifests:
       - name: podinfo
         files:

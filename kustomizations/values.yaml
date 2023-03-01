@@ -493,12 +493,9 @@ sso:
 neuvector:
   enabled: true
   values:
-    containerd:
-      enabled: true
-
-neuvector:
-  enabled: true
-  values:
+    controller:
+      apisvc:
+        type: ClusterIP
     containerd:
       enabled: true
 

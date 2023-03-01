@@ -1,5 +1,5 @@
 # The version of Big Bang to use.
-BIGBANG_VERSION := 1.53.0
+BIGBANG_VERSION := 1.54.0
 
 # Figure out which Zarf binary we should use based on the operating system we are on
 ZARF_BIN := zarf
