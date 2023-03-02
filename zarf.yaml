@@ -11,7 +11,6 @@ metadata:
 
 variables:
 - name: BIGBANG_VERSION
-  default: 1.53.0
 
 components:
   - name: bigbang
@@ -25,6 +24,8 @@ components:
             description: Delete istio to prevent ingress into cluster while cleanup is occuring
           - cmd: ./zarf tools kubectl delete helmrelease -n bigbang istio-operator
             description: Delete istio-operator once istio is cleaned up
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang keycloak
+            description: Delete Keycloak
           - cmd: ./zarf tools kubectl delete helmrelease -n bigbang monitoring
             description: Delete Monitoring
           - cmd: ./zarf tools kubectl delete helmrelease -n bigbang promtail
@@ -58,6 +59,43 @@ components:
         - values/tempo.yaml
         - values/authservice.yaml
         - values/loki.yaml
+        # - values/keycloak.yaml
+  - name: keycloak
+    required: false
+    actions:
+      onRemove:
+        before:
+          - cmd: ./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"spec":{"suspend":true}}'
+            description: Suspend the BigBang Helm Release so we don't have a reconcile while cleaning up
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang istio
+            description: Delete istio to prevent ingress into cluster while cleanup is occuring
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang istio-operator
+            description: Delete istio-operator once istio is cleaned up
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang keycloak
+            description: Delete Keycloak
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang monitoring
+            description: Delete Monitoring
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang promtail
+            description: Delete promtail
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang loki
+            description: Delete loki
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang tempo
+            description: Delete Tempo
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang minio
+            description: Delete minio
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang minio-operator
+            description: Delete minio-operator
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang neuvector
+            description: Delete neuvector
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kyvernopolicies
+            description: Delete kyvernopolicies
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kyverno
+            description: Delete kyverno
+    extensions:
+      bigbang:
+        version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
+        valuesFiles:
+        - values/turn-everything-off.yaml
         - values/keycloak.yaml
 
   # - name: podinfo
