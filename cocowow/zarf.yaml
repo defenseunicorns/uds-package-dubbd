@@ -58,6 +58,5 @@ components:
         - ../values/neuvector.yaml
         - ../values/tempo.yaml
         - ../values/authservice.yaml
-        - ../values/loki.yaml
         - ../values/keycloak.yaml
 

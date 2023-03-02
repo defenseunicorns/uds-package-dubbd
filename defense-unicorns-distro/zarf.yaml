@@ -59,6 +59,4 @@ components:
         - ../values/monitoring.yaml
         - ../values/neuvector.yaml
         - ../values/tempo.yaml
-        - ../values/authservice.yaml
-        - ../values/loki.yaml
  
