@@ -1,5 +1,0 @@
-[package.create]
-max_package_size = 1000000000
-
-[package.create.set]
-bigbang_version = '1.54.0'
