@@ -2,4 +2,4 @@ istio:
   enabled: true
 image:
   repository: ghcr.io/stefanprodan/podinfo
-  tag: 6.3.4
+  tag: 6.3.5
