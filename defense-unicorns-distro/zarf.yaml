@@ -37,10 +37,10 @@ components:
             description: Delete Kiali
           - cmd: ./zarf tools kubectl delete helmrelease -n bigbang tempo --ignore-not-found
             description: Delete Tempo
-          # - cmd: ./zarf tools kubectl delete helmrelease -n bigbang neuvector
-          #   description: Delete neuvector
-          # - cmd: ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io neuvector-validating-crd-webhook
-          #   description: cleanup neuvector validatingwebhooks
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang neuvector  --ignore-not-found
+            description: Delete neuvector
+          - cmd: ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io neuvector-validating-crd-webhook  --ignore-not-found
+            description: cleanup neuvector validatingwebhooks
           - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kyvernopolicies --ignore-not-found
             description: Delete kyvernopolicies
           - cmd: ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io kyverno-policy-validating-webhook-cfg kyverno-resource-validating-webhook-cfg  --ignore-not-found
