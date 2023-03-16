@@ -1,12 +1,4 @@
-domain: bigbang.dev
-
-monitoring:
-  git:
-    tag: "43.1.2-bb.2"
-
-loki:
-  git:
-    tag: "3.7.0-bb.2"
+domain: ###ZARF_VAR_DOMAIN###
 
 networkPolicies:
   enabled: true
@@ -49,7 +41,7 @@ twistlock:
 
 sso:
   oidc:
-    host: keycloak.bigbang.dev
+    host: keycloak.###ZARF_VAR_DOMAIN###
     realm: baby-yoda
   token_url: "https://keycloak.bigbang.dev/auth/realms/baby-yoda/protocol/openid-connect/token"
   auth_url: "https://keycloak.bigbang.dev/auth/realms/baby-yoda/protocol/openid-connect/auth"

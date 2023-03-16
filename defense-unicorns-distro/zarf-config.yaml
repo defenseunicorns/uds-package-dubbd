@@ -3,3 +3,8 @@ package:
     max_package_size: "1000000000"
     set:
       bigbang_version: "1.54.0"
+  deploy:
+    set:
+      domain: tom.bigbang.dev
+      public_key_file: tom.bigbang.dev.key
+      public_cert_file: tom.bigbang.dev.cert

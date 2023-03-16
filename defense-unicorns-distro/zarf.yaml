@@ -12,11 +12,50 @@ metadata:
 
 variables:
 - name: BIGBANG_VERSION
+- name: DOMAIN
+  default: bigbang.dev
+  prompt: false
+- name: PUBLIC_CERT_FILE
+  default: bigbang.dev.cert
+  description: "This file contains the cert for the public ingress gateway"
+  prompt: false
+- name: PUBLIC_KEY_FILE
+  default: bigbang.dev.key
+  description: "This file contains the key for the public ingress gateway"
+  prompt: false
+- name: ADMIN_CERT_FILE
+  default: bigbang.dev.cert
+  description: "This file contains the cert for the admin ingress gateway"
+  prompt: false
+- name: ADMIN_KEY_FILE
+  default: bigbang.dev.key
+  description: "This file contains the key for the admin ingress gateway"
+  prompt: false
 
 
 components:
   - name: load-certs
-    # load some certs from the provided files
+    required: true
+    files:
+      - source: bigbang.dev.cert
+        target: bigbang.dev.cert
+      - source: bigbang.dev.key
+        target: bigbang.dev.key
+      - source: scripts/cat_cert.sh
+        target: cat_certs.sh
+        executable: true
+      - source: scripts/cat_key.sh
+        target: cat_key.sh
+        executable: true
+    actions:
+      onDeploy:
+        after:
+        - cmd: ./cat_certs.sh
+          description: read the cert
+          setVariable: PUBLIC_CERT   
+        - cmd: ./cat_key.sh
+          description: read the cert
+          setVariable: PUBLIC_KEY
   - name: bigbang
     required: true
     actions:
