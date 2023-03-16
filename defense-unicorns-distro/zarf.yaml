@@ -13,7 +13,10 @@ metadata:
 variables:
 - name: BIGBANG_VERSION
 
+
 components:
+  - name: load-certs
+    # load some certs from the provided files
   - name: bigbang
     required: true
     actions:
@@ -67,4 +70,5 @@ components:
         - ../values/monitoring.yaml
         - ../values/neuvector.yaml
         - ../values/tempo.yaml
+        - ../values/minio.yaml
  
