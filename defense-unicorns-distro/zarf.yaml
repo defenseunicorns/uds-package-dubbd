@@ -59,6 +59,10 @@ components:
   - name: bigbang
     required: true
     actions:
+      onDeploy:
+        after:
+          - cmd: ./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"spec":{"values":{"reconcile.fluxcd.io/requestedAt":"'`date '+%F_%H:%M:%S.%s%z'`'"}}}'
+            description: "Patch BigBang to force an update on updates"
       onRemove:
         before:
           - cmd: ./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"spec":{"suspend":true}}'
@@ -109,5 +113,4 @@ components:
         - ../values/monitoring.yaml
         - ../values/neuvector.yaml
         - ../values/tempo.yaml
-        - ../values/minio.yaml
  

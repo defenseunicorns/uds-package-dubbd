@@ -3,8 +3,10 @@ monitoring:
   enabled: true
   values:
     istio:
-      mtls:
-        mode: PERMISSIVE
+      alertmanager:
+        enabled: false
+      prometheus:
+        enabled: false
     cleanUpgrade:
       resources:
         requests:

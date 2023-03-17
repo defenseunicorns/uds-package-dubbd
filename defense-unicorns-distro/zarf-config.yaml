@@ -2,7 +2,7 @@ package:
   create: 
     max_package_size: "1000000000"
     set:
-      bigbang_version: "1.54.0"
+      bigbang_version: "1.55.0"
   deploy:
     set:
       domain: tom.bigbang.dev
