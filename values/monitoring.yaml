@@ -25,6 +25,16 @@ monitoring:
             cpu: "100m"
             memory: "256Mi"
     grafana:
+      persistence:
+        type: pvc
+        enabled: false
+        # storageClassName: default
+        accessModes:
+          - ReadWriteOnce
+        size: "###ZARF_VAR_MONITORING_GRAFANA_PVC_SIZE###"
+        # annotations: {}
+        finalizers:
+          - kubernetes.io/pvc-protection
       resources:
         limits:
           cpu: "500m"
@@ -99,6 +109,13 @@ monitoring:
             memory: "128Mi"
     prometheus:
       prometheusSpec:
+        volumeClaimTemplate:
+          spec:
+            storageClassName:
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                storage: "###ZARF_VAR_PROMETHEUS_MONITORING_PVC_SIZE###"
         resources:
           limits:
             cpu: "300m"

@@ -33,6 +33,15 @@ variables:
   prompt: false
 
 
+- name: MONITORING_PROMETHEUS_PVC_SIZE
+  default: "50Gi"
+  description: Size of PVC for Prometheus
+  prompt: false
+- name: MONITORING_GRAFANA_PVC_SIZE
+  default: "10Gi"
+  description: Size of PVC for Grafana
+  prompt: false
+
 components:
   - name: load-certs
     required: true
