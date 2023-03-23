@@ -41,6 +41,26 @@ variables:
   description: Size of PVC for Grafana
   prompt: false
 components:
+  - name: load-certs
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+    files:
+      - source: ../defense-unicorns-distro/scripts/cat_keycloak_cert.sh
+        target: cat_keycloak_cert.sh
+        executable: true
+      - source: ../defense-unicorns-distro/scripts/cat_keycloak_key.sh
+        target: cat_keycloak_key.sh
+        executable: true
+    actions:
+      onDeploy:
+        after:
+        - cmd: ./cat_keycloak_cert.sh
+          description: read the cert
+          setVariable: KEYCLOAK_CERT   
+        - cmd: ./cat_keycloak_key.sh
+          description: read the cert
+          setVariable: KEYCLOAK_KEY
   - name: cocowow
     required: true
     import:
