@@ -15,7 +15,6 @@ addons:
         enabled: true
         mtls:
           mode: PERMISSIVE
-
   minio:
     enabled: true
     values:
@@ -23,7 +22,7 @@ addons:
         mtls:
           mode: PERMISSIVE
       # https://github.com/minio/operator/blob/master/docs/crd.adoc
-      tenants:
+      tenant:
         # Required to be here due to a weird quirk in bucket creation. See https://github.com/minio/operator/issues/1002#issuecomment-1028394242
         users:
           - name: minio-user-credentials
