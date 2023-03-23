@@ -6,5 +6,5 @@ package:
   deploy:
     set:
       domain: tom.bigbang.dev
-      public_key_file: tom.bigbang.dev.key
-      public_cert_file: tom.bigbang.dev.cert
+      public_key_file: bigbang.dev.key
+      public_cert_file: bigbang.dev.cert
