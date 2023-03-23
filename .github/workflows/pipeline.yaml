@@ -21,7 +21,7 @@ jobs:
       - name: Install Zarf
         uses: defenseunicorns/setup-zarf@main
         with:
-          version: v0.25.0-rc2
+          version: v0.25.0
 
       - name: Create DUBBD
         run: zarf package create --confirm
