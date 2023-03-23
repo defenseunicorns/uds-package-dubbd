@@ -1,0 +1,125 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/bigbang-component/zarf.schema.json
+kind: ZarfPackageConfig
+metadata:
+  name: big-bang
+  description: "Defense Unicorns Big Bang Distro"
+  version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
+  url: https://p1.dso.mil/products/big-bang
+  image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
+  # Big Bang / Iron Bank are only amd64
+  architecture: amd64
+
+
+variables:
+- name: BIGBANG_VERSION
+- name: DOMAIN
+  default: bigbang.dev
+  prompt: false
+- name: PUBLIC_CERT_FILE
+  default: bigbang.dev.cert
+  description: "This file contains the cert for the public ingress gateway"
+  prompt: false
+- name: PUBLIC_KEY_FILE
+  default: bigbang.dev.key
+  description: "This file contains the key for the public ingress gateway"
+  prompt: false
+- name: ADMIN_CERT_FILE
+  default: bigbang.dev.cert
+  description: "This file contains the cert for the admin ingress gateway"
+  prompt: false
+- name: ADMIN_KEY_FILE
+  default: bigbang.dev.key
+  description: "This file contains the key for the admin ingress gateway"
+  prompt: false
+
+
+- name: MONITORING_PROMETHEUS_PVC_SIZE
+  default: "50Gi"
+  description: Size of PVC for Prometheus
+  prompt: false
+- name: MONITORING_GRAFANA_PVC_SIZE
+  default: "10Gi"
+  description: Size of PVC for Grafana
+  prompt: false
+
+components:
+  - name: load-certs
+    required: true
+    files:
+      - source: bigbang.dev.cert
+        target: bigbang.dev.cert
+      - source: bigbang.dev.key
+        target: bigbang.dev.key
+      - source: scripts/cat_cert.sh
+        target: cat_certs.sh
+        executable: true
+      - source: scripts/cat_key.sh
+        target: cat_key.sh
+        executable: true
+    actions:
+      onDeploy:
+        after:
+        - cmd: ./cat_certs.sh
+          description: read the cert
+          setVariable: PUBLIC_CERT   
+        - cmd: ./cat_key.sh
+          description: read the cert
+          setVariable: PUBLIC_KEY
+  - name: bigbang
+    required: true
+    actions:
+      onDeploy:
+        after:
+          - cmd: ./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"spec":{"values":{"reconcile.fluxcd.io/requestedAt":"'`date '+%F_%H:%M:%S.%s%z'`'"}}}'
+            description: "Patch BigBang to force an update on updates"
+      onRemove:
+        before:
+          - cmd: ./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"spec":{"suspend":true}}'
+            description: Suspend the BigBang Helm Release so we don't have a reconcile while cleaning up
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang istio --ignore-not-found
+            description: Delete istio to prevent ingress into cluster while cleanup is occuring
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang istio-operator --ignore-not-found
+            description: Delete istio-operator once istio is cleaned up
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang monitoring --ignore-not-found
+            description: Delete Monitoring
+          - cmd: ./zarf tools kubectl delete providers grafana -n monitoring --ignore-not-found
+          - cmd: ./zarf tools kubectl delete alerts grafana -n monitoring --ignore-not-found
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang promtail --ignore-not-found
+            description: Delete promtail
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang loki --ignore-not-found
+            description: Delete loki
+          - cmd: ./zarf tools kubectl delete kiali -n kiali kiali --ignore-not-found
+            description: Delete Kiali
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang tempo --ignore-not-found
+            description: Delete Tempo
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang neuvector  --ignore-not-found
+            description: Delete neuvector
+          - cmd: ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io neuvector-validating-crd-webhook  --ignore-not-found
+            description: cleanup neuvector validatingwebhooks
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kyvernopolicies --ignore-not-found
+            description: Delete kyvernopolicies
+          - cmd: ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io kyverno-policy-validating-webhook-cfg kyverno-resource-validating-webhook-cfg  --ignore-not-found
+            description: Cleanup validating webhoooks from kyverno
+          - cmd: ./zarf tools kubectl delete mutatingwebhookconfigurations.admissionregistration.k8s.io kyverno-policy-mutating-webhook-cfg kyverno-resource-mutating-webhook-cfg kyverno-verify-mutating-webhook-cfg  --ignore-not-found
+            description: Cleanup mutating webhooks from kyverno
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kyverno --ignore-not-found
+            description: Delete kyverno
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kiali --ignore-not-found
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang metrics-server --ignore-not-found
+          - cmd: ./zarf tools kubectl delete gitrepositories -n bigbang --all
+          
+          - cmd: ./zarf tools kubectl delete apiservices.apiregistration.k8s.io v1beta1.metrics.k8s.io --ignore-not-found
+    extensions:
+      bigbang:
+        version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
+        valuesFiles:
+        - ../values/values.yaml
+        - ../values/kyverno.yaml
+        - ../values/istio.yaml
+        - ../values/loki.yaml
+        - ../values/promtail.yaml
+        - ../values/kiali.yaml
+        - ../values/monitoring.yaml
+        - ../values/neuvector.yaml
+        - ../values/tempo.yaml
+ 

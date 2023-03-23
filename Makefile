@@ -1,6 +1,3 @@
-# The version of Big Bang to use.
-BIGBANG_VERSION := 1.54.0
-
 # Figure out which Zarf binary we should use based on the operating system we are on
 ZARF_BIN := zarf
 
@@ -25,5 +22,5 @@ mkdir:
 .PHONY: build
 build: mkdir ## Build the Big Bang Zarf Package
 	@echo "Creating the deploy package"
-	@$(ZARF_BIN) package create --skip-sbom --set BIGBANG_VERSION=$(BIGBANG_VERSION) --confirm
-	@mv zarf-package-big-bang-amd64-$(BIGBANG_VERSION).tar.zst build/zarf-package-big-bang-amd64.tar.zst
+	@cd defense-unicorns-distro
+	@$(ZARF_BIN) package create --confirm

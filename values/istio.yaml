@@ -1,0 +1,58 @@
+istio:
+  enabled: true
+  ingressGateways:
+    public-ingressgateway:
+      type: "LoadBalancer"
+      kubernetesResourceSpec:
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "512Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+    passthrough-ingressgateway:
+      type: "LoadBalancer"
+  values:
+    istiod:
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "1Gi"
+        limits:
+          cpu: "500m"
+          memory: "1Gi"
+      hpaSpec:
+        maxReplicas: 1
+    values:
+      global:
+        proxy:
+          resources:
+            requests:
+              memory: "1Gi"
+            limits:
+              memory: "1Gi"
+  gateways:
+    public:
+      tls:
+        key: "###ZARF_VAR_PUBLIC_KEY###"
+        cert: "###ZARF_VAR_PUBLIC_CERT###"
+    ## move this stuff into cocowow specific overrides
+    passthrough:
+      ingressGateway: passthrough-ingressgateway
+      hosts:
+        - keycloak.{{ .Values.domain }}
+      tls:
+        mode: "PASSTHROUGH"
+
+istiooperator:
+  enabled: true
+  values:
+    operator:
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "256Mi"
+        requests:
+          cpu: "100m"
+          memory: "256Mi"

@@ -1,0 +1,1 @@
+awk '{printf "%s\\n", $0}' ###ZARF_VAR_PUBLIC_KEY_FILE### | sed "s/\"/\\\\\"/g"

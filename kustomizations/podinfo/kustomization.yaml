@@ -1,8 +1,0 @@
-resources:
-  - base
-
-configMapGenerator:
-  - name: podinfo-config
-    namespace: podinfo
-    files:
-      - values.yaml=files/values.yaml
