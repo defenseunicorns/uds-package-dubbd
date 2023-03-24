@@ -21,3 +21,6 @@ loki:
     istio:
       mtls:
         mode: PERMISSIVE
+    singleBinary:
+      persistence:
+          size: ###ZARF_VAR_LOKI_PVC_SIZE###
