@@ -10,12 +10,10 @@ monitoring:
     grafana:
       persistence:
         type: pvc
-        enabled: false
-        # storageClassName: default
+        enabled: true
         accessModes:
           - ReadWriteOnce
         size: "###ZARF_VAR_MONITORING_GRAFANA_PVC_SIZE###"
-        # annotations: {}
         finalizers:
           - kubernetes.io/pvc-protection
     prometheus:
