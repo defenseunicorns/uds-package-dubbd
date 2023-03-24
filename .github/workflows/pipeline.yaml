@@ -30,3 +30,6 @@ jobs:
       - name: Create CocoWow
         run: zarf package create --confirm
         working-directory: cocowow
+      - name: Create DUBBD AWS 
+        run: zarf package create --confirm
+        working-directory: aws
