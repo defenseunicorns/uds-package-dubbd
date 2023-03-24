@@ -1,6 +1,114 @@
 {
+  "enabled": true,
+  "forkProcessing": "enabled",
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:base"
+  ],
+  "timezone": "America/New_York",
+  "repositories": ["defenseunicorns/zarf-package-big-bang"],
+  "rebaseStalePrs": true,
+  "schedule": ["after 12pm and before 11am every weekday"],
+  "dependencyDashboard": true,
+  "commitMessageSuffix": "[ci-skip]",
+  "platform": "github",
+  "onboarding": false,
+  "requireConfig": false,
+  "dependencyDashboardTitle": "Renovate Dashboard 🤖",
+  "rebaseWhen": "conflicted",
+  "commitBodyTable": true,
+  "ignorePaths": ["archive/**"],
+  "suppressNotifications": ["prIgnoreNotification"],
+  "helm-values": {
+    "fileMatch": ["./.+\\.yaml$"]
+  },
+  "kubernetes": {
+    "fileMatch": ["\\.yaml$"],
+    "ignorePaths": [
+      "ansible",
+      "scripts",
+      ".github"
+    ]
+  },
+  "regexManagers": [
+    {
+      "fileMatch": ["./.+\\.yaml$"],
+      "matchStrings": [
+        "registryUrl=(?<registryUrl>.*?)\n *chart: (?<depName>.*?)\n *version: (?<currentValue>.*)\n"
+      ],
+      "datasourceTemplate": "helm"
+    },
+    {
+      "fileMatch": ["./.+\\.ya?ml$"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?( registryUrl=(?<registryUrl>.*?))?\\s.*?_version:\\s*['\"](?<currentValue>.*)['\"]\\s"
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
+      "datasourceTemplate": "gitlab-tags"
+    }
+  ],
+  "packageRules": [
+    {
+      "datasources": ["gitlab-tags"],
+      "commitMessageTopic": "Gitlab tag {{depName}}",
+      "separateMinorPatch": true
+    },
+    {
+      "datasources": ["helm"],
+      "commitMessageTopic": "Helm chart {{depName}}",
+      "separateMinorPatch": true
+    },
+    {
+      "datasources": ["docker"],
+      "commitMessageTopic": "Docker image {{depName}}",
+      "commitMessageExtra": "to {{#if isSingleVersion}}v{{{toVersion}}}{{else}}{{{newValue}}}{{/if}}",
+      "enabled": true,
+      "separateMinorPatch": true
+    },
+    {
+      "datasources": ["gitlab-tags"],
+      "updateTypes": ["major"],
+      "labels": ["renovate/gitlab-tags", "dependency/major"]
+    },
+    {
+      "datasources": ["gitlab-tags"],
+      "updateTypes": ["minor"],
+      "labels": ["renovate/gitlab-tags", "dependency/minor"]
+    },
+    {
+      "datasources": ["gitlab-tags"],
+      "updateTypes": ["patch"],
+      "labels": ["renovate/gitlab-tags", "dependency/patch"]
+    },
+    {
+      "datasources": ["docker"],
+      "updateTypes": ["major"],
+      "labels": ["renovate/image-release", "dependency/major"]
+    },
+    {
+      "datasources": ["docker"],
+      "updateTypes": ["minor"],
+      "labels": ["renovate/image-release", "dependency/minor"]
+    },
+    {
+      "datasources": ["docker"],
+      "updateTypes": ["patch"],
+      "labels": ["renovate/image-release", "dependency/patch"]
+    },
+    {
+      "datasources": ["helm"],
+      "updateTypes": ["major"],
+      "labels": ["renovate/helm-release", "dependency/major"]
+    },
+    {
+      "datasources": ["helm"],
+      "updateTypes": ["minor"],
+      "labels": ["renovate/helm-release", "dependency/minor"]
+    },
+    {
+      "datasources": ["helm"],
+      "updateTypes": ["patch"],
+      "labels": ["renovate/helm-release", "dependency/patch"]
+    }
   ]
 }
