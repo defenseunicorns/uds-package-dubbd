@@ -1,1 +1,0 @@
-awk '{printf "%s\\n", $0}' tom.bigbang.dev.key | sed "s/\"/\\\\\"/g"
