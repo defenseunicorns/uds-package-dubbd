@@ -5,6 +5,6 @@ package:
       bigbang_version: "1.55.0"
   deploy:
     set:
-      domain: tom.bigbang.dev
+      domain: bigbang.dev
       public_key_file: bigbang.dev.key
       public_cert_file: bigbang.dev.cert

@@ -3,3 +3,7 @@ package:
     max_package_size: "1000000000"
     set:
       bigbang_version: "1.55.0"
+  deploy:
+    set:
+      keycloak_key_file: bigbang.dev.key
+      keycloak_cert_file: bigbang.dev.cert 

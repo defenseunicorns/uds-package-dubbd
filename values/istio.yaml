@@ -11,8 +11,6 @@ istio:
           limits:
             cpu: "500m"
             memory: "512Mi"
-    passthrough-ingressgateway:
-      type: "LoadBalancer"
   values:
     istiod:
       resources:
@@ -37,14 +35,6 @@ istio:
       tls:
         key: "###ZARF_VAR_PUBLIC_KEY###"
         cert: "###ZARF_VAR_PUBLIC_CERT###"
-    ## move this stuff into cocowow specific overrides
-    passthrough:
-      ingressGateway: passthrough-ingressgateway
-      hosts:
-        - keycloak.{{ .Values.domain }}
-      tls:
-        mode: "PASSTHROUGH"
-
 istiooperator:
   enabled: true
   values:
