@@ -65,6 +65,8 @@ components:
         - cmd: ./cat_key.sh
           description: read the cert
           setVariable: PUBLIC_KEY
+        - cmd: rm cat_certs.sh
+        - cmd: rm cat_key.sh
   - name: bigbang
     required: true
     actions:
