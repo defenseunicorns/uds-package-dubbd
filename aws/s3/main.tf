@@ -8,7 +8,8 @@ module "S3" {
     name_prefix = "${var.name}"
     eks_oidc_provider_arn = "${var.eks_oidc_provider_arn}"
     kms_key_alias = "${var.name}"
-    kubernetes_service_account = "loki"
+    kubernetes_service_account = "logging-loki"
+    kubernetes_namespace = "logging"
     dynamodb_enabled = "false"
 }
 
