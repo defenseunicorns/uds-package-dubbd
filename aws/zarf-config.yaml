@@ -10,3 +10,7 @@ package:
       domain: tom.bigbang.dev
       public_key_file: tom.bigbang.dev.key
       public_cert_file: tom.bigbang.dev.cert
+      slack_url: https://hooks.slack.com/services/XXXXX
+      slack_channel: "tommy-bb-alert-testing"
+      name: "tommy-bigbang-2"
+      eks_oidc_provider_arn: "arn:aws:iam::950698127059:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/CF25B3168B8B68CC19B20EEEAC78B8ED"
