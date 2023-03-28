@@ -14,6 +14,7 @@ variables:
 - name: TERRAFORM_VERSION
 - name: TERRAFORM_PROVIDER_AWS_VERSION
 
+
 components:
   - name: download-terraform
     required: true
@@ -80,6 +81,10 @@ components:
       - source: test.sh
         target: test-out.sh
         executable: true
+  - name: load-certs
+    required: true
+    import:
+      path: ../defense-unicorns-distro
   - name: bigbang
     required: true
     import:
