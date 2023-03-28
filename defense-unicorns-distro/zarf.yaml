@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/bigbang-component/zarf.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
 kind: ZarfPackageConfig
 metadata:
   name: big-bang
@@ -75,6 +75,8 @@ components:
         - cmd: ./cat_key.sh
           description: read the cert
           setVariable: PUBLIC_KEY
+        - cmd: rm cat_certs.sh
+        - cmd: rm cat_key.sh
   - name: bigbang
     required: true
     actions:
@@ -108,16 +110,15 @@ components:
             description: cleanup neuvector validatingwebhooks
           - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kyvernopolicies --ignore-not-found
             description: Delete kyvernopolicies
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kyverno --ignore-not-found
+            description: Delete kyverno
           - cmd: ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io kyverno-policy-validating-webhook-cfg kyverno-resource-validating-webhook-cfg  --ignore-not-found
             description: Cleanup validating webhoooks from kyverno
           - cmd: ./zarf tools kubectl delete mutatingwebhookconfigurations.admissionregistration.k8s.io kyverno-policy-mutating-webhook-cfg kyverno-resource-mutating-webhook-cfg kyverno-verify-mutating-webhook-cfg  --ignore-not-found
             description: Cleanup mutating webhooks from kyverno
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kyverno --ignore-not-found
-            description: Delete kyverno
           - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kiali --ignore-not-found
           - cmd: ./zarf tools kubectl delete helmrelease -n bigbang metrics-server --ignore-not-found
           - cmd: ./zarf tools kubectl delete gitrepositories -n bigbang --all
-          
           - cmd: ./zarf tools kubectl delete apiservices.apiregistration.k8s.io v1beta1.metrics.k8s.io --ignore-not-found
     manifests:
       - name: slack-alerts
