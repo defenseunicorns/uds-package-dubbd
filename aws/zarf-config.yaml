@@ -2,7 +2,7 @@ package:
   create: 
     max_package_size: "1000000000"
     set:
-      bigbang_version: "1.55.0"
+      bigbang_version: "1.56.0"
       terraform_version: "1.4.2"
       terraform_provider_aws_version: 4.59.0
   deploy:
@@ -10,7 +10,5 @@ package:
       domain: tom.bigbang.dev
       public_key_file: tom.bigbang.dev.key
       public_cert_file: tom.bigbang.dev.cert
-      slack_url: https://hooks.slack.com/services/XXXXX
-      slack_channel: "tommy-bb-alert-testing"
-      name: "tommy-bigbang-2"
-      eks_oidc_provider_arn: "arn:aws:iam::950698127059:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/CF25B3168B8B68CC19B20EEEAC78B8ED"
+      name: "tommy-bigbang-2" # maybe inject something here for the GH PR?
+      eks_oidc_provider_arn: "arn:aws:iam::950698127059:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/CF25B3168B8B68CC19B20EEEAC78B8ED" # pull this out of the eksctl custer
