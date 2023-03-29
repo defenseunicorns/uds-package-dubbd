@@ -8,6 +8,12 @@ metadata:
   image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
   # Big Bang / Iron Bank are only amd64
   architecture: amd64
+  authors: "@runyontr"
+  source: https://github.com/defenseunicorns/zarf-package-big-bang
+  documentation: https://github.com/defenseunicorns/zarf-package-big-bang
+  vendor: Defense Unicorns
+
+
 
 
 variables:
@@ -85,6 +91,7 @@ components:
     required: true
     import:
       path: ../defense-unicorns-distro
+
   - name: bigbang
     required: true
     import:
