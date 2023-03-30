@@ -4,7 +4,7 @@ provider "aws" {
 }
 
 module "S3" {
-    source = "github.com/defenseunicorns/iac//modules/s3-irsa?ref=s3_output_role_arn"
+    source = "github.com/defenseunicorns/iac//modules/s3-irsa"
     name_prefix = "${var.name}"
     eks_oidc_provider_arn = "${var.eks_oidc_provider_arn}"
     kms_key_alias = "${var.name}"

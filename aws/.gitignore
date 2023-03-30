@@ -1,4 +1,4 @@
-s3/.terraform
+loki/.terraform
 terraform
 terraform-provider-aws_4.59.0_darwin_arm64.zip
 s3/terraform.tfstate

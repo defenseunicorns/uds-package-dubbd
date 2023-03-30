@@ -29,9 +29,9 @@ components:
         after:
           - cmd: rm -f terraform || true
             description: Clean up previous install since archiver doesn't overwrite the output
-          - cmd: rm -rf run/s3/tf-plugins/registry.terraform.io/hashicorp/aws/###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###/darwin_arm64 || true
+          - cmd: rm -rf run/loki/tf-plugins/registry.terraform.io/hashicorp/aws/###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###/darwin_arm64 || true
           - cmd: ./zarf tools archiver decompress tmp/terraform_###ZARF_PKG_VAR_TERRAFORM_VERSION###_darwin_arm64.zip .
-          - cmd: ./zarf tools archiver decompress tmp/terraform-provider-aws_###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###_darwin_arm64.zip run/s3/tf-plugins/registry.terraform.io/hashicorp/aws/###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###/darwin_arm64
+          - cmd: ./zarf tools archiver decompress tmp/terraform-provider-aws_###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###_darwin_arm64.zip run/loki/tf-plugins/registry.terraform.io/hashicorp/aws/###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###/darwin_arm64
           - cmd: rm -rf tmp
     files:
       # mac m1 terraform aws provider binary
@@ -42,56 +42,48 @@ components:
         target: tmp/terraform_###ZARF_PKG_VAR_TERRAFORM_VERSION###_darwin_arm64.zip
     # need to add the iac modules that are needed to be pulled in
  
-  - name: s3-files
+  - name: loki-module
     required: true
     files:
     # terraform code
-    - source: s3/main.tf
-      target: run/s3/main.tf
-    - source: s3/terraform.tfvars
-      target: run/s3/terraform.tfvars
+    - source: loki/main.tf
+      target: run/loki/main.tf
+    - source: loki/terraform.tfvars
+      target: run/loki/terraform.tfvars
   - name: execute-terraform
     required: true
     actions:
       onDeploy:
         before:
-          - cmd: "terraform init -plugin-dir=tf-plugins"
-            dir: run/s3
+          - cmd: "terraform init -plugin-dir=tf-plugins -upgrade"
+            dir: run/loki
+          - cmd: "terraform plan"
+            dir: run/loki
+          - cmd: sleep 15 #time to review
           - cmd: "terraform apply -auto-approve"
-            dir: run/s3
+            dir: run/loki
       onRemove:
         before:
           - cmd: "terraform destroy -auto-approve"
-            dir: run/s3
+            dir: run/loki
   - name: outputs
     required: true
     actions:
       onDeploy:
         after:
           - cmd: "terraform output -raw s3_bucket"
-            dir: run/s3
+            dir: run/loki
             setVariable: LOKI_S3_BUCKET
           - cmd: "terraform output -raw aws_region"
-            dir: run/s3
+            dir: run/loki
             setVariable: LOKI_S3_AWS_REGION
           - cmd: "terraform output -raw irsa_role"
-            dir: run/s3
+            dir: run/loki
             setVariable: LOKI_S3_ROLE_ARN
-  - name: inject
-    required: true
-    actions:
-      onDeploy:
-        after:
-          - cmd: ./test-out.sh  
-    files:
-      - source: test.sh
-        target: test-out.sh
-        executable: true
   - name: load-certs
     required: true
     import:
       path: ../defense-unicorns-distro
-
   - name: bigbang
     required: true
     import:
@@ -100,5 +92,5 @@ components:
       bigbang:
         version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
         valuesFiles:
-          - values/aws-loki.yaml
+        - values/aws-loki.yaml
       
