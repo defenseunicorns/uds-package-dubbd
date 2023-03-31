@@ -29,18 +29,16 @@ jobs:
         run: |
           eksctl create cluster \
           -f config.yaml
+        
         working-directory: .github/workflows/eks
-
-      - name: Wait for EKS cluster to be ready
+        # eventually have zarf deploy --set cluster_name=${GITHUB_SHA:0:7} \
+      - name: Show Cluster
         run: |
-          eksctl utils wait \
-          --for cluster.active \
-          --timeout 20m
+          kubectl get nodes
 
       - name: Teardown EKS cluster
         # if: github.event_name == 'workflow_dispatch'
         run: |
           eksctl delete cluster \
-          --name ${GITHUB_SHA:0:7} \
-          --region us-west-2
+          -f config.yaml
 
