@@ -50,8 +50,13 @@ jobs:
         working-directory: defense-unicorns-distro
         timeout-minutes: 60
       
-      - name: Create DUBBD
-        run: zarf package deploy zarf-package-*.tar.zst --confirm
+      - name: Deploy DUBBD
+        run: zarf package deploy zarf-package-*.tar.zst --confirm -l debug
+        working-directory: defense-unicorns-distro
+        timeout-minutes: 60
+
+      - name: Remove DUBBD
+        run: zarf package remove zarf-package-*.tar.zst --confirm
         working-directory: defense-unicorns-distro
         timeout-minutes: 60
 
