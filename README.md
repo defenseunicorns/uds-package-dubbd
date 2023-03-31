@@ -49,6 +49,11 @@ bigbang     promtail         9m16s   True    Release reconciliation succeeded
 
 ## Defense Unicorns Big Bang Distro for AWS (DUBBD-AWS)
 
+:::warning
+This Zarf package can only be built with the current head of https://github.com/defenseunicorns/zarf due to fixing [this issue](https://github.com/defenseunicorns/zarf/pull/1477)
+:::
+
+
 When running Big Bang on AWS, Loki is configured to use S3 for storage for better persistance.  The Zarf package for DUBBD-AWS is created by overlaying a new loki values file on top of the existing DUBBD zarf file via:
 
 ```yaml
