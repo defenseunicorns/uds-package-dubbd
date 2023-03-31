@@ -31,7 +31,7 @@ jobs:
           eksctl create cluster \
           -f config.yaml
         working-directory: .github/workflows/eks
-        # eventually have zarf deploy --set cluster_name=${GITHUB_SHA:0:7} \
+        # eventually have zarf deploy --set cluster_name=${GITHUB_SHA:0:7}  \
       - name: Show Cluster
         run: |
           kubectl get nothing-that-makes-sense
