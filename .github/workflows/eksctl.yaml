@@ -28,7 +28,6 @@ jobs:
       - name: Create EKS cluster
         run: |
           eksctl create cluster \
-          --name ${GITHUB_SHA:0:7} \
           -f config.yaml
         working-directory: .github/workflows/eks
 
