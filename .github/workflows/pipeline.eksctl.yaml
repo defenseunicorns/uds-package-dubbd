@@ -47,12 +47,12 @@ jobs:
       - name: Create DUBBD
         run: zarf package create --confirm
         working-directory: defense-unicorns-distro
-        timeout-minutes: 60m
+        timeout-minutes: 60
       
       - name: Create DUBBD
         run: zarf package deploy zarf-package-*.tar.zst --confirm
         working-directory: defense-unicorns-distro
-        timeout-minutes: 60m
+        timeout-minutes: 60
 
       - name: Teardown EKS cluster
         if: always()
