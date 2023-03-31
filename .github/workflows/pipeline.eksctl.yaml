@@ -34,7 +34,7 @@ jobs:
         # eventually have zarf deploy --set cluster_name=${GITHUB_SHA:0:7} \
       - name: Show Cluster
         run: |
-          kubectl get nodes
+          kubectl get nothing-that-makes-sense
 
       - name: Teardown EKS cluster
         if: always()
