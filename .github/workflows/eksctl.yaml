@@ -37,7 +37,8 @@ jobs:
 
       - name: Teardown EKS cluster
         # if: github.event_name == 'workflow_dispatch'
-        run: |
+        run: echo "Cleaning up EKS cluster"
+        finally: |
           eksctl delete cluster \
           -f config.yaml --disable-nodegroup-eviction --wait
         working-directory: .github/workflows/eks
