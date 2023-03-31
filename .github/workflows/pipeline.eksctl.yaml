@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
 name: EKS Cluster Deployment
 
 on:
@@ -21,25 +20,27 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-2
 
-      - name: Install eksctl
-        run: |
-          sudo curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | sudo tar xz -C /usr/local/bin
-          eksctl version
+      - name: Install Zarf
+        uses: defenseunicorns/setup-zarf@main
+        with:
+          version: v0.25.0
+    
+      - name: Package EKSCTL 
+        run: zarf package create --confirm
+        working-directory: .github/workflows/eks
 
       - name: Create EKS cluster
-        run: |
-          eksctl create cluster \
-          -f config.yaml
+        run: zarf package deploy --confirm --set cluster_name=${GITHUB_SHA:0:7}
         working-directory: .github/workflows/eks
-        # eventually have zarf deploy --set cluster_name=${GITHUB_SHA:0:7}  \
+        # eventually have zarf deploy   \
       - name: Show Cluster
         run: |
-          kubectl get nothing-that-makes-sense
+          kubectl get nodes
 
       - name: Teardown EKS cluster
         if: always()
+        # can't do a zarf package remove since there's no kubernetes cluster.
         run: |
-          eksctl delete cluster \
-          -f config.yaml --disable-nodegroup-eviction --wait
+          ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
         working-directory: .github/workflows/eks
 
