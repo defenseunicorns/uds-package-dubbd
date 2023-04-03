@@ -4,6 +4,8 @@ package:
     set:
       # renovate: datasource=gitlab-tags depName=big-bang/bigbang versioning=semver registryUrl=https://repo1.dso.mil
       bigbang_version: "2.0.1"
+      domain: bigbang.dev
+      keycloak_app_name: podinfo
   deploy:
     set:
       keycloak_key_file: bigbang.dev.key

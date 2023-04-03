@@ -144,7 +144,8 @@ components:
         - ../values/monitoring.yaml
         - ../values/neuvector.yaml
         - ../values/keycloak.yaml
-  # Warning: Does not work currently.
+  # Warning: Does not work currently. This re-renders the whole component and tries to redeploy. Just adding this
+  # as a placeholder to identify a pattern that might work for day-2.
   - name: bigbang-redux
     required: true
     extensions:
@@ -152,12 +153,4 @@ components:
         version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
         valuesFiles:
         - ../values/values.yaml
-        - ../values/kyverno.yaml
-        - ../values/istio.yaml
-        - ../values/loki.yaml
-        - ../values/promtail.yaml
-        - ../values/kiali.yaml
-        - ../values/monitoring.yaml
-        - ../values/neuvector.yaml
-        - ../values/keycloak.yaml
         - ../values/sso.yaml
