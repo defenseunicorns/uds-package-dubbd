@@ -23,7 +23,7 @@ jobs:
       - name: Install Zarf
         uses: defenseunicorns/setup-zarf@main
         with:
-          version: v0.25.0
+          version: v0.25.1
           download-init-package: true
 
       - name: Login to Registry1
