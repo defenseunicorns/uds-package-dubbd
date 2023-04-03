@@ -30,8 +30,6 @@ variables:
   default: bigbang.dev.key
   description: "TODO: This file contains the key for the admin ingress gateway"
   prompt: false
-
-
 - name: MONITORING_PROMETHEUS_PVC_SIZE
   default: "50Gi"
   description: Size of PVC for Prometheus
@@ -39,6 +37,10 @@ variables:
 - name: MONITORING_GRAFANA_PVC_SIZE
   default: "10Gi"
   description: Size of PVC for Grafana
+  prompt: false
+- name: KEYCLOAK_APP_NAME
+  default: "podinfo"
+  description: Name of the mission app
   prompt: false
 components:
   - name: load-certs
@@ -61,15 +63,101 @@ components:
         - cmd: ./cat_keycloak_key.sh
           description: read the cert
           setVariable: KEYCLOAK_KEY
-  - name: cocowow
+  - name: copy-keycloak-api-files
     required: true
-    import:
-      path: ../defense-unicorns-distro
-      name: bigbang
+    files:
+      - source: https://github.com/keycloak/keycloak/releases/download/21.0.1/keycloak-21.0.1.tar.gz
+        target: keycloak.tar.gz
+    actions:
+      onDeploy:
+        after:
+          - cmd: rm -rf kc-api && tar xf keycloak.tar.gz && rm keycloak.tar.gz && mv keycloak-21.0.1 kc-api
+            description: Untar the keycloak files
+  # Don't use Big Bang import yet. Bug: https://github.com/defenseunicorns/zarf/pull/1477
+  - name: bigbang
+    required: true
+    actions:
+      onDeploy:
+        after:
+          - cmd: ./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"spec":{"values":{"reconcile.fluxcd.io/requestedAt":"'`date '+%F_%H:%M:%S.%s%z'`'"}}}'
+            description: "Patch BigBang to force an update on updates"
+          - cmd: bash -c 'until [ $(curl -L -s -o /dev/null -w "%{http_code}" https://keycloak.###ZARF_PKG_VAR_DOMAIN###/auth) -eq 200 ]; do sleep 60; echo "Trying to connect to the Keycloak endpoint..."; done'
+            description: Wait for Keycloak endpoint to accept requests
+          - cmd: ./kc-api/bin/kcadm.sh config credentials --realm master --server https://keycloak.###ZARF_PKG_VAR_DOMAIN###/auth --user admin --password password
+            description: Login into keycloak as admin and save the config for future commands
+          - cmd: ./kc-api/bin/kcadm.sh create realms -s realm=cocowow -s enabled=true
+            description: Create the Cocowow realm
+          - cmd: ./kc-api/bin/kcadm.sh create clients -r cocowow -s clientId=###ZARF_PKG_VAR_KEYCLOAK_APP_NAME### -s enabled=true
+            description: Add a service account for the ###ZARF_PKG_VAR_KEYCLOAK_APP_NAME###|mission application
+          - cmd: ./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=###ZARF_PKG_VAR_KEYCLOAK_APP_NAME### --fields=clientId | jq -r ".[].clientId"
+            description: Extract the clientId of the ###ZARF_PKG_VAR_KEYCLOAK_APP_NAME###|mission-app's service account in Keycloak
+            setVariable: KEYCLOAK_APP_ID
+          - cmd: ./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=###ZARF_PKG_VAR_KEYCLOAK_APP_NAME### --fields=secret | jq -r ".[].secret"
+            description: Extract the secret string of the ###ZARF_PKG_VAR_KEYCLOAK_APP_NAME###|mission-app's service account in Keycloak
+            setVariable: KEYCLOAK_APP_SECRET
+      onRemove:
+        before:
+          - cmd: ./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"spec":{"suspend":true}}'
+            description: Suspend the BigBang Helm Release so we don't have a reconcile while cleaning up
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang istio --ignore-not-found
+            description: Delete istio to prevent ingress into cluster while cleanup is occuring
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang istio-operator --ignore-not-found
+            description: Delete istio-operator once istio is cleaned up
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang monitoring --ignore-not-found
+            description: Delete Monitoring
+          - cmd: ./zarf tools kubectl delete providers grafana -n monitoring --ignore-not-found
+          - cmd: ./zarf tools kubectl delete alerts grafana -n monitoring --ignore-not-found
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang promtail --ignore-not-found
+            description: Delete promtail
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang loki --ignore-not-found
+            description: Delete loki
+          - cmd: ./zarf tools kubectl delete kiali -n kiali kiali --ignore-not-found
+            description: Delete Kiali
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang tempo --ignore-not-found
+            description: Delete Tempo
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang neuvector  --ignore-not-found
+            description: Delete neuvector
+          - cmd: ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io neuvector-validating-crd-webhook  --ignore-not-found
+            description: cleanup neuvector validatingwebhooks
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kyvernopolicies --ignore-not-found
+            description: Delete kyvernopolicies
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kyverno --ignore-not-found
+            description: Delete kyverno
+          - cmd: ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io kyverno-policy-validating-webhook-cfg kyverno-resource-validating-webhook-cfg  --ignore-not-found
+            description: Cleanup validating webhoooks from kyverno
+          - cmd: ./zarf tools kubectl delete mutatingwebhookconfigurations.admissionregistration.k8s.io kyverno-policy-mutating-webhook-cfg kyverno-resource-mutating-webhook-cfg kyverno-verify-mutating-webhook-cfg  --ignore-not-found
+            description: Cleanup mutating webhooks from kyverno
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kiali --ignore-not-found
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang metrics-server --ignore-not-found
+          - cmd: ./zarf tools kubectl delete gitrepositories -n bigbang --all
+          - cmd: ./zarf tools kubectl delete apiservices.apiregistration.k8s.io v1beta1.metrics.k8s.io --ignore-not-found
     extensions:
       bigbang:
         version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
         valuesFiles:
-        # look at imports and then merging here for composition
-        - ../values/authservice.yaml
+        - ../values/values.yaml
+        - ../values/kyverno.yaml
+        - ../values/istio.yaml
+        - ../values/loki.yaml
+        - ../values/promtail.yaml
+        - ../values/kiali.yaml
+        - ../values/monitoring.yaml
+        - ../values/neuvector.yaml
         - ../values/keycloak.yaml
+  # Warning: Does not work currently.
+  - name: bigbang-redux
+    required: true
+    extensions:
+      bigbang:
+        version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
+        valuesFiles:
+        - ../values/values.yaml
+        - ../values/kyverno.yaml
+        - ../values/istio.yaml
+        - ../values/loki.yaml
+        - ../values/promtail.yaml
+        - ../values/kiali.yaml
+        - ../values/monitoring.yaml
+        - ../values/neuvector.yaml
+        - ../values/keycloak.yaml
+        - ../values/sso.yaml
