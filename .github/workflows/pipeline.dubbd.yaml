@@ -1,4 +1,4 @@
-name: EKS Cluster Deployment
+name: DUBBD
 
 on:
   pull_request:
