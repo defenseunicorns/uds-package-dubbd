@@ -27,7 +27,7 @@ jobs:
           download-init-package: true
 
       - name: Login to Registry1
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           registry: registry1.dso.mil
           username: ${{ secrets.REGISTRY1_USERNAME }}
