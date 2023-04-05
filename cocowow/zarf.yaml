@@ -63,16 +63,6 @@ components:
         - cmd: ./cat_keycloak_key.sh
           description: read the cert
           setVariable: KEYCLOAK_KEY
-  - name: copy-keycloak-api-files
-    required: true
-    files:
-      - source: https://github.com/keycloak/keycloak/releases/download/21.0.1/keycloak-21.0.1.tar.gz
-        target: keycloak.tar.gz
-    actions:
-      onDeploy:
-        after:
-          - cmd: rm -rf kc-api && tar xf keycloak.tar.gz && rm keycloak.tar.gz && mv keycloak-21.0.1 kc-api
-            description: Untar the keycloak files
   # Don't use Big Bang import yet. Bug: https://github.com/defenseunicorns/zarf/pull/1477
   - name: bigbang
     required: true
@@ -81,20 +71,6 @@ components:
         after:
           - cmd: ./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"spec":{"values":{"reconcile.fluxcd.io/requestedAt":"'`date '+%F_%H:%M:%S.%s%z'`'"}}}'
             description: "Patch BigBang to force an update on updates"
-          - cmd: bash -c 'until [ $(curl -L -s -o /dev/null -w "%{http_code}" https://keycloak.###ZARF_PKG_VAR_DOMAIN###/auth) -eq 200 ]; do sleep 60; echo "Trying to connect to the Keycloak endpoint..."; done'
-            description: Wait for Keycloak endpoint to accept requests
-          - cmd: ./kc-api/bin/kcadm.sh config credentials --realm master --server https://keycloak.###ZARF_PKG_VAR_DOMAIN###/auth --user admin --password password
-            description: Login into keycloak as admin and save the config for future commands
-          - cmd: ./kc-api/bin/kcadm.sh create realms -s realm=cocowow -s enabled=true
-            description: Create the Cocowow realm
-          - cmd: ./kc-api/bin/kcadm.sh create clients -r cocowow -s clientId=###ZARF_PKG_VAR_KEYCLOAK_APP_NAME### -s enabled=true
-            description: Add a service account for the ###ZARF_PKG_VAR_KEYCLOAK_APP_NAME###|mission application
-          - cmd: ./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=###ZARF_PKG_VAR_KEYCLOAK_APP_NAME### --fields=clientId | jq -r ".[].clientId"
-            description: Extract the clientId of the ###ZARF_PKG_VAR_KEYCLOAK_APP_NAME###|mission-app's service account in Keycloak
-            setVariable: KEYCLOAK_APP_ID
-          - cmd: ./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=###ZARF_PKG_VAR_KEYCLOAK_APP_NAME### --fields=secret | jq -r ".[].secret"
-            description: Extract the secret string of the ###ZARF_PKG_VAR_KEYCLOAK_APP_NAME###|mission-app's service account in Keycloak
-            setVariable: KEYCLOAK_APP_SECRET
       onRemove:
         before:
           - cmd: ./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"spec":{"suspend":true}}'
@@ -144,6 +120,31 @@ components:
         - ../values/monitoring.yaml
         - ../values/neuvector.yaml
         - ../values/keycloak.yaml
+  - name: configure-keycloak
+    required: true
+    files:
+      - source: https://github.com/keycloak/keycloak/releases/download/21.0.1/keycloak-21.0.1.tar.gz
+        target: keycloak.tar.gz
+    actions:
+      onDeploy:
+        after:
+          - cmd: rm -rf kc-api && tar xf keycloak.tar.gz && rm keycloak.tar.gz && mv keycloak-21.0.1 kc-api
+            description: Untar the keycloak files
+          - cmd: bash -c 'until [ $(curl -L -s -o /dev/null -w "%{http_code}" https://keycloak.###ZARF_PKG_VAR_DOMAIN###/auth) -eq 200 ]; do sleep 60; echo "Trying to connect to the Keycloak endpoint..."; done'
+            description: Wait for Keycloak endpoint to accept requests
+          - cmd: ./kc-api/bin/kcadm.sh config credentials --realm master --server https://keycloak.###ZARF_PKG_VAR_DOMAIN###/auth --user admin --password password
+            description: Login into keycloak as admin and save the config for future commands
+          - cmd: ./kc-api/bin/kcadm.sh create realms -s realm=cocowow -s enabled=true
+            description: Create the Cocowow realm
+          - cmd: ./kc-api/bin/kcadm.sh create clients -r cocowow -s clientId=###ZARF_PKG_VAR_KEYCLOAK_APP_NAME### -s enabled=true
+            description: "Add a service account for the ###ZARF_PKG_VAR_KEYCLOAK_APP_NAME### application"
+          - cmd: ./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=###ZARF_PKG_VAR_KEYCLOAK_APP_NAME### --fields=clientId | jq -r ".[].clientId"
+            description: "Extract the clientId of the ###ZARF_PKG_VAR_KEYCLOAK_APP_NAME###'s service account in Keycloak"
+            setVariable: KEYCLOAK_APP_ID
+          - cmd: ./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=###ZARF_PKG_VAR_KEYCLOAK_APP_NAME### --fields=secret | jq -r ".[].secret"
+            description: "Extract the secret string of the ###ZARF_PKG_VAR_KEYCLOAK_APP_NAME###'s service account in Keycloak"
+            setVariable: KEYCLOAK_APP_SECRET
+
   # Warning: Does not work currently. This re-renders the whole component and tries to redeploy. Just adding this
   # as a placeholder to identify a pattern that might work for day-2.
   - name: bigbang-redux
