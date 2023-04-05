@@ -1,4 +1,4 @@
-# zarf-package-big-bang
+# Defense Unicorns Big Bang Distro (DUBBD)
 
 Pre-built Zarf Package of [DoD-Platform-One/big-bang](https://github.com/DoD-Platform-One/big-bang) configured for production use by Defense Unicorns.
 
@@ -45,3 +45,27 @@ bigbang     minio-operator   9m16s   True    Release reconciliation succeeded
 bigbang     monitoring       9m16s   True    Release reconciliation succeeded
 bigbang     promtail         9m16s   True    Release reconciliation succeeded
 ```
+
+
+## Defense Unicorns Big Bang Distro for AWS (DUBBD-AWS)
+
+:::warning
+This Zarf package can only be built with the current head of https://github.com/defenseunicorns/zarf due to fixing [this issue](https://github.com/defenseunicorns/zarf/pull/1477)
+:::
+
+
+When running Big Bang on AWS, Loki is configured to use S3 for storage for better persistance.  The Zarf package for DUBBD-AWS is created by overlaying a new loki values file on top of the existing DUBBD zarf file via:
+
+```yaml
+  - name: bigbang
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+    extensions:
+      bigbang:
+        version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
+        valuesFiles:
+        - values/aws-loki.yaml
+```
+
+In order for this configuration to work cleanly, DUBBD-AWS also provisions an S3 bucket from our [IaC Repo](https://github.com/defenseunicorns/iac/tree/main/modules/s3-irsa) that provides encryption at rest and a role to access the S3 bucket that gets used by Loki via [IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html).

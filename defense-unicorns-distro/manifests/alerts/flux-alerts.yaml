@@ -1,0 +1,69 @@
+apiVersion: notification.toolkit.fluxcd.io/v1beta1
+kind: Provider
+metadata:
+  name: slack
+  namespace: flux-system
+spec:
+  type: slack
+  address: "###ZARF_VAR_SLACK_URL###"
+  channel: "###ZARF_VAR_SLACK_CHANNEL###"
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta1
+kind: Alert
+metadata:
+  name: flux-slack
+  namespace: flux-system
+spec:
+  summary: "Defense Unicorns Distro Alerts"
+  providerRef:
+    name: slack
+  eventSeverity: error
+  eventSources:
+    - kind: GitRepository
+      name: '*'
+      namespace: bigbang
+    - kind: HelmRelease
+      name: '*'
+      namespace: bigbang
+    - kind: Kustomization
+      name: '*'
+      namespace: bigbang
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta1
+kind: Alert
+metadata:
+  name: flux-alert-manager
+  namespace: flux-system
+spec:
+  summary: "Defense Unicorns Distro Alerts"
+  providerRef:
+    name: alertmanager
+  eventSeverity: error
+  eventSources:
+    - kind: GitRepository
+      name: '*'
+      namespace: bigbang
+    - kind: HelmRelease
+      name: '*'
+      namespace: bigbang
+    - kind: Kustomization
+      name: '*'
+      namespace: bigbang
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta2
+kind: Provider
+metadata:
+  name: alertmanager
+  namespace: flux-system
+spec:
+  type: alertmanager
+  secretRef:
+    name: alertmanager-address
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: alertmanager-address
+  namespace: flux-system
+stringData:
+    address: https://monitoring-monitoring-kube-alertmanager.monitoring.svc:9093/api/v2/alerts/"
