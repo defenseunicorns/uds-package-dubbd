@@ -32,6 +32,6 @@ echo "HI!"
 echo "ARCH_NAME: ${ARCH_NAME}"
 echo "ARCH_PROC: ${ARCH_PROC}"
 
-tar -xf tmp/terraform_${1}_${ARCH_NAME}_${ARCH_PROC}.zip -C .
+unzip tmp/terraform_${1}_${ARCH_NAME}_${ARCH_PROC}.zip -d .
 mkdir -p run/loki/tf-plugins/registry.terraform.io/hashicorp/aws/${2}/${ARCH_NAME}_${ARCH_PROC}
-tar -xf tmp/terraform-provider-aws_${2}_${ARCH_NAME}_${ARCH_PROC}.zip -C run/loki/tf-plugins/registry.terraform.io/hashicorp/aws/${2}/${ARCH_NAME}_${ARCH_PROC}
+unzip -xf tmp/terraform-provider-aws_${2}_${ARCH_NAME}_${ARCH_PROC}.zip -d run/loki/tf-plugins/registry.terraform.io/hashicorp/aws/${2}/${ARCH_NAME}_${ARCH_PROC}
