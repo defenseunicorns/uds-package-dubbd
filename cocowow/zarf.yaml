@@ -152,6 +152,6 @@ components:
     extensions:
       bigbang:
         version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
+        skipFlux: true
         valuesFiles:
-        - ../values/values.yaml
         - ../values/sso.yaml
