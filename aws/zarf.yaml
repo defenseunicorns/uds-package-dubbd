@@ -30,7 +30,7 @@ components:
           - cmd: rm -f terraform || true
             description: Clean up previous install since archiver doesn't overwrite the output
           - cmd: "./extract-terraform.sh ###ZARF_PKG_VAR_TERRAFORM_VERSION### ###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###"
-          - cmd: rm -rf tmp
+          # - cmd: rm -rf tmp
     files:
       - source: extract.sh
         target: extract-terraform.sh
