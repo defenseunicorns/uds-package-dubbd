@@ -25,6 +25,9 @@ else
   ARCH_PROC=amd64
 fi
 
+ARCH_NAME=linux
+ARCH_PROC=amd64
+
 echo "HI!"
 echo "ARCH_NAME: ${ARCH_NAME}"
 echo "ARCH_PROC: ${ARCH_PROC}"
