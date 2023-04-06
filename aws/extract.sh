@@ -14,9 +14,7 @@ fi
 # Check the processor architecture
 if [[ $(uname -m) == "x86_64" ]]; then
   echo "The processor architecture is 64-bit"
-  if [[ $(lscpu | grep 'Vendor ID' | awk '{print $3}') == "AuthenticAMD" ]]; then
-    ARCH_PROC=amd64
-  fi
+  ARCH_PROC=amd64
 elif [[ $(uname -m) == "i686" || $(uname -m) == "i386" ]]; then
   echo "The processor architecture is 32-bit"
   echo "The processor is not AMD or ARM"
