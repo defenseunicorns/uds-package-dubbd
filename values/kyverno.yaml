@@ -4,3 +4,12 @@ kyverno:
 
 kyvernopolicies:
   enabled: true
+  values:
+    policies:
+      restrict-image-registries:
+        parameters:
+          allow:
+          - registry1.dso.mil
+          - registry.dso.mil
+          - 127.0.0.1 # zarf registry
+
