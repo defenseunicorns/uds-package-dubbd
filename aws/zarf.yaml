@@ -29,18 +29,25 @@ components:
         after:
           - cmd: rm -f terraform || true
             description: Clean up previous install since archiver doesn't overwrite the output
-          - cmd: rm -rf run/loki/tf-plugins/registry.terraform.io/hashicorp/aws/###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###/darwin_arm64 || true
-          - cmd: ./zarf tools archiver decompress tmp/terraform_###ZARF_PKG_VAR_TERRAFORM_VERSION###_darwin_arm64.zip .
-          - cmd: ./zarf tools archiver decompress tmp/terraform-provider-aws_###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###_darwin_arm64.zip run/loki/tf-plugins/registry.terraform.io/hashicorp/aws/###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###/darwin_arm64
+          - cmd: "./extract-terraform.sh ###ZARF_PKG_VAR_TERRAFORM_VERSION### ###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###"
           - cmd: rm -rf tmp
     files:
-      # mac m1 terraform aws provider binary
-      - source: https://releases.hashicorp.com/terraform-provider-aws/###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###/terraform-provider-aws_###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###_darwin_arm64.zip
-        target: tmp/terraform-provider-aws_###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###_darwin_arm64.zip
-      # mac m1 terraform binary
+      - source: extract.sh
+        target: extract-terraform.sh
+        executable: true
+      # terraform binary into zarf package
       - source: https://releases.hashicorp.com/terraform/###ZARF_PKG_VAR_TERRAFORM_VERSION###/terraform_###ZARF_PKG_VAR_TERRAFORM_VERSION###_darwin_arm64.zip
         target: tmp/terraform_###ZARF_PKG_VAR_TERRAFORM_VERSION###_darwin_arm64.zip
-    # need to add the iac modules that are needed to be pulled in
+      - source: https://releases.hashicorp.com/terraform/###ZARF_PKG_VAR_TERRAFORM_VERSION###/terraform_###ZARF_PKG_VAR_TERRAFORM_VERSION###_darwin_amd64.zip
+        target: tmp/terraform_###ZARF_PKG_VAR_TERRAFORM_VERSION###_darwin_amd64.zip
+      - source: https://releases.hashicorp.com/terraform/###ZARF_PKG_VAR_TERRAFORM_VERSION###/terraform_###ZARF_PKG_VAR_TERRAFORM_VERSION###_linux_amd64.zip
+        target: tmp/terraform_###ZARF_PKG_VAR_TERRAFORM_VERSION###_linux_amd64.zip
+      - source: https://releases.hashicorp.com/terraform-provider-aws/###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###/terraform-provider-aws_###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###_darwin_arm64.zip
+        target: tmp/terraform-provider-aws_###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###_darwin_arm64.zip
+      - source: https://releases.hashicorp.com/terraform-provider-aws/###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###/terraform-provider-aws_###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###_darwin_amd64.zip
+        target: tmp/terraform-provider-aws_###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###_darwin_amd64.zip
+      - source: https://releases.hashicorp.com/terraform-provider-aws/###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###/terraform-provider-aws_###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###_linux_amd64.zip
+        target: tmp/terraform-provider-aws_###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###_linux_amd64.zip
  
   - name: loki-module
     required: true
