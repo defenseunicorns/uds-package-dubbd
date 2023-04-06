@@ -40,6 +40,16 @@ variables:
   default: "10Gi"
   description: Size of PVC for Grafana
   prompt: false
+- name: LOKI_PVC_SIZE
+  default: "40Gi"
+  description: Size of the PVC for Loki when running in dev mode
+
+- name: SLACK_URL
+  default: https://none.dev
+  description: Slack Webhook URL for alerts
+- name: SLACK_CHANNEL
+  default: "#alerts"
+  description: Slack channel for alerts
 
 components:
   - name: load-certs
@@ -109,6 +119,10 @@ components:
           - cmd: ./zarf tools kubectl delete helmrelease -n bigbang metrics-server --ignore-not-found
           - cmd: ./zarf tools kubectl delete gitrepositories -n bigbang --all
           - cmd: ./zarf tools kubectl delete apiservices.apiregistration.k8s.io v1beta1.metrics.k8s.io --ignore-not-found
+    manifests:
+      - name: slack-alerts
+        files:
+          - manifests/alerts/flux-alerts.yaml
     extensions:
       bigbang:
         version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
