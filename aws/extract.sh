@@ -23,8 +23,8 @@ elif [[ $(uname -m) == "i686" || $(uname -m) == "i386" ]]; then
 elif [[ $(uname -m) == "arm64" ]]; then
   ARCH_PROC=arm64
 else
-  echo "The processor architecture is not supported"
-  exit 1
+# default...
+  ARCH_PROC=amd64
 fi
 
 echo "HI!"
