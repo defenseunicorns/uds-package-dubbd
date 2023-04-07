@@ -2,13 +2,14 @@ package:
   create: 
     max_package_size: "1000000000"
     set:
-      bigbang_version: "1.56.0"
+      # renovate: datasource=gitlab-tags depName=big-bang/bigbang versioning=semver registryUrl=https://repo1.dso.mil
+      bigbang_version: "1.57.0"
       terraform_version: "1.4.2"
       terraform_provider_aws_version: 4.59.0
   deploy:
     set:
-      domain: tom.bigbang.dev
-      public_key_file: tom.bigbang.dev.key
-      public_cert_file: tom.bigbang.dev.cert
-      name: "tommy-bigbang-2" # maybe inject something here for the GH PR?
-      eks_oidc_provider_arn: "arn:aws:iam::950698127059:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/CF25B3168B8B68CC19B20EEEAC78B8ED" # pull this out of the eksctl custer
+      domain: bigbang.dev
+      public_key_file: bigbang.dev.key
+      public_cert_file: bigbang.dev.cert
+      name: "big-bang-aws" # maybe inject something here for the GH PR?
+      # eks_oidc_provider_arn: # this needs to be set for deployment
