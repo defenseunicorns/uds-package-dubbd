@@ -46,7 +46,7 @@ jobs:
         with:
           registry: ghcr.io
           username: dummy
-          password: ${{ github.token }}
+          password: ${{ secrets.GITHUB_TOKEN }}
     
       - name: Create DUBBD
         run: zarf package create --confirm
