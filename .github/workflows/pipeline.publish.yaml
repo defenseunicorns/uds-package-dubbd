@@ -64,7 +64,7 @@ jobs:
         timeout-minutes: 60
       
       - name: Publish DUBBD-AWS
-        run: zarf package publish zarf-package-big-bang-aws-*.tar.zst oci://ghcr.io/defenseunicorns/packages
+        run: zarf package publish zarf-package-*.tar.zst oci://ghcr.io/defenseunicorns/packages
         working-directory: aws
         timeout-minutes: 60
 
