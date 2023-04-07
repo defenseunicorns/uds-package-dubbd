@@ -1,13 +1,12 @@
-
 addons:
   authservice:
     enabled: true
     values:
       chains:
-        podinfo:
+        authdemo:
           match:
             header: ":authority"
-            prefix: "podinfo"
-          callback_uri: https://podinfo.bigbang.dev/login/generic_oauth
-          client_id: "demo-env_00eb8904-5b88-4c68-ad67-cec0d2e07aa6_podinfo"
-          client_secret: "l50TlHvzDgz8W3vPrdloO59drXPOerrg"
+            prefix: "###ZARF_VAR_KEYCLOAK_APP_NAME###"
+          callback_uri: https://###ZARF_VAR_KEYCLOAK_APP_NAME###.###ZARF_VAR_DOMAIN###/login/generic_oauth
+          client_id: "###ZARF_VAR_KEYCLOAK_APP_ID###"
+          client_secret: "###ZARF_VAR_KEYCLOAK_APP_SECRET###"
