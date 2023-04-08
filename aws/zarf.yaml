@@ -20,6 +20,8 @@ variables:
 - name: TERRAFORM_VERSION
 - name: TERRAFORM_PROVIDER_AWS_VERSION
 
+- name: LOKI_KMS_KEY_ALIAS
+  default: big-bang-loki
 
 components:
   - name: download-terraform

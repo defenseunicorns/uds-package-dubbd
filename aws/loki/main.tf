@@ -42,3 +42,8 @@ variable "name" {
 variable "eks_oidc_provider_arn" {
 
 }
+
+variable "key_alias" {
+  description = "alias for KMS Key"
+  default = "bigbang-loki"
+}

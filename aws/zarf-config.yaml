@@ -7,8 +7,9 @@ package:
       terraform_provider_aws_version: 4.59.0
   deploy:
     set:
-      domain: tom.bigbang.dev
-      public_key_file: tom.bigbang.dev.key
-      public_cert_file: tom.bigbang.dev.cert
-      name: "tommy-bigbang-2" # maybe inject something here for the GH PR?
-      eks_oidc_provider_arn: "arn:aws:iam::950698127059:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/CF25B3168B8B68CC19B20EEEAC78B8ED" # pull this out of the eksctl custer
+      domain: bigbang.dev
+      public_key_file: bigbang.dev.key
+      public_cert_file: bigbang.dev.cert
+      name: "big-bang-aws" # maybe inject something here for the GH PR?
+      # eks_oidc_provider_arn: # this needs to be set for deployment
+      # loki_kms_key_alias: "ad3132309"
