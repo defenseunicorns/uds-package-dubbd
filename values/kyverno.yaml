@@ -6,25 +6,10 @@ kyvernopolicies:
   enabled: true
   values:
     policies:
-      disallow-shared-subpath-volume-writes:
-        validationFailureAction: audit
-      restrict-host-ports:
-        validationFailureAction: audit
-      restrict-capabilities:
-        validationFailureAction: audit
       restrict-image-registries:
-        validationFailureAction: audit
-      disallow-host-namespaces:
-        validationFailureAction: audit
-      disallow-privileged-containers:
-        validationFailureAction: audit
-      require-non-root-user:
-        validationFailureAction: audit
-      restrict-host-path-mount-pv:
-        validationFailureAction: audit
-      restrict-host-path-mount:
-        validationFailureAction: audit
-      restrict-host-path-write:
-        validationFailureAction: audit
-      restrict-volume-types:
-        validationFailureAction: audit
+        parameters:
+          allow:
+          - registry1.dso.mil
+          - registry.dso.mil
+          - 127.0.0.1 # zarf registry
+
