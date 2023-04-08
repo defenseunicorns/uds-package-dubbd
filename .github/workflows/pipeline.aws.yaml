@@ -68,7 +68,7 @@ jobs:
 
       
       - name: Deploy DUBBD-AWS
-        run: zarf package deploy zarf-package-*.tar.zst --confirm --set eks_oidc_provider_arn=${{ env.OIDC }}
+        run: zarf package deploy zarf-package-*.tar.zst --confirm --set eks_oidc_provider_arn=arn:aws:iam::248783118822:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/${{ env.OIDC }}
         working-directory: aws
         timeout-minutes: 60
 
