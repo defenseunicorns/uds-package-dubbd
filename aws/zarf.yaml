@@ -50,6 +50,8 @@ components:
         target: tmp/terraform-provider-aws_###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###_darwin_amd64.zip
       - source: https://releases.hashicorp.com/terraform-provider-aws/###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###/terraform-provider-aws_###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###_linux_amd64.zip
         target: tmp/terraform-provider-aws_###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###_linux_amd64.zip
+      - source: https://releases.hashicorp.com/terraform-provider-aws/###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###/terraform-provider-aws_###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
+        target: tmp/terraform-provider-aws_###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
  
   - name: loki-module
     required: true
