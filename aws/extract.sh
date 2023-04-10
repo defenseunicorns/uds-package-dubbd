@@ -7,6 +7,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   ARCH_NAME=darwin
 elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
   ARCH_NAME=linux
+elif [[ "$OSTYPE" == "msys" ]]; then
+  ARCH_NAME=windows
+elif [[ "$OSTYPE" == "cygwin" ]]; then
+  ARCH_NAME=windows
 else
   echo "The OS is not supported"
   exit 1
