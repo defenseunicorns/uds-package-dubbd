@@ -7,7 +7,7 @@ module "S3" {
     source = "github.com/defenseunicorns/iac//modules/s3-irsa"
     name_prefix = "${var.name}"
     eks_oidc_provider_arn = "${var.eks_oidc_provider_arn}"
-    kms_key_alias = "${var.name}"
+    kms_key_alias = "${var.key_alias}"
     kubernetes_service_account = "logging-loki"
     kubernetes_namespace = "logging"
     dynamodb_enabled = "false"
@@ -41,4 +41,9 @@ variable "name" {
 
 variable "eks_oidc_provider_arn" {
 
+}
+
+variable "key_alias" {
+  description = "alias for KMS Key"
+  default = "bigbang-loki"
 }

@@ -5,10 +5,7 @@ name: Publish Dubbd
 on:
   push:
     tags:
-      - "v*"
-  pull_request:
-    branches:
-      - main     
+      - "v*"  
 
 permissions:
   contents: read
