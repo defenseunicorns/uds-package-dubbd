@@ -71,7 +71,6 @@ components:
         # look at imports and then merging here for composition
         - ../values/sso.yaml
         - ../values/keycloak.yaml
-        - custom.yaml
   - name: configure-keycloak
     required: true
     files:
