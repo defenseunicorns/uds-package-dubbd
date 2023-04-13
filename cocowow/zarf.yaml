@@ -69,7 +69,9 @@ components:
         version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
         valuesFiles:
         # look at imports and then merging here for composition
+        - ../values/sso.yaml
         - ../values/keycloak.yaml
+        - custom.yaml
   - name: configure-keycloak
     required: true
     files:
@@ -95,13 +97,3 @@ components:
             description: "Extract the secret string of the ###ZARF_PKG_VAR_KEYCLOAK_APP_NAME###'s service account in Keycloak"
             setVariable: KEYCLOAK_APP_SECRET
 
-  # Warning: Does not work currently. This re-renders the whole component and tries to redeploy. Just adding this
-  # as a placeholder to identify a pattern that might work for day-2.
-  - name: bigbang-redux
-    required: true
-    extensions:
-      bigbang:
-        version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
-        skipFlux: true
-        valuesFiles:
-        - ../values/sso.yaml
