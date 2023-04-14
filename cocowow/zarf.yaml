@@ -70,6 +70,7 @@ components:
         valuesFiles:
         # look at imports and then merging here for composition
         - ../values/sso.yaml
+        - ../values/authservice.yaml
         - ../values/keycloak.yaml
   - name: configure-keycloak
     required: true
@@ -95,4 +96,3 @@ components:
           - cmd: ./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=###ZARF_PKG_VAR_KEYCLOAK_APP_NAME### --fields=secret | jq -r ".[].secret"
             description: "Extract the secret string of the ###ZARF_PKG_VAR_KEYCLOAK_APP_NAME###'s service account in Keycloak"
             setVariable: KEYCLOAK_APP_SECRET
-
