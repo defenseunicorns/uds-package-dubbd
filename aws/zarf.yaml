@@ -29,7 +29,7 @@ components:
     actions:
       onDeploy:
         after:
-          - cmd: rm -f terraform || true
+          - cmd: rm -f run/loki/terraform || true
             description: Clean up previous install since archiver doesn't overwrite the output
           - cmd: "./extract-terraform.sh ###ZARF_PKG_VAR_TERRAFORM_VERSION### ###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###"
           # - cmd: rm -rf tmp
@@ -55,19 +55,20 @@ components:
  
   - name: loki-module
     required: true
+    actions:
+      onCreate:
+        before:
+          - cmd: "terraform init -upgrade"
+            dir: loki
     files:
     # terraform code
-    - source: loki/main.tf
-      target: run/loki/main.tf
-    - source: loki/terraform.tfvars
-      target: run/loki/terraform.tfvars
+    - source: loki
+      target: run/loki
   - name: execute-terraform
     required: true
     actions:
       onDeploy:
         before:
-          - cmd: "terraform init -plugin-dir=tf-plugins -upgrade"
-            dir: run/loki
           - cmd: "terraform plan"
             dir: run/loki
           - cmd: sleep 15 #time to review
