@@ -1,12 +1,3 @@
 addons:
   authservice:
     enabled: true
-    values:
-      chains:
-        "###ZARF_VAR_KEYCLOAK_APP_NAME###":
-          match:
-            header: ":authority"
-            prefix: "###ZARF_VAR_KEYCLOAK_APP_NAME###"
-          callback_uri: "https://###ZARF_VAR_KEYCLOAK_APP_NAME###.###ZARF_VAR_DOMAIN###/login/generic_oauth"
-          client_id: "###ZARF_VAR_KEYCLOAK_APP_ID###"
-          client_secret: "###ZARF_VAR_KEYCLOAK_APP_SECRET###"
