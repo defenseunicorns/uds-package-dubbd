@@ -3,46 +3,19 @@ kind: ZarfPackageConfig
 metadata:
   name: cocowow
   description: "CoCoWoW"
-  version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
+  version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
   # Big Bang / Iron Bank are only amd64
   architecture: amd64
 
-variables:
-- name: BIGBANG_VERSION
-- name: DOMAIN
-  default: bigbang.dev
-  prompt: false
-- name: PUBLIC_CERT_FILE
-  default: bigbang.dev.cert
-  description: "This file contains the cert for the public ingress gateway"
-  prompt: false
-- name: PUBLIC_KEY_FILE
-  default: bigbang.dev.key
-  description: "This file contains the key for the public ingress gateway"
-  prompt: false
-- name: ADMIN_CERT_FILE
-  default: bigbang.dev.cert
-  description: "TODO: This file contains the cert for the admin ingress gateway"
-  prompt: false
-- name: ADMIN_KEY_FILE
-  default: bigbang.dev.key
-  description: "TODO: This file contains the key for the admin ingress gateway"
-  prompt: false
-- name: MONITORING_PROMETHEUS_PVC_SIZE
-  default: "50Gi"
-  description: Size of PVC for Prometheus
-  prompt: false
-- name: MONITORING_GRAFANA_PVC_SIZE
-  default: "10Gi"
-  description: Size of PVC for Grafana
-  prompt: false
 components:
   - name: load-certs
     required: true
     import:
       path: ../defense-unicorns-distro
+  - name: load-kc-certs
+    required: true
     files:
       - source: ../defense-unicorns-distro/scripts/cat_keycloak_cert.sh
         target: cat_keycloak_cert.sh
@@ -55,10 +28,12 @@ components:
         after:
         - cmd: ./cat_keycloak_cert.sh
           description: read the cert
-          setVariable: KEYCLOAK_CERT   
+          setVariables:
+          - name: KEYCLOAK_CERT   
         - cmd: ./cat_keycloak_key.sh
           description: read the cert
-          setVariable: KEYCLOAK_KEY
+          setVariables:
+          - name: KEYCLOAK_KEY
   - name: cocowow
     required: true
     import:
@@ -66,12 +41,12 @@ components:
       name: bigbang
     extensions:
       bigbang:
-        version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
+        version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
         valuesFiles:
         # look at imports and then merging here for composition
-        - ../values/sso.yaml
         - ../values/authservice.yaml
         - ../values/keycloak.yaml
+        - custom.yaml
   - name: configure-keycloak
     required: true
     files:
@@ -82,17 +57,19 @@ components:
         after:
           - cmd: rm -rf kc-api && tar xf keycloak.tar.gz && rm keycloak.tar.gz && mv keycloak-21.0.1 kc-api
             description: Untar the keycloak files
-          - cmd: bash -c 'until [ $(curl -L -s -o /dev/null -w "%{http_code}" https://keycloak.###ZARF_PKG_VAR_DOMAIN###/auth) -eq 200 ]; do sleep 60; echo "Trying to connect to the Keycloak endpoint..."; done'
+          - cmd: bash -c 'until [ $(curl -L -s -o /dev/null -w "%{http_code}" https://keycloak.###ZARF_PKG_TMPL_DOMAIN###/auth) -eq 200 ]; do sleep 60; echo "Trying to connect to the Keycloak endpoint..."; done'
             description: Wait for Keycloak endpoint to accept requests
-          - cmd: ./kc-api/bin/kcadm.sh config credentials --realm master --server https://keycloak.###ZARF_PKG_VAR_DOMAIN###/auth --user admin --password password
+          - cmd: ./kc-api/bin/kcadm.sh config credentials --realm master --server https://keycloak.###ZARF_PKG_TMPL_DOMAIN###/auth --user admin --password password
             description: Login into keycloak as admin and save the config for future commands
           - cmd: ./kc-api/bin/kcadm.sh create realms -s realm=cocowow -s enabled=true
             description: Create the Cocowow realm
-          - cmd: ./kc-api/bin/kcadm.sh create clients -r cocowow -s clientId=###ZARF_PKG_VAR_KEYCLOAK_APP_NAME### -s enabled=true
-            description: "Add a service account for the ###ZARF_PKG_VAR_KEYCLOAK_APP_NAME### application"
-          - cmd: ./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=###ZARF_PKG_VAR_KEYCLOAK_APP_NAME### --fields=clientId | jq -r ".[].clientId"
-            description: "Extract the clientId of the ###ZARF_PKG_VAR_KEYCLOAK_APP_NAME###'s service account in Keycloak"
-            setVariable: KEYCLOAK_APP_ID
-          - cmd: ./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=###ZARF_PKG_VAR_KEYCLOAK_APP_NAME### --fields=secret | jq -r ".[].secret"
-            description: "Extract the secret string of the ###ZARF_PKG_VAR_KEYCLOAK_APP_NAME###'s service account in Keycloak"
-            setVariable: KEYCLOAK_APP_SECRET
+          - cmd: ./kc-api/bin/kcadm.sh create clients -r cocowow -s clientId=###ZARF_PKG_TMPL_KEYCLOAK_APP_NAME### -s enabled=true
+            description: "Add a service account for the ###ZARF_PKG_TMPL_KEYCLOAK_APP_NAME### application"
+          - cmd: ./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=###ZARF_PKG_TMPL_KEYCLOAK_APP_NAME###. --fields=clientId | jq -r ".[].clientId"
+            description: "Extract the clientId of the ###ZARF_PKG_TMPL_KEYCLOAK_APP_NAME### service account in Keycloak"
+            setVariables:
+            - name: KEYCLOAK_APP_ID
+          - cmd: ./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=###ZARF_PKG_TMPL_KEYCLOAK_APP_NAME### --fields=secret | jq -r ".[].secret"
+            description: "Extract the secret string of the ###ZARF_PKG_TMPL_KEYCLOAK_APP_NAME### service account in Keycloak"
+            setVariables:
+            - name: KEYCLOAK_APP_SECRET
