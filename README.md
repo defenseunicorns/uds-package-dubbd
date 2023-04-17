@@ -3,7 +3,7 @@
 Pre-built Zarf Package of [DoD-Platform-One/big-bang](https://github.com/DoD-Platform-One/big-bang) configured for production use by Defense Unicorns.
 
 ## Prerequisites
-- Zarf is installed. Current version used is: [v0.25.0](https://github.com/defenseunicorns/zarf/releases/tag/v0.25.0)
+- Zarf is installed. Current version used is: [v0.25.2](https://github.com/defenseunicorns/zarf/releases/tag/v0.25.2)
 - Optional: A working Kubernetes cluster. e.g KinD, k3d, k3s, etc. If necessary, Zarf can be used to deploy a built-in k3s distribution.
 
 ## Build the package
