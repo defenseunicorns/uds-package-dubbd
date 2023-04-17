@@ -12,6 +12,7 @@ module "S3" {
     kubernetes_service_account = "logging-loki"
     kubernetes_namespace = "logging"
     dynamodb_enabled = "false"
+    kms_key_arn = "${var.kms_key_arn}"
 }
 
 data "aws_region" "current" {}
