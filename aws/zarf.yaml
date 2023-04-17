@@ -23,6 +23,10 @@ variables:
 - name: LOKI_KMS_KEY_ALIAS
   default: big-bang-loki
 
+- name: LOKI_KMS_KEY_ARN
+  description: "The KMS Key Arn for encrypting and decrypting data in loki"
+  default: ""
+
 components:
   - name: download-terraform
     required: true
