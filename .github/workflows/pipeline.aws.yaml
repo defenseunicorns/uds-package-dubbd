@@ -40,7 +40,7 @@ jobs:
           password: ${{ secrets.REGISTRY1_PASSWORD }}
     
       - name: Create EKS cluster and Zarf Init
-        run: zarf package deploy oci://ghcr.io/defenseunicorns/eks:v1.23.5 --confirm --set cluster_name=aws-${GITHUB_SHA:0:7}
+        run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=aws-${GITHUB_SHA:0:7}
         working-directory: .github/workflows/eks #just holds the zarf-config
         id: create-cluster
         # Capture the output of the command as an environment variable
@@ -79,7 +79,7 @@ jobs:
         if: always()
         # can't do a zarf package remove since there's no kubernetes cluster.
         run: |
-          zarf package destroy oci://ghcr.io/defenseunicorns/eks:v1.23.5 --confirm
+          ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
         working-directory: .github/workflows/eks
 
 
