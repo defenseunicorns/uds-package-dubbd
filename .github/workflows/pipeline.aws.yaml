@@ -38,7 +38,11 @@ jobs:
           registry: registry1.dso.mil
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
-    
+          
+      - name: Package EKSCTL 
+        run: zarf package create --confirm
+        working-directory: .github/workflows/eks
+
       - name: Create EKS cluster and Zarf Init
         run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=aws-${GITHUB_SHA:0:7}
         working-directory: .github/workflows/eks #just holds the zarf-config
