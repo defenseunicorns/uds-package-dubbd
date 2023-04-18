@@ -55,7 +55,7 @@ jobs:
         working-directory: .github/workflows/kms
         run: |
           terraform init
-          terraform apply -y --set kms_key_alias=${GITHUB_SHA:0:7}
+          terraform apply -auto-approve --var kms_key_alias=${GITHUB_SHA:0:7}
         env:
           KMS: |
             $(terraform output -raws kms_key_arn )
