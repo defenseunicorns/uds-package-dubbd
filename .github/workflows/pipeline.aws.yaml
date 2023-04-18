@@ -60,6 +60,10 @@ jobs:
         run: |
           kubectl get nodes
 
+      - name: Zarf init
+        run: |
+          zarf init -a amd64 --components=git-server --confirm
+
       - name: Create DUBBD-AWS
         run: zarf package create --confirm
         working-directory: aws
