@@ -53,9 +53,8 @@ jobs:
             $(aws eks describe-cluster --name aws-${GITHUB_SHA:0:7} --query "cluster.identity.oidc" --output text | cut -d '/' -f 5)
       - name: Create KMS Key to be replaced by UDS IaC module later
         working-directory: .github/workflows/kms
-        run: 
-        # eventually have zarf deploy   \
-          tf init
+        run: |
+          terraform init
           terraform apply -y --set kms_key_alias=${GITHUB_SHA:0:7}
         env:
           KMS: |
