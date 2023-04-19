@@ -95,5 +95,5 @@ jobs:
         working-directory: .github/workflows/kms
         run: 
         # eventually have zarf deploy   \
-          terraform destroy -y
+          terraform destroy -auto-approve
 
