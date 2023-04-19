@@ -91,6 +91,7 @@ jobs:
 
 
       - name: Remove KMS Key to be replaced by UDS IaC module later
+        if: always()
         working-directory: .github/workflows/kms
         run: 
         # eventually have zarf deploy   \
