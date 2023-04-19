@@ -54,7 +54,7 @@ bigbang     promtail         9m16s   True    Release reconciliation succeeded
 
 > **Warning**
 >
-> This Zarf package can only be built with the v0.25.2 or higher of https://github.com/defenseunicorns/zarf due to fixing [this issue](https://github.com/defenseunicorns/zarf/pull/1477)
+> This Zarf package can only be built with v0.25.2 or higher of https://github.com/defenseunicorns/zarf due to fixing [this issue](https://github.com/defenseunicorns/zarf/pull/1477)
 
 When running Big Bang on AWS, Loki is configured to use S3 for storage for better persistance.  The Zarf package for DUBBD-AWS is created by overlaying a new loki values file on top of the existing DUBBD zarf file via:
 
@@ -77,10 +77,10 @@ In order for this configuration to work cleanly, DUBBD-AWS also provisions an S3
 > **Warning**
 >
 > - Minimum compute requirements are at LEAST 48 GB RAM and 12 virtual CPU threads (preferrably in a VM)
-> - This Zarf package can only be built with the v0.25.2 or higher of https://github.com/defenseunicorns/zarf due to fixing [this issue](https://github.com/defenseunicorns/zarf/pull/1477)
+> - This Zarf package can only be built with v0.25.2 or higher of https://github.com/defenseunicorns/zarf due to fixing [this issue](https://github.com/defenseunicorns/zarf/pull/1477)
 > - This has only been tested using k3d at this point
 
-When running Big Bang locally, storage must be local using hostpath and some other helm component values must be adjusted.  The Zarf package for DUBBD-local-dev is created by overlaying a new local dev values file on top of the existing DUBBD zarf file via:
+When running Big Bang locally, it is common to use local storage using hostpath and some other helm component values must be adjusted.  The Zarf package for DUBBD-local-dev is created by overlaying a new local dev values file on top of the existing DUBBD zarf file via:
 
 ```yaml
   - name: bigbang
