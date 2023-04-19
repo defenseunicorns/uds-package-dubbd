@@ -72,6 +72,8 @@ components:
       target: run/loki/main.tf
     - source: loki/terraform.tfvars
       target: run/loki/terraform.tfvars
+    - source: loki/.terraform.lock.hcl
+      target: run/loki/.terraform.lock.hcl
   - name: execute-terraform
     required: true
     actions:
