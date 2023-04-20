@@ -50,6 +50,7 @@ jobs:
 
       - name: Create KMS Key to be replaced by UDS IaC module later
         working-directory: .github/workflows/kms
+        id: create-kms
         run: |
           terraform init
           terraform apply -auto-approve --var kms_key_alias=${GITHUB_SHA:0:7}
