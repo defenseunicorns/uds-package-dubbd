@@ -65,8 +65,9 @@ jobs:
         run: |
           terraform output -raw kms_key_arn
       - name: debug
-        run: |
-          echo "${{ steps.get-kms.outputs.stdout }} ${{ env.OIDC }}"
+        run: echo ${{ steps.get-kms.outputs.stdout }} ${{ env.OIDC }} env $KMS
+        env:
+          OIDC: $${{steps.get-kms.outputs.stdout}}
       # - name: Show Cluster
       #   run: |
       #     kubectl get nodes
