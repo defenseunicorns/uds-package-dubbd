@@ -58,7 +58,7 @@ jobs:
           terraform apply -auto-approve --var kms_key_alias=${GITHUB_SHA:0:7}
         env:
           KMS: |
-            $(terraform output -raws kms_key_arn )
+            $(terraform output -raw kms_key_arn )
       - name: Show Cluster
         run: |
           kubectl get nodes
