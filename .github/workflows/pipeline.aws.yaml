@@ -57,7 +57,7 @@ jobs:
           terraform output
         env:
           KMS: |
-            $(terraform output -raw kms_key_arn )
+            $(cd .github/workflows/kms && terraform output -raw kms_key_arn )
       
 
       - name: debug
