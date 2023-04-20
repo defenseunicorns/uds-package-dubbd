@@ -53,6 +53,8 @@ jobs:
         run: |
           terraform init
           terraform apply -auto-approve --var kms_key_alias=${GITHUB_SHA:0:7}
+          terraform output -raw kms_key_arn
+          terraform output
         env:
           KMS: |
             $(terraform output -raw kms_key_arn )
@@ -60,6 +62,7 @@ jobs:
 
       - name: debug
         run: |
+          env
           echo "${{ env.KMS }} ${{ env.OIDC }}"
       # - name: Show Cluster
       #   run: |
