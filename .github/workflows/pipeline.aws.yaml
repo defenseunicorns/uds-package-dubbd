@@ -59,12 +59,14 @@ jobs:
         env:
           KMS: |
             $(cd .github/workflows/kms && terraform output -raw kms_key_arn )
-      
-
+      - name: get KMS key
+        working-directory: .github/workflows/kms
+        id: get-kms
+        run: |
+          terraform output -raw kms_key_arn
       - name: debug
         run: |
-          env
-          echo "${{ env.KMS }} ${{ env.OIDC }}"
+          echo "${{ steps.get-kms.outputs.stdout }} ${{ env.OIDC }}"
       # - name: Show Cluster
       #   run: |
       #     kubectl get nodes
