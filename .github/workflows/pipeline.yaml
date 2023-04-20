@@ -1,5 +1,9 @@
 name: CICD Pipeline Testing
-on: [push]
+# on: [push]
+on:
+  push:
+    tags:
+      - "v*"  
 
 jobs:
   create_pacakge:
