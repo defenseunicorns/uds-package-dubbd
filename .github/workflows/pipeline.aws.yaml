@@ -62,10 +62,9 @@ jobs:
       - name: get KMS key
         working-directory: .github/workflows/kms
         id: get
-        run: |
-          terraform output -raw kms_key_arn >> $GITHUB_OUTPUT
+        run: echo "kms_key_arn=${terraform output -raw kms_key_arn}" >> $GITHUB_OUTPUT
       - name: debug
-        run: echo ${{ steps.get.outputs.* }} ${{ env.OIDC }} env $KMS
+        run: echo ${{ steps.get.outputs.kms_key_arn }} ${{ env.OIDC }} env $KMS
         env:
           OIDC: $${{steps.get-kms.outputs.stdout}}
       # - name: Show Cluster
