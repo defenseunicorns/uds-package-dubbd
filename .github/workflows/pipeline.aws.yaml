@@ -35,18 +35,18 @@ jobs:
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
           
-      # - name: Package EKSCTL 
-      #   run: zarf package create --confirm
-      #   working-directory: .github/workflows/eks
+      - name: Package EKSCTL 
+        run: zarf package create --confirm
+        working-directory: .github/workflows/eks
 
-      # - name: Create EKS cluster and Zarf Init
-      #   run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=aws-${GITHUB_SHA:0:7}
-      #   working-directory: .github/workflows/eks #just holds the zarf-config
-      #   id: create-cluster
-      #   # Capture the output of the command as an environment variable
-      #   env:
-      #     OIDC: |
-      #       $(aws eks describe-cluster --name aws-${GITHUB_SHA:0:7} --query "cluster.identity.oidc" --output text | cut -d '/' -f 5)
+      - name: Create EKS cluster and Zarf Init
+        run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=aws-${GITHUB_SHA:0:7}
+        working-directory: .github/workflows/eks #just holds the zarf-config
+        id: create-cluster
+        # Capture the output of the command as an environment variable
+      - name: get oidc
+        id: oidc
+        run: echo oidc=$(aws eks describe-cluster --name aws-${GITHUB_SHA:0:7} --query "cluster.identity.oidc" --output text | cut -d '/' -f 5) >> $GITHUB_OUTPUT
 
       - name: Create KMS Key to be replaced by UDS IaC module later
         working-directory: .github/workflows/kms
@@ -54,11 +54,7 @@ jobs:
         run: |
           terraform init
           terraform apply -auto-approve --var kms_key_alias=${GITHUB_SHA:0:7}
-          terraform output -raw kms_key_arn
-          terraform output
-        env:
-          KMS: |
-            $(cd .github/workflows/kms && terraform output -raw kms_key_arn )
+
       - name: get KMS key
         working-directory: .github/workflows/kms
         id: get
@@ -67,36 +63,36 @@ jobs:
         run: echo ${{ steps.get.outputs.kms_key_arn }} ${{ env.OIDC }} env $KMS
         env:
           OIDC: $${{steps.get-kms.outputs.stdout}}
-      # - name: Show Cluster
-      #   run: |
-      #     kubectl get nodes
+      - name: Show Cluster
+        run: |
+          kubectl get nodes
 
-      # - name: Zarf init
-      #   run: |
-      #     zarf init -a amd64 --components=git-server --confirm
+      - name: Zarf init
+        run: |
+          zarf init -a amd64 --components=git-server --confirm
 
-      # - name: Create DUBBD-AWS
-      #   run: zarf package create --confirm
-      #   working-directory: aws
-      #   timeout-minutes: 60
+      - name: Create DUBBD-AWS
+        run: zarf package create --confirm
+        working-directory: aws
+        timeout-minutes: 60
 
 
-      # - name: Deploy DUBBD-AWS
-      #   run: zarf package deploy zarf-package-*.tar.zst --confirm --set loki_kms_key_arn=${{ env.KMS }} --set name=big-bang-${GITHUB_SHA:0:7} --set eks_oidc_provider_arn=arn:aws:iam::248783118822:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/${{ env.OIDC }}
-      #   working-directory: aws
-      #   timeout-minutes: 60
+      - name: Deploy DUBBD-AWS
+        run: zarf package deploy zarf-package-*.tar.zst --confirm --set loki_kms_key_arn=${{ steps.get.outputs.kms_key_arn }} --set name=big-bang-${GITHUB_SHA:0:7} --set eks_oidc_provider_arn=arn:aws:iam::248783118822:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/${{ steps.oidc.outputs.oidc }}
+        working-directory: aws
+        timeout-minutes: 60
 
-      # - name: Remove DUBBD-AWS
-      #   run: zarf package remove zarf-package-*.tar.zst --confirm
-      #   working-directory: aws
-      #   timeout-minutes: 60
+      - name: Remove DUBBD-AWS
+        run: zarf package remove zarf-package-*.tar.zst --confirm
+        working-directory: aws
+        timeout-minutes: 60
 
-      # - name: Teardown EKS cluster
-      #   if: always()
-      #   # can't do a zarf package remove since there's no kubernetes cluster.
-      #   run: |
-      #     ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
-      #   working-directory: .github/workflows/eks
+      - name: Teardown EKS cluster
+        if: always()
+        # can't do a zarf package remove since there's no kubernetes cluster.
+        run: |
+          ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
+        working-directory: .github/workflows/eks
 
 
       - name: Remove KMS Key to be replaced by UDS IaC module later
