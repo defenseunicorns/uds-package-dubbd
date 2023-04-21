@@ -13,6 +13,7 @@ module "S3" {
     kubernetes_namespace = "logging"
     dynamodb_enabled = "false"
     kms_key_arn = "${var.kms_key_arn}"
+    force_destroy = "${var.force_destroy}"
 }
 
 data "aws_region" "current" {}
