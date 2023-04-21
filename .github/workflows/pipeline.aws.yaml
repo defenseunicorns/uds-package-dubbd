@@ -79,12 +79,12 @@ jobs:
 
 
       - name: Deploy DUBBD-AWS
-        run: zarf package deploy zarf-package-*.tar.zst --confirm --set loki_kms_key_arn=${{ steps.get.outputs.kms_key_arn }} --set name=big-bang-${GITHUB_SHA:0:7} --set eks_oidc_provider_arn=arn:aws:iam::248783118822:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/${{ steps.oidc.outputs.oidc }}
+        run: zarf package deploy zarf-package-*.tar.zst --confirm --set loki_force_destroy=true loki_kms_key_arn=${{ steps.get.outputs.kms_key_arn }} --set name=big-bang-${GITHUB_SHA:0:7} --set eks_oidc_provider_arn=arn:aws:iam::248783118822:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/${{ steps.oidc.outputs.oidc }}
         working-directory: aws
         timeout-minutes: 60
 
       - name: Remove DUBBD-AWS
-        run: zarf package remove zarf-package-*.tar.zst --confirm --set LOKI_FORCE_DESTROY=true
+        run: zarf package remove zarf-package-*.tar.zst --confirm
         working-directory: aws
         timeout-minutes: 60
 
