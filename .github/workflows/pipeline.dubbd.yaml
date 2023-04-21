@@ -23,6 +23,7 @@ jobs:
       - name: Install Zarf
         uses: defenseunicorns/setup-zarf@main
         with:
+          # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
           version: v0.25.2
           download-init-package: true
 

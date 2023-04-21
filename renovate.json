@@ -45,6 +45,14 @@
       ],
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
       "datasourceTemplate": "gitlab-tags"
+    },
+    {
+      "fileMatch": ["./.+\\.ya?ml$"],
+      "matchStrings": [
+        "# renovate: datasource=github-tags depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?version:\\s*(?<currentValue>.*)\\s"
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
+      "datasourceTemplate": "github-tags"
     }
   ],
   "packageRules": [
