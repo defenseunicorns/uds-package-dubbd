@@ -84,7 +84,7 @@ jobs:
         timeout-minutes: 60
 
       - name: Remove DUBBD-AWS
-        run: zarf package remove zarf-package-*.tar.zst --confirm
+        run: zarf package remove zarf-package-*.tar.zst --confirm --set LOKI_FORCE_DESTROY=true
         working-directory: aws
         timeout-minutes: 60
 

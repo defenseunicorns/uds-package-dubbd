@@ -6,7 +6,7 @@ provider "aws" {
 
 
 module "S3" {
-    source = "github.com/defenseunicorns/iac//modules/s3-irsa"
+    source = "github.com/defenseunicorns/iac//modules/s3-irsa?ref=s3-force-delete-option"
     name_prefix = "${var.name}"
     eks_oidc_provider_arn = "${var.eks_oidc_provider_arn}"
     kubernetes_service_account = "logging-loki"
