@@ -76,6 +76,19 @@ components:
           setVariable: PUBLIC_KEY
         - cmd: rm cat_certs.sh
         - cmd: rm cat_key.sh
+  - name: preflight
+    required: true
+    actions:
+      onDeploy:
+        before:
+        - cmd: "./zarf tools kubectl version --short || true"
+          setVariable: OUTPUT
+        after:
+        - cmd: "./preflight.sh"
+    files:
+    - source: scripts/preflight.sh
+      target: preflight.sh
+      executable: true
   - name: bigbang
     required: true
     actions:
