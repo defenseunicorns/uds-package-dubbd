@@ -1,3 +1,5 @@
+**/*.tfstate
+**/*.tfstate.backup
 *.tar.gz
 *.tar.zst
 ~/
