@@ -5,3 +5,4 @@ s3/terraform.tfstate
 s3/terraform.tfstate.backup
 test-out.sh
 run
+extract-terraform.sh

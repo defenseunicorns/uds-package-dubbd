@@ -15,3 +15,4 @@ package:
       # eks_oidc_provider_arn: # this needs to be set for deployment
 
       # loki_kms_key_alias: "ad3132309"
+      #
