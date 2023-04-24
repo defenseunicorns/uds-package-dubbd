@@ -23,13 +23,21 @@ variables:
 - name: LOKI_KMS_KEY_ALIAS
   default: big-bang-loki
 
+- name: LOKI_KMS_KEY_ARN
+  description: "The KMS Key Arn for encrypting and decrypting data in loki"
+  default: ""
+
+- name: LOKI_FORCE_DESTROY
+  description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data"
+  default: "false"
+
 components:
   - name: download-terraform
     required: true
     actions:
       onDeploy:
         after:
-          - cmd: rm -f terraform || true
+          - cmd: rm -f run/loki/terraform || true
             description: Clean up previous install since archiver doesn't overwrite the output
           - cmd: "./extract-terraform.sh ###ZARF_PKG_VAR_TERRAFORM_VERSION### ###ZARF_PKG_VAR_TERRAFORM_PROVIDER_AWS_VERSION###"
           # - cmd: rm -rf tmp
@@ -55,19 +63,28 @@ components:
  
   - name: loki-module
     required: true
+    actions:
+      onCreate:
+        before:
+          - cmd: "terraform init -upgrade"
+            dir: loki
+        after:
+          - cmd: "test -d ./run/ && chmod -R ugo+rwx ./run/ || echo $?"
     files:
     # terraform code
+    - source: loki/.terraform
+      target: run/loki/.terraform
     - source: loki/main.tf
       target: run/loki/main.tf
     - source: loki/terraform.tfvars
       target: run/loki/terraform.tfvars
+    - source: loki/.terraform.lock.hcl
+      target: run/loki/.terraform.lock.hcl
   - name: execute-terraform
     required: true
     actions:
       onDeploy:
         before:
-          - cmd: "terraform init -plugin-dir=tf-plugins -upgrade"
-            dir: run/loki
           - cmd: "terraform plan"
             dir: run/loki
           - cmd: sleep 15 #time to review

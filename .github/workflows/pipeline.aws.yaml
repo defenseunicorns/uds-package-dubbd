@@ -12,24 +12,21 @@ jobs:
   
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-2
 
-      - name: Show AWS User
-        run: |
-
-
       - name: Install Zarf
         uses: defenseunicorns/setup-zarf@main
         with:
-          version: v0.25.0
+          # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
+          version: v0.26.0
           download-init-package: true
 
       - name: Login to Registry1
@@ -38,21 +35,35 @@ jobs:
           registry: registry1.dso.mil
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
-    
+          
       - name: Package EKSCTL 
         run: zarf package create --confirm
         working-directory: .github/workflows/eks
 
-      - name: Create EKS cluster
-        run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=aws-${GITHUB_SHA:0:7} --set loki_kms_key_alias=loki-${GITHUB_SHA:0:7} 
-        working-directory: .github/workflows/eks
+      - name: Create EKS cluster and Zarf Init
+        run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=aws-${GITHUB_SHA:0:7}
+        working-directory: .github/workflows/eks #just holds the zarf-config
         id: create-cluster
         # Capture the output of the command as an environment variable
-        env:
-          OIDC: |
-            $(aws eks describe-cluster --name aws-${GITHUB_SHA:0:7} --query "cluster.identity.oidc" --output text | cut -d '/' -f 5)
+      - name: get oidc
+        id: oidc
+        run: echo oidc=$(aws eks describe-cluster --name aws-${GITHUB_SHA:0:7} --query "cluster.identity.oidc" --output text | cut -d '/' -f 5) >> $GITHUB_OUTPUT
 
-        # eventually have zarf deploy   \
+      - name: Create KMS Key to be replaced by UDS IaC module later
+        working-directory: .github/workflows/kms
+        id: create-kms
+        run: |
+          terraform init
+          terraform apply -auto-approve --var kms_key_alias=${GITHUB_SHA:0:7}
+
+      - name: get KMS key
+        working-directory: .github/workflows/kms
+        id: get
+        run: echo "kms_key_arn=$(terraform output -raw kms_key_arn)" >> $GITHUB_OUTPUT
+      - name: debug
+        run: echo ${{ steps.get.outputs.kms_key_arn }} ${{ env.OIDC }} env $KMS
+        env:
+          OIDC: $${{steps.get-kms.outputs.stdout}}
       - name: Show Cluster
         run: |
           kubectl get nodes
@@ -61,14 +72,14 @@ jobs:
         run: |
           zarf init -a amd64 --components=git-server --confirm
 
-      - name: Create DUBBD
+      - name: Create DUBBD-AWS
         run: zarf package create --confirm
         working-directory: aws
         timeout-minutes: 60
 
-      
+
       - name: Deploy DUBBD-AWS
-        run: zarf package deploy zarf-package-*.tar.zst --confirm --set name=big-bang-${GITHUB_SHA:0:7} --set loki_kms_key_alias=${GITHUB_SHA:0:7} --set eks_oidc_provider_arn=arn:aws:iam::248783118822:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/${{ env.OIDC }}
+        run: zarf package deploy zarf-package-*.tar.zst --confirm --set loki_force_destroy=true --set loki_kms_key_arn=${{ steps.get.outputs.kms_key_arn }} --set name=big-bang-${GITHUB_SHA:0:7} --set eks_oidc_provider_arn=arn:aws:iam::248783118822:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/${{ steps.oidc.outputs.oidc }}
         working-directory: aws
         timeout-minutes: 60
 
@@ -83,4 +94,12 @@ jobs:
         run: |
           ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
         working-directory: .github/workflows/eks
+
+
+      - name: Remove KMS Key to be replaced by UDS IaC module later
+        if: always()
+        working-directory: .github/workflows/kms
+        run: 
+        # eventually have zarf deploy   \
+          terraform destroy -auto-approve
 
