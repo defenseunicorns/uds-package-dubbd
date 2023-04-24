@@ -41,12 +41,10 @@ addons:
     enabled: true
     values:
       chains:
-        # Dummy chain
-        local:
+        ###ZARF_VAR_MISSION_APP_NAME###:
           match:
-            header: ":local"
-            prefix: "localhost"
-          client_id: local_id
-          client_secret: local_secret
-          callback_uri: https://localhost/login
-          logout_path: "/local"
+            header: ":authority"
+            prefix: "###ZARF_VAR_MISSION_APP_NAME###"
+          callback_uri: "https://###ZARF_VAR_MISSION_APP_NAME###.###ZARF_VAR_DOMAIN###/login/generic_oauth"
+          client_id: "###ZARF_VAR_MISSION_APP_ID###"
+          client_secret: "###ZARF_VAR_MISSION_APP_SECRET###"
