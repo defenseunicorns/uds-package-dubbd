@@ -9,6 +9,11 @@ metadata:
   # Big Bang / Iron Bank are only amd64
   architecture: amd64
 
+variables:
+  - name: MISSION_APP_NAME
+    value: "###ZARF_PKG_TMPL_MISSION_APP_NAME###"
+    default: "podinfo"
+
 components:
   - name: load-certs
     required: true
@@ -46,7 +51,6 @@ components:
         # look at imports and then merging here for composition
         - ../values/authservice.yaml
         - ../values/keycloak.yaml
-        - custom.yaml
   - name: configure-keycloak
     required: true
     files:
@@ -63,13 +67,18 @@ components:
             description: Login into keycloak as admin and save the config for future commands
           - cmd: ./kc-api/bin/kcadm.sh create realms -s realm=cocowow -s enabled=true
             description: Create the Cocowow realm
-          - cmd: ./kc-api/bin/kcadm.sh create clients -r cocowow -s clientId=###ZARF_PKG_TMPL_KEYCLOAK_APP_NAME### -s enabled=true
-            description: "Add a service account for the ###ZARF_PKG_TMPL_KEYCLOAK_APP_NAME### application"
-          - cmd: ./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=###ZARF_PKG_TMPL_KEYCLOAK_APP_NAME###. --fields=clientId | jq -r ".[].clientId"
-            description: "Extract the clientId of the ###ZARF_PKG_TMPL_KEYCLOAK_APP_NAME### service account in Keycloak"
+          - cmd: ./kc-api/bin/kcadm.sh create clients -r cocowow -s clientId=###ZARF_PKG_TMPL_MISSION_APP_NAME### -s enabled=true
+            description: "Add a service account for the ###ZARF_PKG_TMPL_MISSION_APP_NAME### application"
+          - cmd: ./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=###ZARF_PKG_TMPL_MISSION_APP_NAME###. --fields=clientId | jq -r ".[].clientId"
+            description: "Extract the clientId of the ###ZARF_PKG_TMPL_MISSION_APP_NAME### service account in Keycloak"
             setVariables:
-            - name: KEYCLOAK_APP_ID
-          - cmd: ./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=###ZARF_PKG_TMPL_KEYCLOAK_APP_NAME### --fields=secret | jq -r ".[].secret"
-            description: "Extract the secret string of the ###ZARF_PKG_TMPL_KEYCLOAK_APP_NAME### service account in Keycloak"
+            - name: MISSION_APP_ID
+          - cmd: ./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=###ZARF_PKG_TMPL_MISSION_APP_NAME### --fields=secret | jq -r ".[].secret"
+            description: "Extract the secret string of the ###ZARF_PKG_TMPL_MISSION_APP_NAME### service account in Keycloak"
             setVariables:
-            - name: KEYCLOAK_APP_SECRET
+            - name: MISSION_APP_SECRET
+  - name: mission-app
+    required: true
+    import:
+      path: podinfo
+      name: podinfo
