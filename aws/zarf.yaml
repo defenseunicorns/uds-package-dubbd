@@ -68,6 +68,8 @@ components:
         before:
           - cmd: "terraform init -upgrade"
             dir: loki
+        after:
+          - cmd: "test -d ./run/ && chmod -R ugo+rwx ./run/ || echo $?"
     files:
     # terraform code
     - source: loki/.terraform
