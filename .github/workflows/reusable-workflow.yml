@@ -7,6 +7,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -20,6 +23,14 @@ jobs:
           # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
           version: v0.26.0
           download-init-package: true
+
+      - name: Upload Zarf Binary and Init Package as Job Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: zarf-artifacts
+          path: |
+            zarf-init-amd64-*.tar.zst
+            /usr/local/bin/zarf
 
       - name: Login to Registry1
         env:

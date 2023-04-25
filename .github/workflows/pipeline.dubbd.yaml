@@ -6,16 +6,13 @@ on:
       - main
 
 jobs:
+  setup:
+    uses: ./.github/workflows/reusable-workflow.yml
+
   test-dubbd:
     runs-on: ubuntu-latest
-    
+    needs: setup
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        
-      - name: Setup AWS credentials, Install Zarf, Login to Registry1
-        uses: ./.github/workflows/reusable-workflow.yml
-    
       - name: Package EKSCTL 
         run: zarf package create --confirm
         working-directory: .github/workflows/eks
