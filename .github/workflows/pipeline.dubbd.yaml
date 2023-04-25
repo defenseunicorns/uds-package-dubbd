@@ -8,6 +8,7 @@ on:
 jobs:
   setup:
     uses: ./.github/workflows/reusable-workflow.yml
+    secrets: inherit
 
   test-dubbd:
     runs-on: ubuntu-latest
