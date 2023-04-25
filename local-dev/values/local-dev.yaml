@@ -1,6 +1,8 @@
 neuvector:
   enabled: true
   values:
+    containerd:
+      enabled: false
     k3s:
       enabled: true
     istio:
