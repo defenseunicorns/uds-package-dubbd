@@ -1,0 +1,6 @@
+istio:
+  gateways:
+    public:
+      ingressGateway: public-ingressgateway
+      hosts:
+        - podinfo.{{ .Values.domain }}
