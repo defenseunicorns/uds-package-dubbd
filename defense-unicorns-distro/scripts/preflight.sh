@@ -12,7 +12,7 @@ server_minor_version=$(echo "$server_version" | cut -d"." -f2)
 
 # Define a supported version
 supported_major_version="v1"
-supported_minor_version="23"
+supported_minor_version="26"
 
 echo "Server Major: ${server_major_version}"
 echo "Server Minor: ${server_minor_version}"
