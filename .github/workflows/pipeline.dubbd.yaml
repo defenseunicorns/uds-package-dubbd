@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
       - name: Setup AWS credentials, Install Zarf, Login to Registry1
         uses: ./.github/workflows/reusable-workflow.yml
     
