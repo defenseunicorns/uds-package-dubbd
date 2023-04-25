@@ -1,0 +1,31 @@
+name: Reusable DUBBD Workflow for AWS
+on:
+  workflow_call:
+
+jobs:
+  dubbd-aws:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+
+      - name: Install Zarf
+        uses: defenseunicorns/setup-zarf@v1
+        with:
+          # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
+          version: v0.26.0
+          download-init-package: true
+
+      - name: Login to Registry1
+        env:
+          REGISTRY1_USERNAME: ${{ secrets.REGISTRY1_USERNAME }}
+          REGISTRY1_PASSWORD: ${{ secrets.REGISTRY1_PASSWORD }}
+        run: zarf tools registry login registry1.dso.mil --username "$REGISTRY1_USERNAME" --password "$REGISTRY1_PASSWORD"
