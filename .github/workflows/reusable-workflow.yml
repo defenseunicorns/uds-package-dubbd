@@ -18,7 +18,7 @@ jobs:
           aws-region: us-west-2
 
       - name: Install Zarf
-        uses: defenseunicorns/setup-zarf@v1
+        uses: defenseunicorns/setup-zarf@v1.0.0
         with:
           # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
           version: v0.26.0
