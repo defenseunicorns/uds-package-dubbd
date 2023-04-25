@@ -29,7 +29,7 @@ jobs:
         with:
           name: zarf-artifacts
           path: |
-            ${HOME}/.zarf-cache/
+            /home/runner/.zarf-cache/
           if-no-files-found: error 
 
       - name: Login to Registry1
