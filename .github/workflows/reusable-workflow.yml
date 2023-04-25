@@ -29,8 +29,8 @@ jobs:
         with:
           name: zarf-artifacts
           path: |
-            zarf-init-amd64-*.tar.zst
-            /usr/local/bin/zarf
+            ${HOME}/.zarf-cache/
+          if-no-files-found: error 
 
       - name: Login to Registry1
         env:
