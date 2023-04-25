@@ -46,5 +46,5 @@ addons:
             header: ":authority"
             prefix: "###ZARF_VAR_MISSION_APP_NAME###"
           callback_uri: "https://###ZARF_VAR_MISSION_APP_NAME###.###ZARF_VAR_DOMAIN###/login/generic_oauth"
-          client_id: "###ZARF_VAR_MISSION_APP_ID###"
-          client_secret: "###ZARF_VAR_MISSION_APP_SECRET###"
+          client_id: "CHANGE_ME_MISSION_APP_ID"
+          client_secret: "CHANGE_ME_MISSION_APP_SECRET"

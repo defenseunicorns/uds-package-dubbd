@@ -19,8 +19,6 @@ components:
     required: true
     import:
       path: ../defense-unicorns-distro
-  - name: load-kc-certs
-    required: true
     files:
       - source: ../defense-unicorns-distro/scripts/cat_keycloak_cert.sh
         target: cat_keycloak_cert.sh
@@ -51,6 +49,7 @@ components:
         # look at imports and then merging here for composition
         - ../values/authservice.yaml
         - ../values/keycloak.yaml
+        - customization.yaml
   - name: configure-keycloak
     required: true
     files:
@@ -69,7 +68,7 @@ components:
             description: Create the Cocowow realm
           - cmd: ./kc-api/bin/kcadm.sh create clients -r cocowow -s clientId=###ZARF_PKG_TMPL_MISSION_APP_NAME### -s enabled=true
             description: "Add a service account for the ###ZARF_PKG_TMPL_MISSION_APP_NAME### application"
-          - cmd: ./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=###ZARF_PKG_TMPL_MISSION_APP_NAME###. --fields=clientId | jq -r ".[].clientId"
+          - cmd: ./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=###ZARF_PKG_TMPL_MISSION_APP_NAME### --fields=id | jq -r ".[].id"
             description: "Extract the clientId of the ###ZARF_PKG_TMPL_MISSION_APP_NAME### service account in Keycloak"
             setVariables:
             - name: MISSION_APP_ID
@@ -82,3 +81,16 @@ components:
     import:
       path: podinfo
       name: podinfo
+    files:
+      - source: scripts/update-authservice-secret.sh
+        target: update-secret.sh
+        executable: true
+    actions:
+      onDeploy:
+        after:
+          - cmd: ./update-secret.sh
+            description: Update the chain data within Authservice's secret
+          - cmd: ./zarf tools kubectl patch ns podinfo  --type=merge -p '{"metadata":{"labels":{"istio-injection":"enabled"}}}'
+            description: "Add istio-injection: enabled label to the podinfo namespace"
+          - cmd: ./zarf tools kubectl patch deployment podinfo -n podinfo --type=merge -p '{"spec":{"template":{"metadata":{"labels":{"protect":"keycloak"}}}}}'
+            description: "Add protect: keycloak label to the podinfo application"
