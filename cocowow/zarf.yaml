@@ -66,12 +66,12 @@ components:
             description: Login into keycloak as admin and save the config for future commands
           - cmd: ./kc-api/bin/kcadm.sh create realms -s realm=cocowow -s enabled=true
             description: Create the Cocowow realm
-          - cmd: ./kc-api/bin/kcadm.sh create clients -r cocowow -s clientId=###ZARF_PKG_TMPL_MISSION_APP_NAME### -s enabled=true
+          - cmd: ./kc-api/bin/kcadm.sh create users -r cocowow -s username=demo -s enabled=true 
+            description: Update the 'demo' user's password
+          - cmd: ./kc-api/bin/kcadm.sh set-password -r cocowow --username demo --new-password supersecretpassword --temporary
+            description: Update the 'demo' user's password
+          - cmd: ./kc-api/bin/kcadm.sh create clients -r cocowow -s clientId=###ZARF_PKG_TMPL_MISSION_APP_NAME### -s enabled=true -s 'redirectUris=["https://podinfo.bigbang.dev/login/generic_oauth"]'
             description: "Add a service account for the ###ZARF_PKG_TMPL_MISSION_APP_NAME### application"
-          - cmd: ./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=###ZARF_PKG_TMPL_MISSION_APP_NAME### --fields=id | jq -r ".[].id"
-            description: "Extract the clientId of the ###ZARF_PKG_TMPL_MISSION_APP_NAME### service account in Keycloak"
-            setVariables:
-            - name: MISSION_APP_ID
           - cmd: ./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=###ZARF_PKG_TMPL_MISSION_APP_NAME### --fields=secret | jq -r ".[].secret"
             description: "Extract the secret string of the ###ZARF_PKG_TMPL_MISSION_APP_NAME### service account in Keycloak"
             setVariables:
@@ -90,6 +90,8 @@ components:
         after:
           - cmd: ./update-secret.sh
             description: Update the chain data within Authservice's secret
+          - cmd: ./zarf tools kubectl rollout restart deployment authservice -n authservice
+            description: "Restart authservice to pick up the updated config"
           - cmd: ./zarf tools kubectl patch ns podinfo  --type=merge -p '{"metadata":{"labels":{"istio-injection":"enabled"}}}'
             description: "Add istio-injection: enabled label to the podinfo namespace"
           - cmd: ./zarf tools kubectl patch deployment podinfo -n podinfo --type=merge -p '{"spec":{"template":{"metadata":{"labels":{"protect":"keycloak"}}}}}'
