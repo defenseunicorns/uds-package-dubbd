@@ -17,3 +17,18 @@ resource "keycloak_openid_client" "podinfo" {
 
   login_theme = "keycloak"
 }
+
+resource "keycloak_user" "demo" {
+  realm_id   = keycloak_realm.realm.id
+  username   = "demo"
+  enabled    = true
+
+  email      = "demo@example.com"
+  first_name = "Demo"
+  last_name  = "User"
+
+  initial_password {
+    value     = "SuperLongTempPassword"
+    temporary = true
+  }
+}

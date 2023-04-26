@@ -9,8 +9,11 @@ components:
     required: true
     charts:
       - name: podinfo
-        version: 6.3.5
+        version: 6.0.0-bb.7
         namespace: podinfo
-        url: oci://ghcr.io/stefanprodan/charts/podinfo
+        url: https://repo1.dso.mil/big-bang/apps/sandbox/podinfo.git
+        gitPath: chart
+        valuesFiles:
+          - values.yaml
     images:
       - "ghcr.io/stefanprodan/podinfo:6.3.5"
