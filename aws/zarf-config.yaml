@@ -12,7 +12,7 @@ package:
       public_key_file: bigbang.dev.key
       public_cert_file: bigbang.dev.cert
       name: "big-bang-aws" # maybe inject something here for the GH PR?
-      # eks_oidc_provider_arn: # this needs to be set for deployment
+      #eks_oidc_provider_arn: "arn:aws:iam::111111111111:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A"
+      #loki_kms_key_arn: "arn:aws:kms:us-west-2:000000000000:key/mrk-0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a"
+      #loki_kms_key_alias: "big-bang-loki"
 
-      # loki_kms_key_alias: "ad3132309"
-      #
