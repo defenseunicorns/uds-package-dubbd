@@ -1,4 +1,4 @@
-domain: ###ZARF_VAR_DOMAIN###
+domain: "###ZARF_VAR_DOMAIN###"
 
 networkPolicies:
   enabled: true
@@ -6,19 +6,10 @@ networkPolicies:
   nodeCidr: "0.0.0.0/0"
   vpcCidr: "0.0.0.0/0"
 
-clusterAuditor:
+elasticsearchKibana:
   enabled: false
 
-jaeger:
-  enabled: false
-  
-gatekeeper:
-  enabled: false
-
-logging:
-  enabled: false
-
-eckoperator:
+eckOperator:
   enabled: false
 
 fluentbit:

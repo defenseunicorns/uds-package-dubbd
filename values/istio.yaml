@@ -35,7 +35,14 @@ istio:
       tls:
         key: "###ZARF_VAR_PUBLIC_KEY###"
         cert: "###ZARF_VAR_PUBLIC_CERT###"
-istiooperator:
+  #   # admin:
+  #   #   tls:
+  #   passthrough:
+  #     hosts:
+  #       - "*.{{ .Values.domain }}"
+  #     tls:
+  #       mode: "PASSTHROUGH"
+istioOperator:
   enabled: true
   values:
     operator:
