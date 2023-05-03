@@ -1,16 +1,10 @@
 istio:
   enabled: true
   ingressGateways:
+    passthrough-ingressgateway:
+      type: "LoadBalancer"
     public-ingressgateway:
       type: "LoadBalancer"
-      kubernetesResourceSpec:
-        resources:
-          requests:
-            cpu: "100m"
-            memory: "512Mi"
-          limits:
-            cpu: "500m"
-            memory: "512Mi"
   values:
     istiod:
       resources:
@@ -35,13 +29,12 @@ istio:
       tls:
         key: "###ZARF_VAR_PUBLIC_KEY###"
         cert: "###ZARF_VAR_PUBLIC_CERT###"
-  #   # admin:
-  #   #   tls:
-  #   passthrough:
-  #     hosts:
-  #       - "*.{{ .Values.domain }}"
-  #     tls:
-  #       mode: "PASSTHROUGH"
+    passthrough:
+      ingressGateway: passthrough-ingressgateway
+      hosts:
+        - "*.{{ .Values.domain }}"
+      tls:
+        mode: "PASSTHROUGH"
 istioOperator:
   enabled: true
   values:

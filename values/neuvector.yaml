@@ -2,7 +2,7 @@ neuvector:
   enabled: true
   values:
     containerd:
-      enabled: false
+      enabled: true
     monitor:
       install: true # getting error here on having this come up
 

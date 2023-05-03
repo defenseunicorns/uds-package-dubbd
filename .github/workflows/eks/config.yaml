@@ -4,7 +4,7 @@ kind: ClusterConfig
 metadata:
   name: ###ZARF_VAR_CLUSTER_NAME###
   region: us-west-2
-  version: "1.23"
+  version: "1.26"
 
 # May want to look at this for testing 
 # privateCluster:
@@ -15,7 +15,8 @@ iam:
 
 addons:
   - name: aws-ebs-csi-driver
-    version: v1.5.2-eksbuild.1
+    version: v1.17.0-eksbuild.1
+
     attachPolicyARNs:
       - arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
 
