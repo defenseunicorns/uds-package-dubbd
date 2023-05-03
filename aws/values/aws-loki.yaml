@@ -2,17 +2,17 @@ loki:
   strategy: "scalable" # i think?
   objectStorage:
     endpoint: https://s3.amazonaws.com
-    region: ###ZARF_VAR_LOKI_S3_AWS_REGION###
+    region: "###ZARF_VAR_LOKI_S3_AWS_REGION###"
     type: s3
     bucketNames:
       # -- Bucket Names for the Loki buckets as YAML
-      chunks: ###ZARF_VAR_LOKI_S3_BUCKET###
-      ruler: ###ZARF_VAR_LOKI_S3_BUCKET###
-      admin: ###ZARF_VAR_LOKI_S3_BUCKET###
+      chunks: "###ZARF_VAR_LOKI_S3_BUCKET###"
+      ruler: "###ZARF_VAR_LOKI_S3_BUCKET###"
+      admin: "###ZARF_VAR_LOKI_S3_BUCKET###"
   values:
     serviceAccount:
       annotations: 
-        eks.amazonaws.com/role-arn: ###ZARF_VAR_LOKI_S3_ROLE_ARN###
+        eks.amazonaws.com/role-arn: "###ZARF_VAR_LOKI_S3_ROLE_ARN###"
     loki:
       storage:
         s3:

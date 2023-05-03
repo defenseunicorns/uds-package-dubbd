@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
 kind: ZarfPackageConfig
 metadata:
-  name: big-bang-distro-local-dev
+  name: big-bang-distro-k3d
   description: "Defense Unicorns Big Bang Distro"
   version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
   url: https://p1.dso.mil/products/big-bang
