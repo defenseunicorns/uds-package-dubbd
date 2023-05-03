@@ -1,14 +1,3 @@
-istio:
-  ingressGateways:
-    passthrough-ingressgateway:
-      type: "LoadBalancer"
-  gateways:
-    passthrough:
-      ingressGateway: passthrough-ingressgateway
-      hosts:
-        - keycloak.{{ .Values.domain }}
-      tls:
-        mode: "PASSTHROUGH"
 addons:
   keycloak:
     enabled: true
