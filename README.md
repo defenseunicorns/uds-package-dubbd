@@ -4,20 +4,20 @@ Pre-built Zarf Package of [DoD-Platform-One/big-bang](https://github.com/DoD-Pla
 
 ## Prerequisites
 
-- Zarf is installed. Current version used is: [v0.25.2](https://github.com/defenseunicorns/zarf/releases/tag/v0.25.2)
-- Optional: A working Kubernetes cluster. e.g KinD, k3d, k3s, etc. If necessary, Zarf can be used to deploy a built-in k3s distribution.
+- Zarf is installed. Current version used is: [v0.26.1](https://github.com/defenseunicorns/zarf/releases/tag/v0.26.1)
+- Optional: A working Kubernetes cluster. e.g k3d, k3s, KinD, etc. If necessary, Zarf can be used to deploy a built-in k3s distribution.
 
 ## Build the package
 
 ```bash
-$ cd defense-unicorns-distro
-$ zarf package create --confirm
+cd defense-unicorns-distro
+zarf package create --confirm
 ```
 
 ## Deploy the package
 
 ```bash
-$ zarf package deploy --confirm zarf-package-big-bang-*.tar.zst
+zarf package deploy --confirm zarf-package-big-bang-*.tar.zst
 ```
 
 ### Prereqs
@@ -52,10 +52,6 @@ bigbang     promtail         9m16s   True    Release reconciliation succeeded
 
 ## Defense Unicorns Big Bang Distro for AWS (DUBBD-AWS)
 
-> **Warning**
->
-> This Zarf package can only be built with v0.25.2 or higher of https://github.com/defenseunicorns/zarf due to fixing [this issue](https://github.com/defenseunicorns/zarf/pull/1477)
-
 When running Big Bang on AWS, Loki is configured to use S3 for storage for better persistance.  The Zarf package for DUBBD-AWS is created by overlaying a new loki values file on top of the existing DUBBD zarf file via:
 
 ```yaml
@@ -77,7 +73,6 @@ In order for this configuration to work cleanly, DUBBD-AWS also provisions an S3
 > **Warning**
 >
 > - Minimum compute requirements are at LEAST 48 GB RAM and 12 virtual CPU threads (preferrably in a VM)
-> - This Zarf package can only be built with v0.25.2 or higher of https://github.com/defenseunicorns/zarf due to fixing [this issue](https://github.com/defenseunicorns/zarf/pull/1477)
 > - This has only been tested using k3d at this point
 
 When running Big Bang locally, it is common to use local storage using hostpath and some other helm component values must be adjusted.  The Zarf package for DUBBD-local-dev is created by overlaying a new local dev values file on top of the existing DUBBD zarf file via:
