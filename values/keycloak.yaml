@@ -51,11 +51,23 @@ addons:
         - name: certauthority
           secret:
             secretName: {{ include "keycloak.fullname" . }}-certauthority
+        - name: plugin
+          emptyDir: {}
+        - name: quarkusproperties
+          secret:
+            secretName: {{ include "keycloak.fullname" . }}-quarkusproperties
+            defaultMode: 0777
       extraVolumeMounts: |-
         - name: certauthority
           mountPath: /etc/x509/https/cas.pem
           subPath: cas.pem
           readOnly: true
+        - name: plugin
+          mountPath: /opt/keycloak/providers/p1-keycloak-plugin.jar
+          subPath: p1-keycloak-plugin.jar
+        - name: quarkusproperties
+          mountPath: /opt/keycloak/conf/quarkus.properties
+          subPath: quarkus.properties
       secrets:
         env:
           stringData:
@@ -63,3 +75,30 @@ addons:
         certauthority:
           stringData:
             cas.pem: '{{ .Files.Get "resources/dev/dod_cas.pem" }}'
+        quarkusproperties:
+          stringData:
+            quarkus.properties: |-
+              quarkus.http.non-application-root-path=/
+              # custom redirects
+              quarkus.kc-routing.path-redirect./=/auth/realms/cocowow/account
+              quarkus.kc-routing.path-redirect./auth=/auth/realms/cocowow/account
+              quarkus.kc-routing.path-redirect./register=/auth/realms/cocowow/protocol/openid-connect/registrations?client_id=account&response_type=code
+              quarkus.kc-routing.path-prefix./oauth/authorize=/auth/realms/cocowow/protocol/openid-connect/auth
+              quarkus.kc-routing.path-filter./api/v4/user=/auth/realms/cocowow/protocol/openid-connect/userinfo
+              quarkus.kc-routing.path-filter./oauth/token=/auth/realms/cocowow/protocol/openid-connect/token
+              # block metrics and health enpoints from being exposed through the istio ingress
+              quarkus.kc-routing.path-recursive-block./metrics=8443
+              quarkus.kc-routing.path-recursive-block./health=8443
+      extraInitContainers: |-
+        - name: plugin
+          image: registry1.dso.mil/ironbank/big-bang/p1-keycloak-plugin:3.2.0
+          imagePullPolicy: Always
+          command:
+          - sh
+          - -c
+          - |
+            cp /app/p1-keycloak-plugin.jar /init
+            ls -l /init
+          volumeMounts:
+          - name: plugin
+            mountPath: "/init"

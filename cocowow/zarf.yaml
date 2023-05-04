@@ -42,6 +42,8 @@ components:
     import:
       path: ../defense-unicorns-distro
       name: bigbang
+    images:
+      - registry1.dso.mil/ironbank/big-bang/p1-keycloak-plugin:3.2.0
     extensions:
       bigbang:
         version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
@@ -49,7 +51,6 @@ components:
         # look at imports and then merging here for composition
         - ../values/authservice.yaml
         - ../values/keycloak.yaml
-        - customization.yaml
   - name: configure-keycloak
     required: true
     files:
@@ -60,7 +61,7 @@ components:
         after:
           - cmd: rm -rf kc-api && tar xf keycloak.tar.gz && rm keycloak.tar.gz && mv keycloak-21.0.1 kc-api
             description: Untar the keycloak files
-          - cmd: bash -c 'until [ $(curl -L -s -o /dev/null -w "%{http_code}" https://keycloak.###ZARF_PKG_TMPL_DOMAIN###/auth) -eq 200 ]; do sleep 60; echo "Trying to connect to the Keycloak endpoint..."; done'
+          - cmd: bash -c 'until [ $(curl -L -s -o /dev/null -w "%{http_code}" https://keycloak.###ZARF_PKG_TMPL_DOMAIN###/auth/admin) -eq 200 ]; do sleep 60; echo "Trying to connect to the Keycloak endpoint..."; done'
             description: Wait for Keycloak endpoint to accept requests
           - cmd: ./kc-api/bin/kcadm.sh config credentials --realm master --server https://keycloak.###ZARF_PKG_TMPL_DOMAIN###/auth --user admin --password password
             description: Login into keycloak as admin and save the config for future commands
