@@ -26,6 +26,9 @@ istio:
               memory: "1Gi"
   gateways:
     public:
+      ingressGateway: public-ingressgateway
+      hosts:
+        - "*.{{ .Values.domain }}"
       tls:
         key: "###ZARF_VAR_PUBLIC_KEY###"
         cert: "###ZARF_VAR_PUBLIC_CERT###"
