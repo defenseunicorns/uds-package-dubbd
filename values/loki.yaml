@@ -1,26 +1,7 @@
 
 loki:
-  enabled: true
   strategy: "monolith"
-  # objectStorage:
-  #   endpoint: minio.minio.svc.cluster.local
-  #   region: "minio"
-  #   # accessKey: "" -- Added in environment-bb/values.yaml
-  #   # accessSecret: "" -- Added in environment-bb/values.yaml
-  #   bucketNames:
-  #     chunks: loki-logs
-  #     ruler: loki-ruler
-  #     admin: loki-admin
   values:
-    # read:
-    #   replicas: 1
-    # write:
-    #   replicas: 1
-    # minio:
-    #   enabled: false
-    istio:
-      mtls:
-        mode: PERMISSIVE
     singleBinary:
       persistence:
-          size: ###ZARF_VAR_LOKI_PVC_SIZE###
+          size: "###ZARF_VAR_LOKI_PVC_SIZE###"

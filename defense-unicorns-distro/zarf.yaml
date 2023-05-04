@@ -94,7 +94,7 @@ components:
     actions:
       onDeploy:
         after:
-          - cmd: ./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"spec":{"values":{"reconcile.fluxcd.io/requestedAt":"'`date '+%F_%H:%M:%S.%s%z'`'"}}}'
+          - cmd: ./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"metadata":{"annotations":{"reconcile.fluxcd.io/requestedAt":"'`date '+%F_%H:%M:%S.%s%z'`'"}}}'
             description: "Patch BigBang to force an update on updates"
       onRemove:
         before:
@@ -120,14 +120,16 @@ components:
             description: Delete neuvector
           - cmd: ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io neuvector-validating-crd-webhook  --ignore-not-found
             description: cleanup neuvector validatingwebhooks
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kyvernopolicies --ignore-not-found
-            description: Delete kyvernopolicies
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kyverno-reporter --ignore-not-found
+            description: Delete kyverno-reporter
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kyverno-policies --ignore-not-found
+            description: Delete kyverno-policies
           - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kyverno --ignore-not-found
             description: Delete kyverno
+          - cmd: ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io neuvector-validating-crd-webhook  --ignore-not-found
+            description: cleanup neuvector validatingwebhooks
           - cmd: ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io kyverno-policy-validating-webhook-cfg kyverno-resource-validating-webhook-cfg  --ignore-not-found
             description: Cleanup validating webhoooks from kyverno
-          - cmd: ./zarf tools kubectl delete mutatingwebhookconfigurations.admissionregistration.k8s.io kyverno-policy-mutating-webhook-cfg kyverno-resource-mutating-webhook-cfg kyverno-verify-mutating-webhook-cfg  --ignore-not-found
-            description: Cleanup mutating webhooks from kyverno
           - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kiali --ignore-not-found
           - cmd: ./zarf tools kubectl delete helmrelease -n bigbang metrics-server --ignore-not-found
           - cmd: ./zarf tools kubectl delete gitrepositories -n bigbang --all

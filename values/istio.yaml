@@ -35,7 +35,7 @@ istio:
         - "*.{{ .Values.domain }}"
       tls:
         mode: "PASSTHROUGH"
-istiooperator:
+istioOperator:
   enabled: true
   values:
     operator:

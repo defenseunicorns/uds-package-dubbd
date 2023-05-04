@@ -1,0 +1,35 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
+kind: ZarfPackageConfig
+metadata:
+  name: big-bang-distro-k3d
+  description: "Defense Unicorns Big Bang Distro"
+  version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
+  url: https://p1.dso.mil/products/big-bang
+  image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
+  # Big Bang / Iron Bank are only amd64
+  architecture: amd64
+  authors: "@MxNxPx"
+  source: https://github.com/defenseunicorns/zarf-package-big-bang
+  documentation: https://github.com/defenseunicorns/zarf-package-big-bang
+  vendor: Defense Unicorns
+
+variables:
+- name: HOST_PATH
+  default: /var/lib/rancher/k3s/storage/*
+  prompt: false
+
+components:
+  - name: load-certs
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+  - name: bigbang
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+    extensions:
+      bigbang:
+        version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
+        valuesFiles:
+        - values/local-dev.yaml
+      

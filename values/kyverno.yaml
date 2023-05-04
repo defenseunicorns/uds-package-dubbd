@@ -1,9 +1,4 @@
-
-kyverno:
-  enabled: true
-
-kyvernopolicies:
-  enabled: true
+kyvernoPolicies:
   values:
     policies:
       restrict-image-registries:
