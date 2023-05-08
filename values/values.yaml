@@ -19,8 +19,5 @@ twistlock:
   enabled: false
 
 addons:
-  metricsServer:
-    enabled: false
-
   velero:
     enabled: false
