@@ -2,7 +2,7 @@ kind: ZarfPackageConfig
 metadata:
   name: big-bang
   description: "Defense Unicorns Big Bang Distro"
-  version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
+  version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
   # Big Bang / Iron Bank are only amd64
@@ -70,10 +70,12 @@ components:
         after:
         - cmd: ./cat_certs.sh
           description: read the cert
-          setVariable: PUBLIC_CERT   
+          setVariables:
+            - name: PUBLIC_CERT
         - cmd: ./cat_key.sh
           description: read the cert
-          setVariable: PUBLIC_KEY
+          setVariables:
+            - name: PUBLIC_KEY
         - cmd: rm cat_certs.sh
         - cmd: rm cat_key.sh
   - name: preflight
@@ -140,7 +142,7 @@ components:
           - manifests/alerts/flux-alerts.yaml
     extensions:
       bigbang:
-        version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
+        version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
         valuesFiles:
         - ../values/values.yaml
         - ../values/kyverno.yaml
