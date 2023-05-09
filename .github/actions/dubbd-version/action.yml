@@ -1,0 +1,30 @@
+name: Get Latest DUBBD Package Version
+description: Fetches the latest DUBBD package version
+
+inputs:
+  github-token:
+    description: GitHub token to authenticate to the GitHub REST API
+    required: true
+
+outputs:
+  latest-dubbd-version:
+    description: The latest DUBBD package version
+    value: ${{ steps.latest-dubbd-version.outputs.latest-dubbd-version }}
+
+runs:
+  using: composite
+  steps:
+    - id: latest-dubbd-version
+      shell: bash
+      run: |
+        #!/bin/bash
+
+        github_token="${{ inputs.github-token }}"
+
+        package_name="packages%2Fbig-bang-distro%2Fbig-bang"
+
+        latest_dubbd_version="$(curl -s -H "Authorization: Bearer $github_token" \
+            https://api.github.com/orgs/defenseunicorns/packages/container/${package_name}/versions \
+            | jq -r '.[0].metadata.container.tags[0]')"
+
+        echo "latest-dubbd-version=$(echo "$latest_dubbd_version")" >> $GITHUB_OUTPUT

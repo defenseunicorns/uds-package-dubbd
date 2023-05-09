@@ -1,0 +1,19 @@
+name: Test Latest Version Action
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-version-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Latest DUBBD Package Version
+        id: dubbd-version
+        uses: ./.github/actions/dubbd-version
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Echo Output
+        run: echo ${{ steps.dubbd-version.outputs.latest-dubbd-version }}
