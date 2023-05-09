@@ -8,10 +8,10 @@
 
 - Zarf cli installed locally
 - Docker installed locally (for image pulls)
-- K3D cluster
+- K3D cluster -- k8s v1.26+
 - K3D cluster has zarf init package deployed (with git-server component)
 - MetalLB deployed to support multiple LoadBalancer service types
-- Working kube context (`kubectl get nodes` <- this command works)
+- Working kube context (`kubectl get nodes` <-- this command works)
 
 ## Build the package
 

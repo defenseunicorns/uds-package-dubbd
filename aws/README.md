@@ -4,10 +4,10 @@
 
 - Zarf cli installed locally
 - Docker installed locally (for image pulls)
-- AWS EKS cluster
+- AWS EKS cluster -- k8s v1.26+
 - AWS EKS cluster has zarf init package deployed (with git-server component)
 - AWS KMS (with alias)
-- Working kube context (`kubectl get nodes` <- this command works)
+- Working kube context (`kubectl get nodes` <-- this command works)
 
 ## Build the package
 
