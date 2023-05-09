@@ -35,6 +35,8 @@ components:
     actions:
       onDeploy:
         before:
+          - cmd: cluster_name="dubbd-$(openssl rand -hex 8)" && yq ".metadata.name = \"$cluster_name\"" -i config.yaml
+            description: Generate a unique cluster name and add it to the eksctl config file
           - cmd: ./eksctl create cluster --dry-run -f config.yaml
           - cmd: sleep 15
           - cmd: ./eksctl create cluster -f config.yaml
@@ -43,9 +45,3 @@ components:
       onRemove:
         before:
           - cmd: ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
-
-# components:
-#   - name: download-eksctl
-
-#   - name: deploy-eks
-#   - name: export-oidc
