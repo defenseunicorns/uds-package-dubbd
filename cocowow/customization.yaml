@@ -1,6 +1,28 @@
-istio:
-  gateways:
-    public:
-      ingressGateway: public-ingressgateway
-      hosts:
-        - podinfo.{{ .Values.domain }}
+monitoring:
+  sso:
+    enabled: true
+    grafana:
+      client_id: "grafana"
+      client_secret: "CHANGE_ME_GRAFANA_SSO_SECRET"
+    alertmanager:
+      client_id: "alertmanager"
+      client_secret: "CHANGE_ME_ALERTMANAGER_SSO_SECRET"
+    prometheus:
+      client_id: "prometheus"
+      client_secret: "CHANGE_ME_PROMETHEUS_SSO_SECRET"
+neuvector:
+  sso:
+    enabled: true
+    client_id: "neuvector"
+    client_secret: "CHANGE_ME_NEUVECTOR_SSO_SECRET"
+    default_role: "reader"
+tempo:
+  sso:
+    enabled: true
+    client_id: "tempo"
+    client_secret: "CHANGE_ME_TEMPO_SSO_SECRET"
+kiali:
+  sso:
+    enabled: true
+    client_id: "kiali"
+    client_secret: "CHANGE_ME_KIALI_SSO_SECRET"
