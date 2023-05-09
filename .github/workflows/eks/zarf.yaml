@@ -40,8 +40,6 @@ components:
           - cmd: ./eksctl create cluster --dry-run -f config.yaml
           - cmd: sleep 15
           - cmd: ./eksctl create cluster -f config.yaml
-        after:
-          - cmd: ./eksctl utils write-kubeconfig -c ${ZARF_VAR_CLUSTER_NAME}
       onRemove:
         before:
           - cmd: ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
