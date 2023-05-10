@@ -77,7 +77,6 @@ jobs:
         if: always()
         uses: defenseunicorns/zarf/.github/actions/save-logs@main
 
-
   upgrade:
     runs-on: ubuntu-latest
 
