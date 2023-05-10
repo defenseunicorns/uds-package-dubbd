@@ -138,7 +138,7 @@ jobs:
         uses: ./.github/actions/dubbd-version
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          package-name: packages/big-bang-distro/big-bang
+          package-name: "packages/big-bang-distro/big-bang"
 
       - name: Deploy Latest DUBBD Package
         run: zarf package deploy oci://ghcr.io/defenseunicorns/packages/big-bang-distro/big-bang:${{ steps.dubbd-version.outputs.latest-dubbd-version }} --confirm

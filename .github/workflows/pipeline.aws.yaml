@@ -192,7 +192,7 @@ jobs:
         uses: ./.github/actions/dubbd-version
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          package-name: packages/big-bang-aws
+          package-name: "packages/big-bang-aws"
 
       - name: Deploy Latest DUBBD-AWS Package
         run: zarf package deploy oci://ghcr.io/defenseunicorns/packages/big-bang-aws:${{ steps.dubbd-version.outputs.latest-dubbd-version }} --confirm
