@@ -44,7 +44,7 @@ jobs:
         timeout-minutes: 60
 
       - name: Create EKS cluster
-        run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=${GITHUB_SHA:0:7}
+        run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm
         working-directory: .github/workflows/eks
         # eventually have zarf deploy   \
       - name: Show Cluster
@@ -56,7 +56,7 @@ jobs:
           zarf init -a amd64 --components=git-server --confirm
       
       - name: Deploy DUBBD
-        run: zarf package deploy zarf-package-*.tar.zst --confirm -l debug
+        run: zarf package deploy zarf-package-*.tar.zst --confirm
         working-directory: defense-unicorns-distro
         timeout-minutes: 60
 
@@ -72,6 +72,10 @@ jobs:
         run: |
           ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
         working-directory: .github/workflows/eks
+
+      - name: Save logs
+        if: always()
+        uses: defenseunicorns/zarf@main/.github/actions/save-logs
 
   upgrade:
     runs-on: ubuntu-latest
@@ -118,7 +122,7 @@ jobs:
         timeout-minutes: 60
 
       - name: Create EKS cluster
-        run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=${GITHUB_SHA:0:7}
+        run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm
         working-directory: .github/workflows/eks
         # eventually have zarf deploy   \
       - name: Show Cluster
@@ -136,11 +140,11 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy Latest DUBBD Package
-        run: zarf package deploy oci://ghcr.io/defenseunicorns/packages/big-bang-distro/big-bang:${{ steps.dubbd-version.outputs.latest-dubbd-version }} --confirm -l debug
+        run: zarf package deploy oci://ghcr.io/defenseunicorns/packages/big-bang-distro/big-bang:${{ steps.dubbd-version.outputs.latest-dubbd-version }} --confirm
         timeout-minutes: 60
 
       - name: Upgrade DUBBD
-        run: zarf package deploy zarf-package-*.tar.zst --confirm -l debug
+        run: zarf package deploy zarf-package-*.tar.zst --confirm
         working-directory: defense-unicorns-distro
         timeout-minutes: 60
 
@@ -158,3 +162,7 @@ jobs:
         run: |
           ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --force --wait
         working-directory: .github/workflows/eks
+
+      - name: Save logs
+        if: always()
+        uses: defenseunicorns/zarf@main/.github/actions/save-logs
