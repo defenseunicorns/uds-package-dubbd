@@ -122,7 +122,7 @@ jobs:
         timeout-minutes: 60
 
       - name: Create EKS cluster
-        run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm
+        run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=dubbd-$(openssl rand -hex 8)
         working-directory: .github/workflows/eks
         # eventually have zarf deploy   \
       - name: Show Cluster
