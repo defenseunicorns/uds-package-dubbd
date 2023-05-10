@@ -61,6 +61,7 @@ jobs:
         timeout-minutes: 60
 
       - name: Remove DUBBD
+        if: always()
         run: zarf package remove zarf-package-*.tar.zst --confirm
         working-directory: defense-unicorns-distro
         timeout-minutes: 60
