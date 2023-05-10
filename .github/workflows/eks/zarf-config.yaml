@@ -4,3 +4,7 @@ package:
     set:
       bigbang_version: "2.0.1"
       eksctl_version: v0.138.0
+
+  deploy:
+    set: 
+      cluster_name: bigbang-aws-install
