@@ -73,7 +73,7 @@ jobs:
           ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
         working-directory: .github/workflows/eks
 
-      - name: Save logs
+      - name: Save zarf logs
         if: always()
         uses: defenseunicorns/zarf/.github/actions/save-logs@main
 
@@ -138,6 +138,7 @@ jobs:
         uses: ./.github/actions/dubbd-version
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          package-name: packages/big-bang-distro/big-bang
 
       - name: Deploy Latest DUBBD Package
         run: zarf package deploy oci://ghcr.io/defenseunicorns/packages/big-bang-distro/big-bang:${{ steps.dubbd-version.outputs.latest-dubbd-version }} --confirm
@@ -152,6 +153,7 @@ jobs:
         if: always()
         run: |
           zarf package remove oci://ghcr.io/defenseunicorns/packages/big-bang-distro/big-bang:${{ steps.dubbd-version.outputs.latest-dubbd-version }} --confirm
+          zarf package remove zarf-package-*.tar.zst --confirm
         working-directory: defense-unicorns-distro
         timeout-minutes: 60
 
@@ -162,6 +164,6 @@ jobs:
           ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --force --wait
         working-directory: .github/workflows/eks
 
-      - name: Save logs
+      - name: Save zarf logs
         if: always()
         uses: defenseunicorns/zarf/.github/actions/save-logs@main

@@ -1,9 +1,12 @@
 name: Get Latest DUBBD Package Version
-description: Fetches the latest DUBBD package version
+description: Fetches the latest version of the specified DUBBD package
 
 inputs:
   github-token:
     description: GitHub token to authenticate to the GitHub REST API
+    required: true
+  package-name:
+    description: Name of the DUBBD package
     required: true
 
 outputs:
@@ -21,7 +24,14 @@ runs:
 
         github_token="${{ inputs.github-token }}"
 
-        package_name="packages%2Fbig-bang-distro%2Fbig-bang"
+        package_name="${{ inputs.package-name }}"
+
+        # Check if the package name contains '/'
+        if [[ "$package_name" =~ "/" ]]; then
+
+            # Replace all '/' with '%2F' for URL encoding
+            package_name="${package_name//\//%2F}"
+        fi
 
         latest_dubbd_version="$(curl -s -H "Authorization: Bearer $github_token" \
             https://api.github.com/orgs/defenseunicorns/packages/container/${package_name}/versions \
