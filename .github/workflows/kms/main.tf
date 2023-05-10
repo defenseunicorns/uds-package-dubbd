@@ -17,6 +17,10 @@ output "kms_key_arn" {
   value = aws_kms_key.default.arn
 }
 
+output "kms_key_alias" {
+  value = aws_kms_alias.default.id
+}
+
 resource "random_id" "default" {
   byte_length = 2
 }
