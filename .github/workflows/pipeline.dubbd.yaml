@@ -75,7 +75,8 @@ jobs:
 
       - name: Save logs
         if: always()
-        uses: defenseunicorns/zarf@main/.github/actions/save-logs
+        uses: defenseunicorns/zarf/.github/actions/save-logs@main
+
 
   upgrade:
     runs-on: ubuntu-latest
