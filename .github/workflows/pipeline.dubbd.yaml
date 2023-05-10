@@ -145,6 +145,7 @@ jobs:
         timeout-minutes: 60
 
       - name: Remove DUBBD
+        if: always()
         run: |
           zarf package remove zarf-package-*.tar.zst --confirm
           zarf package remove oci://ghcr.io/defenseunicorns/packages/big-bang-distro/big-bang:${{ steps.dubbd-version.outputs.latest-dubbd-version }} --confirm
