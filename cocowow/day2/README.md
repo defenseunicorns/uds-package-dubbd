@@ -9,10 +9,13 @@ kubectl create ns myapp
 kubectl label ns myapp "istio-injection=enabled"
 ```
 
-2. Visit https://keycloak.(MYDOMAIN) and create a client in the cocowow realm for the new app. Copy the clientID and the client secret, which will be used in configuring a new authservice chain. Optionally also create a user to login/access the new app.
-
+2. Visit https://keycloak.(MYDOMAIN)/auth/admin and create a client in the cocowow realm for the new app. Login as admin. 
+  - Click on the top left combo box containing realms and select the "cocowow" realm.
+  - On the left menu bar, click on "Clients", followed by the blue "Create Client" button. Choose "OpenID connect" for the `Client Type` field. Enter a unique name for the `Client ID` field. Fill in the optional `Name` and `Description`. Click Next. Ensure "Client Authentication" is toggled on. Click Next. Enter a valid redirect URL: e.g. https://podinfo.bigbang.dev/login/generic_oauth. Click Save. 
+  - In the newly created client's page. Click on the `Credentials` tab and copy the secret. We will need this info to configure the Authservice chain later.
+  - Create a User. On the left menu bar, choose `Users` and click `Add User`. Enter the info and click `Create`.
 3. Create a new authservice config chain for the app. The authservice config resides in the `authconfig` secret in the `authconfig` namespace.
-An example authservice config looks like below:
+  - An example authservice config looks like below:
 
 ```
 {
@@ -164,11 +167,13 @@ An example authservice config looks like below:
 }
 ```
 
-Add a new chain, representing the new app, to the above config and save it back into the secret.
-
-Restart the authservice deployment.
+  - Add a new chain, representing the new app, to the above config and save it back into the secret.
+  - Restart the authservice deployment. e.g.
 
 ```
 kubectl rollout restart deployment authservice -n authservice
 ```
+
+4. Deploy the mission app in the namespace created in Step 1. If a virtual service needs to be created, create it. Visit the Istio public LB:
+https://podinfo.bigbang.dev and ensure that it is getting correctly redirected to https://keycloak.bigbang.dev. Enter the username/password for the user created in Step 2. If everything works correctly, you should now be correctly redirected to the mission app's page.
 
