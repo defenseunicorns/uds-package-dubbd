@@ -11,6 +11,11 @@ permissions:
 
 jobs:
   publish-packages:
+    env:
+      OCI_URL: oci://ghcr.io/defenseunicorns/uds
+      DUBBD_PACKAGE_NAME: zarf-package-big-bang-amd64-*.tar.zst
+      DUBBD_AWS_PACKAGE_NAME: zarf-package-big-bang-distro-aws-amd64-*.tar.zst
+
     runs-on: ubuntu-latest
   
     steps:
@@ -38,22 +43,22 @@ jobs:
           username: dummy
           password: ${{ secrets.GITHUB_TOKEN }}
     
-      - name: Create DUBBD
+      - name: Create DUBBD Package
         run: zarf package create --confirm
         working-directory: defense-unicorns-distro
         timeout-minutes: 60
 
-      - name: Create DUBBD-AWS
+      - name: Create DUBBD-AWS Package
         run: zarf package create --confirm
         working-directory: aws
         timeout-minutes: 60
       
-      - name: Publish DUBBD
-        run: zarf package publish zarf-package-big-bang-amd64-*.tar.zst oci://ghcr.io/defenseunicorns/packages
+      - name: Publish DUBBD Package
+        run: zarf package publish "$DUBBD_PACKAGE_NAME" "$OCI_URL"
         working-directory: defense-unicorns-distro
         timeout-minutes: 60
 
-      - name: Publish DUBBD-AWS
-        run: zarf package publish zarf-package-*.tar.zst oci://ghcr.io/defenseunicorns/packages
+      - name: Publish DUBBD-AWS Package
+        run: zarf package publish "$DUBBD_AWS_PACKAGE_NAME" "$OCI_URL"
         working-directory: aws
         timeout-minutes: 60
