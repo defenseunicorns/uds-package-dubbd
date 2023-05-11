@@ -1,0 +1,26 @@
+kind: ZarfPackageConfig
+metadata:
+  name: podinfo
+  description: "An example mission app"
+
+components:
+  - name: podinfo
+    description: "Tiny web application that showcases best practices of running microservices"
+    required: true
+    charts:
+      - name: podinfo
+        version: 6.0.0-bb.7
+        namespace: podinfo
+        url: https://repo1.dso.mil/big-bang/apps/sandbox/podinfo.git
+        gitPath: chart
+        valuesFiles:
+          - values.yaml
+    images:
+      - "ghcr.io/stefanprodan/podinfo:6.3.5"
+    actions:
+      onDeploy:
+        after:
+          - cmd: ./zarf tools kubectl patch ns podinfo  --type=merge -p '{"metadata":{"labels":{"istio-injection":"enabled"}}}'
+            description: "Add istio-injection: enabled label to the podinfo namespace"
+          - cmd: ./zarf tools kubectl patch deployment podinfo -n podinfo --type=merge -p '{"spec":{"template":{"metadata":{"labels":{"protect":"keycloak"}}}}}'
+            description: "Add protect: keycloak label to the podinfo application"
