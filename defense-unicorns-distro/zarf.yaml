@@ -2,7 +2,7 @@ kind: ZarfPackageConfig
 metadata:
   name: big-bang
   description: "Defense Unicorns Big Bang Distro"
-  version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
+  version: 0.0.1
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
   # Big Bang / Iron Bank are only amd64
