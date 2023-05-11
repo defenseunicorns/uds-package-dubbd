@@ -1,4 +1,3 @@
-
 name: DUBBD AWS
 
 on:
@@ -13,7 +12,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -41,14 +39,14 @@ jobs:
         working-directory: .github/workflows/eks
 
         # We need to create a unique cluster name to avoid naming collisions,
-        # and make it available as an output since it is used in more than step in this pipeline.
+        # and make it available as an output since it is used in more than one step in this pipeline.
       - name: Set Cluster Name
         id: cluster-name
         run: echo "cluster-name=dubbd-aws-$(openssl rand -hex 8)" >> $GITHUB_OUTPUT
 
-      - name: Create EKS cluster and Zarf Init
+      - name: Create EKS cluster
         run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=${{ steps.cluster-name.outputs.cluster-name }}
-        working-directory: .github/workflows/eks #just holds the zarf-config
+        working-directory: .github/workflows/eks
         id: create-cluster
 
         # Capture the output of the command as an environment variable
@@ -84,7 +82,6 @@ jobs:
         working-directory: aws
         timeout-minutes: 60
 
-
       - name: Deploy DUBBD-AWS
         run: zarf package deploy zarf-package-*.tar.zst --confirm --set loki_force_destroy=true --set loki_kms_key_arn=${{ steps.get.outputs.kms_key_arn }} --set name=big-bang-${GITHUB_SHA:0:7} --set eks_oidc_provider_arn=arn:aws:iam::248783118822:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/${{ steps.oidc.outputs.oidc }}
         working-directory: aws
@@ -103,11 +100,9 @@ jobs:
           ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
         working-directory: .github/workflows/eks
 
-
       - name: Remove KMS Key to be replaced by UDS IaC module later
         if: always()
         working-directory: .github/workflows/kms
         run: 
         # eventually have zarf deploy   \
           terraform destroy -auto-approve
-
