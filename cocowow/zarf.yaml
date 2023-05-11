@@ -52,6 +52,7 @@ components:
         - ../values/authservice.yaml
         - ../values/keycloak.yaml
         - customization.yaml
+        - custom.yaml
   - name: configure-keycloak
     required: true
     files:
@@ -80,31 +81,5 @@ components:
             description: "Add kiali client in keycloak"
           - cmd: ./kc-api/bin/kcadm.sh create clients -r cocowow -s clientId=neuvector -s enabled=true -s 'redirectUris=["https://neuvector.###ZARF_PKG_TMPL_DOMAIN###/openId_auth"]'
             description: "Add neuvector client in keycloak"
-          - cmd: ./kc-api/bin/kcadm.sh create clients -r cocowow -s clientId=###ZARF_PKG_TMPL_MISSION_APP_NAME### -s enabled=true -s 'redirectUris=["https://podinfo.###ZARF_PKG_TMPL_DOMAIN###/login/generic_oauth"]'
-            description: "Add a service account for the ###ZARF_PKG_TMPL_MISSION_APP_NAME### application"
-          - cmd: ./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=###ZARF_PKG_TMPL_MISSION_APP_NAME### --fields=secret | jq -r ".[].secret"
-            description: "Extract the secret string of the ###ZARF_PKG_TMPL_MISSION_APP_NAME### service account in Keycloak"
-            setVariables:
-            - name: MISSION_APP_SECRET
-          - cmd: ./scripts/update-admin-services-sso.sh
+          - cmd: ./scripts/update-admin-services-sso.sh 
             description: Update the chain data for the cluster's admin services
-  - name: mission-app
-    required: true
-    import:
-      path: podinfo
-      name: podinfo
-    files:
-      - source: scripts/update-authservice-secret.sh
-        target: update-secret.sh
-        executable: true
-    actions:
-      onDeploy:
-        after:
-          - cmd: ./update-secret.sh
-            description: Update the chain data within Authservice's secret
-          - cmd: ./zarf tools kubectl rollout restart deployment authservice -n authservice
-            description: "Restart authservice to pick up the updated config"
-          - cmd: ./zarf tools kubectl patch ns podinfo  --type=merge -p '{"metadata":{"labels":{"istio-injection":"enabled"}}}'
-            description: "Add istio-injection: enabled label to the podinfo namespace"
-          - cmd: ./zarf tools kubectl patch deployment podinfo -n podinfo --type=merge -p '{"spec":{"template":{"metadata":{"labels":{"protect":"keycloak"}}}}}'
-            description: "Add protect: keycloak label to the podinfo application"
