@@ -91,6 +91,7 @@ jobs:
         timeout-minutes: 60
 
       - name: Remove DUBBD-AWS
+        if: always()
         run: zarf package remove zarf-package-*.tar.zst --confirm
         working-directory: aws
         timeout-minutes: 60
