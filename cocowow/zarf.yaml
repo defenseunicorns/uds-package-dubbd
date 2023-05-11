@@ -9,11 +9,6 @@ metadata:
   # Big Bang / Iron Bank are only amd64
   architecture: amd64
 
-variables:
-  - name: MISSION_APP_NAME
-    value: "###ZARF_PKG_TMPL_MISSION_APP_NAME###"
-    default: "podinfo"
-
 components:
   - name: load-certs
     required: true
@@ -52,7 +47,6 @@ components:
         - ../values/authservice.yaml
         - ../values/keycloak.yaml
         - customization.yaml
-        - custom.yaml
   - name: configure-keycloak
     required: true
     files:
@@ -78,6 +72,10 @@ components:
           - cmd: ./kc-api/bin/kcadm.sh create clients -r cocowow -s clientId=kiali -s enabled=true -s 'redirectUris=["https://kiali.###ZARF_PKG_TMPL_DOMAIN###/kiali"]'
             description: "Add grafana client in keycloak"
           - cmd: ./kc-api/bin/kcadm.sh create clients -r cocowow -s clientId=grafana -s enabled=true -s 'redirectUris=["https://grafana.###ZARF_PKG_TMPL_DOMAIN###/login/generic_oauth"]'
+            description: "Add kiali client in keycloak"
+          - cmd: ./kc-api/bin/kcadm.sh create clients -r cocowow -s clientId=prometheus -s enabled=true -s 'redirectUris=["https://prometheus.###ZARF_PKG_TMPL_DOMAIN###/login/generic_oauth"]'
+            description: "Add kiali client in keycloak"
+          - cmd: ./kc-api/bin/kcadm.sh create clients -r cocowow -s clientId=alertmanager -s enabled=true -s 'redirectUris=["https://alertmanager.###ZARF_PKG_TMPL_DOMAIN###/login/generic_oauth"]'
             description: "Add kiali client in keycloak"
           - cmd: ./kc-api/bin/kcadm.sh create clients -r cocowow -s clientId=neuvector -s enabled=true -s 'redirectUris=["https://neuvector.###ZARF_PKG_TMPL_DOMAIN###/openId_auth"]'
             description: "Add neuvector client in keycloak"
