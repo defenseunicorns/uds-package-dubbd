@@ -21,15 +21,14 @@ variable "kms_key_deletion_window" {
 }
 
 module "kms_key" {
-  source = "github.com/defenseunicorns/uds-iac-aws-kms?ref=oursler-initial-testing"
+  source = "github.com/defenseunicorns/uds-iac-aws-kms"
   kms_key_description = "KMS Key for DUBBD"
   kms_key_deletion_window = var.kms_key_deletion_window
   kms_key_alias_name_prefix = local.kms_key_alias_name_prefix
 }
 
 module "S3" {
-  #source = "github.com/defenseunicorns/delivery-aws-iac//modules/s3-irsa"
-  source = "github.com/defenseunicorns/uds-iac-aws-s3?ref=oursler-initial-testing"
+  source = "github.com/defenseunicorns/uds-iac-aws-s3"
   name_prefix = "${var.name}"
   eks_oidc_provider_arn = "${var.eks_oidc_provider_arn}"
   kubernetes_service_account = "logging-loki"
