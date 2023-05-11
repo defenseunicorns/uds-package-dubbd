@@ -1,6 +1,6 @@
 kind: ZarfPackageConfig
 metadata:
-  name: big-bang
+  name: big-bang-distro
   description: "Defense Unicorns Big Bang Distro"
   version: 0.0.1
   url: https://p1.dso.mil/products/big-bang
