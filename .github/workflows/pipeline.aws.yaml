@@ -44,11 +44,7 @@ jobs:
         run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=aws-${GITHUB_SHA:0:7}
         working-directory: .github/workflows/eks #just holds the zarf-config
         id: create-cluster
-        # Capture the output of the command as an environment variable
-      - name: get oidc
-        id: oidc
-        run: echo oidc=$(aws eks describe-cluster --name aws-${GITHUB_SHA:0:7} --query "cluster.identity.oidc" --output text | cut -d '/' -f 5) >> $GITHUB_OUTPUT
-
+         
       - name: Create KMS Key to be replaced by UDS IaC module later
         working-directory: .github/workflows/kms
         id: create-kms
@@ -60,10 +56,7 @@ jobs:
         working-directory: .github/workflows/kms
         id: get
         run: echo "kms_key_arn=$(terraform output -raw kms_key_arn)" >> $GITHUB_OUTPUT
-      - name: debug
-        run: echo ${{ steps.get.outputs.kms_key_arn }} ${{ env.OIDC }} env $KMS
-        env:
-          OIDC: $${{steps.get-kms.outputs.stdout}}
+
       - name: Show Cluster
         run: |
           kubectl get nodes
@@ -79,7 +72,7 @@ jobs:
 
 
       - name: Deploy DUBBD-AWS
-        run: zarf package deploy zarf-package-*.tar.zst --confirm --set loki_force_destroy=true --set loki_kms_key_arn=${{ steps.get.outputs.kms_key_arn }} --set name=big-bang-${GITHUB_SHA:0:7} --set eks_oidc_provider_arn=arn:aws:iam::248783118822:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/${{ steps.oidc.outputs.oidc }}
+        run: zarf package deploy zarf-package-*.tar.zst --confirm --set loki_force_destroy=true --set loki_kms_key_arn=${{ steps.get.outputs.kms_key_arn }} --set name=big-bang-${GITHUB_SHA:0:7} 
         working-directory: aws
         timeout-minutes: 60
 
