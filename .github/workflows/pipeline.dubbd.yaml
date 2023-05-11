@@ -39,8 +39,9 @@ jobs:
         working-directory: .github/workflows/eks
 
       - name: Create EKS cluster
-        run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=${GITHUB_SHA:0:7}
+        run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name="dubbd-$(openssl rand -hex 8)"
         working-directory: .github/workflows/eks
+
         # eventually have zarf deploy   \
       - name: Show Cluster
         run: |

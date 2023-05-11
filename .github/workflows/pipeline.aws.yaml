@@ -40,14 +40,21 @@ jobs:
         run: zarf package create --confirm
         working-directory: .github/workflows/eks
 
+        # We need to create a unique cluster name to avoid naming collisions,
+        # and make it available as an output since it is used in more than step in this pipeline.
+      - name: Set Cluster Name
+        id: cluster-name
+        run: echo "cluster-name=dubbd-aws-$(openssl rand -hex 8)" >> $GITHUB_OUTPUT
+
       - name: Create EKS cluster and Zarf Init
-        run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=aws-${GITHUB_SHA:0:7}
+        run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=${{ steps.cluster-name.outputs.cluster-name }}
         working-directory: .github/workflows/eks #just holds the zarf-config
         id: create-cluster
+
         # Capture the output of the command as an environment variable
       - name: get oidc
         id: oidc
-        run: echo oidc=$(aws eks describe-cluster --name aws-${GITHUB_SHA:0:7} --query "cluster.identity.oidc" --output text | cut -d '/' -f 5) >> $GITHUB_OUTPUT
+        run: echo oidc=$(aws eks describe-cluster --name ${{ steps.cluster-name.outputs.cluster-name }} --query "cluster.identity.oidc" --output text | cut -d '/' -f 5) >> $GITHUB_OUTPUT
 
       - name: Create KMS Key to be replaced by UDS IaC module later
         working-directory: .github/workflows/kms
