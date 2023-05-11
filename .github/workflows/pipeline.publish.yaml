@@ -13,8 +13,8 @@ jobs:
   publish-packages:
     env:
       OCI_URL: oci://ghcr.io/defenseunicorns/uds
-      DUBBD_PACKAGE_NAME: zarf-package-big-bang-amd64-*.tar.zst
-      DUBBD_AWS_PACKAGE_NAME: zarf-package-big-bang-distro-aws-amd64-*.tar.zst
+      PACKAGE_PREFIX: zarf-package
+      PACKAGE_ARCH: amd64
 
     runs-on: ubuntu-latest
   
@@ -54,11 +54,21 @@ jobs:
         timeout-minutes: 60
       
       - name: Publish DUBBD Package
-        run: zarf package publish "$DUBBD_PACKAGE_NAME" "$OCI_URL"
         working-directory: defense-unicorns-distro
         timeout-minutes: 60
+        run: |
+          PACKAGE_NAME="$(yq '.metadata.name' zarf.y*ml)"
+
+          PACKAGE_VERSION="$(yq '.metadata.version' zarf.y*ml)"
+
+          zarf package publish "$PACKAGE_PREFIX-$PACKAGE_NAME-$PACKAGE_ARCH-$PACKAGE_VERSION" "$OCI_URL"
 
       - name: Publish DUBBD-AWS Package
-        run: zarf package publish "$DUBBD_AWS_PACKAGE_NAME" "$OCI_URL"
         working-directory: aws
         timeout-minutes: 60
+        run: |
+          PACKAGE_NAME="$(yq '.metadata.name' zarf.y*ml)"
+
+          PACKAGE_VERSION="$(yq '.metadata.version' zarf.y*ml)"
+
+          zarf package publish "$PACKAGE_PREFIX-$PACKAGE_NAME-$PACKAGE_ARCH-$PACKAGE_VERSION" "$OCI_URL"
