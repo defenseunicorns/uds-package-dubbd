@@ -20,14 +20,14 @@ kubectl rollout restart deployment monitoring-monitoring-grafana -n monitoring |
 
 #Prometheus SSO:
 SECRET=$(./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=prometheus --fields=secret | jq -r ".[].secret")
-ENCODED_VALUE=$(echo $SECRET|base64)
-kubectl patch secret -n monitoring grafana-sso --type=merge -p '{"data": {"client_secret": "'"${ENCODED_VALUE}"'"}}' || true
+ENCODED_VALUE=$(kubectl get secret authservice -n authservice -o jsonpath='{.data.config\.json}'|base64 -d|sed "s/CHANGE_ME_PROMETHEUS_SSO_SECRET/$SECRET/g"|base64|tr -d '\n' | sed 's/ //g')
+kubectl patch secret -n authservice authservice --type=merge -p '{"data": {"config.json": "'"${ENCODED_VALUE}"'"}}' || true
 kubectl rollout restart deployment monitoring-monitoring-prometheus -n monitoring || true
 
 #Alertmanager SSO:
 SECRET=$(./kc-api/bin/kcadm.sh get clients -r cocowow -q clientId=alertmanager --fields=secret | jq -r ".[].secret")
-ENCODED_VALUE=$(echo $SECRET|base64)
-kubectl patch secret -n monitoring grafana-sso --type=merge -p '{"data": {"client_secret": "'"${ENCODED_VALUE}"'"}}' || true
+ENCODED_VALUE=$(kubectl get secret authservice -n authservice -o jsonpath='{.data.config\.json}'|base64 -d|sed "s/CHANGE_ME_ALERTMANAGER_SSO_SECRET/$SECRET/g"|base64|tr -d '\n' | sed 's/ //g')
+kubectl patch secret -n authservice authservice --type=merge -p '{"data": {"config.json": "'"${ENCODED_VALUE}"'"}}' || true
 kubectl rollout restart deployment monitoring-monitoring-alertmanager -n monitoring || true
 
 #Neuvector SSO:
