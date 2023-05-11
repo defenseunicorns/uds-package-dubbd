@@ -35,7 +35,6 @@ module "S3" {
   kubernetes_service_account = "logging-loki"
   kubernetes_namespace = "logging"
   #dynamodb_enabled = "false"
-  #kms_key_arn = "${var.kms_key_arn}"
   kms_key_arn = "${module.kms_key.kms_key_arn}"
   force_destroy = "${var.force_destroy}"
 }
@@ -68,15 +67,6 @@ variable "name" {
 
 variable "eks_oidc_provider_arn" {
 
-}
-
-variable "kms_key_arn" {
-
-}
-
-variable "key_alias" {
-  description = "alias for KMS Key"
-  default = "bigbang-loki"
 }
 
 variable "force_destroy" {
