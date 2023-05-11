@@ -1,4 +1,4 @@
-name: Publish Dubbd
+name: Publish DUBBD Packages
 
 on:
   push:
