@@ -4,87 +4,57 @@ Pre-built Zarf Package of [DoD-Platform-One/big-bang](https://github.com/DoD-Pla
 
 ## Prerequisites
 
-- Zarf is installed. Current version used is: [v0.26.1](https://github.com/defenseunicorns/zarf/releases/tag/v0.26.1)
-- Optional: A working Kubernetes cluster. e.g k3d, k3s, KinD, etc. If necessary, Zarf can be used to deploy a built-in k3s distribution.
+- Zarf is installed locally, minimum version being [v0.26.1](https://github.com/defenseunicorns/zarf/releases/tag/v0.26.1)
+- Optional: A working Kubernetes cluster on v1.26+ -- e.g k3d, k3s, KinD, etc (Zarf can be used to deploy a built-in k3s distribution)
+- Working kube context (`kubectl get nodes` <-- this command works)
 
-## Build the package
+## DUBBD repo details
 
-```bash
-cd defense-unicorns-distro
-zarf package create --confirm
-```
+- [aws](./aws/) - _DUBBD for aws (EKS)_
+  - loki - _iac for loki_
+  - values - _values file overrides for aws_
+- [cocowow](./cocowow/) - _DUBBD for cocowow_
+- [defense-unicorns-distro](./defense-unicorns-distro/) - _base DUBBD package definition_
+  - manifests - _k8s manifests_
+    - alerts - _k8s manifests for alerting_
+  - scripts - _scripts for zarf package_
+- [k3d](./k3d/) - _DUBBD for k3d (local development)_
+  - values - _values file overrides for k3d_
+- [values](./values/) - _shared values files_
 
-## Deploy the package
-
-```bash
-zarf package deploy --confirm zarf-package-big-bang-*.tar.zst
-```
-
-### Prereqs
-
-Assumption is that there's a Kubernetes cluster that's already had `zarf init` run on it.
-
-### Install Big Bang
-
-Deploy the Big Bang package created in the Build step above:
+## Example DUBBD Deployment - using pre-built OCI packages [here](https://github.com/orgs/defenseunicorns/packages?repo_name=zarf-package-big-bang)
 
 ```bash
-zarf package deploy zarf-package-big-bang-amd64-*.tar.zst --confirm
-```
+# Create a deployment directory and change to that directory
+export DUBBD_ENV=dev
+mkdir ${DUBBD_ENV}-dubbd-deploy && cd $_
 
-Check whether the deployment succeeded. If the deployment is successful, then you should see this message from the HelmRelease resource in the cluster.
+# Stage any files needed for the environment (ex: certs)
+# - potentially from KMS
+# - or from local path
+# - or some other method to retrieve certs
 
-``` bash
-$ kubectl get helmrelease -A
-NAMESPACE   NAME             AGE     READY   STATUS
-bigbang     bigbang          9m28s   True    Release reconciliation succeeded
-bigbang     istio            9m16s   True    Release reconciliation succeeded
-bigbang     istio-operator   9m16s   True    Release reconciliation succeeded
-bigbang     jaeger           9m16s   True    Release reconciliation succeeded
-bigbang     kiali            9m16s   True    Release reconciliation succeeded
-bigbang     kyverno          9m16s   True    Release reconciliation succeeded
-bigbang     loki             9m16s   True    Release reconciliation succeeded
-bigbang     minio            9m16s   True    Release reconciliation succeeded
-bigbang     minio-operator   9m16s   True    Release reconciliation succeeded
-bigbang     monitoring       9m16s   True    Release reconciliation succeeded
-bigbang     promtail         9m16s   True    Release reconciliation succeeded
-```
+# Create a zarf-config.yaml for the environment below is an example
+cat <<EOF> zarf-config.yaml
+package:
+  deploy:
+    set:
+      domain: bigbang.dev
+      public_key_file: bigbang.dev.key
+      public_cert_file: bigbang.dev.cert
+      name: "${DUBBD_ENV}-big-bang-cluster"
+EOF
 
-## Defense Unicorns Big Bang Distro for AWS (DUBBD-AWS)
+# Verify all prereqs are met
 
-When running Big Bang on AWS, Loki is configured to use S3 for storage for better persistance.  The Zarf package for DUBBD-AWS is created by overlaying a new loki values file on top of the existing DUBBD zarf file via:
+# (Optionally) Login to the registry for private images
+# https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic
+set +o history
+export CR_PAT="YOUR-PAT-HERE"
+export CR_USR="YOUR-USERNAME_HERE"
+echo $CR_PAT | zarf tools registry login ghcr.io --username $CR_USR --password-stdin
+set -o history
 
-```yaml
-  - name: bigbang
-    required: true
-    import:
-      path: ../defense-unicorns-distro
-    extensions:
-      bigbang:
-        version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
-        valuesFiles:
-        - values/aws-loki.yaml
-```
-
-In order for this configuration to work cleanly, DUBBD-AWS also provisions an S3 bucket from our [IaC Repo](https://github.com/defenseunicorns/iac/tree/main/modules/s3-irsa) that provides encryption at rest and a role to access the S3 bucket that gets used by Loki via [IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html).
-
-## Defense Unicorns Big Bang Distro for Local Development (DUBBD-local-dev)
-
-> **Warning**
->
-> - Minimum compute requirements are at LEAST 48 GB RAM and 12 virtual CPU threads (preferrably in a VM)
-> - This has only been tested using k3d at this point
-
-When running Big Bang locally, it is common to use local storage using hostpath and some other helm component values must be adjusted.  The Zarf package for DUBBD-local-dev is created by overlaying a new local dev values file on top of the existing DUBBD zarf file via:
-
-```yaml
-  - name: bigbang
-    required: true
-    import:
-      path: ../defense-unicorns-distro
-    extensions:
-      bigbang:
-        version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
-        valuesFiles:
-        - values/local-dev.yaml
+# Run the zarf package deploy command with desired release (K3d example)
+zarf package deploy oci://ghcr.io/defenseunicorns/packages/big-bang-distro-k3d/big-bang-distro-k3d:0.0.1-amd64 --oci-concurrency=15
 ```
