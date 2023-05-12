@@ -37,11 +37,11 @@ jobs:
           password: ${{ secrets.REGISTRY1_PASSWORD }}
           
       - name: Package EKSCTL 
-        run: zarf package create --confirm
+        run: zarf package create --set cluster_name=big-bang-${GITHUB_SHA:0:7} --confirm
         working-directory: .github/workflows/eks
 
       - name: Create EKS cluster and Zarf Init
-        run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=big-bang-${GITHUB_SHA:0:7}
+        run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm 
         working-directory: .github/workflows/eks #just holds the zarf-config
         id: create-cluster
          
@@ -83,9 +83,7 @@ jobs:
 
       - name: Teardown EKS cluster
         if: always()
-        # can't do a zarf package remove since there's no kubernetes cluster.
-        run: |
-          ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
+        run: zarf package remove zarf-package-*.tar.zst  --confirm
         working-directory: .github/workflows/eks
 
 
