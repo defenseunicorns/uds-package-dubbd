@@ -30,7 +30,7 @@ module "kms_key" {
 module "S3" {
   source = "github.com/defenseunicorns/uds-iac-aws-s3"
   name_prefix = "${var.name}"
-  eks_oidc_provider_arn = "${var.eks_oidc_provider_arn}"
+  eks_oidc_provider_arn = "arn:aws:iam::331924599098:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/01E86ADDF65C6188945E847B01756A1B" #"${var.eks_oidc_provider_arn}"
   kubernetes_service_account = "logging-loki"
   kubernetes_namespace = "logging"
   #dynamodb_enabled = "false"
@@ -66,6 +66,11 @@ variable "name" {
 
 variable "eks_oidc_provider_arn" {
 
+}
+
+variable "key_alias" {
+  description = "alias for KMS Key"
+  default = "bigbang-loki"
 }
 
 variable "force_destroy" {
