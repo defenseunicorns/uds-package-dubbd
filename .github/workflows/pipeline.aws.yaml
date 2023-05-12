@@ -72,7 +72,7 @@ jobs:
 
 
       - name: Deploy DUBBD-AWS
-        run: zarf package deploy zarf-package-*.tar.zst --confirm --set loki_force_destroy=true --set loki_kms_key_arn=${{ steps.get.outputs.kms_key_arn }} --set name=big-bang-${GITHUB_SHA:0:7} 
+        run: zarf package deploy zarf-package-*.tar.zst --confirm --set loki_force_destroy=true --set loki_kms_key_arn=${{ steps.get.outputs.kms_key_arn }} --set name=aws-${GITHUB_SHA:0:7} 
         working-directory: aws
         timeout-minutes: 60
 
