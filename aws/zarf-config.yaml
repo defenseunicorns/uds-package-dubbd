@@ -1,19 +1,19 @@
 package:
   create: 
-    max_package_size: "1000000000"
+    max_package_size: 1000000000
     set:
       # renovate: datasource=gitlab-tags depName=big-bang/bigbang versioning=semver registryUrl=https://repo1.dso.mil
-      bigbang_version: "2.1.0"
-      terraform_version: "1.4.2"
+      bigbang_version: 2.1.0
+      package_version: 0.0.1
+      terraform_version: 1.4.2
       terraform_provider_aws_version: 4.59.0
   deploy:
     set:
       domain: bigbang.dev
       public_key_file: bigbang.dev.key
       public_cert_file: bigbang.dev.cert
-      name: "big-bang-aws" # maybe inject something here for the GH PR?
+      name: big-bang-aws # maybe inject something here for the GH PR?
       #eks_oidc_provider_arn: "arn:aws:iam::111111111111:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A1A"
       #loki_kms_key_arn: "arn:aws:kms:us-west-2:000000000000:key/mrk-0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a"
       #loki_kms_key_alias: "big-bang-loki"
       #loki_force_destroy: "true"
-
