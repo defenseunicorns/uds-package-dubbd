@@ -3,25 +3,15 @@ provider "aws" {
 
 }
 
-variable "name" {
-    description = "Name for cluster"
-}
-
 data "aws_eks_cluster" "existing" {
   name = var.name
 }
 
 data "aws_caller_identity" "current" {}
 
-data "aws_partition" "current" {}
-
 locals {
   oidc_url_without_protocol = substr(data.aws_eks_cluster.existing.identity[0].oidc[0].issuer, 8, -1) # removes "https://"
-  oidc_arn                  = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/${local.oidc_url_without_protocol}"
-}
-
-output "eks_oidc_arn"{
-    value = local.oidc_arn
+  oidc_arn                  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/${local.oidc_url_without_protocol}"
 }
 
 module "S3" {
@@ -60,6 +50,10 @@ output "dynamodb_name" {
 output "eks_cluster_oidc_arn" {
   description = "The ARN of the OIDC Provider of the EKS Cluster"
   value       = local.oidc_arn
+}
+
+variable "name" {
+    description = "Name for cluster"
 }
 
 variable "kms_key_arn" {
