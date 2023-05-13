@@ -3,12 +3,12 @@ provider "aws" {
 
 }
 
-variable "cluster_name" {
+variable "name" {
     description = "Name for cluster"
 }
 
 data "aws_eks_cluster" "existing" {
-  name = var.cluster_name
+  name = var.name
 }
 
 data "aws_caller_identity" "current" {}
@@ -26,7 +26,7 @@ output "eks_oidc_arn"{
 
 module "S3" {
     source = "github.com/defenseunicorns/delivery-aws-iac//modules/s3-irsa"
-    name_prefix = "${var.cluster_name}"
+    name_prefix = "${var.name}"
     eks_oidc_provider_arn = local.oidc_arn
     kubernetes_service_account = "logging-loki"
     kubernetes_namespace = "logging"
