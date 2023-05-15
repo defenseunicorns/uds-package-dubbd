@@ -2,7 +2,7 @@ kind: ZarfPackageConfig
 metadata:
   name: big-bang-distro
   description: "Defense Unicorns Big Bang Distro"
-  version: "###ZARF_PKG_VAR_PACKAGE_VERSION###"
+  version: "###ZARF_PKG_TMPL_PACKAGE_VERSION###"
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
   # Big Bang / Iron Bank are only amd64
@@ -82,7 +82,8 @@ components:
       onDeploy:
         before:
         - cmd: "./zarf tools kubectl version --short || true"
-          setVariable: OUTPUT
+          setVariables:
+            - name: OUTPUT
         after:
         - cmd: "./preflight.sh"
     files:
@@ -151,4 +152,4 @@ components:
         - ../values/monitoring.yaml
         - ../values/neuvector.yaml
         - ../values/tempo.yaml
- 
+        - ../values/tempo.yaml
