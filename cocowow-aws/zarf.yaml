@@ -120,8 +120,6 @@ components:
         - values/aws-loki.yaml
   - name: load-certs-keycloak
     required: true
-    import:
-      path: ../defense-unicorns-distro
     files:
       - source: ../defense-unicorns-distro/scripts/cat_keycloak_cert.sh
         target: cat_keycloak_cert.sh
