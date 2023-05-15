@@ -3,7 +3,7 @@ kind: ZarfPackageConfig
 metadata:
   name: big-bang-distro-aws
   description: "Defense Unicorns Big Bang Distro"
-  version: "###ZARF_PKG_VAR_PACKAGE_VERSION###"
+  version: "###ZARF_PKG_TMPL_PACKAGE_VERSION###"
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
   # Big Bang / Iron Bank are only amd64
@@ -14,6 +14,9 @@ metadata:
   vendor: Defense Unicorns
 
 variables:
+- name: PACKAGE_VERSION
+  description: "The version of the Zarf package that will be published to the registry"
+
 - name: TERRAFORM_VERSION
 - name: TERRAFORM_PROVIDER_AWS_VERSION
 

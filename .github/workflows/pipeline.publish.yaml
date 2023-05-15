@@ -42,12 +42,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
     
       - name: Create DUBBD Package
-        run: zarf package create --confirm
+        run: zarf package create --confirm --set package_version=$GITHUB_REF_NAME
         working-directory: defense-unicorns-distro
         timeout-minutes: 60
 
       - name: Create DUBBD-AWS Package
-        run: zarf package create --confirm
+        run: zarf package create --confirm --set package_version=$GITHUB_REF_NAME
         working-directory: aws
         timeout-minutes: 60
       

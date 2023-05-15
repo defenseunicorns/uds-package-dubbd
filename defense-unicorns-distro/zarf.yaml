@@ -9,6 +9,9 @@ metadata:
   architecture: amd64
 
 variables:
+- name: PACKAGE_VERSION
+  description: "The version of the Zarf package that will be published to the registry"
+
 - name: BIGBANG_VERSION
 - name: DOMAIN
   default: bigbang.dev

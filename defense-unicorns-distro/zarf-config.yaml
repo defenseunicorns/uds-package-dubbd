@@ -4,7 +4,6 @@ package:
     set:
       # renovate: datasource=gitlab-tags depName=big-bang/bigbang versioning=semver registryUrl=https://repo1.dso.mil
       bigbang_version: 2.1.0
-      package_version: 0.0.1
   deploy:
     set:
       domain: bigbang.dev
