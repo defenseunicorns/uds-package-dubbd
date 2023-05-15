@@ -9,18 +9,46 @@ resource "random_id" "default" {
 }
 
 # taken from zarf bb repo
-locals{
-    kms_key_alias_name_prefix  = "alias/dubbd-aws-testing-${lower(random_id.default.hex)}"
-}
-
-# taken from zarf bb repo
 variable "kms_key_deletion_window" {
   description = "Waiting period for scheduled KMS Key deletion. Can be 7-30 days."
   type        = number
   default     = 7
 }
 
+variable "create_kms_key" {
+  description = "Whether to create a new KMS key to be used with the S3 bucket.  If not, you must pass in your own key ARN."
+  type        = bool
+  default     = true
+}
+
+variable "kms_key_arn" {
+  description = "User-provided KMS key in the case this will not create one for you."
+  type        = string
+  default     = null
+}
+
+
+variable "name" {
+    description = "Name for cluster"
+}
+
+variable "eks_oidc_provider_arn" {
+
+}
+
+variable "force_destroy" {
+  description = "Option to set force destroy"
+  type        = bool
+  default     = false
+}
+
+locals {
+  kms_key_alias_name_prefix  = "alias/dubbd-aws-${lower(random_id.default.hex)}"
+}
+
 module "kms_key" {
+  count = var.create_kms_key ? 1 : 0
+
   source = "github.com/defenseunicorns/uds-iac-aws-kms"
   kms_key_description = "KMS Key for DUBBD"
   kms_key_deletion_window = var.kms_key_deletion_window
@@ -30,11 +58,10 @@ module "kms_key" {
 module "S3" {
   source = "github.com/defenseunicorns/uds-iac-aws-s3"
   name_prefix = "${var.name}"
-  eks_oidc_provider_arn = "arn:aws:iam::331924599098:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/01E86ADDF65C6188945E847B01756A1B" #"${var.eks_oidc_provider_arn}"
+  eks_oidc_provider_arn = "${var.eks_oidc_provider_arn}"
   kubernetes_service_account = "logging-loki"
   kubernetes_namespace = "logging"
-  #dynamodb_enabled = "false"
-  kms_key_arn = "${module.kms_key.kms_key_arn}"
+  kms_key_arn = var.create_kms_key ? "${module.kms_key[0].kms_key_arn}" : var.kms_key_arn
   force_destroy = "${var.force_destroy}"
 }
 
@@ -54,27 +81,4 @@ output "s3" {
 
 output "s3_bucket" {
   value =  module.S3.s3_bucket
-}
-
-#output "dynamodb_name" {
-  #value =  module.S3.dynamodb_name
-#}
-
-variable "name" {
-    description = "Name for cluster"
-}
-
-variable "eks_oidc_provider_arn" {
-
-}
-
-variable "key_alias" {
-  description = "alias for KMS Key"
-  default = "bigbang-loki"
-}
-
-variable "force_destroy" {
-  description = "Option to set force destroy"
-  type        = bool
-  default     = false
 }
