@@ -43,7 +43,6 @@ jobs:
           SHA: ${{ github.sha }}
         run: |
           echo "eks_cluster_name=big-bang-${SHA:0:7}" >> $GITHUB_OUTPUT
-          #EKS_CLUSTER_NAME: big-bang-${{ github.sha }}
           echo "$eks_cluster_name"
           echo "$GITHUB_CONTEXT"
 

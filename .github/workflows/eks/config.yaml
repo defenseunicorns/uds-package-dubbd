@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: ###ZARF_VAR_CLUSTER_NAME###
+  name: "###ZARF_VAR_CLUSTER_NAME###"
   region: us-west-2
   version: "1.26"
 
