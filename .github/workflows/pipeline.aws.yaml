@@ -37,8 +37,8 @@ jobs:
           password: ${{ secrets.REGISTRY1_PASSWORD }}
           
       - name: Get short SHA
-        Id: get-short-sha
-        Run: |
+        id: get-short-sha
+        run: |
           id=$(echo ${{github.sha}} | cut -c 1-7)
           echo "short_sha=${id}" >> $GITHUB_OUTPUT
 
