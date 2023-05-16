@@ -9,11 +9,8 @@ data "aws_eks_cluster" "existing" {
 
 data "aws_caller_identity" "current" {}
 
-data "aws_partition" "current" {}
-
 locals {
   oidc_url_without_protocol = substr(data.aws_eks_cluster.existing.identity[0].oidc[0].issuer, 8, -1) # removes "https://"
-
   oidc_arn                  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/${local.oidc_url_without_protocol}"
 }
 
