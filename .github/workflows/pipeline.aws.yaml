@@ -36,37 +36,42 @@ jobs:
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
           
+      - name: Set eks_cluster_name
+        id: get_cluster_name
+        env:
+          SHA: ${{ github.sha }}
+        run: |
+          echo "eks_cluster_name=big-bang-${SHA:0:7}" >> $GITHUB_OUTPUT
+          echo "short_sha=${SHA:0:7}" >> $GITHUB_OUTPUT
+
+
       - name: Package EKSCTL 
         run: zarf package create --confirm
         working-directory: .github/workflows/eks
 
       - name: Create EKS cluster and Zarf Init
-        run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=aws-${GITHUB_SHA:0:7}
+        run: |
+          echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+          zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }}
         working-directory: .github/workflows/eks #just holds the zarf-config
         id: create-cluster
-        # Capture the output of the command as an environment variable
-      - name: get oidc
-        id: oidc
-        run: echo oidc=$(aws eks describe-cluster --name aws-${GITHUB_SHA:0:7} --query "cluster.identity.oidc" --output text | cut -d '/' -f 5) >> $GITHUB_OUTPUT
-
+         
       - name: Create KMS Key to be replaced by UDS IaC module later
         working-directory: .github/workflows/kms
         id: create-kms
         run: |
           terraform init
-          terraform apply -auto-approve --var kms_key_alias=${GITHUB_SHA:0:7}
+          terraform apply -auto-approve --var kms_key_alias=${{ steps.get_cluster_name.outputs.short_sha }}
 
       - name: get KMS key
         working-directory: .github/workflows/kms
         id: get
         run: echo "kms_key_arn=$(terraform output -raw kms_key_arn)" >> $GITHUB_OUTPUT
-      - name: debug
-        run: echo ${{ steps.get.outputs.kms_key_arn }} ${{ env.OIDC }} env $KMS
-        env:
-          OIDC: $${{steps.get-kms.outputs.stdout}}
+
       - name: Show Cluster
         run: |
           kubectl get nodes
+          kubectl config get-contexts
 
       - name: Zarf init
         run: |
@@ -79,7 +84,10 @@ jobs:
 
 
       - name: Deploy DUBBD-AWS
-        run: zarf package deploy zarf-package-*.tar.zst --confirm --set loki_force_destroy=true --set loki_kms_key_arn=${{ steps.get.outputs.kms_key_arn }} --set name=big-bang-${GITHUB_SHA:0:7} --set eks_oidc_provider_arn=arn:aws:iam::248783118822:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/${{ steps.oidc.outputs.oidc }}
+        run: |
+          echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+          zarf package deploy zarf-package-*.tar.zst --confirm --set loki_force_destroy=true --set loki_kms_key_arn=${{ steps.get.outputs.kms_key_arn }} --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+
         working-directory: aws
         timeout-minutes: 60
 
