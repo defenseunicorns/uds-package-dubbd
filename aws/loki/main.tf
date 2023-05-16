@@ -55,9 +55,6 @@ variable "name" {
     description = "Name for cluster"
 }
 
-variable "eks_oidc_provider_arn" {
-
-}
 
 variable "force_destroy" {
   description = "Option to set force destroy"
