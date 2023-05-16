@@ -19,8 +19,9 @@ variable "create_kms_key" {
   description = "Whether to create a new KMS key to be used with the S3 bucket.  If not, you must pass in your own key ARN."
   type        = bool
   default     = true
+}
 
-  data "aws_eks_cluster" "existing" {
+data "aws_eks_cluster" "existing" {
   name = var.name
 }
 
