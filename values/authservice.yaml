@@ -1,5 +1,5 @@
 sso:
-  url: https://keycloak.###ZARF_VAR_DOMAIN###/auth/realms/cocowow
+  url: https://keycloak.###ZARF_VAR_DOMAIN###/auth/realms/###ZARF_VAR_REALM###
   certificateAuthority: 
     cert: |
       -----BEGIN CERTIFICATE-----

@@ -80,12 +80,12 @@ addons:
             quarkus.properties: |-
               quarkus.http.non-application-root-path=/
               # custom redirects
-              quarkus.kc-routing.path-redirect./=/auth/realms/cocowow/account
-              quarkus.kc-routing.path-redirect./auth=/auth/realms/cocowow/account
-              quarkus.kc-routing.path-redirect./register=/auth/realms/cocowow/protocol/openid-connect/registrations?client_id=account&response_type=code
-              quarkus.kc-routing.path-prefix./oauth/authorize=/auth/realms/cocowow/protocol/openid-connect/auth
-              quarkus.kc-routing.path-filter./api/v4/user=/auth/realms/cocowow/protocol/openid-connect/userinfo
-              quarkus.kc-routing.path-filter./oauth/token=/auth/realms/cocowow/protocol/openid-connect/token
+              quarkus.kc-routing.path-redirect./=/auth/realms/###ZARF_VAR_REALM###/account
+              quarkus.kc-routing.path-redirect./auth=/auth/realms/###ZARF_VAR_REALM###/account
+              quarkus.kc-routing.path-redirect./register=/auth/realms/###ZARF_VAR_REALM###/protocol/openid-connect/registrations?client_id=account&response_type=code
+              quarkus.kc-routing.path-prefix./oauth/authorize=/auth/realms/###ZARF_VAR_REALM###/protocol/openid-connect/auth
+              quarkus.kc-routing.path-filter./api/v4/user=/auth/realms/###ZARF_VAR_REALM###/protocol/openid-connect/userinfo
+              quarkus.kc-routing.path-filter./oauth/token=/auth/realms/###ZARF_VAR_REALM###/protocol/openid-connect/token
               # block metrics and health enpoints from being exposed through the istio ingress
               quarkus.kc-routing.path-recursive-block./metrics=8443
               quarkus.kc-routing.path-recursive-block./health=8443
