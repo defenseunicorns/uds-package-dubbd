@@ -39,12 +39,21 @@ jobs:
         working-directory: defense-unicorns-distro
         timeout-minutes: 60
         
+      - name: Set eks_cluster_name
+        id: get_cluster_name
+        env:
+          SHA: ${{ github.sha }}
+        run: |
+          echo "short_sha=${SHA:0:7}" >> $GITHUB_OUTPUT
+
       - name: Package EKSCTL 
         run: zarf package create --confirm
         working-directory: .github/workflows/eks
 
       - name: Create EKS cluster
-        run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=dubbd-${GITHUB_SHA:0:7}
+        run: |
+          echo ${{ steps.get_cluster_name.outputs.short_sha }}
+          zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=${{ steps.get_cluster_name.outputs.short_sha }}
         working-directory: .github/workflows/eks
 
         # eventually have zarf deploy   \
