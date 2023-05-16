@@ -34,6 +34,11 @@ jobs:
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
     
+      - name: Create DUBBD
+        run: zarf package create --confirm --set package_version=$GITHUB_REF_NAME
+        working-directory: defense-unicorns-distro
+        timeout-minutes: 60
+        
       - name: Package EKSCTL 
         run: zarf package create --confirm
         working-directory: .github/workflows/eks
@@ -50,11 +55,6 @@ jobs:
       - name: Zarf init
         run: |
           zarf init -a amd64 --components=git-server --confirm
-
-      - name: Create DUBBD
-        run: zarf package create --confirm
-        working-directory: defense-unicorns-distro
-        timeout-minutes: 60
       
       - name: Deploy DUBBD
         run: zarf package deploy zarf-package-*.tar.zst --confirm -l debug
