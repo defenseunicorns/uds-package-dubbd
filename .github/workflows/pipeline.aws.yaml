@@ -61,7 +61,7 @@ jobs:
       - name: Create EKS cluster and Zarf Init
         run: |
           echo big-bang-${{ steps.get-short-sha.outputs.id}}
-          zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=big-bang-${{ steps.get-short-sha.outputs.id}}
+          zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=big-bang-${{ steps.get-short-sha.outputs.id }}
         working-directory: .github/workflows/eks #just holds the zarf-config
         id: create-cluster
          
@@ -70,7 +70,7 @@ jobs:
         id: create-kms
         run: |
           terraform init
-          terraform apply -auto-approve --var kms_key_alias=${{ steps.get-short-sha.outputs.id}}
+          terraform apply -auto-approve --var kms_key_alias=${{ steps.get-short-sha.outputs.id }}
 
       - name: get KMS key
         working-directory: .github/workflows/kms
@@ -94,7 +94,7 @@ jobs:
       - name: Deploy DUBBD-AWS
         run: |
           echo big-bang-${{ steps.get-short-sha.outputs.id}}
-          zarf package deploy zarf-package-*.tar.zst --confirm --set loki_force_destroy=true --set loki_kms_key_arn=${{ steps.get.outputs.kms_key_arn }} --set name=big-bang-${{ steps.get-short-sha.outputs.id}}
+          zarf package deploy zarf-package-*.tar.zst --confirm --set loki_force_destroy=true --set loki_kms_key_arn=${{ steps.get.outputs.kms_key_arn }} --set name=big-bang-${{ steps.get-short-sha.outputs.id }}
 
         working-directory: aws
         timeout-minutes: 60
