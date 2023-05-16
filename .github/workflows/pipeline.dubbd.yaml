@@ -46,7 +46,9 @@ jobs:
         working-directory: .github/workflows/eks
 
       - name: Create EKS cluster
-        run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=${{ steps.get_cluster_name.outputs.short_sha }}
+        run: |
+          echo ${{ steps.get_cluster_name.outputs.short_sha }}
+          zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=${{ steps.get_cluster_name.outputs.short_sha }}
         working-directory: .github/workflows/eks
         # eventually have zarf deploy   \
       - name: Show Cluster
