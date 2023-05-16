@@ -89,10 +89,6 @@ output "eks_cluster_oidc_arn" {
   value       = local.oidc_arn
 }
 
-variable "name" {
-    description = "Name for cluster"
-}
-
 output "irsa_role" {
   value = module.S3.irsa_role
 }
