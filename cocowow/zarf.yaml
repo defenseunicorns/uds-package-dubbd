@@ -57,10 +57,12 @@ components:
         after:
         - cmd: ./cat_keycloak_cert.sh
           description: read the cert
-          setVariable: KEYCLOAK_CERT   
+          setVariables: 
+            - name: KEYCLOAK_CERT   
         - cmd: ./cat_keycloak_key.sh
           description: read the cert
-          setVariable: KEYCLOAK_KEY
+          setVariables: 
+            - name: KEYCLOAK_KEY
   - name: cocowow
     required: true
     import:
