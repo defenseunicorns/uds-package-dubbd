@@ -41,6 +41,7 @@ jobs:
           #echo "eks_cluster_name=big-bang-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
           echo "eks_cluster_name=big-BOY-bang" >> $GITHUB_ENV
           echo "$eks_cluster_name"
+          echo "$GITHUB_CONTEXT"
 
       - name: Package EKSCTL 
         run: zarf package create --confirm
