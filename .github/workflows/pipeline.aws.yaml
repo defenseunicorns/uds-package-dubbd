@@ -39,9 +39,10 @@ jobs:
       - name: Set eks_cluster_name
         env:
           #EKS_CLUSTER_NAME: big-bang-${GITHUB_SHA:0:7}
-          EKS_CLUSTER_NAME: big-bang-${{ github.sha }}
+          SHA: ${{ github.sha }}
         run: |
-          #echo "eks_cluster_name=big-bang-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+          echo "eks_cluster_name=big-bang-${SHA:0:7}" >> $GITHUB_ENV
+          #EKS_CLUSTER_NAME: big-bang-${{ github.sha }}
           echo "$EKS_CLUSTER_NAME"
           echo "$GITHUB_CONTEXT"
 
@@ -84,6 +85,7 @@ jobs:
         run: |
           echo big-bang-${GITHUB_SHA:0:7}
           zarf package deploy zarf-package-*.tar.zst --confirm --set loki_force_destroy=true --set loki_kms_key_arn=${{ steps.get.outputs.kms_key_arn }} --set name=$EKS_CLUSTER_NAME
+
         working-directory: aws
         timeout-minutes: 60
 
