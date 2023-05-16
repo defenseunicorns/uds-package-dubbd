@@ -36,18 +36,32 @@ jobs:
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
           
+      - name: Set eks_cluster_name
+        id: get_cluster_name
+        env:
+          SHA: ${{ github.sha }}
+        run: |
+          echo "eks_cluster_name=big-bang-${SHA:0:7}" >> $GITHUB_OUTPUT
+          echo "short_sha=${SHA:0:7}" >> $GITHUB_OUTPUT
+
+
       - name: Package EKSCTL 
         run: zarf package create --confirm
         working-directory: .github/workflows/eks
 
       - name: Create EKS cluster and Zarf Init
-        run: zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=aws-${GITHUB_SHA:0:7}
+        run: |
+          echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+          zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }}
         working-directory: .github/workflows/eks #just holds the zarf-config
         id: create-cluster
-        # Capture the output of the command as an environment variable
-      - name: get oidc
-        id: oidc
-        run: echo oidc=$(aws eks describe-cluster --name aws-${GITHUB_SHA:0:7} --query "cluster.identity.oidc" --output text | cut -d '/' -f 5) >> $GITHUB_OUTPUT
+
+      ## We need to add functionality to allow the user to bring their own KMS Key Alias
+      
+      - name: Show Cluster
+        run: |
+          kubectl get nodes
+          kubectl config get-contexts
 
       - name: Zarf init
         run: |
@@ -58,9 +72,11 @@ jobs:
         working-directory: aws
         timeout-minutes: 60
 
-
       - name: Deploy DUBBD-AWS
-        run: zarf package deploy zarf-package-*.tar.zst --confirm --set loki_force_destroy=true  --set name=big-bang-${GITHUB_SHA:0:7} --set eks_oidc_provider_arn=arn:aws:iam::248783118822:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/${{ steps.oidc.outputs.oidc }}
+        run: |
+          echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+          zarf package deploy zarf-package-*.tar.zst --confirm --set loki_force_destroy=true --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+
         working-directory: aws
         timeout-minutes: 60
 

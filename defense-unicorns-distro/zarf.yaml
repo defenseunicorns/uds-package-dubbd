@@ -82,7 +82,8 @@ components:
       onDeploy:
         before:
         - cmd: "./zarf tools kubectl version --short || true"
-          setVariable: OUTPUT
+          setVariables:
+            - name: OUTPUT
         after:
         - cmd: "./preflight.sh"
     files:
@@ -151,4 +152,3 @@ components:
         - ../values/monitoring.yaml
         - ../values/neuvector.yaml
         - ../values/tempo.yaml
- 
