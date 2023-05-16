@@ -37,10 +37,11 @@ jobs:
           password: ${{ secrets.REGISTRY1_PASSWORD }}
           
       - name: Set eks_cluster_name
+        env:
+          EKS_CLUSTER_NAME: big-bang-${GITHUB_SHA:0:7}
         run: |
           #echo "eks_cluster_name=big-bang-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
-          echo "eks_cluster_name=big-BOY-bang" >> $GITHUB_ENV
-          echo "$eks_cluster_name"
+          echo "$EKS_CLUSTER_NAME"
           echo "$GITHUB_CONTEXT"
 
       - name: Package EKSCTL 
