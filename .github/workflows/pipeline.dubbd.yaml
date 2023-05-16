@@ -35,11 +35,11 @@ jobs:
           password: ${{ secrets.REGISTRY1_PASSWORD }}
 
        - name: Set eks_cluster_name
-        id: get_cluster_name
-        env:
-          SHA: ${{ github.sha }}
-        run: |
-          echo "short_sha=${SHA:0:7}" >> $GITHUB_OUTPUT
+         id: get_cluster_name
+         env:
+           SHA: ${{ github.sha }}
+         run: |
+           echo "short_sha=${SHA:0:7}" >> $GITHUB_OUTPUT
    
       - name: Package EKSCTL 
         run: zarf package create --confirm
