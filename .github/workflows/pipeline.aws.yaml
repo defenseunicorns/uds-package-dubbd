@@ -38,7 +38,8 @@ jobs:
           
       - name: Set eks_cluster_name
         env:
-          EKS_CLUSTER_NAME: big-bang-${GITHUB_SHA:0:7}
+          #EKS_CLUSTER_NAME: big-bang-${GITHUB_SHA:0:7}
+          EKS_CLUSTER_NAME: big-bang-${{ github.sha }}
         run: |
           #echo "eks_cluster_name=big-bang-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
           echo "$EKS_CLUSTER_NAME"
