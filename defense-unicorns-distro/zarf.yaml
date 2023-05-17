@@ -84,7 +84,7 @@ components:
         - cmd: "./zarf tools kubectl version --short || true"
           setVariables:
             - name: OUTPUT
-        - cmd: "./zarf tools kubectl get hr bigbang -n bigbang &>/dev/null && echo true || echo false"
+        - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang &>/dev/null && echo true || echo false"
           setVariables:
             - name: IS_UPGRADE
         after:
