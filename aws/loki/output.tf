@@ -23,3 +23,8 @@ output "eks_cluster_oidc_arn" {
   description = "The ARN of the OIDC Provider of the EKS Cluster"
   value       = local.oidc_arn
 }
+
+output "kms_key_arn" {
+  description = "The ARN of the OIDC Provider of the EKS Cluster"
+  value       = local.kms_key_arn
+}
