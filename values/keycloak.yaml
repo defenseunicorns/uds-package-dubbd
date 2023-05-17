@@ -25,6 +25,8 @@ addons:
           value: /opt/keycloak/conf/tls.crt
         - name: KC_HTTPS_CERTIFICATE_KEY_FILE
           value: /opt/keycloak/conf/tls.key
+        - name: KC_HTTPS_TRUST_STORE_FILE
+          value: /opt/keycloak/conf/truststore.jks
         - name: KC_HTTPS_TRUST_STORE_PASSWORD
           value: password
         - name: KC_HTTPS_CLIENT_AUTH
@@ -51,12 +53,15 @@ addons:
         - name: certauthority
           secret:
             secretName: {{ include "keycloak.fullname" . }}-certauthority
-        - name: plugin
-          emptyDir: {}
+        - name: truststore
+          secret:
+            secretName: {{ include "keycloak.fullname" . }}-truststore
         - name: quarkusproperties
           secret:
             secretName: {{ include "keycloak.fullname" . }}-quarkusproperties
             defaultMode: 0777
+        - name: plugin
+          emptyDir: {}
       extraVolumeMounts: |-
         - name: certauthority
           mountPath: /etc/x509/https/cas.pem
@@ -65,6 +70,9 @@ addons:
         - name: plugin
           mountPath: /opt/keycloak/providers/p1-keycloak-plugin.jar
           subPath: p1-keycloak-plugin.jar
+        - name: truststore
+          mountPath: /opt/keycloak/conf/truststore.jks
+          subPath: truststore.jks
         - name: quarkusproperties
           mountPath: /opt/keycloak/conf/quarkus.properties
           subPath: quarkus.properties
@@ -91,6 +99,10 @@ addons:
               # block metrics and health enpoints from being exposed through the istio ingress
               quarkus.kc-routing.path-recursive-block./metrics=8443
               quarkus.kc-routing.path-recursive-block./health=8443
+        truststore:
+          data:
+            truststore.jks: |-
+              {{ .Files.Get "resources/dev/truststore.jks" | b64enc }}
       extraInitContainers: |-
         - name: plugin
           image: registry1.dso.mil/ironbank/big-bang/p1-keycloak-plugin:3.2.0
