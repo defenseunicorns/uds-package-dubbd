@@ -52,7 +52,7 @@ jobs:
       - name: Create EKS cluster and Zarf Init
         run: |
           echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
-          zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+          zarf package deploy zarf-package-distro-eks-multi.tar.zst --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} --confirm 
         working-directory: .github/workflows/eks #just holds the zarf-config
         id: create-cluster
          
@@ -86,7 +86,7 @@ jobs:
       - name: Deploy DUBBD-AWS
         run: |
           echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
-          zarf package deploy zarf-package-*.tar.zst --confirm --set loki_force_destroy=true --set loki_kms_key_arn=${{ steps.get.outputs.kms_key_arn }} --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+          zarf package deploy zarf-package-*.tar.zst --set loki_force_destroy=true --set loki_kms_key_arn=${{ steps.get.outputs.kms_key_arn }} --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} --confirm 
 
         working-directory: aws
         timeout-minutes: 60
