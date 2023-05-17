@@ -19,7 +19,7 @@ locals {
 }
 
 module "S3" {
-  source                     = "github.com/defenseunicorns/delivery-aws-iac//modules/s3-irsa"
+  source                     = "github.com/defenseunicorns/delivery-aws-iac//modules/s3-irsa?ref=v0.0.4-alpha"
   name_prefix                = var.name
   eks_oidc_provider_arn      = local.oidc_arn
   kubernetes_service_account = "logging-loki"
