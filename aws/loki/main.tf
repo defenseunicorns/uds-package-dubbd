@@ -3,6 +3,24 @@ provider "aws" {
 
 }
 
+# taken from zarf bb repo
+resource "random_id" "default" {
+  byte_length = 2
+}
+
+# taken from zarf bb repo
+variable "kms_key_deletion_window" {
+  description = "Waiting period for scheduled KMS Key deletion. Can be 7-30 days."
+  type        = number
+  default     = 7
+}
+
+variable "create_kms_key" {
+  description = "Whether to create a new KMS key to be used with the S3 bucket.  If not, you must pass in your own key ARN."
+  type        = bool
+  default     = true
+}
+
 data "aws_eks_cluster" "existing" {
   name = var.name
 }
@@ -44,4 +62,6 @@ module "generate_kms" {
   }
 
 }
+
+
 
