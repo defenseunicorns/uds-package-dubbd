@@ -11,13 +11,14 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.67.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_S3"></a> [S3](#module\_S3) | github.com/defenseunicorns/delivery-aws-iac//modules/s3-irsa | n/a |
+| <a name="module_S3"></a> [S3](#module\_S3) | github.com/defenseunicorns/delivery-aws-iac//modules/s3-irsa | v0.0.4-alpha |
+| <a name="module_generate_kms"></a> [generate\_kms](#module\_generate\_kms) | github.com/defenseunicorns/uds-iac-aws-kms | dubbd-test |
 
 ## Resources
 
@@ -34,7 +35,8 @@ No requirements.
 |------|-------------|------|---------|:--------:|
 | <a name="input_force_destroy"></a> [force\_destroy](#input\_force\_destroy) | Option to set force destroy | `bool` | `false` | no |
 | <a name="input_key_alias"></a> [key\_alias](#input\_key\_alias) | alias for KMS Key | `string` | `"bigbang-loki"` | no |
-| <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | n/a | `any` | n/a | yes |
+| <a name="input_key_owner_arns"></a> [key\_owner\_arns](#input\_key\_owner\_arns) | ARNS of KMS key owners, needed for use of key | `list(string)` | `[]` | no |
+| <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | KMS Key ARN if known, if not, will be generated | `string` | `null` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name for cluster | `any` | n/a | yes |
 
 ## Outputs
