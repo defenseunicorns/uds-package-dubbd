@@ -7,7 +7,7 @@ package:
       domain: bigbang.dev
       realm: cocowow
       kc_adm_user: admin
-      kc_adm_password: password
+      kc_adm_password: sup3r-secret-p@ssword
   deploy:
     set:
       keycloak_key_file: bigbang.dev.key
