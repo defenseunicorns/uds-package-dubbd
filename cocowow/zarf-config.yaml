@@ -6,6 +6,8 @@ package:
       bigbang_version: "2.1.0"
       domain: bigbang.dev
       realm: cocowow
+      kc_adm_user: admin
+      kc_adm_password: password
   deploy:
     set:
       keycloak_key_file: bigbang.dev.key

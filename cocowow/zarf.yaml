@@ -64,12 +64,12 @@ components:
             description: Untar the keycloak files
           - cmd: bash -c 'until [ $(curl -L -s -o /dev/null -w "%{http_code}" https://keycloak.###ZARF_PKG_TMPL_DOMAIN###/auth/admin) -eq 200 ]; do sleep 60; echo "Trying to connect to the Keycloak endpoint..."; done'
             description: Wait for Keycloak endpoint to accept requests
-          - cmd: ./kc-api/bin/kcadm.sh config credentials --realm master --server https://keycloak.###ZARF_PKG_TMPL_DOMAIN###/auth --user admin --password password
+          - cmd: ./kc-api/bin/kcadm.sh config credentials --realm master --server https://keycloak.###ZARF_PKG_TMPL_DOMAIN###/auth --user ###ZARF_PKG_TMPL_KC_ADM_USER### --password ###ZARF_PKG_TMPL_KC_ADM_PASSWORD###
             description: Login into keycloak as admin and save the config for future commands
           - cmd: ./kc-api/bin/kcadm.sh create realms -s realm=###ZARF_PKG_TMPL_REALM### -s enabled=true
             description: Create the Cocowow realm
           - cmd: ./kc-api/bin/kcadm.sh create users -r ###ZARF_PKG_TMPL_REALM### -s username=demo -s email=demo@example.com -s enabled=true 
-            description: Update the 'demo' user's password
+            description: Create a 'demo' user
           - cmd: ./kc-api/bin/kcadm.sh set-password -r ###ZARF_PKG_TMPL_REALM### --username demo --new-password supersecretpassword --temporary
             description: Update the 'demo' user's password
           - cmd: ./kc-api/bin/kcadm.sh create clients -r ###ZARF_PKG_TMPL_REALM### -s clientId=tempo -s enabled=true -s 'redirectUris=["https://tracing.###ZARF_PKG_TMPL_DOMAIN###/login"]'
@@ -79,9 +79,9 @@ components:
           - cmd: ./kc-api/bin/kcadm.sh create clients -r ###ZARF_PKG_TMPL_REALM### -s clientId=grafana -s enabled=true -s 'redirectUris=["https://grafana.###ZARF_PKG_TMPL_DOMAIN###/login/generic_oauth"]'
             description: "Add kiali client in keycloak"
           - cmd: ./kc-api/bin/kcadm.sh create clients -r ###ZARF_PKG_TMPL_REALM### -s clientId=prometheus -s enabled=true -s 'redirectUris=["https://prometheus.###ZARF_PKG_TMPL_DOMAIN###/login/generic_oauth"]'
-            description: "Add kiali client in keycloak"
+            description: "Add prometheus client in keycloak"
           - cmd: ./kc-api/bin/kcadm.sh create clients -r ###ZARF_PKG_TMPL_REALM### -s clientId=alertmanager -s enabled=true -s 'redirectUris=["https://alertmanager.###ZARF_PKG_TMPL_DOMAIN###/login/generic_oauth"]'
-            description: "Add kiali client in keycloak"
+            description: "Add alertmanager client in keycloak"
           - cmd: ./kc-api/bin/kcadm.sh create clients -r ###ZARF_PKG_TMPL_REALM### -s clientId=neuvector -s enabled=true -s 'redirectUris=["https://neuvector.###ZARF_PKG_TMPL_DOMAIN###/openId_auth"]'
             description: "Add neuvector client in keycloak"
           - cmd: ./scripts/update-admin-services-sso.sh 
