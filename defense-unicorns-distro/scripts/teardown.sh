@@ -29,9 +29,8 @@ zarf tools kubectl delete helmrelease -n bigbang kyverno --ignore-not-found
 # Cleanup validating webhoooks from kyverno
 zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io kyverno-policy-validating-webhook-cfg kyverno-resource-validating-webhook-cfg  --ignore-not-found
 zarf tools kubectl delete helmrelease -n bigbang kiali --ignore-not-found
-# Delete metrics server if owned by Big Bang
-if zarf tools kubectl get hr metrics-server -n bigbang &>/dev/null; then
-  zarf tools kubectl delete helmrelease -n bigbang metrics-server --ignore-not-found
-  zarf tools kubectl delete apiservices.apiregistration.k8s.io v1beta1.metrics.k8s.io --ignore-not-found
-fi
+# Delete metrics server
+zarf tools kubectl delete helmrelease -n bigbang metrics-server --ignore-not-found
+# Delete metrics server api service if owned by Big Bang
+zarf tools kubectl delete apiservices.apiregistration.k8s.io -l helm.toolkit.fluxcd.io/namespace=bigbang,helm.toolkit.fluxcd.io/name=metrics-server --ignore-not-found
 zarf tools kubectl delete gitrepositories -n bigbang -l app.kubernetes.io/part-of=bigbang
