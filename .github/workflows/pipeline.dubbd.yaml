@@ -85,6 +85,9 @@ jobs:
     runs-on: ubuntu-latest
   
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       # Run this step first so we can fail fast in case an invalid package name is provided
       - name: Get latest package version to upgrade from
         id: latest-package-version
@@ -92,9 +95,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           package-name: packages/big-bang-distro-aws
-
-      - name: Checkout repository
-        uses: actions/checkout@v3
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
