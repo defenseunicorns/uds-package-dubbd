@@ -1,0 +1,52 @@
+jaeger:
+  enabled: false
+
+kiali:
+  enabled: false
+
+clusterAuditor:
+  enabled: false
+
+gatekeeper:
+  enabled: false
+
+elasticsearchKibana:
+  enabled: false
+
+eckOperator:
+  enabled: false
+
+fluentbit:
+  enabled: false
+
+promtail:
+  enabled: false
+
+loki:
+  enabled: false
+
+tempo:
+  enabled: false
+
+# enabled
+monitoring:
+  enabled: true
+
+twistlock:
+  enabled: false
+
+neuvector:
+  enabled: false
+  values:
+    k3s:
+      enabled: true
+
+# enabled
+kyvernoReporter:
+  enabled: true
+
+kyvernoPolicies:
+  enabled: true
+
+kyverno:
+  enabled: true

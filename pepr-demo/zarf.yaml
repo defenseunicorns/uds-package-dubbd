@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
+kind: ZarfPackageConfig
+metadata:
+  name: pepr-demo
+  description: "Pepr Demo"
+  version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
+  url: https://p1.dso.mil/products/big-bang
+  image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
+  # Big Bang / Iron Bank are only amd64
+  architecture: amd64
+
+components:
+  - name: load-certs
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+    files:
+      - source: ../defense-unicorns-distro/scripts/cat_keycloak_cert.sh
+        target: cat_keycloak_cert.sh
+        executable: true
+      - source: ../defense-unicorns-distro/scripts/cat_keycloak_key.sh
+        target: cat_keycloak_key.sh
+        executable: true
+    actions:
+      onDeploy:
+        after:
+        - cmd: ./cat_keycloak_cert.sh
+          description: read the cert
+          setVariables:
+          - name: KEYCLOAK_CERT   
+        - cmd: ./cat_keycloak_key.sh
+          description: read the cert
+          setVariables:
+          - name: KEYCLOAK_KEY
+  - name: bigbang-pepr
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+      name: bigbang
+    images:
+      - registry1.dso.mil/ironbank/big-bang/p1-keycloak-plugin:3.2.0
+    extensions:
+      bigbang:
+        version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
+        valuesFiles:
+        - ../values/authservice.yaml
+        - ../values/keycloak.yaml
+        - disable-unrelated.yaml
+        - pepr-bb-values.yaml

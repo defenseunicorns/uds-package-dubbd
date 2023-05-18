@@ -1,0 +1,87 @@
+addons:
+  authservice:
+    enabled: false
+
+monitoring:
+  enabled: true
+    
+  values:
+    networkPolicies:
+      enabled: false
+    grafana:
+      persistence:
+        enabled: false
+    prometheus:
+      prometheusSpec:
+        storageSpec: null
+
+istio:
+  ingressGateways:
+    passthrough-ingressgateway:
+      type: "LoadBalancer"
+      kubernetesResourceSpec:
+        service:
+          loadBalancerIP: 172.28.0.2
+
+    public-ingressgateway:
+      type: "LoadBalancer" 
+      kubernetesResourceSpec:
+        service:
+          loadBalancerIP: 172.28.0.3
+
+neuvector:
+  enabled: false
+  values:
+    k3s:
+      enabled: true
+
+kyvernoPolicies:
+  enabled: false
+  values:
+    policies:
+      disallow-host-namespaces:
+        exclude:
+          any:
+          # Istio does not inject itself
+          - resources:
+              namespaces:
+              - metallb-system
+      restrict-host-path-mount:
+        parameters:
+          allow:
+           - "###ZARF_VAR_HOST_PATH###"
+        exclude:
+          any:
+          # Istio does not inject itself
+          - resources:
+              namespaces:
+              - monitoring
+      restrict-host-path-mount-pv:
+        exclude:
+          any:
+          # Istio does not inject itself
+          - resources:
+              namespaces:
+              - monitoring
+        parameters:
+          allow:
+           - "###ZARF_VAR_HOST_PATH###"
+      restrict-host-path-write:
+        parameters:
+          allow:
+           - "###ZARF_VAR_HOST_PATH###"
+      restrict-image-registries:
+        exclude:
+          any:
+          # Istio does not inject itself
+          - resources:
+              namespaces:
+              - metallb-system
+      restrict-host-ports:
+        exclude:
+          any:
+          # Istio does not inject itself
+          - resources:
+              namespaces:
+              - metallb-system
+    
