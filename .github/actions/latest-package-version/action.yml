@@ -43,8 +43,6 @@ runs:
             exit 1
         fi
 
-        latest_package_version="$(curl -s -H "Authorization: Bearer $github_token" \
-            https://api.github.com/orgs/defenseunicorns/packages/container/${package_name}/versions \
-            | jq -r '.[0].metadata.container.tags[0]')"
+        latest_package_version="$(echo "$response" | jq -r '.[0].metadata.container.tags[0]')"
 
         echo "latest-package-version=$(echo "$latest_package_version")" >> $GITHUB_OUTPUT
