@@ -102,7 +102,10 @@ components:
             description: "Patch BigBang to force an update on updates"
       onRemove:
         before:
-          - cmd: "./teardown.sh"
+          - cmd: |
+              export PATH=$(dirname ./zarf):$PATH
+              ./teardown.sh
+            description: "tearing down Big Bang"
     files:
       - source: scripts/teardown.sh
         target: teardown.sh
