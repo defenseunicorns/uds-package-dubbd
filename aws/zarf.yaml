@@ -66,10 +66,10 @@ components:
     actions:
       onCreate:
         before:
-          - cmd: "terraform init -upgrade"
+          - cmd: "../run/loki/terraform init -upgrade"
             dir: loki
         after:
-          - cmd: "test -d ./run/ && chmod -R ugo+rwx ./run/ || echo $?"
+          - cmd: "test -d ../run/ && chmod -R ugo+rwx ../run/ || echo $?"
     files:
     # terraform code
     - source: loki/.terraform
