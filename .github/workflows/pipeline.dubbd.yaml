@@ -39,7 +39,7 @@ jobs:
         env:
           SHA: ${{ github.sha }}
         run: |
-          echo "short_sha=${SHA:0:7}" >> $GITHUB_OUTPUT
+          echo "eks_cluster_name=big-bang-${SHA:0:7}" >> $GITHUB_OUTPUT
 
       - name: Package EKSCTL 
         run: zarf package create --confirm
@@ -47,8 +47,8 @@ jobs:
 
       - name: Create EKS cluster
         run: |
-          echo ${{ steps.get_cluster_name.outputs.short_sha }}
-          zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=${{ steps.get_cluster_name.outputs.short_sha }}
+          echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+          zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }}
         working-directory: .github/workflows/eks
         # eventually have zarf deploy   \
       - name: Show Cluster
@@ -122,7 +122,7 @@ jobs:
         env:
           SHA: ${{ github.sha }}
         run: |
-          echo "short_sha=${SHA:0:7}" >> $GITHUB_OUTPUT
+          echo "eks_cluster_name=big-bang-upgrade-${SHA:0:7}" >> $GITHUB_OUTPUT
 
       - name: Package EKSCTL 
         run: zarf package create --confirm
@@ -130,8 +130,8 @@ jobs:
 
       - name: Create EKS cluster
         run: |
-          echo ${{ steps.get_cluster_name.outputs.short_sha }}
-          zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=${{ steps.get_cluster_name.outputs.short_sha }}
+          echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+          zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }}
         working-directory: .github/workflows/eks
         # eventually have zarf deploy   \
       - name: Show Cluster

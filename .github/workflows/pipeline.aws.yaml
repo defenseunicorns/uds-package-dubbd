@@ -41,9 +41,8 @@ jobs:
         env:
           SHA: ${{ github.sha }}
         run: |
-          echo "eks_cluster_name=big-bang-${SHA:0:7}" >> $GITHUB_OUTPUT
+          echo "eks_cluster_name=big-bang-aws-${SHA:0:7}" >> $GITHUB_OUTPUT
           echo "short_sha=${SHA:0:7}" >> $GITHUB_OUTPUT
-
 
       - name: Package EKSCTL 
         run: zarf package create --confirm
@@ -55,7 +54,7 @@ jobs:
           zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }}
         working-directory: .github/workflows/eks #just holds the zarf-config
         id: create-cluster
-         
+
       - name: Create KMS Key to be replaced by UDS IaC module later
         working-directory: .github/workflows/kms
         id: create-kms
@@ -152,9 +151,8 @@ jobs:
         env:
           SHA: ${{ github.sha }}
         run: |
-          echo "eks_cluster_name=big-bang-${SHA:0:7}" >> $GITHUB_OUTPUT
+          echo "eks_cluster_name=big-bang-aws-upgrade-${SHA:0:7}" >> $GITHUB_OUTPUT
           echo "short_sha=${SHA:0:7}" >> $GITHUB_OUTPUT
-
 
       - name: Package EKSCTL 
         run: zarf package create --confirm
