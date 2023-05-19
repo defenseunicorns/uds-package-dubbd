@@ -5,7 +5,7 @@ variable "name" {
 variable "kms_key_arn" {
   type        = string
   description = "KMS Key ARN if known, if not, will be generated"
-  default     = "" # null if not using tfvars for the templating.
+  default     = null
 }
 
 variable "key_alias" {
