@@ -60,16 +60,13 @@ components:
         target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_linux_amd64.zip
       - source: https://releases.hashicorp.com/terraform-provider-aws/###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
         target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
- 
   - name: loki-module
     required: true
     actions:
       onCreate:
         before:
-          - cmd: "../run/loki/terraform init -upgrade"
+          - cmd: "terraform init -upgrade"
             dir: loki
-        after:
-          - cmd: "test -d ../run/ && chmod -R ugo+rwx ../run/ || echo $?"
     files:
     # terraform code
     - source: loki/.terraform
@@ -85,6 +82,8 @@ components:
     actions:
       onDeploy:
         before:
+          - cmd: "test -d ./loki/ && chmod -R ugo+rwx ./loki/ || echo $?"
+            dir: run
           - cmd: "terraform plan"
             dir: run/loki
           - cmd: sleep 15 #time to review
