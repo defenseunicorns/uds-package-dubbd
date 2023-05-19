@@ -70,6 +70,7 @@ jobs:
         timeout-minutes: 60
 
       - name: Remove DUBBD
+        if: always()
         run: zarf package remove zarf-package-*.tar.zst --confirm
         working-directory: defense-unicorns-distro
         timeout-minutes: 60
@@ -159,7 +160,13 @@ jobs:
         timeout-minutes: 60
 
       - name: Remove DUBBD
-        run: zarf package remove zarf-package-*.tar.zst --confirm
+        if: always()
+        run: |
+          zarf package remove \
+            oci://ghcr.io/defenseunicorns/packages/big-bang:${{ steps.latest-package-version.outputs.latest-package-version }} \
+            --confirm
+            
+          zarf package remove zarf-package-*.tar.zst --confirm
         working-directory: defense-unicorns-distro
         timeout-minutes: 60
 
