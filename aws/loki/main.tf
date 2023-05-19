@@ -19,7 +19,7 @@ data "aws_region" "current" {}
 locals {
   oidc_url_without_protocol = substr(data.aws_eks_cluster.existing.identity[0].oidc[0].issuer, 8, -1) # removes "https://"
   oidc_arn                  = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/${local.oidc_url_without_protocol}"
-  generate_kms_key          = var.create_kms_key == true ? 0 : 1
+  generate_kms_key          = var.create_kms_key == true ? 1 : 0
   kms_key_arn               = var.kms_key_arn == null ? module.generate_kms[0].kms_key_arn : var.kms_key_arn
   # The conditional may need to look like this depending on how we decide to handle the way varf wants to template things
   # generate_kms_key          = var.kms_key_arn == "" ? 1 : 0
