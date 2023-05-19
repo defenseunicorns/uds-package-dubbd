@@ -51,10 +51,10 @@ jobs:
         working-directory: defense-unicorns-distro
         timeout-minutes: 60
       
-      # - name: Publish DUBBD
-      #   run: zarf package publish zarf-package-big-bang-amd64-*.tar.zst oci://ghcr.io/defenseunicorns/packages
-      #   working-directory: defense-unicorns-distro
-      #   timeout-minutes: 60
+      - name: Publish DUBBD
+        run: zarf package publish zarf-package-big-bang-amd64-*.tar.zst oci://ghcr.io/defenseunicorns/packages
+        working-directory: defense-unicorns-distro
+        timeout-minutes: 60
 
       - name: Create DUBBD-AWS
         run: zarf package create --confirm
@@ -65,4 +65,3 @@ jobs:
         run: zarf package publish zarf-package-*.tar.zst oci://ghcr.io/defenseunicorns/packages
         working-directory: aws
         timeout-minutes: 60
-

@@ -37,6 +37,7 @@ module "S3" {
   dynamodb_enabled           = "false"
   kms_key_arn                = local.kms_key_arn
   force_destroy              = var.force_destroy
+
 }
 
 module "generate_kms" {
