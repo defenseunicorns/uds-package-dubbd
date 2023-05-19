@@ -52,22 +52,12 @@ jobs:
       - name: Create EKS cluster and Zarf Init
         run: |
           echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
-          zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+          zarf package deploy zarf-package-distro-eks-multi.tar.zst --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} --confirm 
         working-directory: .github/workflows/eks #just holds the zarf-config
         id: create-cluster
-         
-      - name: Create KMS Key to be replaced by UDS IaC module later
-        working-directory: .github/workflows/kms
-        id: create-kms
-        run: |
-          terraform init
-          terraform apply -auto-approve --var kms_key_alias=${{ steps.get_cluster_name.outputs.short_sha }}
 
-      - name: get KMS key
-        working-directory: .github/workflows/kms
-        id: get
-        run: echo "kms_key_arn=$(terraform output -raw kms_key_arn)" >> $GITHUB_OUTPUT
-
+      ## We need to add functionality to allow the user to bring their own KMS Key Alias
+      
       - name: Show Cluster
         run: |
           kubectl get nodes
@@ -82,11 +72,13 @@ jobs:
         working-directory: aws
         timeout-minutes: 60
 
-
       - name: Deploy DUBBD-AWS
         run: |
           echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
-          zarf package deploy zarf-package-*.tar.zst --confirm --set loki_force_destroy=true --set loki_kms_key_arn=${{ steps.get.outputs.kms_key_arn }} --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+          # Pass in KMS Version
+          #zarf package deploy zarf-package-*.tar.zst --set loki_force_destroy=true --set loki_kms_key_arn=${{ steps.get.outputs.kms_key_arn }} --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} --confirm 
+          # Create KMS Version
+          zarf package deploy zarf-package-*.tar.zst --confirm --set loki_force_destroy=true --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }}
 
         working-directory: aws
         timeout-minutes: 60
@@ -102,12 +94,4 @@ jobs:
         run: |
           ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
         working-directory: .github/workflows/eks
-
-
-      - name: Remove KMS Key to be replaced by UDS IaC module later
-        if: always()
-        working-directory: .github/workflows/kms
-        run: 
-        # eventually have zarf deploy   \
-          terraform destroy -auto-approve
 
