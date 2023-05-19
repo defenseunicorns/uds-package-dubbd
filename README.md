@@ -58,3 +58,4 @@ set -o history
 # Run the zarf package deploy command with desired release (K3d example)
 zarf package deploy oci://ghcr.io/defenseunicorns/packages/big-bang-distro-k3d/big-bang-distro-k3d:0.0.1-amd64 --oci-concurrency=15
 ```
+
