@@ -149,6 +149,7 @@ jobs:
         timeout-minutes: 60
 
       - name: Deploy latest package version
+        working-directory: defense-unicorns-distro
         run: |
           zarf package deploy \
             oci://ghcr.io/defenseunicorns/packages/big-bang:${{ steps.latest-package-version.outputs.latest-package-version }} \
@@ -161,12 +162,7 @@ jobs:
 
       - name: Remove DUBBD
         if: always()
-        run: |
-          zarf package remove \
-            oci://ghcr.io/defenseunicorns/packages/big-bang:${{ steps.latest-package-version.outputs.latest-package-version }} \
-            --confirm
-            
-          zarf package remove zarf-package-*.tar.zst --confirm
+        run: zarf package remove zarf-package-*.tar.zst --confirm
         working-directory: defense-unicorns-distro
         timeout-minutes: 60
 

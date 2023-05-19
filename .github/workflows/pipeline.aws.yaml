@@ -193,6 +193,7 @@ jobs:
         timeout-minutes: 60
 
       - name: Deploy latest package version
+        working-directory: aws
         run: |
           zarf package deploy \
             oci://ghcr.io/defenseunicorns/packages/big-bang-distro-aws:${{ steps.latest-package-version.outputs.latest-package-version }} \
@@ -211,12 +212,7 @@ jobs:
 
       - name: Remove DUBBD-AWS
         if: always()
-        run: |
-          zarf package remove \
-            oci://ghcr.io/defenseunicorns/packages/big-bang-distro-aws:${{ steps.latest-package-version.outputs.latest-package-version }} \
-            --confirm
-
-          zarf package remove zarf-package-*.tar.zst --confirm
+        run: zarf package remove zarf-package-*.tar.zst --confirm
         working-directory: aws
         timeout-minutes: 60
 
