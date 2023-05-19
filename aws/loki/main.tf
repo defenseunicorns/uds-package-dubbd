@@ -39,7 +39,7 @@ module "S3" {
 }
 
 module "generate_kms" {
-  count  = local.create_kms_key
+  count  = var.create_kms_key
   source = "github.com/defenseunicorns/uds-iac-aws-kms?ref=dubbd-test"
 
   key_owners                = var.key_owner_arns                      # A list of IAM ARNs for those who will have full key permissions (`kms:*`)
