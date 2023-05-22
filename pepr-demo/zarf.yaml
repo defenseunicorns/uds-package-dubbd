@@ -5,11 +5,25 @@ metadata:
   description: "Pepr Demo"
   version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
   url: https://p1.dso.mil/products/big-bang
-  image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
-  # Big Bang / Iron Bank are only amd64
   architecture: amd64
-
 components:
+  - name: metallb
+    required: true
+    manifests:
+      - name: metallb
+        namespace: metallb-system
+        files:
+          - manifests/metallb-native.yaml
+    images:
+      - quay.io/metallb/speaker:v0.13.9
+      - quay.io/metallb/controller:v0.13.9
+  - name: metallb-config
+    required: true
+    manifests:
+      - name: metallb-config
+        namespace: metallb-system
+        files:
+          - manifests/config.yaml
   - name: load-certs
     required: true
     import:
@@ -45,5 +59,4 @@ components:
         valuesFiles:
         - ../values/authservice.yaml
         - ../values/keycloak.yaml
-        - disable-unrelated.yaml
         - pepr-bb-values.yaml

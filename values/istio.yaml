@@ -1,8 +1,6 @@
 istio:
   enabled: true
   ingressGateways:
-    passthrough-ingressgateway:
-      type: "LoadBalancer"
     public-ingressgateway:
       type: "LoadBalancer"
   values:
@@ -25,6 +23,12 @@ istio:
             limits:
               memory: "1Gi"
   gateways:
+    passthrough:
+      ingressGateway: public-ingressgateway
+      hosts:
+        - "keycloak.{{ .Values.domain }}"
+      tls:
+        mode: "PASSTHROUGH"
     public:
       ingressGateway: public-ingressgateway
       hosts:
@@ -32,12 +36,6 @@ istio:
       tls:
         key: "###ZARF_VAR_PUBLIC_KEY###"
         cert: "###ZARF_VAR_PUBLIC_CERT###"
-    passthrough:
-      ingressGateway: passthrough-ingressgateway
-      hosts:
-        - "*.{{ .Values.domain }}"
-      tls:
-        mode: "PASSTHROUGH"
 istioOperator:
   enabled: true
   values:

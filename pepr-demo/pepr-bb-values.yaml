@@ -2,12 +2,17 @@ addons:
   authservice:
     enabled: false
 
+  keycloak:
+    enabled: true
+    ingress:
+      gateway: "public"
+
 monitoring:
   enabled: true
     
   values:
     networkPolicies:
-      enabled: false
+      enabled: true
     grafana:
       persistence:
         enabled: false
@@ -17,26 +22,31 @@ monitoring:
 
 istio:
   ingressGateways:
-    passthrough-ingressgateway:
-      type: "LoadBalancer"
-      kubernetesResourceSpec:
-        service:
-          loadBalancerIP: 172.28.0.2
-
     public-ingressgateway:
       type: "LoadBalancer" 
       kubernetesResourceSpec:
         service:
-          loadBalancerIP: 172.28.0.3
+          loadBalancerIP: 172.28.0.2
+  gateways:
+    passthrough:
+      ingressGateway: public-ingressgateway
+      hosts:
+        - "keycloak.{{ .Values.domain }}"
+      tls:
+        mode: "PASSTHROUGH"
 
 neuvector:
-  enabled: false
+  enabled: true
   values:
     k3s:
       enabled: true
+      runtimePath: /run/k3s/containerd/containerd.sock
+
+    containerd:
+      enabled: false
 
 kyvernoPolicies:
-  enabled: false
+  enabled: true
   values:
     policies:
       disallow-host-namespaces:
@@ -47,6 +57,7 @@ kyvernoPolicies:
               namespaces:
               - metallb-system
       restrict-host-path-mount:
+        validationFailureAction: audit
         parameters:
           allow:
            - "###ZARF_VAR_HOST_PATH###"
@@ -57,6 +68,7 @@ kyvernoPolicies:
               namespaces:
               - monitoring
       restrict-host-path-mount-pv:
+        validationFailureAction: audit
         exclude:
           any:
           # Istio does not inject itself
