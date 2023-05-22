@@ -1,6 +1,16 @@
 addons:
   authservice:
-    enabled: false
+    enabled: true
+
+    chains:
+      podinfo:
+        callback_uri: https://podinfo.bigbang.dev/login
+        client_id: podinfo
+        client_secret: 2mMLbBB2V7ngoGOY0N6fP0i47f68eDNP
+        logout_path: /logout
+        match:
+          header: :authority
+          prefix: podinfo.bigbang.dev
 
   keycloak:
     enabled: true
