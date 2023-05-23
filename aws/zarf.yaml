@@ -20,13 +20,6 @@ variables:
 - name: TERRAFORM_VERSION
 - name: TERRAFORM_PROVIDER_AWS_VERSION
 
-- name: LOKI_KMS_KEY_ALIAS
-  default: big-bang-loki
-
-- name: LOKI_KMS_KEY_ARN
-  description: "The KMS Key Arn for encrypting and decrypting data in loki"
-  default: ""
-
 - name: LOKI_FORCE_DESTROY
   description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data"
   default: "false"
@@ -76,6 +69,10 @@ components:
       target: run/loki/.terraform
     - source: loki/main.tf
       target: run/loki/main.tf
+    - source: loki/variables.tf
+      target: run/loki/variables.tf
+    - source: loki/output.tf
+      target: run/loki/output.tf
     - source: loki/terraform.tfvars
       target: run/loki/terraform.tfvars
     - source: loki/.terraform.lock.hcl

@@ -5,3 +5,4 @@
 ~/
 .DS_Store
 defense-unicorns-distro/preflight.sh
+.terraform
