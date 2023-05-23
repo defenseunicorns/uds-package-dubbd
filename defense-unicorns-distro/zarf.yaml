@@ -68,12 +68,16 @@ components:
         after:
         - cmd: ./cat_certs.sh
           description: read the cert
+          mute: true
           setVariables:
             - name: PUBLIC_CERT
+              sensitive: true
         - cmd: ./cat_key.sh
           description: read the cert
+          mute: true
           setVariables:
             - name: PUBLIC_KEY
+              sensitive: true
         - cmd: rm cat_certs.sh
         - cmd: rm cat_key.sh
   - name: preflight
