@@ -20,6 +20,7 @@ addons:
         - "/opt/keycloak/bin/kc.sh"
       args:
         - "start"
+        - "--import-realm" 
       extraEnv: |-
         - name: KC_HTTPS_CERTIFICATE_FILE
           value: /opt/keycloak/conf/tls.crt
@@ -57,6 +58,9 @@ addons:
           secret:
             secretName: {{ include "keycloak.fullname" . }}-quarkusproperties
             defaultMode: 0777
+        - name: realm
+          secret:
+            secretName: {{ include "keycloak.fullname" . }}-realm
       extraVolumeMounts: |-
         - name: certauthority
           mountPath: /etc/x509/https/cas.pem
@@ -68,7 +72,13 @@ addons:
         - name: quarkusproperties
           mountPath: /opt/keycloak/conf/quarkus.properties
           subPath: quarkus.properties
+        - name: realm
+          mountPath: /opt/keycloak/data/import/realm.json
+          subPath: realm.json
       secrets:
+        realm:
+          stringData:
+            realm.json: '{{ .Files.Get "resources/dev/baby-yoda.json" }}'
         env:
           stringData:
             X509_CA_BUNDLE: /etc/x509/https/cas.pem
