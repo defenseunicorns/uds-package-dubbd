@@ -48,9 +48,12 @@ jobs:
       - name: Create EKS cluster
         run: |
           echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
-          zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+
+          zarf package deploy zarf-package-distro-eks-multi.tar.zst \
+            --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
+            --confirm
         working-directory: .github/workflows/eks
-        # eventually have zarf deploy   \
+
       - name: Show Cluster
         run: |
           kubectl get nodes
@@ -132,9 +135,12 @@ jobs:
       - name: Create EKS cluster
         run: |
           echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
-          zarf package deploy zarf-package-distro-eks-multi.tar.zst --confirm --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+
+          zarf package deploy zarf-package-distro-eks-multi.tar.zst \
+            --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
+            --confirm
         working-directory: .github/workflows/eks
-        # eventually have zarf deploy   \
+
       - name: Show Cluster
         run: |
           kubectl get nodes
