@@ -27,6 +27,10 @@ neuvector:
   values:
     k3s:
       enabled: true
+    containerd:
+      enabled: false
+    monitor:
+      install: false
 
 # EFK -> PLG, see https://repo1.dso.mil/big-bang/bigbang/-/blob/1.39.0/docs/guides/using-bigbang/efk-plg-logging-migration.md
 elasticsearchKibana:
