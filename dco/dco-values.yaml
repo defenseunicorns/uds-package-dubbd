@@ -1,0 +1,341 @@
+kiali:
+  enabled: false
+
+istio:
+  ingressGateways:
+    dataplane-ingressgateway:
+      type: "LoadBalancer"
+
+  gateways:
+    public:
+      hosts:
+        - "*.###ZARF_VAR_DOMAIN###"
+    dataplane:
+      ingressGateway: dataplane-ingressgateway
+      hosts:
+        - "*.###ZARF_VAR_DOMAIN###"
+      tls:
+        key: "###ZARF_VAR_PUBLIC_KEY###"
+        cert: "###ZARF_VAR_PUBLIC_CERT###"
+    passthrough:
+      hosts:
+        - "keycloak.###ZARF_VAR_DOMAIN###"
+
+neuvector:
+  ingress:
+    gateway: "public"
+  values:
+    k3s:
+      enabled: true
+
+# EFK -> PLG, see https://repo1.dso.mil/big-bang/bigbang/-/blob/1.39.0/docs/guides/using-bigbang/efk-plg-logging-migration.md
+elasticsearchKibana:
+  enabled: true
+eckOperator:
+  enabled: true
+jaeger:
+  enabled: true
+loki:
+  enabled: false
+promtail:
+  enabled: false
+tempo:
+  enabled: false
+kyvernoPolicies:
+  values:
+    policies:
+      # Keep policies in alphabetical order and name them the same as the .yaml file to help with configuration and troubleshooting
+      clone-configs:
+        enabled: false
+      disallow-annotations:
+        enabled: false
+      disallow-deprecated-apis:
+        enabled: false
+      disallow-host-namespaces:
+        enabled: true
+        validationFailureAction: audit
+      disallow-image-tags:
+        enabled: false
+      disallow-istio-injection-bypass:
+        enabled: false
+      disallow-labels:
+        enabled: false
+      disallow-namespaces:
+        enabled: false
+      disallow-nodeport-services:
+        enabled: true
+        validationFailureAction: audit
+      disallow-pod-exec:
+        enabled: false
+      disallow-privilege-escalation:
+        enabled: true
+        validationFailureAction: audit
+      disallow-privileged-containers:
+        enabled: true
+        validationFailureAction: audit
+      disallow-selinux-options:
+        enabled: true
+        validationFailureAction: audit
+      disallow-tolerations:
+        enabled: false
+      disallow-rbac-on-default-serviceaccounts:
+        enabled: false
+      require-annotations:
+        enabled: false
+      require-cpu-limit:
+        enabled: false
+      require-drop-all-capabilities:
+        enabled: true
+        validationFailureAction: audit
+      require-image-signature:
+        enabled: true
+        validationFailureAction: audit
+        parameters:
+          # -- List of images that must be signed and the public key to verify.  Use `kubectl explain clusterpolicy.spec.rules.verifyImages` for fields.
+          require:
+          - imageReferences:
+            - "registry1.dso.mil/ironbank/*"
+            attestors:
+            - count: 1
+              entries:
+              - keys:
+                  publicKeys: |-
+                    -----BEGIN PUBLIC KEY-----
+                    MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE7CjMGH005DFFz6mffqTIGurBt6fL
+                    UfTZxuEDFRBS8mFJx1xw8DEVvjMibLTtqmAoJxUmzmGFgzz+LV875syVEg==
+                    -----END PUBLIC KEY-----
+            # Ironbank images are rebuilt nightly and tags are not immutable
+            mutateDigest: false
+            verifyDigest: false
+      require-istio-on-namespaces:
+        enabled: false
+      require-labels:
+        enabled: false
+      require-memory-limit:
+        enabled: false
+      require-non-root-group:
+        enabled: true
+        validationFailureAction: audit
+      require-non-root-user:
+        enabled: true
+        validationFailureAction: audit
+      require-probes:
+        enabled: false
+      require-requests-equal-limits:
+        enabled: false
+      require-ro-rootfs:
+        enabled: false
+      restrict-apparmor:
+        enabled: true
+        validationFailureAction: audit
+        parameters:
+          # -- List of allowed AppArmor profiles
+          # Defaults pulled from https://kubernetes.io/docs/concepts/security/pod-security-standards/#baseline
+          allow:
+          - runtime/default
+          - localhost/*
+      restrict-external-ips:
+        enabled: true
+        validationFailureAction: audit
+        parameters:
+          # -- List of external IPs allowed in services.  Must be an IP address.  Use the wildcard `?*` to support subnets (e.g. `192.168.0.?*`)
+          allow: []
+      restrict-external-names:
+        enabled: true
+        validationFailureAction: audit
+        parameters:
+          # -- List of external names allowed in services.  Must be a lowercase RFC-1123 hostname.
+          allow: []
+      restrict-capabilities:
+        enabled: true
+        validationFailureAction: audit
+        parameters:
+          # -- List of capabilities that are allowed to be added
+          # Defaults pulled from https://kubernetes.io/docs/concepts/security/pod-security-standards/#restricted
+          # See https://man7.org/linux/man-pages/man7/capabilities.7.html for list of capabilities.  The `CAP_` prefix is removed in Kubernetes names.
+          allow:
+          - NET_BIND_SERVICE
+      restrict-group-id:
+        enabled: false
+      restrict-host-path-mount:
+        enabled: true
+        validationFailureAction: audit
+        parameters:
+          # -- List of allowed paths for hostPath volumes to mount
+          allow: []
+      restrict-host-path-mount-pv:
+        enabled: true
+        validationFailureAction: audit
+        parameters:
+          # -- List of allowed paths for hostPath volumes to mount
+          allow: []
+      restrict-host-path-write:
+        enabled: true
+        validationFailureAction: audit
+        parameters:
+          # -- List of allowed paths for hostPath volumes to mount as read/write
+          allow: []
+      restrict-host-ports:
+        enabled: true
+        validationFailureAction: audit
+        parameters:
+          # -- List of allowed host ports
+          allow: []
+      restrict-image-registries:
+        enabled: true
+        validationFailureAction: audit
+        parameters:
+          # -- List of allowed registries that images may use
+          allow:
+          - registry1.dso.mil
+      restrict-proc-mount:
+        enabled: true
+        validationFailureAction: audit
+        parameters:
+          # -- List of allowed proc mount values.  Valid values are `Default` and `Unmasked`.
+          # Defaults pulled from https://kubernetes.io/docs/concepts/security/pod-security-standards
+          allow:
+          - Default
+      restrict-seccomp:
+        enabled: true
+        validationFailureAction: audit
+        parameters:
+          # -- List of allowed seccomp profiles.  Valid values are `Localhost`, `RuntimeDefault`, and `Unconfined`
+          # Defaults pulled from https://kubernetes.io/docs/concepts/security/pod-security-standards/#restricted
+          allow:
+          - RuntimeDefault
+          - Localhost
+      restrict-selinux-type:
+        enabled: true
+        validationFailureAction: audit
+        parameters:
+          # -- List of allowed values for the `type` field
+          # Defaults pulled from https://kubernetes.io/docs/concepts/security/pod-security-standards
+          allow:
+          - container_t
+          - container_init_t
+          - container_kvm_t
+      restrict-sysctls:
+        enabled: true
+        validationFailureAction: audit
+        parameters:
+          # -- List of allowed sysctls.
+          # Defaults pulled from https://kubernetes.io/docs/concepts/security/pod-security-standards
+          allow:
+          - kernel.shm_rmid_forced
+          - net.ipv4.ip_local_port_range
+          - net.ipv4.ip_unprivileged_port_start
+          - net.ipv4.tcp_syncookies
+          - net.ipv4.ping_group_range
+      restrict-user-id:
+        enabled: false
+      restrict-volume-types:
+        enabled: true
+        validationFailureAction: audit
+        parameters:
+          # -- List of allowed Volume types.  Valid values are the volume types listed here: https://kubernetes.io/docs/concepts/storage/volumes/#volume-types
+          # Defaults pulled from https://kubernetes.io/docs/concepts/security/pod-security-standards/#restricted
+          allow:
+          - "configMap"
+          - "csi"
+          - "downwardAPI"
+          - "emptyDir"
+          - "ephemeral"
+          - "persistentVolumeClaim"
+          - "projected"
+          - "secret"
+      update-image-pull-policy:
+        enabled: false
+      update-image-registry:
+        enabled: false
+      update-token-automount:
+        enabled: false
+
+kyvernoReporter:
+  enabled: false
+
+addons:
+  keycloak:
+    enabled: true
+
+    values:
+      secrets:
+        env:
+          stringData:
+            KEYCLOAK_ADMIN: "root"
+            KEYCLOAK_ADMIN_PASSWORD: "iamroot"
+
+      extraEnv: |-
+        - name: KC_HTTPS_CERTIFICATE_FILE
+          value: /opt/keycloak/conf/tls.crt
+        - name: KC_HTTPS_CERTIFICATE_KEY_FILE
+          value: /opt/keycloak/conf/tls.key
+        - name: KC_HTTPS_CLIENT_AUTH
+          value: request
+        - name: KC_HTTP_ENABLED
+          value: "true"
+        - name: KC_HTTP_RELATIVE_PATH
+          value: /auth
+        - name: KC_HOSTNAME
+          value: keycloak.###ZARF_VAR_DOMAIN###
+        - name: KC_HOSTNAME_STRICT
+          value: "true"
+        - name: KC_HOSTNAME_STRICT_HTTPS
+          value: "true"
+        - name: KC_LOG_LEVEL
+          value: "org.keycloak.events:DEBUG,org.infinispan:INFO,org.jgroups:INFO"
+        - name: KC_CACHE
+          value: ispn
+        - name: KC_CACHE_STACK
+          value: kubernetes
+
+fluentbit:
+  enabled: true
+  values:
+    config:
+      extraConfigFiles:
+        suricata.conf: |
+          [INPUT]
+              Name tail
+              Path /data/suricata/eve.json
+              Tag kube.*
+              Parser  suricata-json
+              Mem_Buf_Limit 5MB
+
+      extraFiles:
+        suricata2.conf: |
+          [INPUT]
+              Name tail
+              Path /data/suricata/eve.json
+              Tag kube.*
+              Parser  suricata-json
+              Mem_Buf_Limit 5MB
+
+      parsersFiles:
+        suricata-parser.conf: |
+          [PARSER]
+              Name suricata-json
+              Format json
+              Time_Key timestamp
+              Time_Format %Y-%m-%dT%H:%M:%S.%6N%z
+
+    daemonSetVolumes:
+      - name: varlog
+        hostPath:
+          path: /var/log
+      - name: varlibdockercontainers
+        hostPath:
+          path: /var/lib/docker/containers
+      - name: suricatalogs
+        hostPath:
+          path: /opt/suricata
+    daemonSetVolumeMounts:
+      - name: varlog
+        mountPath: /var/log
+        readOnly: true
+      - name: varlibdockercontainers
+        mountPath: /var/lib/docker/containers
+        readOnly: true
+      - name: suricatalogs
+        mountPath: /data/suricata
+        readOnly: true

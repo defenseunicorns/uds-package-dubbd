@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
+kind: ZarfPackageConfig
+metadata:
+  name: big-bang-distro-dco
+  description: "Defense Unicorns Big Bang Distro"
+  version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
+  url: https://p1.dso.mil/products/big-bang
+  image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
+  # Big Bang / Iron Bank are only amd64
+  architecture: amd64
+  authors: "@MxNxPx"
+  source: https://github.com/defenseunicorns/zarf-package-big-bang
+  documentation: https://github.com/defenseunicorns/zarf-package-big-bang
+  vendor: Defense Unicorns
+
+variables:
+  - name: KEYCLOAK_CERT_FILE
+    default: bigbang.dev.cert
+    description: "This file contains the cert for the public ingress gateway"
+    prompt: false
+  - name: KEYCLOAK_KEY_FILE
+    default: bigbang.dev.key
+    description: "This file contains the key for the public ingress gateway"
+    prompt: false
+
+components:
+  - name: load-certs
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+    files:
+      - source: ../defense-unicorns-distro/scripts/cat_keycloak_cert.sh
+        target: cat_keycloak_cert.sh
+        executable: true
+      - source: ../defense-unicorns-distro/scripts/cat_keycloak_key.sh
+        target: cat_keycloak_key.sh
+        executable: true
+    actions:
+      onDeploy:
+        after:
+        - cmd: ./cat_keycloak_cert.sh
+          description: read the cert
+          setVariables:
+            - name: KEYCLOAK_CERT
+        - cmd: ./cat_keycloak_key.sh
+          description: read the cert
+          setVariables:
+            - name: KEYCLOAK_KEY
+        - cmd: rm cat_keycloak_cert.sh
+        - cmd: rm cat_keycloak_key.sh
+  - name: bigbang
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+    extensions:
+      bigbang:
+        version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
+        valuesFiles:
+          - ./dco-values.yaml
