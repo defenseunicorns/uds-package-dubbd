@@ -1,0 +1,27 @@
+kyverno:
+  enabled: false
+
+kyvernoPolicies:
+  enabled: false
+
+neuvector:
+  enabled: false
+
+elasticsearchKibana:
+  enabled: false
+
+eckOperator:
+  enabled: false
+
+fluentbit:
+  enabled: false
+
+twistlock:
+  enabled: false
+
+tempo:
+  enabled: false
+
+addons:
+  velero:
+    enabled: false

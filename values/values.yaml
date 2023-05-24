@@ -21,3 +21,9 @@ twistlock:
 addons:
   velero:
     enabled: false
+
+kyverno:
+  enabled: false
+
+kyvernoPolicies:
+  enabled: false

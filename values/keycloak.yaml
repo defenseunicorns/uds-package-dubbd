@@ -80,8 +80,6 @@ addons:
         env:
           stringData:
             X509_CA_BUNDLE: /etc/x509/https/cas.pem
-            KEYCLOAK_ADMIN: "###ZARF_VAR_KC_ADM_USER###"
-            KEYCLOAK_ADMIN_PASSWORD: "###ZARF_VAR_KC_ADM_PASSWORD###"
         certauthority:
           stringData:
             cas.pem: '{{ .Files.Get "resources/dev/dod_cas.pem" }}'
