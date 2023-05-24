@@ -84,11 +84,9 @@ components:
         - cmd: "./zarf tools kubectl version --short || true"
           setVariables:
             - name: OUTPUT
-        - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang &>/dev/null && echo true || echo false"
-          setVariables:
-            - name: IS_UPGRADE
         after:
-        - cmd: "./preflight.sh"
+        - cmd: ./preflight.sh
+        - cmd: rm preflight.sh
     files:
     - source: scripts/preflight.sh
       target: preflight.sh
@@ -97,9 +95,18 @@ components:
     required: true
     actions:
       onDeploy:
+        before:
+        - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null 2>&1 && echo true || echo false"
+          setVariables:
+            - name: IS_UPGRADE
         after:
           - cmd: ./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"metadata":{"annotations":{"reconcile.fluxcd.io/requestedAt":"'`date '+%F_%H:%M:%S.%s%z'`'"}}}'
             description: "Patch BigBang to force an update on updates"
+        onFailure:
+          - cmd: |
+              export PATH=$(dirname ./zarf):$PATH
+              ./on_failure.sh
+            description: "Delete/Rollback failed deployment"
       onRemove:
         before:
           - cmd: |
@@ -107,6 +114,9 @@ components:
               ./teardown.sh
             description: "Tear down Big Bang"
     files:
+      - source: scripts/on_failure.sh
+        target: on_failure.sh
+        executable: true
       - source: scripts/teardown.sh
         target: teardown.sh
         executable: true

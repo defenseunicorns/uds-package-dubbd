@@ -111,6 +111,10 @@ components:
     required: true
     import:
       path: ../defense-unicorns-distro
+  - name: preflight
+    required: true
+    import:
+      path: ../defense-unicorns-distro
   - name: bigbang
     required: true
     import:
