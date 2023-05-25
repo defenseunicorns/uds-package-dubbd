@@ -30,7 +30,7 @@ tempo:
 
 # enabled
 monitoring:
-  enabled: true
+  enabled: false
 
 twistlock:
   enabled: false
@@ -43,10 +43,10 @@ neuvector:
 
 # enabled
 kyvernoReporter:
-  enabled: true
+  enabled: false
 
 kyvernoPolicies:
-  enabled: true
+  enabled: false
 
 kyverno:
-  enabled: true
+  enabled: false

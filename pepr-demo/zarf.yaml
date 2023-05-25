@@ -7,6 +7,11 @@ metadata:
   url: https://p1.dso.mil/products/big-bang
   architecture: amd64
 components:
+  - name: import-module
+    import:
+      name: module
+      url: oci://ttl.sh/pepr-capabilities/pepr-e4a35052-c138-55e4-94a7-bb942b1cddc7:1-skeleton
+    required: true
   - name: metallb
     required: true
     manifests:
@@ -60,3 +65,4 @@ components:
         - ../values/authservice.yaml
         - ../values/keycloak.yaml
         - pepr-bb-values.yaml
+        - disable-unrelated.yaml
