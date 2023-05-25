@@ -262,7 +262,14 @@ addons:
   keycloak:
     enabled: true
 
+    ingress:
+      gateway: "passthrough"
+      key: "###ZARF_VAR_KEYCLOAK_KEY###"
+      cert: "###ZARF_VAR_KEYCLOAK_CERT###"
+
     values:
+      replicas: 1
+
       secrets:
         env:
           stringData:
@@ -343,3 +350,11 @@ fluentbit:
       - name: suricatalogs
         mountPath: /data/suricata
         readOnly: true
+
+monitoring:
+  values:
+    istio:
+      alertmanager:
+        enabled: true
+      prometheus:
+        enabled: true
