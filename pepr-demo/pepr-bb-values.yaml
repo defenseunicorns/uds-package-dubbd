@@ -15,7 +15,7 @@ addons:
   keycloak:
     enabled: true
     ingress:
-      gateway: "public"
+      gateway: "passthrough"
 
 monitoring:
   enabled: true
