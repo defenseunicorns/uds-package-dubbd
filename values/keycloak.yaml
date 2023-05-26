@@ -67,6 +67,8 @@ addons:
           secret:
             secretName: {{ include "keycloak.fullname" . }}-quarkusproperties
             defaultMode: 0777
+        - name: custom-theme
+          emptyDir: {}
         - name: plugin
           emptyDir: {}
       extraVolumeMounts: |-
@@ -84,6 +86,9 @@ addons:
         - name: plugin
           mountPath: /opt/keycloak/providers/p1-keycloak-plugin.jar
           subPath: p1-keycloak-plugin.jar
+        - name: custom-theme
+          mountPath: /opt/keycloak/providers/custom-theme.jar
+          subPath: custom-theme.jar
         - name: truststore
           mountPath: /opt/keycloak/conf/truststore.jks
           subPath: truststore.jks
@@ -136,4 +141,16 @@ addons:
             ls -l /init
           volumeMounts:
           - name: plugin
+            mountPath: "/init"
+        - name: custom-theme
+          image: ghcr.io/kirankt/keycloak-custom-theme:0.1
+          imagePullPolicy: Always
+          command:
+          - sh
+          - -c
+          - |
+            cp /app/custom-theme.jar /init
+            ls -l /init
+          volumeMounts:
+          - name: custom-theme
             mountPath: "/init"

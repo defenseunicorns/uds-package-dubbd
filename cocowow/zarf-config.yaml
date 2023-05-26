@@ -3,7 +3,7 @@ package:
     max_package_size: "1000000000"
     set:
       # renovate: datasource=gitlab-tags depName=big-bang/bigbang versioning=semver registryUrl=https://repo1.dso.mil
-      bigbang_version: "2.1.0"
+      bigbang_version: "2.2.0"
       domain: bigbang.dev
       realm: baby-yoda
       kc_adm_user: admin

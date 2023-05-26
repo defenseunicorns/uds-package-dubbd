@@ -44,6 +44,7 @@ components:
       name: bigbang
     images:
       - registry1.dso.mil/ironbank/big-bang/p1-keycloak-plugin:3.2.0
+      - ghcr.io/kirankt/keycloak-custom-theme:0.1
     extensions:
       bigbang:
         version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
