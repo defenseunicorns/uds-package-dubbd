@@ -75,7 +75,7 @@ echo ewogICJhbGxvd191bm1hdGNoZWRfcmVxdWVzdHMiOiB0cnVlLAogICJsaXN0ZW5fYWRkcmVzcyI
 
 ```
 ...
-    {
+   {
       "name": "podinfo",
       "match": {
         "header": ":authority",
@@ -84,21 +84,20 @@ echo ewogICJhbGxvd191bm1hdGNoZWRfcmVxdWVzdHMiOiB0cnVlLAogICJsaXN0ZW5fYWRkcmVzcyI
       "filters": [
         {
           "oidc_override": {
-            "authorization_uri": "https://keycloak.bigbang.dev/auth/realms/cocowow/protocol/openid-connect/auth",
-            "token_uri": "https://keycloak.bigbang.dev/auth/realms/cocowow/protocol/openid-connect/token",
+            "authorization_uri": "https://keycloak.bigbang.dev/auth/realms/baby-yoda/protocol/openid-connect/auth",
+            "token_uri": "https://keycloak.bigbang.dev/auth/realms/baby-yoda/protocol/openid-connect/token",
             "callback_uri": "https://podinfo.bigbang.dev/login/generic_oauth",
-            "client_id": "prometheus",
-            "client_secret": "6o4KSeCRi58nWoYOuaImUot2WnFN7Uvc",  # SECRET from step 2
-            "cookie_name_prefix": "prometheus",
+            "client_id": "pbme_adcbff02-a1ab-4fba-9c83-fe44a2bba117_podinfo",
+            "client_secret": "L48yyzbwyD8YjaycT1FvxGPG0rhyKBxK",  # SECRET from step 2
+            "cookie_name_prefix": "podinfo",
             "logout": {
-              "redirect_uri": "https://keycloak.bigbang.dev/auth/realms/cocowow/protocol/openid-connect/logout"
-            },        
+              "redirect_uri": "https://keycloak.bigbang.dev/auth/realms/baby-yoda/protocol/openid-connect/logout"
+            },     
             "scopes": []
           }
         }
       ]
     },
-
 ...
 ```
 

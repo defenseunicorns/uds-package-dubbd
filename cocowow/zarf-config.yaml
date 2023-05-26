@@ -5,11 +5,13 @@ package:
       # renovate: datasource=gitlab-tags depName=big-bang/bigbang versioning=semver registryUrl=https://repo1.dso.mil
       bigbang_version: "2.1.0"
       domain: bigbang.dev
-      realm: cocowow
+      realm: baby-yoda
       kc_adm_user: admin
-      kc_adm_password: sup3r-secret-p@ssword
+      kc_adm_password: password
   deploy:
     set:
       keycloak_key_file: bigbang.dev.key
       keycloak_cert_file: bigbang.dev.cert 
-      realm: cocowow
+      realm: baby-yoda
+      kc_adm_user: admin
+      kc_adm_password: password

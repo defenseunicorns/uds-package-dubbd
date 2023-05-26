@@ -20,6 +20,7 @@ addons:
         - "/opt/keycloak/bin/kc.sh"
       args:
         - "start"
+        - "--import-realm"
       extraEnv: |-
         - name: KC_HTTPS_CERTIFICATE_FILE
           value: /opt/keycloak/conf/tls.crt
@@ -50,6 +51,12 @@ addons:
         - name: KC_CACHE_STACK
           value: kubernetes
       extraVolumes: |-
+        - name: realm
+          secret:
+            secretName: {{ include "keycloak.fullname" . }}-realm
+        - name: customreg
+          secret:
+            secretName: {{ include "keycloak.fullname" . }}-customreg
         - name: certauthority
           secret:
             secretName: {{ include "keycloak.fullname" . }}-certauthority
@@ -63,6 +70,13 @@ addons:
         - name: plugin
           emptyDir: {}
       extraVolumeMounts: |-
+        - name: customreg
+          mountPath: /opt/keycloak/conf/customreg.yaml
+          subPath: customreg.yaml
+          readOnly: true
+        - name: realm
+          mountPath: /opt/keycloak/data/import/realm.json
+          subPath: realm.json
         - name: certauthority
           mountPath: /etc/x509/https/cas.pem
           subPath: cas.pem
@@ -77,11 +91,18 @@ addons:
           mountPath: /opt/keycloak/conf/quarkus.properties
           subPath: quarkus.properties
       secrets:
+        realm:
+          stringData:
+            realm.json: '{{ .Files.Get "resources/dev/baby-yoda.json" }}'
+        customreg:
+          stringData:
+            customreg.yaml: '{{ .Files.Get "resources/dev/baby-yoda.yaml" }}'
         env:
           stringData:
             X509_CA_BUNDLE: /etc/x509/https/cas.pem
-            KEYCLOAK_ADMIN: "###ZARF_VAR_KC_ADM_USER###"
-            KEYCLOAK_ADMIN_PASSWORD: "###ZARF_VAR_KC_ADM_PASSWORD###"
+            KEYCLOAK_ADMIN: ###ZARF_VAR_KC_ADM_USER###
+            KEYCLOAK_ADMIN_PASSWORD: ###ZARF_VAR_KC_ADM_PASSWORD###
+            CUSTOM_REGISTRATION_CONFIG: /opt/keycloak/conf/customreg.yaml
         certauthority:
           stringData:
             cas.pem: '{{ .Files.Get "resources/dev/dod_cas.pem" }}'

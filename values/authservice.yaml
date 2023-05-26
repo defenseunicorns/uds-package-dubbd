@@ -37,3 +37,13 @@ sso:
 addons:
   authservice:
     enabled: true
+    values:
+      chains:
+        local:
+          match:
+            header: ":local"
+            prefix: "localhost"
+          client_id: local_id
+          client_secret: local_secret
+          callback_uri: https://localhost/login
+          logout_path: "/local"
