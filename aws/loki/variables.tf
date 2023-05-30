@@ -38,3 +38,15 @@ variable "create_kms_key" {
   type        = bool
   default     = true
 }
+
+variable "tfstate_bucket_name" {
+  description = "Tfstate backend S3 bucket name"
+  type        = string
+  default     = null
+}
+
+variable "tfstate_locktable_name" {
+  description = "Tfstate DynamoDB locktable name"
+  type        = string
+  default     = ""
+}
