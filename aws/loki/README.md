@@ -2,6 +2,16 @@
 
 Terraform for deploying resources necessary for Loki
 
+## Configurations 
+
+For Loki can be deployed a few different ways. Please consider the following.
+
+### Local Backend
+To a local backend, `tfstate_bucket_name` must be set to `null`.
+
+### Remote S3 Backend
+To use a remote backend, set the name of `tfstate_bucket_name` to the name of the bucket. Ideally one should also set the the name of the DynameDB locktable with `tfstate_locktable_name`.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
