@@ -27,12 +27,11 @@ locals {
 }
 
 module "S3" {
-  source                     = "github.com/defenseunicorns/delivery-aws-iac//modules/s3-irsa?ref=v0.0.4-alpha"
+  source                     = "github.com/defenseunicorns/uds-iac-aws-s3?ref=v0.0.1-alpha"
   name_prefix                = var.name
   eks_oidc_provider_arn      = local.oidc_arn
   kubernetes_service_account = "logging-loki"
   kubernetes_namespace       = "logging"
-  dynamodb_enabled           = "false"
   kms_key_arn                = local.kms_key_arn
   force_destroy              = var.force_destroy
 
@@ -51,6 +50,3 @@ module "generate_kms" {
   }
 
 }
-
-
-

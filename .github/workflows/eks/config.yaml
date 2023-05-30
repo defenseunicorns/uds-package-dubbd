@@ -23,5 +23,5 @@ addons:
 managedNodeGroups:
   - name: ng-1
     instanceType: m5.2xlarge
-    desiredCapacity: 2
+    desiredCapacity: 3
     volumeSize: 150

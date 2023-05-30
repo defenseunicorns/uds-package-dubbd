@@ -10,6 +10,7 @@ metadata:
 
 variables:
 - name: BIGBANG_VERSION
+- name: FLUX_VERSION
 - name: DOMAIN
   default: bigbang.dev
   prompt: false
@@ -68,12 +69,16 @@ components:
         after:
         - cmd: ./cat_certs.sh
           description: read the cert
+          mute: true
           setVariables:
             - name: PUBLIC_CERT
+              sensitive: true
         - cmd: ./cat_key.sh
           description: read the cert
+          mute: true
           setVariables:
             - name: PUBLIC_KEY
+              sensitive: true
         - cmd: rm cat_certs.sh
         - cmd: rm cat_key.sh
   - name: preflight
@@ -84,22 +89,68 @@ components:
         - cmd: "./zarf tools kubectl version --short || true"
           setVariables:
             - name: OUTPUT
-        - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang &>/dev/null && echo true || echo false"
-          setVariables:
-            - name: IS_UPGRADE
         after:
-        - cmd: "./preflight.sh"
+        - cmd: ./preflight.sh
+        - cmd: rm preflight.sh
     files:
     - source: scripts/preflight.sh
       target: preflight.sh
       executable: true
-  - name: bigbang
+  - name: download-flux
     required: true
     actions:
       onDeploy:
         after:
-          - cmd: ./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"metadata":{"annotations":{"reconcile.fluxcd.io/requestedAt":"'`date '+%F_%H:%M:%S.%s%z'`'"}}}'
-            description: "Patch BigBang to force an update on updates"
+          - cmd: rm -f run/flux/flux || true
+            description: Clean up previous flux install
+          - cmd: "./extract_flux.sh ###ZARF_PKG_TMPL_FLUX_VERSION###"
+            description: Extract flux binary
+          - cmd: "rm extract_flux.sh && rm -f tmp/flux*"
+            description: Clean up extra flux artifacts
+    files:
+      - source: scripts/extract_flux.sh
+        target: extract_flux.sh
+        executable: true
+      - source: https://github.com/fluxcd/flux2/releases/download/v###ZARF_PKG_TMPL_FLUX_VERSION###/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_darwin_arm64.tar.gz
+        target: tmp/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_darwin_arm64.tar.gz
+      - source: https://github.com/fluxcd/flux2/releases/download/v###ZARF_PKG_TMPL_FLUX_VERSION###/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_darwin_amd64.tar.gz
+        target: tmp/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_darwin_amd64.tar.gz
+      - source: https://github.com/fluxcd/flux2/releases/download/v###ZARF_PKG_TMPL_FLUX_VERSION###/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_linux_amd64.tar.gz
+        target: tmp/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_linux_amd64.tar.gz
+      - source: https://github.com/fluxcd/flux2/releases/download/v###ZARF_PKG_TMPL_FLUX_VERSION###/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_linux_arm64.tar.gz
+        target: tmp/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_linux_arm64.tar.gz
+      - source: https://github.com/fluxcd/flux2/releases/download/v###ZARF_PKG_TMPL_FLUX_VERSION###/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_windows_amd64.zip
+        target: tmp/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_windows_amd64.zip
+      - source: https://github.com/fluxcd/flux2/releases/download/v###ZARF_PKG_TMPL_FLUX_VERSION###/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_windows_arm64.zip
+        target: tmp/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_windows_arm64.zip
+  - name: bigbang
+    required: true
+    actions:
+      onDeploy:
+        before:
+        - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null 2>&1 && echo true || echo false"
+          mute: true
+          description: "Detect if this is an upgrade"
+          setVariables:
+            - name: IS_UPGRADE
+        after:
+          - cmd: ./zarf tools kubectl wait --for=jsonpath='{.spec.ref.tag}'=###ZARF_PKG_TMPL_BIGBANG_VERSION### gitrepository bigbang -n bigbang --timeout=5m
+            description: "Wait for BigBang GitRepository to update to latest version"
+            mute: true
+          - cmd: ./flux reconcile helmrelease bigbang -n bigbang --with-source
+            dir: run/flux
+            description: "Reconcile Big Bang helmrelease with source"
+            maxTotalSeconds: 600
+          - cmd: |
+              export PATH=$(dirname ./zarf):$PATH
+              ./reconcile_helmreleases.sh
+            mute: true
+            description: "Patch package helmreleases to force reconciliation on upgrade"
+        onFailure:
+          - cmd: |
+              export PATH=$(dirname ./zarf):$PATH
+              ./on_failure.sh
+            description: "Print debug for failed deployment"
       onRemove:
         before:
           - cmd: |
@@ -107,6 +158,12 @@ components:
               ./teardown.sh
             description: "Tear down Big Bang"
     files:
+      - source: scripts/reconcile_helmreleases.sh
+        target: reconcile_helmreleases.sh
+        executable: true
+      - source: scripts/on_failure.sh
+        target: on_failure.sh
+        executable: true
       - source: scripts/teardown.sh
         target: teardown.sh
         executable: true
