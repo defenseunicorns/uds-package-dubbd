@@ -24,6 +24,15 @@ locals {
   # The conditional may need to look like this depending on how we decide to handle the way varf wants to template things
   # generate_kms_key          = var.kms_key_arn == "" ? 1 : 0
   # kms_key_arn               = var.kms_key_arn == "" ? module.generate_kms[0].kms_key_arn : var.kms_key_arn
+
+  # Backend Config
+  create_backend = var.tfstate_bucket_name == null ? 0 : 1
+  backend_content = {
+    region               = data.aws_region.current.name 
+    bucket               = var.tfstate_bucket_name 
+    terraform_state_file = "tfstate/${var.region}/${var.bucket_prefix}-bucket.tfstate"
+    dynamodb_table       = var.tfstate_locktable_name 
+  } 
 }
 
 module "S3" {
@@ -49,4 +58,11 @@ module "generate_kms" {
     Deployment = "UDS DUBBD ${var.name}"
   }
 
+}
+
+resource "local_file" "terraform_backend_config" {
+  count = create_backend
+  content         = templatefile("${path.module}/templates/backend.tf.tmpl", local.backend_content)
+  filename        = "backend.tf"
+  file_permission = "0644"
 }
