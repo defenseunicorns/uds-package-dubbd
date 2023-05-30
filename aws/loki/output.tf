@@ -15,10 +15,6 @@ output "s3_bucket" {
   value = module.S3.s3_bucket
 }
 
-output "dynamodb_name" {
-  value = module.S3.dynamodb_name
-}
-
 output "eks_cluster_oidc_arn" {
   description = "The ARN of the OIDC Provider of the EKS Cluster"
   value       = local.oidc_arn

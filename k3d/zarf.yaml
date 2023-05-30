@@ -23,6 +23,14 @@ components:
     required: true
     import:
       path: ../defense-unicorns-distro
+  - name: preflight
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+  - name: download-flux
+    required: true
+    import:
+      path: ../defense-unicorns-distro
   - name: bigbang
     required: true
     import:

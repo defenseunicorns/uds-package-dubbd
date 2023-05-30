@@ -61,6 +61,10 @@ components:
         - cmd: ./cat_keycloak_key.sh
           description: read the cert
           setVariable: KEYCLOAK_KEY
+  - name: download-flux
+    required: true
+    import:
+      path: ../defense-unicorns-distro
   - name: cocowow
     required: true
     import:
