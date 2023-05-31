@@ -1,4 +1,3 @@
-
 name: DUBBD AWS
 
 on:
@@ -7,13 +6,12 @@ on:
       - main
 
 jobs:
-  eksctl:
+  clean-install:
     runs-on: ubuntu-latest
   
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -41,18 +39,20 @@ jobs:
         env:
           SHA: ${{ github.sha }}
         run: |
-          echo "eks_cluster_name=big-bang-${SHA:0:7}" >> $GITHUB_OUTPUT
+          echo "eks_cluster_name=big-bang-aws-${SHA:0:7}" >> $GITHUB_OUTPUT
           echo "short_sha=${SHA:0:7}" >> $GITHUB_OUTPUT
-
 
       - name: Package EKSCTL 
         run: zarf package create --confirm
         working-directory: .github/workflows/eks
 
-      - name: Create EKS cluster and Zarf Init
+      - name: Create EKS cluster
         run: |
           echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
-          zarf package deploy zarf-package-distro-eks-multi.tar.zst --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} --confirm 
+
+          zarf package deploy zarf-package-distro-eks-multi.tar.zst \
+            --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
+            --confirm 
         working-directory: .github/workflows/eks #just holds the zarf-config
         id: create-cluster
 
@@ -75,15 +75,16 @@ jobs:
       - name: Deploy DUBBD-AWS
         run: |
           echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
-          # Pass in KMS Version
-          #zarf package deploy zarf-package-*.tar.zst --set loki_force_destroy=true --set loki_kms_key_arn=${{ steps.get.outputs.kms_key_arn }} --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} --confirm 
-          # Create KMS Version
-          zarf package deploy zarf-package-*.tar.zst --confirm --set loki_force_destroy=true --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }}
 
+          zarf package deploy zarf-package-*.tar.zst \
+            --set loki_force_destroy=true \
+            --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
+            --confirm
         working-directory: aws
         timeout-minutes: 60
 
       - name: Remove DUBBD-AWS
+        if: always()
         run: zarf package remove zarf-package-*.tar.zst --confirm
         working-directory: aws
         timeout-minutes: 60
@@ -95,3 +96,106 @@ jobs:
           ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
         working-directory: .github/workflows/eks
 
+  upgrade:
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Run this step first so we can fail fast in case an invalid package name is provided
+      - name: Get latest package version to upgrade from
+        id: latest-package-version
+        uses: ./.github/actions/latest-package-version
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          package-name: packages/big-bang-distro-aws
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+
+      - name: Install Zarf
+        uses: defenseunicorns/setup-zarf@main
+        with:
+          # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
+          version: v0.27.0
+          download-init-package: true
+
+      - name: Login to Registry1
+        uses: docker/login-action@v2
+        with:
+          registry: registry1.dso.mil
+          username: ${{ secrets.REGISTRY1_USERNAME }}
+          password: ${{ secrets.REGISTRY1_PASSWORD }}
+          
+      - name: Set eks_cluster_name
+        id: get_cluster_name
+        env:
+          SHA: ${{ github.sha }}
+        run: |
+          echo "eks_cluster_name=big-bang-aws-upgrade-${SHA:0:7}" >> $GITHUB_OUTPUT
+          echo "short_sha=${SHA:0:7}" >> $GITHUB_OUTPUT
+
+      - name: Package EKSCTL 
+        run: zarf package create --confirm
+        working-directory: .github/workflows/eks
+
+      - name: Create EKS cluster
+        run: |
+          echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+
+          zarf package deploy zarf-package-distro-eks-multi.tar.zst \
+            --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
+            --confirm
+        working-directory: .github/workflows/eks #just holds the zarf-config
+        id: create-cluster
+
+      - name: Show Cluster
+        run: |
+          kubectl get nodes
+          kubectl config get-contexts
+
+      - name: Zarf init
+        run: |
+          zarf init -a amd64 --components=git-server --confirm
+
+      - name: Create DUBBD-AWS
+        run: zarf package create --confirm
+        working-directory: aws
+        timeout-minutes: 60
+
+      - name: Deploy latest package version
+        working-directory: aws
+        run: |
+          zarf package deploy \
+            oci://ghcr.io/defenseunicorns/packages/big-bang-distro-aws:${{ steps.latest-package-version.outputs.latest-package-version }} \
+            --set loki_force_destroy=true \
+            --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
+            --confirm
+
+      - name: Deploy DUBBD-AWS
+        run: |
+          echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+          zarf package deploy zarf-package-*.tar.zst \
+            --set loki_force_destroy=true \
+            --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
+            --confirm
+        working-directory: aws
+        timeout-minutes: 60
+
+      - name: Remove DUBBD-AWS
+        if: always()
+        run: zarf package remove zarf-package-*.tar.zst --confirm
+        working-directory: aws
+        timeout-minutes: 60
+
+      - name: Teardown EKS cluster
+        if: always()
+        # can't do a zarf package remove since there's no kubernetes cluster.
+        run: |
+          ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
+        working-directory: .github/workflows/eks

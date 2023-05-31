@@ -13,9 +13,6 @@ metadata:
   documentation: https://github.com/defenseunicorns/zarf-package-big-bang
   vendor: Defense Unicorns
 
-
-
-
 variables:
 - name: TERRAFORM_VERSION
 - name: TERRAFORM_PROVIDER_AWS_VERSION
