@@ -3,14 +3,14 @@ addons:
     enabled: true
 
     chains:
-      podinfo:
-        callback_uri: https://podinfo.bigbang.dev/login
-        client_id: podinfo
+      foo:
+        callback_uri: https://foo.bigbang.dev/login
+        client_id: foo
         client_secret: 2mMLbBB2V7ngoGOY0N6fP0i47f68eDNP
         logout_path: /logout
         match:
           header: :authority
-          prefix: podinfo.bigbang.dev
+          prefix: foo.bigbang.dev
 
   keycloak:
     enabled: true
