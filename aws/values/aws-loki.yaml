@@ -1,5 +1,5 @@
 loki:
-  strategy: "scalable" # i think?
+  strategy: "scalable"
   objectStorage:
     endpoint: https://s3.amazonaws.com
     region: "###ZARF_VAR_LOKI_S3_AWS_REGION###"
