@@ -4,7 +4,7 @@ metadata:
   description: "Defense Unicorns Big Bang Distro"
   version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
   url: https://p1.dso.mil/products/big-bang
-  image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
+  image: https://p1.dso.mil/Big_Bang_Color_Logo_White_text.b10a1bae.webp
   # Big Bang / Iron Bank are only amd64
   architecture: amd64
 

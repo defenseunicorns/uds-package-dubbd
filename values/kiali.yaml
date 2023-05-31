@@ -2,9 +2,6 @@
 kiali:
   enabled: true
   values:
-    istio:
-      mtls:
-        mode: PERMISSIVE
     resources:
       requests:
         cpu: "100m"
