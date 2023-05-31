@@ -21,6 +21,12 @@ variables:
   description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data"
   default: "false"
 
+- name: TFSTATE_BUCKET_NAME
+  description: "Terraform Backend S3 bucket for managing Terraform State files"
+
+- name: TFSTATE_DYNAMODB_TABLE_NAME
+  description: "Terraoform DynamoDB Lockfile database"
+
 components:
   - name: download-terraform
     required: true
