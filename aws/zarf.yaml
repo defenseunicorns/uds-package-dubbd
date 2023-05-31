@@ -63,7 +63,7 @@ components:
         before:
           - cmd: "terraform init -upgrade"
             dir: loki
-          - cmd: "terraform apply --target=\"local_file.terraform_backend_config\" --auto-approve" 
+          - cmd: "terraform apply --target=\"local_file.terraform_backend_config\" --auto-approve"
             dir: loki
     files:
     # terraform code
