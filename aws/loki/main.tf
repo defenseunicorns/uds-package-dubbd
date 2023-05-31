@@ -28,11 +28,11 @@ locals {
   # Backend Config
   create_backend = var.tfstate_bucket_name == null ? 0 : 1
   backend_content = {
-    region               = data.aws_region.current.name 
-    bucket               = var.tfstate_bucket_name 
+    region               = data.aws_region.current.name
+    bucket               = var.tfstate_bucket_name
     terraform_state_file = "tfstate/${var.region}/${var.bucket_prefix}-bucket.tfstate"
-    dynamodb_table       = var.tfstate_locktable_name 
-  } 
+    dynamodb_table       = var.tfstate_locktable_name
+  }
 }
 
 module "S3" {
@@ -61,7 +61,7 @@ module "generate_kms" {
 }
 
 resource "local_file" "terraform_backend_config" {
-  count = create_backend
+  count           = create_backend
   content         = templatefile("${path.module}/templates/backend.tf.tmpl", local.backend_content)
   filename        = "backend.tf"
   file_permission = "0644"
