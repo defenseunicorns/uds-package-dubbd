@@ -61,3 +61,12 @@ components:
         - ../values/keycloak.yaml
         - pepr-bb-values.yaml
         - disable-unrelated.yaml
+  - name: podinfo
+    required: true
+    manifests:
+      - name: podinfo
+        namespace: podinfo
+        kustomizations:
+          - podinfo
+    images:
+      - "ghcr.io/stefanprodan/podinfo:6.3.6"
