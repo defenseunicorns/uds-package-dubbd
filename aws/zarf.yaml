@@ -25,7 +25,7 @@ variables:
   description: "Terraform Backend S3 bucket for managing Terraform State files"
 
 - name: TFSTATE_DYNAMODB_TABLE_NAME
-  description: "Terraoform DynamoDB Lockfile database"
+  description: "Terraform DynamoDB Lockfile database"
 
 components:
   - name: download-terraform
