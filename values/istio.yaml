@@ -3,6 +3,7 @@ istio:
   ingressGateways:
     admin-ingressgateway:
       type: "LoadBalancer"
+    public-ingressgateway: null
     tenant-ingressgateway:
       type: "LoadBalancer"
   values:
@@ -32,6 +33,7 @@ istio:
       tls:
         key: "###ZARF_VAR_PUBLIC_KEY###"
         cert: "###ZARF_VAR_PUBLIC_CERT###"
+    public: null
     tenant:
       ingressGateway: tenant-ingressgateway
       hosts:
