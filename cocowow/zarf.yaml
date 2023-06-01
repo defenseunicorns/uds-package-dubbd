@@ -11,8 +11,14 @@ metadata:
 
 variables:
   - name: REALM
+    default: baby-yoda
+    prompt: false
   - name: KC_ADM_USER
+    default: admin
+    prompt: false
   - name: KC_ADM_PASSWORD
+    default: sup3r-secret-p@ssword
+    prompt: false
 
 components:
   - name: load-certs
@@ -44,7 +50,7 @@ components:
       name: bigbang
     images:
       - registry1.dso.mil/ironbank/big-bang/p1-keycloak-plugin:3.2.0
-      - ghcr.io/kirankt/keycloak-custom-theme:0.1
+      - ghcr.io/kirankt/keycloak-custom-theme:0.1.1
     extensions:
       bigbang:
         version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
@@ -52,3 +58,8 @@ components:
         # look at imports and then merging here for composition
         - ../values/authservice.yaml
         - ../values/keycloak.yaml
+    actions:
+      onRemove:
+        before:
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang keycloak --ignore-not-found
+          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang authservice --ignore-not-found
