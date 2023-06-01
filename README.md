@@ -20,6 +20,8 @@ Pre-built Zarf Package of [DoD-Platform-One/big-bang](https://github.com/DoD-Pla
   - scripts - _scripts for zarf package_
 - [k3d](./k3d/) - _DUBBD for k3d (local development)_
   - values - _values file overrides for k3d_
+- [kind](./kind/) - _DUBBD for kind (local development)_
+  - values - _values file overrides for kind_
 - [values](./values/) - _shared values files_
 
 ## Example DUBBD Deployment - using pre-built OCI packages [here](https://github.com/orgs/defenseunicorns/packages?repo_name=zarf-package-big-bang)

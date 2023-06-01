@@ -1,0 +1,75 @@
+neuvector:
+  enabled: true
+  values:
+    containerd:
+      enabled: true
+    istio:
+      enabled: true
+      neuvector:
+        gateways:
+          - istio-system/public
+
+kyvernoPolicies:
+  values:
+    policies:
+      disallow-host-namespaces:
+        exclude:
+          any:
+          # Istio does not inject itself
+          - resources:
+              namespaces:
+              - metallb-system
+      disallow-privileged-containers:
+        exclude:
+          any:
+          - resources:
+              namespaces:
+              - "local-path-storage"
+      restrict-host-path-mount:
+        parameters:
+          allow:
+           - "###ZARF_VAR_HOST_PATH###"
+      restrict-host-path-mount-pv:
+        parameters:
+          allow:
+           - "###ZARF_VAR_HOST_PATH###"
+      restrict-host-path-write:
+        parameters:
+          allow:
+           - "###ZARF_VAR_HOST_PATH###"
+      restrict-image-registries:
+        exclude:
+          any:
+          # Istio does not inject itself
+          - resources:
+              namespaces:
+              - metallb-system
+              - local-path-storage
+              - kube-system
+      restrict-host-ports:
+        exclude:
+          any:
+          # Istio does not inject itself
+          - resources:
+              namespaces:
+              - metallb-system
+      restrict-volume-types:
+        exclude:
+          any:
+          - resources:
+              namespaces:
+              - "local-path-storage"
+
+addons:
+  metricsServer:
+    values:
+      args:
+        - --kubelet-insecure-tls
+
+
+#istio:
+#  ingressGateways:
+#    public-ingressgateway:
+#      type: "NodePort"
+#    passthrough-ingressgateway:
+#      type: "NodePort"

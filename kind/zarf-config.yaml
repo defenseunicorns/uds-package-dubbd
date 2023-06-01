@@ -1,0 +1,14 @@
+package:
+  create: 
+    max_package_size: "1000000000"
+    set:
+      # renovate: datasource=gitlab-tags depName=big-bang/bigbang versioning=semver registryUrl=https://repo1.dso.mil
+      bigbang_version: "2.2.0"
+      # should line up with the flux version in the BB release, see https://repo1.dso.mil/big-bang/bigbang/-/blob/master/base/flux/gotk-components.yaml#L3
+      flux_version: "0.41.2"
+  deploy:
+    set:
+      domain: bigbang.dev
+      public_key_file: bigbang.dev.key
+      public_cert_file: bigbang.dev.cert
+      host_path: "/var/local-path-provisioner/*"
