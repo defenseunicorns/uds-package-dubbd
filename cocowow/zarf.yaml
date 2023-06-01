@@ -19,6 +19,12 @@ variables:
   - name: KC_ADM_PASSWORD
     default: sup3r-secret-p@ssword
     prompt: false
+  - name: KEYCLOAK_KEY_FILE
+    default: bigbang.dev.key
+    prompt: false
+  - name: KEYCLOAK_CERT_FILE
+    default: bigbang.dev.cert
+    prompt: false
 
 components:
   - name: load-certs
