@@ -1,6 +1,8 @@
 
 kiali:
   enabled: true
+  ingress:
+    gateway: "admin"
   values:
     resources:
       requests:
