@@ -143,7 +143,10 @@ components:
             maxTotalSeconds: 600
           - cmd: |
               export PATH=$(dirname ./zarf):$PATH
-              ./reconcile_helmreleases.sh
+              for package in kyverno kyverno-policies istio-operator istio monitoring loki metrics-server tempo promtail neuvector kiali kyverno-reporter; do
+                ./flux reconcile helmrelease $package -n bigbang --with-source --verbose --timeout 10m || true
+              done
+            dir: run/flux
             mute: true
             description: "Patch package helmreleases to force reconciliation on upgrade"
         onFailure:
@@ -158,9 +161,6 @@ components:
               ./teardown.sh
             description: "Tear down Big Bang"
     files:
-      - source: scripts/reconcile_helmreleases.sh
-        target: reconcile_helmreleases.sh
-        executable: true
       - source: scripts/on_failure.sh
         target: on_failure.sh
         executable: true
