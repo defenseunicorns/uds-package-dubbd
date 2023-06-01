@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  eksctl:
+  clean-install:
     runs-on: ubuntu-latest
   
     steps:
