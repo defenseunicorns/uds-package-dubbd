@@ -55,8 +55,8 @@ components:
     actions:
       onCreate:
         before:
-          - cmd: "terraform init -upgrade"
-            dir: loki
+          - cmd: "./terraform init -upgrade"
+            dir: run/loki
     files:
     # terraform code
     - source: loki/.terraform
@@ -78,29 +78,29 @@ components:
         before:
           - cmd: "test -d ./loki/ && chmod -R ugo+rwx ./loki/ || echo $?"
             dir: run
-          - cmd: "terraform plan"
+          - cmd: "./terraform plan"
             dir: run/loki
           - cmd: sleep 15 #time to review
-          - cmd: "terraform apply -auto-approve"
+          - cmd: "./terraform apply -auto-approve"
             dir: run/loki
       onRemove:
         before:
-          - cmd: "terraform destroy -auto-approve"
+          - cmd: "./terraform destroy -auto-approve"
             dir: run/loki
   - name: outputs
     required: true
     actions:
       onDeploy:
         after:
-          - cmd: "terraform output -raw s3_bucket"
+          - cmd: "./terraform output -raw s3_bucket"
             dir: run/loki
             setVariables:
               - name: LOKI_S3_BUCKET
-          - cmd: "terraform output -raw aws_region"
+          - cmd: "./terraform output -raw aws_region"
             dir: run/loki
             setVariables:
               - name: LOKI_S3_AWS_REGION
-          - cmd: "terraform output -raw irsa_role"
+          - cmd: "./terraform output -raw irsa_role"
             dir: run/loki
             setVariables:
               - name: LOKI_S3_ROLE_ARN
