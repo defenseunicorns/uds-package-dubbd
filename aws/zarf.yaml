@@ -55,8 +55,8 @@ components:
     actions:
       onCreate:
         before:
-          - cmd: "./terraform init -upgrade"
-            dir: run/loki
+          - cmd: "terraform init -upgrade"
+            dir: loki
     files:
     # terraform code
     - source: loki/.terraform
