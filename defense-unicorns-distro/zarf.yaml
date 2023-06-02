@@ -150,14 +150,12 @@ components:
           - cmd: ./flux reconcile helmrelease bigbang -n bigbang --with-source --verbose --timeout 10m
             dir: run/flux
             description: "Reconcile Big Bang HelmRelease with source"
-          - cmd: |
-              export PATH=$(dirname ./zarf):$PATH
-              for package in kyverno kyverno-policies istio-operator istio monitoring loki metrics-server tempo promtail neuvector kiali kyverno-reporter; do
-                ./zarf tools kubectl patch helmrelease -n bigbang $package --type=merge -p '{"metadata":{"annotations":{"reconcile.fluxcd.io/requestedAt":"'`date '+%F_%H:%M:%S.%s%z'`'"}}}' || true
-              done
+          - cmd: ./flux suspend helmrelease -n bigbang --all --verbose --timeout 5m
             dir: run/flux
-            mute: true
-            description: "Patch package HelmReleases to force reconciliation on upgrade"
+            description: "Suspend Big Bang package HelmReleases"
+          - cmd: ./flux resume helmrelease -n bigbang --all --verbose --timeout 5m
+            dir: run/flux
+            description: "Resume Big Bang package HelmReleases"
         onFailure:
           - cmd: |
               export PATH=$(dirname ./zarf):$PATH
