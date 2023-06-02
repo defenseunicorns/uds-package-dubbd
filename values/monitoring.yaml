@@ -1,6 +1,8 @@
 
 monitoring:
   enabled: true
+  ingress:
+    gateway: "admin"
   values:
     istio:
       alertmanager:
