@@ -144,7 +144,7 @@ components:
           - cmd: |
               export PATH=$(dirname ./zarf):$PATH
               for package in kyverno kyverno-policies istio-operator istio monitoring loki metrics-server tempo promtail neuvector kiali kyverno-reporter; do
-                ./flux reconcile helmrelease $package -n bigbang --with-source --verbose --timeout 10m || true
+                ./flux reconcile helmrelease $package -n bigbang --with-source --verbose --timeout 10m & # Reconcile in the background to not wait
               done
             dir: run/flux
             mute: true
