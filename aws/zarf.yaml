@@ -17,6 +17,13 @@ variables:
 - name: TERRAFORM_VERSION
 - name: TERRAFORM_PROVIDER_AWS_VERSION
 
+- name: TF_STATE_BUCKET_NAME # todo: agree on tf vs terraform for these vars?
+  description: "Name of the pre-existing Terraform state S3 bucket"
+- name: TF_STATE_KEY
+  description: "Path to the state file key in the state bucket"
+- name: TF_STATE_DYNAMODB_TABLE_NAME
+  description: "Name of the DynamoDB table used for Terraform state locking"
+
 - name: LOKI_FORCE_DESTROY
   description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data"
   default: "false"

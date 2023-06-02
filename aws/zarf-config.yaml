@@ -14,6 +14,9 @@ package:
       public_key_file: bigbang.dev.key
       public_cert_file: bigbang.dev.cert
       name: "big-bang-aws" # maybe inject something here for the GH PR?
+      tf_state_bucket_name: dev-state-bucket
+      tf_state_key: tfstate/dev/dev-state-bucket.tfstate
+      tf_state_dynamodb_table_name: dev-state-dynamodb
       #Bring your own kms key, if omitted a key will be created with an alias prefix of "<cluster name>-loki-"
       #loki_kms_key_arn: "arn:aws:kms:us-west-2:000000000000:key/mrk-0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a"
       #loki_force_destroy: "true"
