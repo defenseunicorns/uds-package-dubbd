@@ -139,14 +139,17 @@ components:
             mute: true
           - cmd: ./flux reconcile source git bigbang -n bigbang --verbose --timeout=5m
             dir: run/flux
+            description: "Wait for BigBang GitRepository to be ready"
             mute: true
-          - cmd: ./zarf tools kubectl wait --for=condition="Ready" helmcharts.source.toolkit.fluxcd.io -n bigbang bigbang-bigbang --timeout=5m
-            description: "Wait for BigBang HelmChart to be ready"
-            mute: true
+          - cmd: ./flux suspend source chart bigbang-bigbang -n bigbang --verbose --timeout=5m
+            dir: run/flux
+            description: "Suspend Big Bang HelmChart"
+          - cmd: ./flux resume source chart bigbang-bigbang -n bigbang --verbose --timeout=5m
+            dir: run/flux
+            description: "Suspend Big Bang HelmChart"
           - cmd: ./flux reconcile helmrelease bigbang -n bigbang --with-source --verbose --timeout 10m
             dir: run/flux
             description: "Reconcile Big Bang HelmRelease with source"
-            maxTotalSeconds: 600
           - cmd: |
               export PATH=$(dirname ./zarf):$PATH
               for package in kyverno kyverno-policies istio-operator istio monitoring loki metrics-server tempo promtail neuvector kiali kyverno-reporter; do
