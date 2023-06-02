@@ -23,6 +23,8 @@ variables:
   description: "Path to the state file key in the state bucket"
 - name: TF_STATE_DYNAMODB_TABLE_NAME
   description: "Name of the DynamoDB table used for Terraform state locking"
+- name: REGION
+  description: "The AWS region to run the Terraform in"
 
 - name: LOKI_FORCE_DESTROY
   description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data"
@@ -62,7 +64,8 @@ components:
     actions:
       onCreate:
         before:
-          - cmd: "terraform init -upgrade"
+          - cmd: |
+              terraform init -upgrade -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" -backend-config="key=${ZARF_VAR_TF_STATE_KEY}-bucket.tfstate" -backend-config="region=${ZARF_VAR_REGION}"
             dir: loki
     files:
     # terraform code
