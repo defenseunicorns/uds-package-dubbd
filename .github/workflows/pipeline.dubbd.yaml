@@ -81,3 +81,6 @@ jobs:
           ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
         working-directory: .github/workflows/eks
 
+      - name: Save zarf debug logs
+        if: always()
+        uses: defenseunicorns/zarf/.github/actions/save-logs@main
