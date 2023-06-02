@@ -141,6 +141,14 @@ components:
             dir: run/flux
             description: "Reconcile Big Bang helmrelease with source"
             maxTotalSeconds: 600
+          - cmd: |
+              export PATH=$(dirname ./zarf):$PATH
+              for package in kyverno kyverno-policies istio-operator istio monitoring loki metrics-server tempo promtail neuvector kiali kyverno-reporter; do
+                ./flux reconcile helmrelease $package -n bigbang --with-source --verbose --timeout 10m || true
+              done
+            dir: run/flux
+            mute: true
+            description: "Patch package helmreleases to force reconciliation on upgrade"
         onFailure:
           - cmd: |
               export PATH=$(dirname ./zarf):$PATH
