@@ -1,6 +1,9 @@
 # The version of Zarf to use. To keep this repo as portable as possible the Zarf binary will be downloaded and added to
 # the build folder.
 ZARF_VERSION := v0.27.0
+
+DUBBD_OCI_VERSION := 0.0.2
+
 # Figure out which Zarf binary we should use based on the operating system we are on
 ZARF_BIN := zarf
 
@@ -50,20 +53,7 @@ build/zarf-init.sha256: | build ## Download the init package and create a small 
 init-k3d-cluster:
 	k3d cluster create mycluster --api-port 6443
 	k3d kubeconfig merge mycluster -o /home/ubuntu/cluster-kubeconfig.yaml
-	echo
-	echo "Waiting for cluster to be ready..."
-	kubectl wait --for=condition=Ready pods --all --all-namespaces 2>&1 >/dev/null
-	echo
-	echo "Installing Calico..."
-	kubectl apply --wait=true -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.1/manifests/calico.yaml 2>&1 >/dev/null
-	echo "Waiting for Calico to be ready..."
-	kubectl rollout status deployment/calico-kube-controllers -n kube-system --watch --timeout=90s 2>&1 >/dev/null
-	kubectl rollout status daemonset/calico-node -n kube-system --watch --timeout=90s 2>&1 >/dev/null
-	kubectl wait --for=condition=Ready pods --all --all-namespaces 2>&1 >/dev/null
-	echo
 	utils/metallb/install.sh
-	kubectl wait --for=condition=Ready pods --all --all-namespaces 2>&1 >/dev/null
-	echo
 	echo "Running default build"
 	make default-build
 	echo "Running zarf init"
@@ -72,3 +62,8 @@ init-k3d-cluster:
 
 destroy-k3d-cluster:
 	k3d cluster delete mycluster
+
+# You need to login to the registry before this will work
+# build/zarf tools registry login ghcr.io
+deploy-oci-dubbd-to-k3d:
+	cd build && ./zarf package deploy --confirm oci://ghcr.io/defenseunicorns/packages/big-bang-distro-k3d:$(DUBBD_OCI_VERSION)-amd64 --oci-concurrency=15

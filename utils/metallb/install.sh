@@ -15,7 +15,7 @@ NETWORK_BASE=$(docker network inspect -f '{{(index .IPAM.Config 0).Subnet}}' kin
 NETWORK_RANGE_START="${NETWORK_BASE}.200"
 NETWORK_RANGE_END="${NETWORK_BASE}.210"
 
-METALLB_CONFIG=$(sed "s/#RANGE_START#/${NETWORK_RANGE_START}/g" test/metallb/config.yaml | sed "s/#RANGE_END#/${NETWORK_RANGE_END}/g")
+METALLB_CONFIG=$(sed "s/#RANGE_START#/${NETWORK_RANGE_START}/g" utils/metallb/config.yaml | sed "s/#RANGE_END#/${NETWORK_RANGE_END}/g")
 
 echo "Configuring MetalLB..."
 
