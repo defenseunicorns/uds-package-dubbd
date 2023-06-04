@@ -137,7 +137,9 @@ components:
           - cmd: ./zarf tools kubectl wait --for=jsonpath='{.spec.ref.tag}'=###ZARF_PKG_TMPL_BIGBANG_VERSION### gitrepository bigbang -n bigbang --timeout=5m
             description: "Wait for BigBang GitRepository to update to latest version"
             mute: true
-          - cmd: ./flux reconcile helmrelease bigbang -n bigbang --with-source --verbose --timeout 15m
+          - cmd: |
+              ./flux reconcile helmrelease bigbang -n bigbang --with-source --verbose --timeout 15m
+              ./zarf tools kubectl wait --for=condition=Ready --timeout 300s HelmRelease bigbang -n bigbang
             dir: run/flux
             description: "Reconcile Big Bang helmrelease with source"
             maxTotalSeconds: 600
