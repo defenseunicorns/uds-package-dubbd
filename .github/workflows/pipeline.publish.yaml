@@ -7,12 +7,15 @@ on:
     branches:
       - Add-auto-version 
 
-permissions:
-  contents: write
-  packages: write
+# permissions:
+#   contents: write
+#   packages: write
 
 jobs:
   tag-new-version:
+    permissions:
+      contents: write
+      packages: write
     runs-on: ubuntu-latest
     outputs:
       release_created: ${{ steps.tag.outputs.release_created }}
