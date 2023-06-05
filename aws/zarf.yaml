@@ -78,7 +78,7 @@ components:
           - cmd: "test -d ./loki/ && chmod -R ugo+rwx ./loki/ || echo $?"
             dir: run
           - cmd: |
-              terraform init \
+              terraform init -force-copy \
               -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
               -backend-config="key=${ZARF_VAR_STATE_KEY}" \
               -backend-config="region=${ZARF_VAR_REGION}" \
