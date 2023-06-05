@@ -1,0 +1,28 @@
+name: Bump Zarf Package Version
+description: Create and publish Zarf package
+
+inputs:
+  working-directory:
+    description: "Username for image registry"
+    required: true
+  package-name:
+    description: The file name for the package
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Create Zarf Package
+      shell: bash
+      run: cd $BUILD_PATH && \
+        zarf package create --confirm
+      env: 
+        BUILD_PATH: ${{ inputs.working-directory}}
+    
+    - name: Publish Zarf Package
+      shell: bash
+      run: cd ${BUILD_PATH} && \
+        zarf package publish ${NAME}-*.tar.zst oci://ghcr.io/defenseunicorns/packages
+      env: 
+        BUILD_PATH: ${{ inputs.working-directory}}
+        NAME: ${{ inputs.package-name}}
