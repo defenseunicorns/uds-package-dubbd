@@ -1,6 +1,7 @@
 name: DUBBD AWS
 
 on:
+  push: # TODO: remove this one
   pull_request:
     branches:
       - main

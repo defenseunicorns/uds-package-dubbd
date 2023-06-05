@@ -1,6 +1,9 @@
 name: CICD Pipeline Testing
-on: [push]
-
+on: 
+  # push: ## TODO: use this one
+  pull_request: ## TODO: remove this one
+    branches:
+      - main
 jobs:
   create_pacakge:
     runs-on: ubuntu-latest
@@ -24,22 +27,17 @@ jobs:
           # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
           version: v0.27.0
 
-      - name: Create DUBBD
-        run: zarf package create --confirm
-        working-directory: defense-unicorns-distro
+## Uncomment after testing
 
-      - name: Create CocoWow
-        run: zarf package create --confirm
-        working-directory: cocowow
-      - name: Create DUBBD AWS 
-        run: zarf package create --confirm
-        working-directory: aws
-
-      # - name: login DUBBD
-      #   run: zarf tools registry login ghcr.io -u runyontr -p ${GH_PAT}
-      # - name: publish DUBBD
-      #   run: zarf package publish zarf-package-big-bang-amd64-*.tar.zst oci://ghcr.io/defenseunicorns/packages/big-bang-distro
+      # - name: Create DUBBD
+      #   run: zarf package create --confirm
       #   working-directory: defense-unicorns-distro
-      # - name: publish DUBBD
-      #   run: zarf package publish zarf-package-big-bang-aws-amd64-*.tar.zst oci://ghcr.io/defenseunicorns/packages/big-bang-distro-aws
+
+      # - name: Create CocoWow
+      #   run: zarf package create --confirm
+      #   working-directory: cocowow
+
+      # - name: Create DUBBD AWS 
+      #   run: zarf package create --confirm
       #   working-directory: aws
+ 
