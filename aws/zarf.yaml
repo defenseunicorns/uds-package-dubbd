@@ -61,20 +61,7 @@ components:
         target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
   - name: loki-module
     required: true
-    actions:
-      onCreate:
-        before:
-          - cmd: |
-              terraform init -upgrade \
-              -backend-config="bucket=${TF_VAR_STATE_BUCKET_NAME}" \
-              -backend-config="key=${TF_VAR_STATE_KEY}-bucket.tfstate" \
-              -backend-config="region=${TF_VAR_REGION}" \
-              -backend-config="key=dynamodb_table=${TF_VAR_STATE_DYNAMODB_TABLE_NAME}"
-            dir: loki
     files:
-    # terraform code
-    - source: loki/.terraform
-      target: run/loki/.terraform
     - source: loki/main.tf
       target: run/loki/main.tf
     - source: loki/variables.tf
@@ -83,8 +70,6 @@ components:
       target: run/loki/output.tf
     - source: loki/terraform.tfvars
       target: run/loki/terraform.tfvars
-    - source: loki/.terraform.lock.hcl
-      target: run/loki/.terraform.lock.hcl
   - name: execute-terraform
     required: true
     actions:
@@ -92,6 +77,13 @@ components:
         before:
           - cmd: "test -d ./loki/ && chmod -R ugo+rwx ./loki/ || echo $?"
             dir: run
+          - cmd: |
+              terraform init \
+              -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
+              -backend-config="key=${ZARF_VAR_STATE_KEY}" \
+              -backend-config="region=${ZARF_VAR_REGION}" \
+              -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
+            dir: run/loki
           - cmd: "terraform plan"
             dir: run/loki
           - cmd: sleep 15 #time to review
