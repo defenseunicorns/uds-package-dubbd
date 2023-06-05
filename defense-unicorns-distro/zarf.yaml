@@ -136,18 +136,21 @@ components:
         after:
           - cmd: ./zarf tools kubectl wait --for=jsonpath='{.spec.ref.tag}'=###ZARF_PKG_TMPL_BIGBANG_VERSION### gitrepository bigbang -n bigbang --timeout=5m
             description: "Wait for BigBang GitRepository to update to latest version"
-            mute: true
-          - cmd: |
-              ./flux reconcile helmrelease bigbang -n bigbang --with-source --verbose --timeout 15m
-              ./zarf tools kubectl wait --for=condition=Ready --timeout 300s HelmRelease bigbang -n bigbang
+          - cmd: ./flux reconcile source git bigbang -n bigbang --verbose --timeout=5m
             dir: run/flux
-            description: "Reconcile Big Bang helmrelease with source"
-            maxTotalSeconds: 600
-          - cmd: |
-              export PATH=$(dirname ./zarf):$PATH
-              ./reconcile_helmreleases.sh
-            mute: true
-            description: "Patch package helmreleases to force reconciliation on upgrade"
+            description: "Reconcile BigBang GitRepository"
+          - cmd: ./flux suspend source chart bigbang-bigbang -n bigbang --verbose --timeout=5m
+            dir: run/flux
+            description: "Suspend Big Bang HelmChart"
+          - cmd: ./flux resume source chart bigbang-bigbang -n bigbang --verbose --timeout=5m
+            dir: run/flux
+            description: "Resume Big Bang HelmChart"
+          - cmd: ./flux suspend helmrelease -n bigbang --all --verbose --timeout 5m
+            dir: run/flux
+            description: "Suspend Big Bang package HelmReleases"
+          - cmd: ./flux resume helmrelease -n bigbang --all --verbose --timeout 5m
+            dir: run/flux
+            description: "Resume Big Bang package HelmReleases"
         onFailure:
           - cmd: |
               export PATH=$(dirname ./zarf):$PATH
@@ -160,9 +163,6 @@ components:
               ./teardown.sh
             description: "Tear down Big Bang"
     files:
-      - source: scripts/reconcile_helmreleases.sh
-        target: reconcile_helmreleases.sh
-        executable: true
       - source: scripts/on_failure.sh
         target: on_failure.sh
         executable: true
