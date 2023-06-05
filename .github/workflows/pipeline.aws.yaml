@@ -7,7 +7,7 @@ on:
 
 jobs:
   init-install:
-    uses: ./.github/workflows/common/init-bb-packaging.yaml
+    uses: ./.github/workflows/init-bb-packaging.yaml
     secrets: inherit
 
   clean-install:
