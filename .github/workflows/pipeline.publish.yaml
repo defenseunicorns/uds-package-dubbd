@@ -12,66 +12,35 @@ permissions:
   packages: write
 
 jobs:
-  publish-package:
+  tag-new-version:
     runs-on: ubuntu-latest
-  
+    outputs:
+      release_created: ${{ steps.tag.outputs.release_created }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
       - name: Create Release Tag
         id: tag
         uses: google-github-actions/release-please-action@v3
+      # https://github.com/google-github-actions/release-please-action
         with:
           command: manifest # use configs in release-please-config.json
           release-type: simple
 
-      - name: Configure AWS credentials
-        if: ${{ steps.tag.outputs.release_created }}
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-west-2
+  publish-dubbd:
+    needs: tag-new-version
+    uses: ./.github/workflows/publish_package.yaml
+    with:
+      release_created: ${{ needs.tag-new-version.outputs.release_created }}
+      working_dir: defense-unicorns-distro
+      package_name: zarf-package-big-bang-amd64
+    secrets: inherit
 
-      - name: Install Zarf
-        if: ${{ steps.tag.outputs.release_created }}
-        uses: defenseunicorns/setup-zarf@main
-        with:
-          # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
-          version: v0.27.0
-          download-init-package: true
+  publish-dubbd-aws:
+    needs: tag-new-version
+    uses: ./.github/workflows/publish_package.yaml
+    with:
+      release_created: ${{ needs.tag-new-version.outputs.release_created }}
+      working_dir: aws
+      package_name: zarf-package
+    secrets: inherit
 
-      - name: Login to Registry1
-        if: ${{ steps.tag.outputs.release_created }}
-        uses: docker/login-action@v2
-        with:
-          registry: registry1.dso.mil
-          username: ${{ secrets.REGISTRY1_USERNAME }}
-          password: ${{ secrets.REGISTRY1_PASSWORD }}
-
-      - name: Login to GHCR
-        if: ${{ steps.tag.outputs.release_created }}
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: dummy
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Publish DUBBD
-        if: ${{ steps.tag.outputs.release_created }}
-        uses: ./.github/actions/build-publish-zarf-package
-        with:
-          working-directory: defense-unicorns-distro
-          package-name: zarf-package-big-bang-amd64
-        timeout-minutes: 60
-
-      - name: Publish DUBBD-AWS
-        if: ${{ steps.tag.outputs.release_created }}
-        uses: ./.github/actions/build-publish-zarf-package
-        with:
-          working-directory: aws
-          package-name: zarf-package
-        timeout-minutes: 60
-      
-
+   
