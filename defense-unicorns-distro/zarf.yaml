@@ -177,6 +177,8 @@ components:
       - name: slack-alerts
         files:
           - manifests/alerts/flux-alerts.yaml
+    images:
+      - registry1.dso.mil/ironbank/neuvector/neuvector/scanner@sha256:aeeb536f4b308f7ec0d663c51c6173b54d2bd1beb10b1662eb4d87807f7fe210
     extensions:
       bigbang:
         version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"

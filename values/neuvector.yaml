@@ -7,6 +7,9 @@ neuvector:
       enabled: true
     monitor:
       install: true # getting error here on having this come up
-
+    cve:
+      scanner:
+        image:
+          hash: "sha256:aeeb536f4b308f7ec0d663c51c6173b54d2bd1beb10b1662eb4d87807f7fe210"
 ### crictl config --set runtime-endpoint=/var/run/containerd/containerd.sock
 # 
