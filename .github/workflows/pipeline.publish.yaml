@@ -13,9 +13,10 @@ on:
 
 jobs:
   tag-new-version:
-    permissions:
-      contents: write
-      packages: write
+    permissions: write-all
+    # permissions:
+    #   contents: write
+    #   packages: write
     runs-on: ubuntu-latest
     outputs:
       release_created: ${{ steps.tag.outputs.release_created }}
