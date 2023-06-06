@@ -16,7 +16,7 @@ jobs:
       packages: write
     runs-on: ubuntu-latest
     outputs:
-      release_created: ${{ steps.tag.outputs.release_created }}
+      release_created: ${{ steps.result.outputs.release_created }}
     steps:
       - name: Create Release Tag
         id: tag
@@ -24,6 +24,8 @@ jobs:
         with:
           command: manifest # use configs in release-please-config.json
           release-type: simple
+      - id: result
+        run: echo "release_created=${{ steps.tag.outputs.release_created }}" >> "$GITHUB_OUTPUT"
 
   publish-dubbd:
     needs: tag-new-version
