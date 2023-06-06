@@ -7,4 +7,5 @@ kyvernoPolicies:
           - registry1.dso.mil
           - registry.dso.mil
           - 127.0.0.1 # zarf registry
+          - "###ZARF_VAR_APPROVED_REGISTRIES###"
 
