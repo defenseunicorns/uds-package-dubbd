@@ -73,6 +73,8 @@ jobs:
         timeout-minutes: 60
 
       - name: Deploy DUBBD-AWS
+        env:
+          SHA: ${{ github.sha }}
         run: |
           echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
 
@@ -182,6 +184,8 @@ jobs:
             --confirm
 
       - name: Deploy DUBBD-AWS
+        env:
+          SHA: ${{ github.sha }}
         run: |
           echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
           zarf package deploy zarf-package-*.tar.zst \
