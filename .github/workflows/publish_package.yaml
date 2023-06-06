@@ -26,13 +26,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Create Release Tag
-        id: tag
-        uses: google-github-actions/release-please-action@v3
-        with:
-          command: manifest # use configs in release-please-config.json
-          release-type: simple
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
