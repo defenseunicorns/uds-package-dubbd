@@ -2,6 +2,11 @@ provider "aws" {
 
 }
 
+terraform {
+  backend "s3" {
+  }
+}
+
 # taken from zarf bb repo
 resource "random_id" "default" {
   byte_length = 2

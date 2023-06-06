@@ -8,3 +8,4 @@ defense-unicorns-distro/preflight.sh
 .terraform
 tmp
 zarf-sbom
+.idea
