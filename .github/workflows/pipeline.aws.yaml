@@ -174,8 +174,9 @@ jobs:
         timeout-minutes: 60
 
       - name: Deploy latest package version
+        env:
+          SHA: ${{ github.sha }}
         working-directory: aws
-        # todo: update after next publish that incorporate PR#211
         run: |
           zarf package deploy \
             oci://ghcr.io/defenseunicorns/packages/big-bang-distro-aws:${{ steps.latest-package-version.outputs.latest-package-version }} \
