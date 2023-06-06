@@ -7,6 +7,7 @@ on:
       release_created:
         required: false
         type: boolean
+        default: false
       working_dir:
         required: true
         type: string

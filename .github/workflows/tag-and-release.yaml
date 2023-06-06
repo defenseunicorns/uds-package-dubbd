@@ -24,7 +24,7 @@ jobs:
         with:
           command: manifest # use configs in release-please-config.json
           release-type: simple
-      - id: value
+      - id: release-flag
         run: echo "release_created=${{ steps.tag.outputs.release_created }}" >> $GITHUB_OUTPUT 
 
   logging:
@@ -33,8 +33,6 @@ jobs:
     steps:
       - id: values
         run: echo "${{ toJSON(needs) }}"
-      - id: values2
-        run: echo "${{ needs.tag-new-version.outputs }}"
       - id: values3
         run: echo "${{ needs.tag-new-version.outputs.release_created }}"
 
