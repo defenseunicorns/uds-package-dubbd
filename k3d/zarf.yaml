@@ -2,7 +2,7 @@ kind: ZarfPackageConfig
 metadata:
   name: big-bang-distro-k3d
   description: Defense Unicorns Big Bang Distro
-  version: 0.1.2
+  version: 0.1.3
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
   architecture: amd64
