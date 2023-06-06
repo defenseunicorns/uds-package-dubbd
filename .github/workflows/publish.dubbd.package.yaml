@@ -1,20 +1,24 @@
 name: Publish Dubbd
 
-
 # Will remove before merge and make it only tags
 on:
-  push:
-    tags:
-      - "v*"  
+  workflow_call:
+    inputs:
+      release_created:
+        required: false
+        type: string
+      working_dir:
+        required: true
+        type: string
 
 permissions:
   contents: read
   packages: write
 
 jobs:
-  eksctl:
+  publish-package:
+    if: ${{ inputs.release_created == 'true' }}
     runs-on: ubuntu-latest
-  
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -39,29 +43,20 @@ jobs:
           registry: registry1.dso.mil
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
+
       - name: Login to GHCR
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: dummy
           password: ${{ secrets.GITHUB_TOKEN }}
-    
-      - name: Create DUBBD
+      
+      - name: Create Zarf Package
         run: zarf package create --confirm
-        working-directory: defense-unicorns-distro
+        working-directory: ${{ inputs.working_dir }}
         timeout-minutes: 60
       
-      - name: Publish DUBBD
-        run: zarf package publish zarf-package-big-bang-amd64-*.tar.zst oci://ghcr.io/defenseunicorns/packages
-        working-directory: defense-unicorns-distro
-        timeout-minutes: 60
-
-      - name: Create DUBBD-AWS
-        run: zarf package create --confirm
-        working-directory: aws
-        timeout-minutes: 60
-      
-      - name: Publish DUBBD-AWS
+      - name: Publish Zarf Package
         run: zarf package publish zarf-package-*.tar.zst oci://ghcr.io/defenseunicorns/packages
-        working-directory: aws
+        working-directory: ${{ inputs.working_dir }}
         timeout-minutes: 60
