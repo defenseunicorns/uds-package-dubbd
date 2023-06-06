@@ -12,6 +12,7 @@ flux:
     remediation:
       retries: 0
       remediateLastFailure: false
+  interval: 1m
 
 addons:
   velero:
