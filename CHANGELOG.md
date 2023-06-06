@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/defenseunicorns/zarf-package-big-bang/compare/v0.1.1...v0.1.2) (2023-06-06)
+
+
+### Bug Fixes
+
+* add logging ([d821179](https://github.com/defenseunicorns/zarf-package-big-bang/commit/d821179ee166315e605b01047067b3057bd231dd))
+
 ## [0.1.1](https://github.com/defenseunicorns/zarf-package-big-bang/compare/v0.1.0...v0.1.1) (2023-06-06)
 
 
