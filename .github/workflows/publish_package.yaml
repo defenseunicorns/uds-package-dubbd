@@ -5,7 +5,7 @@ on:
   workflow_call:
     inputs:
       release_created:
-        required: true
+        required: false
         type: boolean
       working_dir:
         required: true
