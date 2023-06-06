@@ -2,7 +2,7 @@ kind: ZarfPackageConfig
 metadata:
   name: big-bang
   description: Defense Unicorns Big Bang Distro
-  version: 0.1.3
+  version: 0.2.0
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/Big_Bang_Color_Logo_White_text.b10a1bae.webp
   architecture: amd64
@@ -129,36 +129,48 @@ components:
     actions:
       onDeploy:
         before:
-          - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null 2>&1 && echo true || echo false"
+          - cmd: >-
+              ./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null
+              2>&1 && echo true || echo false
             mute: true
-            description: "Detect if this is an upgrade"
+            description: Detect if this is an upgrade
             setVariables:
               - name: IS_UPGRADE
-          - cmd: ./flux suspend source git bigbang -n bigbang --verbose --timeout=5m || true
+          - cmd: >-
+              ./flux suspend source git bigbang -n bigbang --verbose
+              --timeout=5m || true
             dir: run/flux
-            description: "Suspend Big Bang GitRepository"
+            description: Suspend Big Bang GitRepository
             mute: true
-          - cmd: ./flux suspend source chart bigbang-bigbang -n bigbang --verbose --timeout=5m || true
+          - cmd: >-
+              ./flux suspend source chart bigbang-bigbang -n bigbang --verbose
+              --timeout=5m || true
             dir: run/flux
-            description: "Suspend Big Bang HelmChart"
+            description: Suspend Big Bang HelmChart
             mute: true
-          - cmd: ./flux suspend helmrelease -n bigbang --all --verbose --timeout 5m || true
+          - cmd: >-
+              ./flux suspend helmrelease -n bigbang --all --verbose --timeout 5m
+              || true
             dir: run/flux
-            description: "Suspend Big Bang package HelmReleases"
+            description: Suspend Big Bang package HelmReleases
             mute: true
         after:
           - cmd: ./flux resume source git bigbang -n bigbang --verbose --timeout=5m
             dir: run/flux
-            description: "Resume Big Bang GitRepository"
-          - cmd: ./flux resume source chart bigbang-bigbang -n bigbang --verbose --timeout=5m
+            description: Resume Big Bang GitRepository
+          - cmd: >-
+              ./flux resume source chart bigbang-bigbang -n bigbang --verbose
+              --timeout=5m
             dir: run/flux
-            description: "Resume Big Bang HelmChart"
-          - cmd: ./flux resume helmrelease -n bigbang bigbang --verbose --timeout 5m
+            description: Resume Big Bang HelmChart
+          - cmd: >-
+              ./flux resume helmrelease -n bigbang bigbang --verbose --timeout
+              5m
             dir: run/flux
-            description: "Resume Big Bang HelmRelease"
+            description: Resume Big Bang HelmRelease
           - cmd: ./flux resume helmrelease -n bigbang --all --verbose --timeout 5m
             dir: run/flux
-            description: "Resume Big Bang package HelmReleases"
+            description: Resume Big Bang package HelmReleases
         onFailure:
           - cmd: |
               export PATH=$(dirname ./zarf):$PATH
