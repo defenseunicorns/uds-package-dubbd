@@ -5,6 +5,7 @@ name: Publish Dubbd
 on:
   push:
     branches:
+      - auto-publish-tag
       - main
 
 jobs:
@@ -15,7 +16,7 @@ jobs:
     #   packages: write
     runs-on: ubuntu-latest
     outputs:
-      release_created: ${{ steps.tag.outputs.release_created }}
+      release_created: ${{ steps.release-flag.outputs.release_created }}
     steps:
       - name: Create Release Tag
         id: tag
@@ -23,23 +24,41 @@ jobs:
         with:
           command: manifest # use configs in release-please-config.json
           release-type: simple
+      - id: release-flag
+        run: echo "release_created=${{ steps.tag.outputs.release_created || false }}" >> $GITHUB_OUTPUT 
 
-  # publish-dubbd:
-  #   needs: tag-new-version
-  #   uses: ./.github/workflows/publish_package.yaml
-  #   with:
-  #     release_created: ${{ needs.tag-new-version.outputs.release_created }}
-  #     working_dir: defense-unicorns-distro
-  #     package_name: zarf-package-big-bang-amd64
-  #   secrets: inherit
+  logging:
+    needs: tag-new-version
+    runs-on: ubuntu-latest
+    steps:
+      - id: values
+        run: echo "${{ toJSON(needs) }}"
+      - id: values3
+        run: echo "${{ needs.tag-new-version.outputs.release_created }}"
 
-  # publish-dubbd-aws:
-  #   needs: tag-new-version
-  #   uses: ./.github/workflows/publish_package.yaml
-  #   with:
-  #     release_created: ${{ needs.tag-new-version.outputs.release_created }}
-  #     working_dir: aws
-  #     package_name: zarf-package
-  #   secrets: inherit
+  publish-dubbd:
+    needs: tag-new-version
+    uses: ./.github/workflows/publish_package.yaml
+    with:
+      release_created: ${{ needs.tag-new-version.outputs.release_created }}
+      working_dir: defense-unicorns-distro
+      package_name: zarf-package-big-bang-amd64
+    secrets: inherit
 
-   
+  publish-dubbd-aws:
+    needs: tag-new-version
+    uses: ./.github/workflows/publish_package.yaml
+    with:
+      release_created: ${{ needs.tag-new-version.outputs.release_created }}
+      working_dir: aws
+      package_name: zarf-package
+    secrets: inherit
+
+  publish-dubbd-k3d:
+    needs: tag-new-version
+    uses: ./.github/workflows/publish_package.yaml
+    with:
+      release_created: ${{ needs.tag-new-version.outputs.release_created }}
+      working_dir: aws
+      package_name: zarf-package
+    secrets: inherit

@@ -1,5 +1,40 @@
 # Changelog
 
+## [0.1.3](https://github.com/defenseunicorns/zarf-package-big-bang/compare/v0.1.2...v0.1.3) (2023-06-06)
+
+
+### Bug Fixes
+
+* change flag type ([f121897](https://github.com/defenseunicorns/zarf-package-big-bang/commit/f12189702d72e719cbf1c4d73916553fd28342f9))
+* create default false ([0cdff1d](https://github.com/defenseunicorns/zarf-package-big-bang/commit/0cdff1d7d8d50d677f01eccc4aff08f8ae5edea5))
+* define default ([765c450](https://github.com/defenseunicorns/zarf-package-big-bang/commit/765c450f1e30d7472340eb53b06b476ed5858cb6))
+* more logging ([d271958](https://github.com/defenseunicorns/zarf-package-big-bang/commit/d2719589e38f67fdd3945856bb10fb377051c258))
+* paramater type mismatch ([29e86bf](https://github.com/defenseunicorns/zarf-package-big-bang/commit/29e86bf49c378771aa9ebb520d4ad79e755772ab))
+* release flag ([b23ecad](https://github.com/defenseunicorns/zarf-package-big-bang/commit/b23ecad45433b233a225882fe3b602757e5af43c))
+* test false ([2cd8cbf](https://github.com/defenseunicorns/zarf-package-big-bang/commit/2cd8cbf3462f9e589af780c74e2f6e00c37927d8))
+* use release_created ([4728188](https://github.com/defenseunicorns/zarf-package-big-bang/commit/4728188e6c96de40faef07c7d1e38be01947bd45))
+
+## [0.1.2](https://github.com/defenseunicorns/zarf-package-big-bang/compare/v0.1.1...v0.1.2) (2023-06-06)
+
+
+### Bug Fixes
+
+* add logging ([d821179](https://github.com/defenseunicorns/zarf-package-big-bang/commit/d821179ee166315e605b01047067b3057bd231dd))
+
+## [0.1.1](https://github.com/defenseunicorns/zarf-package-big-bang/compare/v0.1.0...v0.1.1) (2023-06-06)
+
+
+### Bug Fixes
+
+* add permissions ([7259095](https://github.com/defenseunicorns/zarf-package-big-bang/commit/7259095736d943cfe577b71798f983be96808027))
+* correct permissions ([95bcc3a](https://github.com/defenseunicorns/zarf-package-big-bang/commit/95bcc3a8bcaf1c0276ab4eb86678ad14cea77109))
+* correct release flag ([afaae42](https://github.com/defenseunicorns/zarf-package-big-bang/commit/afaae4210e50c0ee1f132f3ee052d6fdccaea47b))
+* fix echo format ([84e2320](https://github.com/defenseunicorns/zarf-package-big-bang/commit/84e2320ce1e342dbe03c0578cbfbff95d7d5e50d))
+* log context ([4096d13](https://github.com/defenseunicorns/zarf-package-big-bang/commit/4096d13edb8905de8b38d91a4d13684a7640d4a9))
+* log context ([d6f452b](https://github.com/defenseunicorns/zarf-package-big-bang/commit/d6f452b022992319c889ab42127f5498730b7793))
+* logs steps ([6b9c153](https://github.com/defenseunicorns/zarf-package-big-bang/commit/6b9c15318c3b9681df0f8631fae7684fca4a67b3))
+* test ([763ae84](https://github.com/defenseunicorns/zarf-package-big-bang/commit/763ae84cc466a767e9343ac2252202f825e7d091))
+
 ## [0.1.0](https://github.com/defenseunicorns/zarf-package-big-bang/compare/v0.0.5...v0.1.0) (2023-06-06)
 
 
