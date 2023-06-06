@@ -67,7 +67,7 @@ components:
           - cmd: terraform get -update
             dir: loki
     files:
-    - files: loki/.terraform
+    - source: loki/.terraform
       target: run/loki/.terraform
     - source: loki/main.tf
       target: run/loki/main.tf
