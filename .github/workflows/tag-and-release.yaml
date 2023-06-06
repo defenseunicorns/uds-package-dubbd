@@ -1,0 +1,38 @@
+name: Publish Dubbd
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tag-new-version:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release-flag.outputs.release_created }}
+    steps:
+      - name: Create Release Tag
+        id: tag
+        uses: google-github-actions/release-please-action@v3
+        with:
+          command: manifest # use configs in release-please-config.json
+          release-type: simple
+      - id: release-flag
+        run: echo "release_created=${{ steps.tag.outputs.release_created || false }}" >> $GITHUB_OUTPUT 
+
+  publish-dubbd-aws:
+    needs: tag-new-version
+    uses: ./.github/workflows/publish.dubbd.package.yaml
+    with:
+      release_created: ${{ needs.tag-new-version.outputs.release_created }}
+      working_dir: aws
+    secrets: inherit
+
+  publish-dubbd-k3d:
+    needs: tag-new-version
+    uses: ./.github/workflows/publish.dubbd.package.yaml
+    with:
+      release_created: ${{ needs.tag-new-version.outputs.release_created }}
+      working_dir: k3d
+    secrets: inherit

@@ -2,6 +2,11 @@ provider "aws" {
 
 }
 
+terraform {
+  backend "s3" {
+  }
+}
+
 # taken from zarf bb repo
 resource "random_id" "default" {
   byte_length = 2
@@ -27,7 +32,7 @@ locals {
 }
 
 module "S3" {
-  source                     = "github.com/defenseunicorns/uds-iac-aws-s3?ref=v0.0.1-alpha"
+  source                     = "github.com/defenseunicorns/terraform-aws-uds-s3?ref=v0.0.1"
   name_prefix                = var.name
   eks_oidc_provider_arn      = local.oidc_arn
   kubernetes_service_account = "logging-loki"
@@ -39,7 +44,7 @@ module "S3" {
 
 module "generate_kms" {
   count  = local.generate_kms_key
-  source = "github.com/defenseunicorns/uds-iac-aws-kms?ref=v0.0.1-alpha"
+  source = "github.com/defenseunicorns/terraform-aws-uds-kms?ref=v0.0.1"
 
   key_owners                = var.key_owner_arns                      # A list of IAM ARNs for those who will have full key permissions (`kms:*`)
   kms_key_alias_name_prefix = "${var.name}-loki-"                     # Prefix for KMS key alias.

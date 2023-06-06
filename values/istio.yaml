@@ -1,9 +1,10 @@
 istio:
   enabled: true
   ingressGateways:
-    passthrough-ingressgateway:
+    admin-ingressgateway:
       type: "LoadBalancer"
-    public-ingressgateway:
+    public-ingressgateway: null
+    tenant-ingressgateway:
       type: "LoadBalancer"
   values:
     istiod:
@@ -25,19 +26,21 @@ istio:
             limits:
               memory: "1Gi"
   gateways:
-    public:
-      ingressGateway: public-ingressgateway
+    admin:
+      ingressGateway: admin-ingressgateway
       hosts:
         - "*.{{ .Values.domain }}"
       tls:
         key: "###ZARF_VAR_PUBLIC_KEY###"
         cert: "###ZARF_VAR_PUBLIC_CERT###"
-    passthrough:
-      ingressGateway: passthrough-ingressgateway
+    public: null
+    tenant:
+      ingressGateway: tenant-ingressgateway
       hosts:
         - "*.{{ .Values.domain }}"
       tls:
-        mode: "PASSTHROUGH"
+        key: "###ZARF_VAR_PUBLIC_KEY###"
+        cert: "###ZARF_VAR_PUBLIC_CERT###"
 istioOperator:
   enabled: true
   values:
