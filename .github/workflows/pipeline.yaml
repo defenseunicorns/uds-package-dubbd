@@ -28,9 +28,6 @@ jobs:
         run: zarf package create --confirm
         working-directory: defense-unicorns-distro
 
-      - name: Create CocoWow
-        run: zarf package create --confirm
-        working-directory: cocowow
       - name: Create DUBBD AWS 
         run: zarf package create --confirm
         working-directory: aws

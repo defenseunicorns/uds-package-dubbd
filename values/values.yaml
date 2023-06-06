@@ -6,6 +6,14 @@ networkPolicies:
   nodeCidr: "0.0.0.0/0"
   vpcCidr: "0.0.0.0/0"
 
+# Disable all Flux retry/rollback behavior
+flux:
+  upgrade:
+    remediation:
+      retries: 0
+      remediateLastFailure: false
+  interval: 1m
+
 addons:
   velero:
     enabled: false
