@@ -1,4 +1,3 @@
-
 loki:
   strategy: "monolith"
   values:

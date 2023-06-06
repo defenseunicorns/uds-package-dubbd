@@ -1,10 +1,9 @@
 
 kiali:
   enabled: true
+  ingress:
+    gateway: "admin"
   values:
-    istio:
-      mtls:
-        mode: PERMISSIVE
     resources:
       requests:
         cpu: "100m"

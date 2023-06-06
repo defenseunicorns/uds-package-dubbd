@@ -1,55 +1,54 @@
 kind: ZarfPackageConfig
 metadata:
   name: big-bang
-  description: "Defense Unicorns Big Bang Distro"
-  version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
+  description: Defense Unicorns Big Bang Distro
+  version: 0.1.3
   url: https://p1.dso.mil/products/big-bang
-  image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
-  # Big Bang / Iron Bank are only amd64
+  image: https://p1.dso.mil/Big_Bang_Color_Logo_White_text.b10a1bae.webp
   architecture: amd64
-
 variables:
-- name: BIGBANG_VERSION
-- name: DOMAIN
-  default: bigbang.dev
-  prompt: false
-- name: PUBLIC_CERT_FILE
-  default: bigbang.dev.cert
-  description: "This file contains the cert for the public ingress gateway"
-  prompt: false
-- name: PUBLIC_KEY_FILE
-  default: bigbang.dev.key
-  description: "This file contains the key for the public ingress gateway"
-  prompt: false
-- name: ADMIN_CERT_FILE
-  default: bigbang.dev.cert
-  description: "This file contains the cert for the admin ingress gateway"
-  prompt: false
-- name: ADMIN_KEY_FILE
-  default: bigbang.dev.key
-  description: "This file contains the key for the admin ingress gateway"
-  prompt: false
-- name: APPROVED_REGISTRIES
-  description: "Regex of approved registries to allow in cluster"
-  default: "127.0.0.1* | registry1.dso.mil"
-- name: MONITORING_PROMETHEUS_PVC_SIZE
-  default: "50Gi"
-  description: Size of PVC for Prometheus
-  prompt: false
-- name: MONITORING_GRAFANA_PVC_SIZE
-  default: "10Gi"
-  description: Size of PVC for Grafana
-  prompt: false
-- name: LOKI_PVC_SIZE
-  default: "40Gi"
-  description: Size of the PVC for Loki when running in dev mode
+  - name: BIGBANG_VERSION
+  - name: DOMAIN
+    default: bigbang.dev
+    prompt: false
+  - name: PUBLIC_CERT_FILE
+    default: bigbang.dev.cert
+    description: "This file contains the cert for the public ingress gateway"
+    prompt: false
+  - name: PUBLIC_KEY_FILE
+    default: bigbang.dev.key
+    description: "This file contains the key for the public ingress gateway"
+    prompt: false
+  - name: ADMIN_CERT_FILE
+    default: bigbang.dev.cert
+    description: "This file contains the cert for the admin ingress gateway"
+    prompt: false
+  - name: ADMIN_KEY_FILE
+    default: bigbang.dev.key
+    description: "This file contains the key for the admin ingress gateway"
+    prompt: false
+  - name: APPROVED_REGISTRIES
+    description: "Regex of approved registries to allow in cluster"
+    default: "127.0.0.1* | registry1.dso.mil"
+  - name: MONITORING_PROMETHEUS_PVC_SIZE
+    default: "50Gi"
+    description: Size of PVC for Prometheus
+    prompt: false
+  - name: MONITORING_GRAFANA_PVC_SIZE
+    default: "10Gi"
+    description: Size of PVC for Grafana
+    prompt: false
+  - name: LOKI_PVC_SIZE
+    default: "40Gi"
+    description: Size of the PVC for Loki when running in dev mode
+  
+  - name: SLACK_URL
+    default: https://none.dev
+    description: Slack Webhook URL for alerts
+  - name: SLACK_CHANNEL
+    default: "#alerts"
+    description: Slack channel for alerts
 
-- name: SLACK_URL
-  default: https://none.dev
-  description: Slack Webhook URL for alerts
-- name: SLACK_CHANNEL
-  default: "#alerts"
-  description: Slack channel for alerts
 
 components:
   - name: load-certs
@@ -68,89 +67,139 @@ components:
     actions:
       onDeploy:
         after:
-        - cmd: ./cat_certs.sh
-          description: read the cert
-          setVariables:
-            - name: PUBLIC_CERT
-        - cmd: ./cat_key.sh
-          description: read the cert
-          setVariables:
-            - name: PUBLIC_KEY
-        - cmd: rm cat_certs.sh
-        - cmd: rm cat_key.sh
+          - cmd: ./cat_certs.sh
+            description: read the cert
+            mute: true
+            setVariables:
+              - name: PUBLIC_CERT
+                sensitive: true
+          - cmd: ./cat_key.sh
+            description: read the cert
+            mute: true
+            setVariables:
+              - name: PUBLIC_KEY
+                sensitive: true
+          - cmd: rm cat_certs.sh
+          - cmd: rm cat_key.sh
   - name: preflight
     required: true
     actions:
       onDeploy:
         before:
-        - cmd: "./zarf tools kubectl version --short || true"
-          setVariable: OUTPUT
+          - cmd: ./zarf tools kubectl version --short || true
+            setVariables:
+              - name: OUTPUT
         after:
-        - cmd: "./preflight.sh"
+          - cmd: ./preflight.sh
+          - cmd: rm preflight.sh
     files:
-    - source: scripts/preflight.sh
-      target: preflight.sh
-      executable: true
-  - name: bigbang
+      - source: scripts/preflight.sh
+        target: preflight.sh
+        executable: true
+  - name: download-flux
     required: true
     actions:
       onDeploy:
         after:
-          - cmd: ./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"metadata":{"annotations":{"reconcile.fluxcd.io/requestedAt":"'`date '+%F_%H:%M:%S.%s%z'`'"}}}'
-            description: "Patch BigBang to force an update on updates"
+          - cmd: rm -f run/flux/flux || true
+            description: Clean up previous flux install
+          - cmd: './extract_flux.sh ###ZARF_PKG_TMPL_FLUX_VERSION###'
+            description: Extract flux binary
+          - cmd: rm extract_flux.sh && rm -f tmp/flux*
+            description: Clean up extra flux artifacts
+    files:
+      - source: scripts/extract_flux.sh
+        target: extract_flux.sh
+        executable: true
+      - source: >-
+          https://github.com/fluxcd/flux2/releases/download/v###ZARF_PKG_TMPL_FLUX_VERSION###/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_darwin_arm64.tar.gz
+        target: tmp/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_darwin_arm64.tar.gz
+      - source: >-
+          https://github.com/fluxcd/flux2/releases/download/v###ZARF_PKG_TMPL_FLUX_VERSION###/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_darwin_amd64.tar.gz
+        target: tmp/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_darwin_amd64.tar.gz
+      - source: >-
+          https://github.com/fluxcd/flux2/releases/download/v###ZARF_PKG_TMPL_FLUX_VERSION###/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_linux_amd64.tar.gz
+        target: tmp/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_linux_amd64.tar.gz
+      - source: >-
+          https://github.com/fluxcd/flux2/releases/download/v###ZARF_PKG_TMPL_FLUX_VERSION###/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_linux_arm64.tar.gz
+        target: tmp/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_linux_arm64.tar.gz
+      - source: >-
+          https://github.com/fluxcd/flux2/releases/download/v###ZARF_PKG_TMPL_FLUX_VERSION###/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_windows_amd64.zip
+        target: tmp/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_windows_amd64.zip
+      - source: >-
+          https://github.com/fluxcd/flux2/releases/download/v###ZARF_PKG_TMPL_FLUX_VERSION###/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_windows_arm64.zip
+        target: tmp/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_windows_arm64.zip
+  - name: bigbang
+    required: true
+    actions:
+      onDeploy:
+        before:
+          - cmd: >-
+              ./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null
+              2>&1 && echo true || echo false
+            mute: true
+            description: Detect if this is an upgrade
+            setVariables:
+              - name: IS_UPGRADE
+        after:
+          - cmd: >-
+              ./zarf tools kubectl wait
+              --for=jsonpath='{.spec.ref.tag}'=###ZARF_PKG_TMPL_BIGBANG_VERSION###
+              gitrepository bigbang -n bigbang --timeout=5m
+            description: Wait for BigBang GitRepository to update to latest version
+          - cmd: >-
+              ./flux reconcile source git bigbang -n bigbang --verbose
+              --timeout=5m
+            dir: run/flux
+            description: Reconcile BigBang GitRepository
+          - cmd: >-
+              ./flux suspend source chart bigbang-bigbang -n bigbang --verbose
+              --timeout=5m
+            dir: run/flux
+            description: Suspend Big Bang HelmChart
+          - cmd: >-
+              ./flux resume source chart bigbang-bigbang -n bigbang --verbose
+              --timeout=5m
+            dir: run/flux
+            description: Resume Big Bang HelmChart
+          - cmd: ./flux suspend helmrelease -n bigbang --all --verbose --timeout 5m
+            dir: run/flux
+            description: Suspend Big Bang package HelmReleases
+          - cmd: ./flux resume helmrelease -n bigbang --all --verbose --timeout 5m
+            dir: run/flux
+            description: Resume Big Bang package HelmReleases
+        onFailure:
+          - cmd: |
+              export PATH=$(dirname ./zarf):$PATH
+              ./on_failure.sh
+            description: Print debug for failed deployment
       onRemove:
         before:
-          - cmd: ./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"spec":{"suspend":true}}'
-            description: Suspend the BigBang Helm Release so we don't have a reconcile while cleaning up
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang istio --ignore-not-found
-            description: Delete istio to prevent ingress into cluster while cleanup is occuring
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang istio-operator --ignore-not-found
-            description: Delete istio-operator once istio is cleaned up
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang monitoring --ignore-not-found
-            description: Delete Monitoring
-          - cmd: ./zarf tools kubectl delete providers grafana -n monitoring --ignore-not-found
-          - cmd: ./zarf tools kubectl delete alerts grafana -n monitoring --ignore-not-found
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang promtail --ignore-not-found
-            description: Delete promtail
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang loki --ignore-not-found
-            description: Delete loki
-          - cmd: ./zarf tools kubectl delete kiali -n kiali kiali --ignore-not-found
-            description: Delete Kiali
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang tempo --ignore-not-found
-            description: Delete Tempo
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang neuvector  --ignore-not-found
-            description: Delete neuvector
-          - cmd: ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io neuvector-validating-crd-webhook  --ignore-not-found
-            description: cleanup neuvector validatingwebhooks
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kyverno-reporter --ignore-not-found
-            description: Delete kyverno-reporter
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kyverno-policies --ignore-not-found
-            description: Delete kyverno-policies
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kyverno --ignore-not-found
-            description: Delete kyverno
-          - cmd: ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io neuvector-validating-crd-webhook  --ignore-not-found
-            description: cleanup neuvector validatingwebhooks
-          - cmd: ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io kyverno-policy-validating-webhook-cfg kyverno-resource-validating-webhook-cfg  --ignore-not-found
-            description: Cleanup validating webhoooks from kyverno
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kiali --ignore-not-found
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang metrics-server --ignore-not-found
-          - cmd: ./zarf tools kubectl delete gitrepositories -n bigbang -l app.kubernetes.io/part-of=bigbang
-          - cmd: ./zarf tools kubectl delete apiservices.apiregistration.k8s.io v1beta1.metrics.k8s.io --ignore-not-found
+          - cmd: |
+              export PATH=$(dirname ./zarf):$PATH
+              ./teardown.sh
+            description: Tear down Big Bang
+    files:
+      - source: scripts/on_failure.sh
+        target: on_failure.sh
+        executable: true
+      - source: scripts/teardown.sh
+        target: teardown.sh
+        executable: true
     manifests:
       - name: slack-alerts
         files:
           - manifests/alerts/flux-alerts.yaml
     extensions:
       bigbang:
-        version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
+        version: '###ZARF_PKG_TMPL_BIGBANG_VERSION###'
         valuesFiles:
-        - ../values/values.yaml
-        - ../values/kyverno.yaml
-        - ../values/istio.yaml
-        - ../values/loki.yaml
-        - ../values/promtail.yaml
-        - ../values/kiali.yaml
-        - ../values/monitoring.yaml
-        - ../values/neuvector.yaml
-        - ../values/tempo.yaml
- 
+          - ../values/values.yaml
+          - ../values/kyverno.yaml
+          - ../values/istio.yaml
+          - ../values/loki.yaml
+          - ../values/promtail.yaml
+          - ../values/kiali.yaml
+          - ../values/monitoring.yaml
+          - ../values/neuvector.yaml
+          - ../values/tempo.yaml

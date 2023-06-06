@@ -2,9 +2,6 @@
 promtail:
   enabled: true
   values:
-    istio:
-      mtls:
-        mode: PERMISSIVE
     resources:
       limits:
         cpu: "500m"

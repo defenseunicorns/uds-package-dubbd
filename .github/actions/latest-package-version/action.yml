@@ -1,0 +1,48 @@
+name: Get Latest DUBBD Package Version
+description: Fetches the latest version of the specified DUBBD package
+
+inputs:
+  github-token:
+    description: GitHub token to authenticate to the GitHub REST API
+    required: true
+  package-name:
+    description: Name of the DUBBD package
+    required: true
+
+outputs:
+  latest-package-version:
+    description: The latest DUBBD package version
+    value: ${{ steps.latest-package-version.outputs.latest-package-version }}
+
+runs:
+  using: composite
+  steps:
+    - id: latest-package-version
+      shell: bash
+      run: |
+        #!/bin/bash
+
+        github_token="${{ inputs.github-token }}"
+
+        package_name="${{ inputs.package-name }}"
+
+        # Check if the package name contains '/'
+        if [[ "$package_name" =~ "/" ]]
+        then
+            # Replace '/' with '%2F' for URL encoding
+            package_name="${package_name//\//%2F}"
+        fi
+
+        response="$(curl -s -H "Authorization: Bearer $github_token" \
+          https://api.github.com/orgs/defenseunicorns/packages/container/${package_name}/versions)"
+
+        if [[ "$response" =~ "Package not found" ]]
+        then
+            echo -e "Package not found. Please ensure you provided a valid package name\n"
+            echo "You can find available packages here: https://github.com/orgs/defenseunicorns/packages?repo_name=zarf-package-big-bang"
+            exit 1
+        fi
+
+        latest_package_version="$(echo "$response" | jq -r '.[0].metadata.container.tags[0]')"
+
+        echo "latest-package-version=$(echo "$latest_package_version")" >> $GITHUB_OUTPUT
