@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/defenseunicorns/zarf-package-big-bang/compare/v0.1.3...v0.2.0) (2023-06-06)
+
+
+### Features
+
+* auto-versioning and packaging ([b5a61e5](https://github.com/defenseunicorns/zarf-package-big-bang/commit/b5a61e54b2e7eacc4d61bbecf8d5199fecce941c))
+
 ## [0.1.3](https://github.com/defenseunicorns/zarf-package-big-bang/compare/v0.1.2...v0.1.3) (2023-06-06)
 
 
