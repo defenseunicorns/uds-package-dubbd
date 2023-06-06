@@ -29,22 +29,22 @@ jobs:
           command: manifest # use configs in release-please-config.json
           release-type: simple
 
-  publish-dubbd:
-    needs: tag-new-version
-    uses: ./.github/workflows/publish_package.yaml
-    with:
-      release_created: ${{ needs.tag-new-version.outputs.release_created }}
-      working_dir: defense-unicorns-distro
-      package_name: zarf-package-big-bang-amd64
-    secrets: inherit
+  # publish-dubbd:
+  #   needs: tag-new-version
+  #   uses: ./.github/workflows/publish_package.yaml
+  #   with:
+  #     release_created: ${{ needs.tag-new-version.outputs.release_created }}
+  #     working_dir: defense-unicorns-distro
+  #     package_name: zarf-package-big-bang-amd64
+  #   secrets: inherit
 
-  publish-dubbd-aws:
-    needs: tag-new-version
-    uses: ./.github/workflows/publish_package.yaml
-    with:
-      release_created: ${{ needs.tag-new-version.outputs.release_created }}
-      working_dir: aws
-      package_name: zarf-package
-    secrets: inherit
+  # publish-dubbd-aws:
+  #   needs: tag-new-version
+  #   uses: ./.github/workflows/publish_package.yaml
+  #   with:
+  #     release_created: ${{ needs.tag-new-version.outputs.release_created }}
+  #     working_dir: aws
+  #     package_name: zarf-package
+  #   secrets: inherit
 
    
