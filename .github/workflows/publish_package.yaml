@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   publish-package:
-    if: ${{ inputs.release_created }}
+    if: ${{ inputs.release_created == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
