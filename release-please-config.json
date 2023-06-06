@@ -5,21 +5,9 @@
       "draft": false,
       "changelog-path": "CHANGELOG.md",
       "extra-files": [
-        {
-          "path": "aws/zarf.yaml",
-          "type": "yaml",
-          "jsonpath": "$.metadata.version"
-        },
-        {
-          "path": "defense-unicorns-distro/zarf.yaml",
-          "type": "yaml",
-          "jsonpath": "$.metadata.version"
-        },
-        {
-          "path": "k3d/zarf.yaml",
-          "type": "yaml",
-          "jsonpath": "$.metadata.version"
-        }
+        "aws/zarf.yaml",
+        "defense-unicorns-distro/zarf.yaml",
+        "k3d/zarf.yaml"
       ]
     }
   }
