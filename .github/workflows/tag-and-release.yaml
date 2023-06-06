@@ -33,6 +33,10 @@ jobs:
     steps:
       - id: values
         run: echo "${{ toJSON(needs) }}"
+      - id: values2
+        run: echo "${{ needs.tag-new-version.outputs }}"
+      - id: values3
+        run: echo "${{ needs.tag-new-version.outputs.release_created }}"
 
   publish-dubbd:
     needs: tag-new-version
