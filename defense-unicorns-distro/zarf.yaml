@@ -129,23 +129,23 @@ components:
     actions:
       onDeploy:
         before:
-        - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null 2>&1 && echo true || echo false"
-          mute: true
-          description: "Detect if this is an upgrade"
-          setVariables:
-            - name: IS_UPGRADE
-        - cmd: ./flux suspend source git bigbang -n bigbang --verbose --timeout=5m || true
-          dir: run/flux
-          description: "Suspend Big Bang GitRepository"
-          mute: true
-        - cmd: ./flux suspend source chart bigbang-bigbang -n bigbang --verbose --timeout=5m || true
-          dir: run/flux
-          description: "Suspend Big Bang HelmChart"
-          mute: true
-        - cmd: ./flux suspend helmrelease -n bigbang --all --verbose --timeout 5m || true
-          dir: run/flux
-          description: "Suspend Big Bang package HelmReleases"
-          mute: true
+          - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null 2>&1 && echo true || echo false"
+            mute: true
+            description: "Detect if this is an upgrade"
+            setVariables:
+              - name: IS_UPGRADE
+          - cmd: ./flux suspend source git bigbang -n bigbang --verbose --timeout=5m || true
+            dir: run/flux
+            description: "Suspend Big Bang GitRepository"
+            mute: true
+          - cmd: ./flux suspend source chart bigbang-bigbang -n bigbang --verbose --timeout=5m || true
+            dir: run/flux
+            description: "Suspend Big Bang HelmChart"
+            mute: true
+          - cmd: ./flux suspend helmrelease -n bigbang --all --verbose --timeout 5m || true
+            dir: run/flux
+            description: "Suspend Big Bang package HelmReleases"
+            mute: true
         after:
           - cmd: ./flux resume source git bigbang -n bigbang --verbose --timeout=5m
             dir: run/flux
