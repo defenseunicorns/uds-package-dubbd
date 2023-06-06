@@ -6,8 +6,7 @@ on:
     inputs:
       release_created:
         required: false
-        type: boolean
-        default: false
+        type: string
       working_dir:
         required: true
         type: string
