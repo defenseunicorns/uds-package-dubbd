@@ -86,7 +86,7 @@ components:
         before:
           - cmd: "test -d ./loki/ && chmod -R ugo+rwx ./loki/ || echo $?"
             dir: run
-          - cmd: >
+          - cmd: |
               ./terraform init -force-copy \
 
               -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
