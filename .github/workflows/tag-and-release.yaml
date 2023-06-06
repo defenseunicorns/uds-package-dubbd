@@ -25,7 +25,8 @@ jobs:
           command: manifest # use configs in release-please-config.json
           release-type: simple
       - id: result
-        run: echo "release_created=${{ steps.tag.outputs.release_created }}" >> "$GITHUB_OUTPUT"
+        run: echo "release_created=${{ steps.tag.outputs.release_created }}" >> "$GITHUB_OUTPUT" \
+            echo '${{ toJSON(job) }}'
 
   publish-dubbd:
     needs: tag-new-version
