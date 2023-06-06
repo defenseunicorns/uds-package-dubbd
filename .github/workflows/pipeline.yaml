@@ -22,15 +22,12 @@ jobs:
         uses: defenseunicorns/setup-zarf@main
         with:
           # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
-          version: v0.26.2
+          version: v0.27.0
 
       - name: Create DUBBD
         run: zarf package create --confirm
         working-directory: defense-unicorns-distro
 
-      - name: Create CocoWow
-        run: zarf package create --confirm
-        working-directory: cocowow
       - name: Create DUBBD AWS 
         run: zarf package create --confirm
         working-directory: aws

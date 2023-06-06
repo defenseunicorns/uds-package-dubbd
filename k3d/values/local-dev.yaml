@@ -5,11 +5,6 @@ neuvector:
       enabled: false
     k3s:
       enabled: true
-    istio:
-      enabled: true
-      neuvector:
-        gateways:
-          - istio-system/public
 
 kyvernoPolicies:
   values:

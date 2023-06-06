@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: ###ZARF_VAR_CLUSTER_NAME###
+  name: "###ZARF_VAR_CLUSTER_NAME###"
   region: us-west-2
   version: "1.26"
 
@@ -23,5 +23,5 @@ addons:
 managedNodeGroups:
   - name: ng-1
     instanceType: m5.2xlarge
-    desiredCapacity: 2
+    desiredCapacity: 3
     volumeSize: 150

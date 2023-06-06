@@ -1,10 +1,9 @@
 neuvector:
   enabled: true
+  ingress:
+    gateway: "admin"
   values:
     containerd:
       enabled: true
     monitor:
-      install: true # getting error here on having this come up
-
-### crictl config --set runtime-endpoint=/var/run/containerd/containerd.sock
-# 
+      install: true
