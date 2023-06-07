@@ -6,18 +6,7 @@ on:
       - main
 
 jobs:
-  test-release:
-    uses: ./.github/workflows/test-aws-package.yaml
-    secrets: inherit
-
-  test-upgrade:
-    uses: ./.github/workflows/test-aws-upgrade.yaml
-    secrets: inherit
-    
   tag-new-version:
-    needs: 
-      - test-release
-      - test-upgrade
     permissions: write-all
     runs-on: ubuntu-latest
     outputs:
@@ -32,18 +21,24 @@ jobs:
       - id: release-flag
         run: echo "release_created=${{ steps.tag.outputs.release_created || false }}" >> $GITHUB_OUTPUT 
 
+  test-release:
+    needs: tag-new-version
+    if: ${{ needs.tag-new-version.outputs.release_created == 'false'}}
+    uses: ./.github/workflows/ci-on-pull-request.yaml
+    secrets: inherit
+
   publish-dubbd-aws:
     needs: tag-new-version
+    if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
     uses: ./.github/workflows/publish.dubbd.package.yaml
     with:
-      release_created: ${{ needs.tag-new-version.outputs.release_created }}
       working_dir: aws
     secrets: inherit
 
   publish-dubbd-k3d:
     needs: tag-new-version
+    if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
     uses: ./.github/workflows/publish.dubbd.package.yaml
     with:
-      release_created: ${{ needs.tag-new-version.outputs.release_created }}
       working_dir: k3d
     secrets: inherit

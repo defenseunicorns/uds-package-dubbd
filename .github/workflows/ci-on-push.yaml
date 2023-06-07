@@ -1,5 +1,6 @@
 name: DUBBED package CI
-on: [push]
+on:
+  push:
 
 jobs:
   validate-DUBBD:
