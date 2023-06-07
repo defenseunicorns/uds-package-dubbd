@@ -21,7 +21,6 @@ jobs:
       - name: Install Zarf
         uses: defenseunicorns/setup-zarf@main
         with:
-          # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
           version: v0.27.1
 
       - name: Create DUBBD
@@ -31,12 +30,3 @@ jobs:
       - name: Create DUBBD AWS 
         run: zarf package create --confirm
         working-directory: aws
-
-      # - name: login DUBBD
-      #   run: zarf tools registry login ghcr.io -u runyontr -p ${GH_PAT}
-      # - name: publish DUBBD
-      #   run: zarf package publish zarf-package-big-bang-amd64-*.tar.zst oci://ghcr.io/defenseunicorns/packages/big-bang-distro
-      #   working-directory: defense-unicorns-distro
-      # - name: publish DUBBD
-      #   run: zarf package publish zarf-package-big-bang-aws-amd64-*.tar.zst oci://ghcr.io/defenseunicorns/packages/big-bang-distro-aws
-      #   working-directory: aws

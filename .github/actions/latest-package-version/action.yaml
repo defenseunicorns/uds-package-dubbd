@@ -39,7 +39,7 @@ runs:
         if [[ "$response" =~ "Package not found" ]]
         then
             echo -e "Package not found. Please ensure you provided a valid package name\n"
-            echo "You can find available packages here: https://github.com/orgs/defenseunicorns/packages?repo_name=zarf-package-big-bang"
+            echo "You can find available packages here: https://github.com/orgs/defenseunicorns/packages?repo_name=uds-package-dubbd"
             exit 1
         fi
 
