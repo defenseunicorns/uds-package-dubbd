@@ -21,6 +21,7 @@ jobs:
       - name: Install Zarf
         uses: defenseunicorns/setup-zarf@main
         with:
+          # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
           version: v0.27.1
 
       - name: Create DUBBD
