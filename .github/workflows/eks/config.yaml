@@ -25,16 +25,16 @@ vpc:
         cidr: "192.168.16.0/21"   # (optional, must match CIDR used by the given subnet)
     private:
       us-west-2a:
-        id: "subnet-0f381300221588640"
-        cidr: "192.168.48.0/21" # (optional, must match CIDR used by the given subnet)
+        id: "subnet-053b6dab6cf6276ea"
+        cidr: "192.168.32.0/21" # (optional, must match CIDR used by the given subnet)
 
       us-west-2b:
         id: "subnet-065bdf771fa18e8be"
         cidr: "192.168.40.0/21"  # (optional, must match CIDR used by the given subnet)
 
       us-west-2c:
-        id: "subnet-00f71956cdec8f1dc"
-        cidr: "192.168.0.0/19"   # (optional, must match CIDR used by the given subnet)
+        id: "subnet-0f381300221588640"
+        cidr: "192.168.48.0/21"   # (optional, must match CIDR used by the given subnet)
 # May want to look at this for testing 
 # privateCluster:
 #   enabled: true
