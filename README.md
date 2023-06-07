@@ -39,8 +39,8 @@ package:
   deploy:
     set:
       domain: bigbang.dev
-      public_key_file: bigbang.dev.key
-      public_cert_file: bigbang.dev.cert
+      key_file: bigbang.dev.key
+      cert_file: bigbang.dev.cert
       name: "${DUBBD_ENV}-big-bang-cluster"
 EOF
 
