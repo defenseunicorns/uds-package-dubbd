@@ -6,7 +6,18 @@ on:
       - main
 
 jobs:
+  test-release:
+    uses: ./.github/workflows/test-aws-package.yaml
+    secrets: inherit
+
+  test-upgrade:
+    uses: ./.github/workflows/test-aws-upgrade.yaml
+    secrets: inherit
+    
   tag-new-version:
+    needs: 
+      - test-release
+      - test-upgrade
     permissions: write-all
     runs-on: ubuntu-latest
     outputs:

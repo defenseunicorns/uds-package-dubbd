@@ -1,0 +1,100 @@
+name: Test DUBBD AWS Package
+
+on:
+  workflow_call:
+
+jobs:
+  clean-install:
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+
+      - name: Login to Registry1
+        uses: docker/login-action@v2
+        with:
+          registry: registry1.dso.mil
+          username: ${{ secrets.REGISTRY1_USERNAME }}
+          password: ${{ secrets.REGISTRY1_PASSWORD }}
+
+      - name: Install Zarf
+        uses: defenseunicorns/setup-zarf@main
+        with:
+          # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
+          version: v0.27.1
+          download-init-package: true        
+
+      - name: Set eks_cluster_name
+        id: get_cluster_name
+        env:
+          SHA: ${{ github.sha }}
+        run: |
+          echo "eks_cluster_name=big-bang-aws-${SHA:0:7}" >> $GITHUB_OUTPUT
+          echo "short_sha=${SHA:0:7}" >> $GITHUB_OUTPUT
+
+      - name: Package EKSCTL 
+        run: zarf package create --confirm
+        working-directory: .github/workflows/eks
+
+      - name: Create EKS cluster
+        run: |
+          echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+
+          zarf package deploy zarf-package-distro-eks-multi.tar.zst \
+            --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
+            --confirm
+        working-directory: .github/workflows/eks #just holds the zarf-config
+        id: create-cluster
+
+      ## We need to add functionality to allow the user to bring their own KMS Key Alias
+      
+      - name: Show Cluster
+        run: |
+          kubectl get nodes
+          kubectl config get-contexts
+
+      - name: Zarf init
+        run: |
+          zarf init -a amd64 --components=git-server --confirm
+
+      - name: Create DUBBD-AWS
+        run: zarf package create --confirm
+        working-directory: aws
+        timeout-minutes: 60
+
+      - name: Deploy DUBBD-AWS
+        env:
+          SHA: ${{ github.sha }}
+        run: |
+          echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+
+          zarf package deploy zarf-package-*.tar.zst \
+            --set loki_force_destroy=true \
+            --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
+            --set state_bucket_name="uds-ci-state-bucket" \
+            --set state_key="tfstate/ci/install/${SHA:0:7}-state-bucket.tfstate" \
+            --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
+            --confirm
+        working-directory: aws
+        timeout-minutes: 60
+
+      - name: Remove DUBBD-AWS
+        if: always()
+        run: zarf package remove zarf-package-*.tar.zst --confirm
+        working-directory: aws
+        timeout-minutes: 60
+
+      - name: Teardown EKS cluster
+        if: always()
+        # can't do a zarf package remove since there's no kubernetes cluster.
+        run: |
+          ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
+        working-directory: .github/workflows/eks

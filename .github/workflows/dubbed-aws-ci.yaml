@@ -1,0 +1,16 @@
+name: CI DUBBD AWS
+
+on:
+  pull_request:
+    branches:
+      - main
+
+
+jobs:
+    test-release:
+        uses: ./.github/workflows/test-aws-package.yaml
+        secrets: inherit
+
+    test-upgrade:
+        uses: ./.github/workflows/test-aws-upgrade.yaml
+        secrets: inherit
