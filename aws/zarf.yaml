@@ -100,7 +100,7 @@ components:
             dir: run/loki
       onRemove:
         before:
-          - cmd: "terraform destroy -auto-approve"
+          - cmd: 'if [ $ZARF_VAR_LOKI_FORCE_DESTROY = "true" ]; then terraform destroy -auto-approve ; fi'
             dir: run/loki
   - name: outputs
     required: true
@@ -113,6 +113,7 @@ components:
               - name: LOKI_S3_BUCKET
           - cmd: "terraform output -raw aws_region"
             dir: run/loki
+
             setVariables:
               - name: LOKI_S3_AWS_REGION
           - cmd: "terraform output -raw irsa_role"
