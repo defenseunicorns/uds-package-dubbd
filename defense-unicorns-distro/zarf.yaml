@@ -131,6 +131,12 @@ components:
     actions:
       onDeploy:
         before:
+          - cmd: |
+              ./zarf tools kubectl label ns -l app.kubernetes.io/managed-by=zarf,kubernetes.io/metadata.name=bigbang zarf.dev/agent-
+              ./zarf tools kubectl label ns -l app.kubernetes.io/managed-by=zarf,app.kubernetes.io/part-of=flux zarf.dev/agent-
+              ./zarf tools kubectl label ns -l app.kubernetes.io/part-of=bigbang zarf.dev/agent-
+            description: "Remove Zarf ignore namespace labels for Big Bang"
+            mute: true
           - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null 2>&1 && echo true || echo false"
             mute: true
             description: "Detect if this is an upgrade"
@@ -179,12 +185,12 @@ components:
               ./zarf tools kubectl delete helmrelease -n bigbang loki --ignore-not-found
               ./zarf tools kubectl delete kiali -n kiali kiali --ignore-not-found
               ./zarf tools kubectl delete helmrelease -n bigbang tempo --ignore-not-found
-              ./zarf tools kubectl delete helmrelease -n bigbang neuvector  --ignore-not-found
-              ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io neuvector-validating-crd-webhook  --ignore-not-found
+              ./zarf tools kubectl delete helmrelease -n bigbang neuvector --ignore-not-found
+              ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io neuvector-validating-crd-webhook --ignore-not-found
               ./zarf tools kubectl delete helmrelease -n bigbang kyverno-reporter --ignore-not-found
               ./zarf tools kubectl delete helmrelease -n bigbang kyverno-policies --ignore-not-found
               ./zarf tools kubectl delete helmrelease -n bigbang kyverno --ignore-not-found
-              ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io kyverno-policy-validating-webhook-cfg kyverno-resource-validating-webhook-cfg  --ignore-not-found
+              ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io kyverno-policy-validating-webhook-cfg kyverno-resource-validating-webhook-cfg --ignore-not-found
               ./zarf tools kubectl delete helmrelease -n bigbang kiali --ignore-not-found
               ./zarf tools kubectl delete helmrelease -n bigbang metrics-server --ignore-not-found
               ./zarf tools kubectl delete apiservices.apiregistration.k8s.io -l helm.toolkit.fluxcd.io/namespace=bigbang,helm.toolkit.fluxcd.io/name=metrics-server --ignore-not-found
