@@ -168,62 +168,28 @@ components:
             description: "Print debug for failed deployment"
       onRemove:
         before:
-          - cmd: ./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"spec":{"suspend":true}}'
-            description: "Suspend the BigBang Helm Release so we don't have a reconcile while cleaning up"
-            mute: true
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang istio --ignore-not-found
-            description: "Delete Istio to prevent ingress into cluster while cleanup is occuring"
-            mute: true
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang istio-operator --ignore-not-found
-            description: "Delete Istio Operator once Istio is cleaned up"
-            mute: true
           - cmd: |
-              ./zarf tools kubectl delete helmrelease -n bigbang monitoring --ignore-not-found
-              ./zarf tools kubectl delete providers grafana -n monitoring --ignore-not-found
-              ./zarf tools kubectl delete alerts grafana -n monitoring --ignore-not-found
-            description: "Delete Monitoring"
-            mute: true
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang promtail --ignore-not-found
-            description: "Delete Promtail"
-            mute: true
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang loki --ignore-not-found
-            description: "Delete Loki"
-            mute: true
-          - cmd: ./zarf tools kubectl delete kiali -n kiali kiali --ignore-not-found
-            description: "Delete Kiali custom resource"
-            mute: true
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang tempo --ignore-not-found
-            description: "Delete Tempo"
-            mute: true
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang neuvector  --ignore-not-found
-            description: "Delete NeuVector"
-            mute: true
-          - cmd: ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io neuvector-validating-crd-webhook  --ignore-not-found
-            description: "Cleanup NeuVector validatingwebhooks"
-            mute: true
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kyverno-reporter --ignore-not-found
-            description: "Delete kyverno-reporter"
-            mute: true
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kyverno-policies --ignore-not-found
-            description: "Delete kyverno-policies"
-            mute: true
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kyverno --ignore-not-found
-            description: "Delete kyverno"
-            mute: true
-          - cmd: ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io kyverno-policy-validating-webhook-cfg kyverno-resource-validating-webhook-cfg  --ignore-not-found
-            description: "Cleanup validating webhoooks from kyverno"
-            mute: true
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang kiali --ignore-not-found
-            description: "Delete kiali"
-            mute: true
-          - cmd: ./zarf tools kubectl delete helmrelease -n bigbang metrics-server --ignore-not-found
-            description: "Delete metrics server"
-            mute: true
-          - cmd: |
-              ./zarf tools kubectl delete apiservices.apiregistration.k8s.io -l helm.toolkit.fluxcd.io/namespace=bigbang,helm.toolkit.fluxcd.io/name=metrics-server --ignore-not-found
-              ./zarf tools kubectl delete gitrepositories -n bigbang -l app.kubernetes.io/part-of=bigbang
-            description: "Delete metrics server api service if owned by Big Bang"
-            mute: true
+              zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"spec":{"suspend":true}}'
+              zarf tools kubectl delete helmrelease -n bigbang istio --ignore-not-found
+              zarf tools kubectl delete helmrelease -n bigbang istio-operator --ignore-not-found
+              zarf tools kubectl delete helmrelease -n bigbang monitoring --ignore-not-found
+              zarf tools kubectl delete providers grafana -n monitoring --ignore-not-found
+              zarf tools kubectl delete alerts grafana -n monitoring --ignore-not-found
+              zarf tools kubectl delete helmrelease -n bigbang promtail --ignore-not-found
+              zarf tools kubectl delete helmrelease -n bigbang loki --ignore-not-found
+              zarf tools kubectl delete kiali -n kiali kiali --ignore-not-found
+              zarf tools kubectl delete helmrelease -n bigbang tempo --ignore-not-found
+              zarf tools kubectl delete helmrelease -n bigbang neuvector  --ignore-not-found
+              zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io neuvector-validating-crd-webhook  --ignore-not-found
+              zarf tools kubectl delete helmrelease -n bigbang kyverno-reporter --ignore-not-found
+              zarf tools kubectl delete helmrelease -n bigbang kyverno-policies --ignore-not-found
+              zarf tools kubectl delete helmrelease -n bigbang kyverno --ignore-not-found
+              zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io kyverno-policy-validating-webhook-cfg kyverno-resource-validating-webhook-cfg  --ignore-not-found
+              zarf tools kubectl delete helmrelease -n bigbang kiali --ignore-not-found
+              zarf tools kubectl delete helmrelease -n bigbang metrics-server --ignore-not-found
+              zarf tools kubectl delete apiservices.apiregistration.k8s.io -l helm.toolkit.fluxcd.io/namespace=bigbang,helm.toolkit.fluxcd.io/name=metrics-server --ignore-not-found
+              zarf tools kubectl delete gitrepositories -n bigbang -l app.kubernetes.io/part-of=bigbang
+            description: "Cleaning up Big Bang resources"
       files:
       - source: scripts/on_failure.sh
         target: on_failure.sh
