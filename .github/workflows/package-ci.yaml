@@ -5,7 +5,7 @@ jobs:
   validate-DUBBD:
     runs-on: ubuntu-latest
 
-    name: Build Big Bang Distros
+    name: Build DUBBED Distro
     steps:
       - uses: actions/checkout@v3
         with:
@@ -20,7 +20,7 @@ jobs:
   validate-DUBBD-AWS:
     runs-on: ubuntu-latest
 
-    name: Build Big Bang Distros
+    name: Build DUBBED AWS Distro
     steps:
       - uses: actions/checkout@v3
         with:
