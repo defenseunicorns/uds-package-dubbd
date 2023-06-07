@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0](https://github.com/defenseunicorns/zarf-package-big-bang/compare/v0.2.1...v0.3.0) (2023-06-07)
+
+
+### Features
+
+* Added variable for approved registries ([#212](https://github.com/defenseunicorns/zarf-package-big-bang/issues/212)) ([ab21ef3](https://github.com/defenseunicorns/zarf-package-big-bang/commit/ab21ef3dd2c5ae42a16891b163a0cdca94fdf208))
+
+
+### Bug Fixes
+
+* move teardown back to zarf.yaml ([#241](https://github.com/defenseunicorns/zarf-package-big-bang/issues/241)) ([da61fd0](https://github.com/defenseunicorns/zarf-package-big-bang/commit/da61fd028fa2bfbd6bc597f9c238a27cc42ce084))
+
 ## [0.2.1](https://github.com/defenseunicorns/zarf-package-big-bang/compare/v0.2.0...v0.2.1) (2023-06-06)
 
 
