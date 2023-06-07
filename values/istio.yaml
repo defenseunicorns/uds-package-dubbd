@@ -7,6 +7,9 @@ istio:
     tenant-ingressgateway:
       type: "LoadBalancer"
   values:
+    meshConfig:
+      meshMTLS:
+        minProtocolVersion: TLSV1_3
     istiod:
       resources:
         requests:
