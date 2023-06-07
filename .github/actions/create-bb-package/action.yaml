@@ -11,6 +11,9 @@ inputs:
   working-dir:
     description: Zarf package path
     required: true
+  download-init-package: 
+    description: Include Zarf init package
+    required: false
 
 outputs:
   latest-package-version:
@@ -32,6 +35,7 @@ runs:
       with:
         # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
         version: v0.27.1
+        download-init-package: ${{ inputs.download-init-package }}
 
     - name: Create DUBBD
       shell: bash
