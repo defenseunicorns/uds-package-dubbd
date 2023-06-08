@@ -21,7 +21,7 @@ Pre-built Zarf Package of [DoD-Platform-One/big-bang](https://github.com/DoD-Pla
   - values - _values file overrides for k3d_
 - [values](./values/) - _shared values files_
 
-## Example DUBBD Deployment - using pre-built OCI packages [here](https://github.com/orgs/defenseunicorns/packages?repo_name=zarf-package-big-bang)
+## Example DUBBD Deployment - using pre-built OCI packages [here](https://github.com/orgs/defenseunicorns/packages?repo_name=uds-package-dubbd)
 
 ```bash
 # Create a deployment directory and change to that directory

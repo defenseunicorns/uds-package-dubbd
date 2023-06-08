@@ -11,8 +11,8 @@ metadata:
   # Big Bang / Iron Bank are only amd64
   architecture: amd64
   authors: "@MxNxPx"
-  source: https://github.com/defenseunicorns/zarf-package-big-bang
-  documentation: https://github.com/defenseunicorns/zarf-package-big-bang
+  source: https://github.com/defenseunicorns/uds-package-dubbd
+  documentation: https://github.com/defenseunicorns/uds-package-dubbd
   vendor: Defense Unicorns
 
 variables:
