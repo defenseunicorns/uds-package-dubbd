@@ -1,5 +1,5 @@
-name: Create DUBBED Package
-description: Creates a DUBBED Zarf package for the requested path
+name: Create DUBBD Package
+description: Creates a DUBBD Zarf package for the requested path
 
 inputs:
   username:
@@ -37,7 +37,7 @@ runs:
         version: v0.27.1
         download-init-package: ${{ inputs.download-init-package }}
 
-    - name: Create DUBBD
+    - name: Create Zarf Package
       shell: bash
       run: zarf package create --confirm
       working-directory: ${{ inputs.working-dir }}

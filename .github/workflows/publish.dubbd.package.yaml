@@ -1,4 +1,4 @@
-name: Publish Dubbd
+name: Publish DUBBD Package
 
 # Will remove before merge and make it only tags
 on:
@@ -19,7 +19,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - uses: ./.github/actions/create-bb-package
+      - name: Create DUBBD Package
+        uses: ./.github/actions/create-bb-package
         with:
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
