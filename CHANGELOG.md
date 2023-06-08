@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.3.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.2.1...v0.3.0) (2023-06-08)
+
+
+### Features
+
+* Added variable for approved registries ([#212](https://github.com/defenseunicorns/uds-package-dubbd/issues/212)) ([ab21ef3](https://github.com/defenseunicorns/uds-package-dubbd/commit/ab21ef3dd2c5ae42a16891b163a0cdca94fdf208))
+* ensure tests run before tagging and releasing ([3860caa](https://github.com/defenseunicorns/uds-package-dubbd/commit/3860caa0701bf87eecef88e6b14dbc75ab4a5a56))
+
+
+### Bug Fixes
+
+* move teardown back to zarf.yaml ([#241](https://github.com/defenseunicorns/uds-package-dubbd/issues/241)) ([da61fd0](https://github.com/defenseunicorns/uds-package-dubbd/commit/da61fd028fa2bfbd6bc597f9c238a27cc42ce084))
+* Only run tests on merge to main for versioning and not for tagging ([c85cac6](https://github.com/defenseunicorns/uds-package-dubbd/commit/c85cac693e753f5e69a83831cab9ca6b36e312c8))
+* remove *.md exclusion from PR flow ([88f6c59](https://github.com/defenseunicorns/uds-package-dubbd/commit/88f6c59b49eb619d03cd92064e634e8a009d66fb))
+* remove md exclusion from release workflow ([f8c792f](https://github.com/defenseunicorns/uds-package-dubbd/commit/f8c792f9b95623e9aa3a8f29205b8796d619cb2d))
+* set min tls version at gateway ([#252](https://github.com/defenseunicorns/uds-package-dubbd/issues/252)) ([6ebe6fd](https://github.com/defenseunicorns/uds-package-dubbd/commit/6ebe6fddac8aee854d656142d8b121b03cf59e03))
+
 ## [0.2.1](https://github.com/defenseunicorns/zarf-package-big-bang/compare/v0.2.0...v0.2.1) (2023-06-06)
 
 
