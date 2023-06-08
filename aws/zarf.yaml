@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
 kind: ZarfPackageConfig
 metadata:
-  name: big-bang-distro-aws
+  name: dubbd-aws
   description: "Defense Unicorns Big Bang Distro"
   # x-release-please-start-version
   version: "0.2.1"

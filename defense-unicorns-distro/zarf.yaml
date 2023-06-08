@@ -1,6 +1,6 @@
 kind: ZarfPackageConfig
 metadata:
-  name: big-bang
+  name: dubbd
   description: "Defense Unicorns Big Bang Distro"
   # x-release-please-start-version
   version: "0.2.1"
