@@ -3,7 +3,7 @@ name: DUBBD
 on:
   pull_request:
     branches:
-      - main
+      - NEVER
 
 jobs:
   clean-install:
