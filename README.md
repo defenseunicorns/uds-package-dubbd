@@ -57,3 +57,25 @@ set -o history
 # Run the zarf package deploy command with desired release (K3d example)
 zarf package deploy oci://ghcr.io/defenseunicorns/packages/big-bang-distro-k3d/big-bang-distro-k3d:0.0.1-amd64 --oci-concurrency=15
 ```
+
+## Creating releases
+
+The pipeline uses [release-please-action](https://github.com/google-github-actions/release-please-action) for versioning and releasing OCI packages.
+
+### How should I write my commits?
+
+Release Please assumes you are using [Conventional Commit messages](https://www.conventionalcommits.org/).
+
+The most important prefixes you should have in mind are:
+
+- `fix:` which represents bug fixes, and correlates to a [SemVer](https://semver.org/)
+  patch.
+- `feat:` which represents a new feature, and correlates to a SemVer minor.
+- `feat!:`,  or `fix!:`, `refactor!:`, etc., which represent a breaking change
+  (indicated by the `!`) and will result in a SemVer major.
+
+When the change is merged to the trunk, Release Please will calculate what changes are included and will create another PR to increase the version and tag a new release. This will also automatically generate a new set of packages in the OCI registry.
+
+### Modifying the Monorepo
+
+Use the [release-please-config.json](release-please-config.json) file to add or remove packages for publishing.
