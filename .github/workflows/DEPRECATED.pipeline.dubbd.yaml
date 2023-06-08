@@ -3,9 +3,7 @@ name: DUBBD
 on:
   pull_request:
     branches:
-      - main
-    paths-ignore:
-      - "**.md"
+      - NEVER
 
 jobs:
   eksctl:
