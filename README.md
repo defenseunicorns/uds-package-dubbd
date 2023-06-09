@@ -60,7 +60,7 @@ zarf package deploy oci://ghcr.io/defenseunicorns/packages/big-bang-distro-k3d/b
 
 ## Creating releases
 
-The pipeline uses [release-please-action](https://github.com/google-github-actions/release-please-action) for versioning and releasing OCI packages. This will automatically update `metadata.version` field in zarf.yaml to the same version number that is used for the release tag. To make this work, the `version` field must be be surrounded with Release Please's annotations,
+The pipeline uses [release-please-action](https://github.com/google-github-actions/release-please-action) for versioning and releasing OCI packages. This will automatically update `metadata.version` field in zarf.yaml to the same version number that is used for the release tag. To make this work, the `version` field must be surrounded by Release Please's annotations,
 
 ```yaml
   # x-release-please-start-version
