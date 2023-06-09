@@ -2,7 +2,7 @@
 kind: ZarfPackageConfig
 metadata:
   name: big-bang-distro-k3d
-  description: "Defense Unicorns Big Bang Distro"
+  description: "Defense Unicorns Big Bang Distro K3D Environment"
   # x-release-please-start-version
   version: "0.2.1"
   # x-release-please-end

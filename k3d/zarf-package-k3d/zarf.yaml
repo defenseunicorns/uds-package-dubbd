@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
+kind: ZarfPackageConfig
+metadata:
+  name: k3d-local
+  description: "Defense Unicorns K3D environment"
+  version: "v1.26.0"
+  # Big Bang / Iron Bank are only amd64
+  architecture: amd64
+  authors: "@runyontr"
+  source: https://github.com/defenseunicorns/zarf-package-k3d
+  vendor: Defense Unicorns
+
+variables:
+  - name: ZARF_VERSION
+    default: v0.27.0
+
+components:
+- name: k3d
+  required: true
+  files:
+    - source: scripts/k3d.sh
+      target: k3d.sh
+      executable: true
+  actions:
+    onDeploy:
+      after:
+        - cmd: ./k3d.sh
+    onRemove:
+      after:
+        - cmd: k3d cluster delete dubbd
+- name: init
+  required: true
+  files:
+    - source: zarf-init-amd64-v0.27.0.tar.zst
+      target: zarf-init-amd64-v0.27.0.tar.zst
+  actions:
+    onDeploy:
+      after: 
+        - cmd: zarf package deploy zarf-init-amd64-v0.27.0.tar.zst --components git-server --confirm -l warn
+
+# This doesnt work with skeletons...
+# - name: init2
+#   required: true
+#   files:
+#     - source: https://github.com/defenseunicorns/zarf/releases/download/###ZARF_PKG_TMPL_ZARF_VERSION###/zarf-init-amd64-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst
+#       target: zarf-init-amd64-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst
+#   actions:
+#     onDeploy:
+#       after: 
+#         - cmd: zarf package deploy zarf-init-amd64-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst --components git-server --confirm -l warn
+# - name: gpus
+- name: metallb
+  required: true
+  files:
+  - source: scripts/metallb.sh
+    target: metallb.sh
+    executable: true
+  actions:
+    onDeploy:
+      after:
+        - cmd: ./metallb.sh
+  manifests:
+    - name: metallb
+      files:
+        - manifests/metallb/metallb-native.yaml
+  images:
+  - "quay.io/metallb/controller:v0.13.9"
+  - quay.io/metallb/speaker:v0.13.9

@@ -1,0 +1,5 @@
+package:
+  create: 
+    set:
+      zarf_version: v0.26.1
+    max_package_size: "1000000000"
