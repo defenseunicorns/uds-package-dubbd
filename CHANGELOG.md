@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.2] (2023-06-09)
+- updates CI
+- Sets minimum TLS version for the Istio mesh and gateway
+- updates package and repo naming
+
+
 ## [0.2.1](https://github.com/defenseunicorns/zarf-package-big-bang/compare/v0.2.0...v0.2.1) (2023-06-06)
 
 
