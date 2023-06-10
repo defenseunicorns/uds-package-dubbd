@@ -46,7 +46,7 @@ components:
     actions:
       onDeploy:
         after:
-        - cmd: ./scripts/test-http-response.sh neuvector neuvector-serice-webui 8443 
+        - cmd: ./scripts/test-http-response.sh neuvector neuvector-service-webui 8443 
     files:
       - source: ./scripts/test-http-response.sh
         target: ./scripts/test-http-response.sh
