@@ -100,7 +100,8 @@ components:
             dir: run/loki
       onRemove:
         before:
-          - cmd: "terraform destroy -auto-approve"
+          - cmd: |
+              if [ "$(terraform output force_destroy)" = true ]; then terraform destroy -auto-approve; fi
             dir: run/loki
   - name: outputs
     required: true
