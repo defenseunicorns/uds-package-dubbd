@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# echo "tests go here!"
-
 namespace=$1
 svc_name=$2
 svc_port=$3
@@ -21,7 +19,7 @@ sleep 1
 HTTP_RESPONSE_CODE=$(curl -s -o /dev/null -I -w "%{http_code}" http://localhost:$local_port)
 
 if [[ $HTTP_RESPONSE_CODE == "301" || $HTTP_RESPONSE_CODE == "200" ]]; then 
-    echo "Neuvector is up and reachable."
+    echo "$svc_name is up and reachable."
 else
-    echo "Neuvector is not reachable"
+    echo "$svc_name is not reachable"
 fi
