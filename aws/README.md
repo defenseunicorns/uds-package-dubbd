@@ -2,16 +2,15 @@
 
 ## Prerequisites
 
-- Zarf cli installed locally. Minimum version of `v0.27.0`
-- AWS EKS cluster -- k8s v1.26+
-- AWS EKS cluster has zarf init package deployed (with git-server component)
-- Working kube context (`kubectl get nodes` <-- this command works)
-- Existing S3 bucket with a Terraform state file present
+- Zarf CLI installed locally. Minimum version of `v0.27.1`
+- AWS EKS cluster -- K8s v1.26+
+- AWS EKS cluster has Zarf init package deployed (with `git-server` component)
+- Local K8s context is pointing to the above cluster
+- Existing S3 bucket with a Terraform state file present and DynamoDB table for state locking
 - A `~/.docker/config.json` file. Zarf [currently requires this](https://github.com/defenseunicorns/zarf/issues/1795) to deploy from an OCI registry
 
-## Build the package
-
-**Note**: If you would rather deploy a pre-built package from our registry, you can skip building the package yourself.
+## Build the package (optional)
+This section describes how to build a DUBBD-AWS package locally. If you just want to deploy DUBBD-AWS skip this step!
 
 ```bash
 # Login to the registry
@@ -27,44 +26,51 @@ zarf package create --architecture amd64 --confirm
 # (Optionally) Publish package to an OCI registry
 ```
 
-## Modify zarf-config.yaml as needed
-
-**Note**: Ensure your `zarf-config.yaml` file is in the same directory from where you run `zarf package deploy`
+## Configure DUBBD-AWS
+The recommended way to configure DUBBD-AWS is via a `zarf-config.yaml` file located in the same directory that you will be performing the deploy in. The available `zarf-config.yaml` configurations are shown below, note the keys that are not commented out are **required** to deploy DUBBD-AWS. 
 
 ```yaml
-package:
   deploy:
     set:
+      # -- Domain name for the EKS cluster
       domain: bigbang.dev
+      # -- Public TLS Key
       public_key_file: bigbang.dev.key
+      # -- Private TLS key
       public_cert_file: bigbang.dev.cert
+      # -- Name of the EKS cluster
       name: "big-bang-aws"
-      state_bucket_name: <YOUR_BUCKET_NAME>
-      state_key: <YOUR_TERRAFORM_STATE_KEY> # Path to the state file key in the state bucket
-      state_dynamodb_table_name: <YOUR_DYNAMODB_TABLE_NAME>
-      region: <YOUR_REGION>
-      # Bring your own kms key, if omitted a key will be created with an alias prefix of "<cluster name>-loki-"
-      loki_kms_key_arn: <YOUR_KMS_KEY_ARN>
-      loki_force_destroy: "true"
+      # -- Name of existing Terraform state bucket
+      state_bucket_name: uds-dev-state-bucket
+      # -- Key path to Terraform state file within the bucket
+      state_key: tfstate/dev/uds-dev-state-bucket.tfstate
+      # -- Name of DynamoDB table used for Terraform state locking
+      state_dynamodb_table_name: uds-dev-state-dynamodb
+      # -- AWS region
+      region: us-west-2
+      # -- Bring your own kms key, if omitted a key will be created with an alias prefix of "<cluster name>-loki-"
+      #loki_kms_key_arn: "arn:aws:kms:us-west-2:000000000000:key/mrk-0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a"
+      # -- if set to true, delete the S3 bucket and corresponding KMS key associated with the Loki bucket
+      #loki_force_destroy: "true"
 ```
 
 ## Deploy the package
-
+Once all of the prereqs are met and the `zarf-config.yaml` has been configured:
 ```bash
-# Verify all prereqs are met
-
-# Run the zarf package deploy command
-zarf package deploy --confirm zarf-package-big-bang-*.tar.zst
-
-# (Alternatively) Deploy from OCI
-# Login to the registry
-# Run the zarf package deploy command with the desired DUBBD OCI package version
-VERSION="YOUR_VERSION"
-
-zarf package deploy oci://ghcr.io/defenseunicorns/packages/big-bang-distro-aws:$VERSION-amd64 \
+# To deploy from OCI (recommended)
+zarf package deploy oci://ghcr.io/defenseunicorns/packages/big-bang-distro-aws:<VERSION>-amd64 \
   --oci-concurrency=15 \
   --confirm
 ```
+Note that package versions can be found in the [Defense Unicorns GHCR repo](https://github.com/defenseunicorns/uds-package-dubbd/pkgs/container/packages%2Fdubbd-aws).
+
+
+If developing locally:
+```bash
+zarf package deploy --confirm zarf-package-big-bang-*.tar.zst
+```
+
+
 
 ## Additional Information
 
