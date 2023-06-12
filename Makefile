@@ -1,6 +1,6 @@
 # The version of Zarf to use. To keep this repo as portable as possible the Zarf binary will be downloaded and added to
 # the build folder.
-ZARF_VERSION := v0.27.0
+ZARF_VERSION := v0.27.1
 
 DUBBD_OCI_VERSION := 0.0.2
 
