@@ -11,8 +11,8 @@ package:
   deploy:
     set:
       domain: bigbang.dev
-      public_key_file: bigbang.dev.key
-      public_cert_file: bigbang.dev.cert
+      key_file: bigbang.dev.key
+      cert_file: bigbang.dev.cert
       name: "big-bang-aws" # maybe inject something here for the GH PR?
       state_bucket_name: uds-dev-state-bucket
       state_key: tfstate/dev/uds-dev-state-bucket.tfstate
