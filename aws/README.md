@@ -30,6 +30,7 @@ zarf package create --architecture amd64 --confirm
 The recommended way to configure DUBBD-AWS is via a `zarf-config.yaml` file located in the same directory that you will be performing the deploy in. The available `zarf-config.yaml` configurations are shown below, note the keys that are not commented out are **required** to deploy DUBBD-AWS. 
 
 ```yaml
+package:  
   deploy:
     set:
       # -- Domain name for the EKS cluster
