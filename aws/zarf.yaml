@@ -139,4 +139,5 @@ components:
       bigbang:
         version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
         valuesFiles:
+        - values/aws-istio.yaml
         - values/aws-loki.yaml
