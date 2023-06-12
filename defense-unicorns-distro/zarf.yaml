@@ -16,21 +16,13 @@ variables:
 - name: DOMAIN
   default: bigbang.dev
   prompt: false
-- name: PUBLIC_CERT_FILE
+- name: CERT_FILE
   default: bigbang.dev.cert
-  description: "This file contains the cert for the public ingress gateway"
+  description: "This file contains the cert for the ingress gateways"
   prompt: false
-- name: PUBLIC_KEY_FILE
+- name: KEY_FILE
   default: bigbang.dev.key
-  description: "This file contains the key for the public ingress gateway"
-  prompt: false
-- name: ADMIN_CERT_FILE
-  default: bigbang.dev.cert
-  description: "This file contains the cert for the admin ingress gateway"
-  prompt: false
-- name: ADMIN_KEY_FILE
-  default: bigbang.dev.key
-  description: "This file contains the key for the admin ingress gateway"
+  description: "This file contains the key for the ingress gateways"
   prompt: false
 - name: APPROVED_REGISTRIES
   description: "Regex of approved registries to allow in cluster"
