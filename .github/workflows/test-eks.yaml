@@ -1,11 +1,16 @@
 name: CI DUBBD AWS
 
 on:
+  schedule:
+    # run at midnight EST
+    - cron: '0 4 * * *'
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - '**/README.md'
+    paths:
+      - 'aws/zarf.yaml'
+      - 'aws/zarf-config.yaml'
+      - 'aws/values/**'
   workflow_call:
 
 jobs:

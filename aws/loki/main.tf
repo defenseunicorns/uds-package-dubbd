@@ -12,6 +12,7 @@ resource "random_id" "default" {
   byte_length = 2
 }
 data "aws_eks_cluster" "existing" {
+  count = var.create_irsa ? 1 : 0
   name = var.name
 }
 
@@ -22,24 +23,25 @@ data "aws_partition" "current" {}
 data "aws_region" "current" {}
 
 locals {
-  oidc_url_without_protocol = substr(data.aws_eks_cluster.existing.identity[0].oidc[0].issuer, 8, -1) # removes "https://"
+  oidc_url_without_protocol = var.create_irsa ? substr(data.aws_eks_cluster.existing[0].identity[0].oidc[0].issuer, 8, -1) : "" # removes "https://"
   oidc_arn                  = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/${local.oidc_url_without_protocol}"
   generate_kms_key          = var.create_kms_key == true ? 1 : 0
   kms_key_arn               = var.kms_key_arn == null ? module.generate_kms[0].kms_key_arn : var.kms_key_arn
+  create_irsa               = var.create_irsa == true ? true : false
   # The conditional may need to look like this depending on how we decide to handle the way varf wants to template things
   # generate_kms_key          = var.kms_key_arn == "" ? 1 : 0
   # kms_key_arn               = var.kms_key_arn == "" ? module.generate_kms[0].kms_key_arn : var.kms_key_arn
 }
 
 module "S3" {
-  source                     = "github.com/defenseunicorns/terraform-aws-uds-s3?ref=v0.0.1"
+  source                     = "github.com/defenseunicorns/terraform-aws-uds-s3?ref=v0.0.2"
   name_prefix                = var.name
   eks_oidc_provider_arn      = local.oidc_arn
   kubernetes_service_account = "logging-loki"
   kubernetes_namespace       = "logging"
   kms_key_arn                = local.kms_key_arn
   force_destroy              = var.force_destroy
-
+  create_irsa                = local.create_irsa
 }
 
 module "generate_kms" {

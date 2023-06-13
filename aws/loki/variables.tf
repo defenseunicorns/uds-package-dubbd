@@ -13,6 +13,11 @@ variable "key_alias" {
   default     = "bigbang-loki"
 }
 
+variable "create_irsa" {
+  description = "Create IRSA roles and policy"
+  default = true
+}
+
 variable "force_destroy" {
   description = "Option to set force destroy"
   type        = bool
