@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.3](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.2.2...v0.2.3) (2023-06-13)
+
+
+### Bug Fixes
+
+* Add AWS LB annotations ([#272](https://github.com/defenseunicorns/uds-package-dubbd/issues/272)) ([b8cdcb5](https://github.com/defenseunicorns/uds-package-dubbd/commit/b8cdcb56a920ba4d24a9fee4a75ee33f5e9fef0d))
+* adjust semver to not bump major version ([#274](https://github.com/defenseunicorns/uds-package-dubbd/issues/274)) ([f25bfa3](https://github.com/defenseunicorns/uds-package-dubbd/commit/f25bfa353d6d75ce0c36cfb0c1717d9e1325ff24))
+* Update Release Please docs in README ([#263](https://github.com/defenseunicorns/uds-package-dubbd/issues/263)) ([d4f34b3](https://github.com/defenseunicorns/uds-package-dubbd/commit/d4f34b354bc89f5dcef2d1876a27bd31baed838a))
+
 ## [0.2.2] (2023-06-09)
 - updates CI
 - Sets minimum TLS version for the Istio mesh and gateway
