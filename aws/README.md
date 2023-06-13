@@ -35,10 +35,10 @@ package:
     set:
       # -- Domain name for the EKS cluster
       domain: bigbang.dev
-      # -- Public TLS Key
-      public_key_file: bigbang.dev.key
-      # -- Private TLS key
-      public_cert_file: bigbang.dev.cert
+      # -- TLS key
+      key_file: bigbang.dev.key
+      # -- TLS cert
+      cert_file: bigbang.dev.cert
       # -- Name of the EKS cluster
       name: "big-bang-aws"
       # -- Name of existing Terraform state bucket
