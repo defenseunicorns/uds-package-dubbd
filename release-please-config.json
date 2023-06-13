@@ -4,6 +4,8 @@
       "release-type": "simple",
       "draft": false,
       "changelog-path": "CHANGELOG.md",
+      "bump-minor-pre-major": "true",
+      "bump-patch-for-minor-pre-major": "true",
       "extra-files": [
         "aws/zarf.yaml",
         "defense-unicorns-distro/zarf.yaml",
