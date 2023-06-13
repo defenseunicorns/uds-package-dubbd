@@ -6,7 +6,7 @@ svc_port=$3
 local_port=62202
 
 
-kubectl port-forward -n $namespace service/$svc_name $local_port:$svc_port > /dev/null 2>&1 &
+zarf tools kubectl port-forward -n $namespace service/$svc_name $local_port:$svc_port > /dev/null 2>&1 &
 PID_PF=$!
 trap '{
     kill $PID_PF
