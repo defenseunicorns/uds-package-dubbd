@@ -91,3 +91,25 @@ new loki values file on top of the existing DUBBD zarf file via:
 ```
 
 In order for this configuration to work cleanly, DUBBD-AWS also provisions an S3 bucket from our [IaC Repo](https://github.com/defenseunicorns/terraform-aws-uds-s3) that provides encryption at rest and a role to access the S3 bucket that gets used by Loki via [IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html).
+
+## DUBBD upgrade
+
+### Before upgrading
+
+#### Get the current version
+
+#### Decide on upgrade version
+
+#### Supported upgrade version check
+
+#### Verify BB health
+
+### Upgrade Steps
+
+### Monitor upgrade progress
+
+### Post upgrade validation
+
+### (Optional) Rollback
+
+## Troubleshooting issues
