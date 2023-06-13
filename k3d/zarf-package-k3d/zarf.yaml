@@ -2,67 +2,75 @@
 kind: ZarfPackageConfig
 metadata:
   name: k3d-local
-  description: "Defense Unicorns K3D environment"
-  version: "v1.26.0"
-  # Big Bang / Iron Bank are only amd64
+  description: Defense Unicorns k3d environment 
+  version: '###ZARF_CONST_VERSION###'
   architecture: amd64
-  authors: "@runyontr"
-  source: https://github.com/defenseunicorns/zarf-package-k3d
+  authors: "@runyontr @timblaktu"
+  source: https://github.com/defenseunicorns/uds-package-dubbd/k3d/zarf-package-k3d
   vendor: Defense Unicorns
-
+  # Important Note on Templating with Constants and Variables:
+  #   zarf package create only templates the zarf.yaml file, and 
+  #   zarf package deploy only templates other manifests, charts and files.
+  # This means that 
+constants:
+  - name: VERSION
+    value: v0.27.0
+  - name: ARCH
+    value: amd64
+  - name: DL_BASE_URL
+    value: https://github.com/defenseunicorns/zarf/releases/download
+  - name: K3D_CLUSTER_NAME
+    value: dubbd
 variables:
-  - name: ZARF_VERSION
-    default: v0.27.0
-
+  - name: DL_VERSION_URL
+    default: '###ZARF_CONST_DL_BASE_URL###/###ZARF_CONST_VERSION###'
+  - name: INIT_FILENAME
+    default: 'zarf-init-###ZARF_CONST_ARCH###-###ZARF_CONST_VERSION###.tar.zst'
+  - name: INIT_COMPONENTS
+    default: "git-server"
 components:
-- name: k3d
-  required: true
-  files:
-    - source: scripts/k3d.sh
-      target: k3d.sh
-      executable: true
-  actions:
-    onDeploy:
-      after:
-        - cmd: ./k3d.sh
-    onRemove:
-      after:
-        - cmd: k3d cluster delete dubbd
-- name: init
-  required: true
-  files:
-    - source: zarf-init-amd64-v0.27.0.tar.zst
-      target: zarf-init-amd64-v0.27.0.tar.zst
-  actions:
-    onDeploy:
-      after: 
-        - cmd: zarf package deploy zarf-init-amd64-v0.27.0.tar.zst --components git-server --confirm -l warn
-
-# This doesnt work with skeletons...
-# - name: init2
-#   required: true
-#   files:
-#     - source: https://github.com/defenseunicorns/zarf/releases/download/###ZARF_PKG_TMPL_ZARF_VERSION###/zarf-init-amd64-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst
-#       target: zarf-init-amd64-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst
-#   actions:
-#     onDeploy:
-#       after: 
-#         - cmd: zarf package deploy zarf-init-amd64-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst --components git-server --confirm -l warn
-# - name: gpus
-- name: metallb
-  required: true
-  files:
-  - source: scripts/metallb.sh
-    target: metallb.sh
-    executable: true
-  actions:
-    onDeploy:
-      after:
-        - cmd: ./metallb.sh
-  manifests:
-    - name: metallb
-      files:
-        - manifests/metallb/metallb-native.yaml
-  images:
-  - "quay.io/metallb/controller:v0.13.9"
-  - quay.io/metallb/speaker:v0.13.9
+  - name: k3d
+    # TODO: generate description field from script docstring using something like:
+    #       sed -n '/^#.*\$/,/^$/p' scripts/script.sh
+    description: 'Create k3d cluster named ###ZARF_CONST_K3D_CLUSTER_NAME###'
+    required: true
+    files:
+      - source: scripts/k3d.sh
+        target: k3d.sh
+        executable: true
+    actions:
+      onDeploy:
+        before:
+          - cmd: ./k3d.sh
+      onRemove:
+        after:
+          - cmd: 'k3d cluster delete ###ZARF_CONST_K3D_CLUSTER_NAME###'
+  - name: init
+    description: 'Deploy (###ZARF_VAR_INIT_COMPONENTS###) components of zarf init package ###ZARF_CONST_VERSION### to k3d cluster ###ZARF_CONST_K3D_CLUSTER_NAME###'
+    required: true
+    actions:
+      onCreate:
+        before:
+          - cmd: |
+              wget ###ZARF_CONST_DL_VERSION_URL###/{checksums.txt,###ZARF_CONST_INIT_FILENAME###
+              test "$(sha256sum ###ZARF_CONST_INIT_FILENAME###)" = "$(grep --color=NEVER ###ZARF_CONST_INIT_FILENAME### checksums.txt)"
+      onDeploy:
+        after: 
+          - cmd: 'zarf package deploy ###ZARF_CONST_INIT_FILENAME### --components ###ZARF_VAR_INIT_COMPONENTS### --confirm -l warn'
+  - name: metallb
+    required: true
+    files:
+      - source: scripts/metallb.sh
+        target: metallb.sh
+        executable: true
+    actions:
+      onDeploy:
+        after:
+          - cmd: ./metallb.sh
+    manifests:
+      - name: metallb
+        files:
+          - manifests/metallb/metallb-native.yaml
+    images:
+      - "quay.io/metallb/controller:v0.13.9"
+      - quay.io/metallb/speaker:v0.13.9

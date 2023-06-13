@@ -1,5 +1,5 @@
 package:
   create: 
     set:
-      zarf_version: v0.26.1
+      zarf_version: ${ZARF_VERSION}
     max_package_size: "1000000000"
