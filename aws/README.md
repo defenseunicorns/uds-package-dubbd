@@ -183,7 +183,7 @@ If a rollback is deemed necessary, these are the various options:
 - Grab the version of the deployed DUBBD package
 ​
 ```console
-# zarf tools kubectl get secret -n zarf zarf-package-dubbd-aws -o jsonpath='{.data.data}' | base64 -d | jq -r '.data.metadata.version'
+# zarf tools kubectl get secret -n zarf zarf-package-dubbd-aws -o go-template="{{ .data.data | base64decode }}" | jq -r '.data.metadata.version'
 ```
 ​
 - Prep the zarf-config.yaml for use with the previous DUBBD version
@@ -199,7 +199,8 @@ If a rollback is deemed necessary, these are the various options:
 - Grab the version of the deployed DUBBD package
 ​
 ```console
-# zarf tools kubectl get secret -n zarf zarf-package-dubbd-aws -o jsonpath='{.data.data}' | base64 -d | jq -r '.data.metadata.version'
+# zarf tools kubectl get secret -n zarf zarf-package-dubbd-aws -o go-template="{{ .data.data | base64decode }}" | jq -r '.data.metadata.version'
+```
 ```
 ​
 - Remove the DUBBD package (execute command from same directory used to deploy)
