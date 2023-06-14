@@ -20,12 +20,6 @@ jobs:
       - id: release-flag
         run: echo "release_created=${{ steps.tag.outputs.release_created || false }}" >> $GITHUB_OUTPUT 
 
-  test-release:
-    needs: tag-new-version
-    if: ${{ needs.tag-new-version.outputs.release_created == 'false'}}
-    uses: ./.github/workflows/ci-on-pull-request.yaml
-    secrets: inherit
-
   publish-dubbd-aws:
     needs: tag-new-version
     if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
