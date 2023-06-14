@@ -41,3 +41,11 @@ jobs:
     with:
       working_dir: k3d
     secrets: inherit
+
+  publish-dubbd-core:
+    needs: tag-new-version
+    if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
+    uses: ./.github/workflows/publish.dubbd.package.yaml
+    with:
+      working_dir: defense-unicorns-distro
+    secrets: inherit
