@@ -155,7 +155,7 @@ zarf tools kubectl get pod -A
 - Verify AWS resources exist (S3 bucket for Loki, Load Balancers for Istio): This can be confirmed via your AWS console or CLI access
 
 ### Upgrade Steps
-Follow the same steps as used for initial deployment from the [configure DUBBD](#configure-DUBBD-AWS) and [deploy the package](#deploy-the-package) sections.
+Follow the same steps as used for initial deployment from the [configure DUBBD](#configure-dubbd-aws) and [deploy the package](#deploy-the-package) sections.
 
 ### Post upgrade validation
 After the upgrade is complete, here are some recommended validation activities:
