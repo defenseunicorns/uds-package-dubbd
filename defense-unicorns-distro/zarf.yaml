@@ -188,7 +188,7 @@ components:
               ./zarf tools kubectl delete apiservices.apiregistration.k8s.io -l helm.toolkit.fluxcd.io/namespace=bigbang,helm.toolkit.fluxcd.io/name=metrics-server --ignore-not-found
               ./zarf tools kubectl delete gitrepositories -n bigbang -l app.kubernetes.io/part-of=bigbang
             description: "Cleaning up Big Bang resources"
-      files:
+    files:
       - source: scripts/on_failure.sh
         target: on_failure.sh
         executable: true
