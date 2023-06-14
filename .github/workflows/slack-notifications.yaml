@@ -1,0 +1,23 @@
+name: Slack Notification on New Pull Request
+
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  send-notification:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Send Slack notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+        with:
+          channel: uds-pull-requests
+          text: "New pull request: ${{ github.repository }}/${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}"
+
