@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.4](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.2.3...v0.2.4) (2023-06-14)
+
+
+### Bug Fixes
+
+* misplaced files in zarf.yaml ([#283](https://github.com/defenseunicorns/uds-package-dubbd/issues/283)) ([48d3744](https://github.com/defenseunicorns/uds-package-dubbd/commit/48d37447c937c9d11cfa05511ca4d285497ca496))
+
 ## [0.2.3](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.2.2...v0.2.3) (2023-06-13)
 
 ### Added
