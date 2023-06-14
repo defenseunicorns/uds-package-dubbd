@@ -1,10 +1,13 @@
+# Declare values to be substituted for ZARF_PKG_TMPL_* create-time templates.
+#   - https://docs.zarf.dev/docs/the-zarf-cli/#using-a-config-file-to-make-cli-command-flags-declarative
+#   - https://docs.zarf.dev/examples/variables/#create-time-package-configuration-templates
 log-level: info
 architecture: amd64
 package:
   create: 
     max_package_size: 1000000000
     set:
-      zarf_version: v0.27.0
+      zarf_version: v0.27.1
       dl_base_url: https://github.com/defenseunicorns/zarf/releases/download
       k3d_cluster_name: dubbd
       init_components: "git-server"
