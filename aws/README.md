@@ -49,8 +49,6 @@ package:
       state_dynamodb_table_name: uds-dev-state-dynamodb
       # -- AWS region
       region: us-west-2
-      # -- Bring your own kms key, if omitted a key will be created with an alias prefix of "<cluster name>-loki-"
-      #loki_kms_key_arn: "arn:aws:kms:us-west-2:000000000000:key/mrk-0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a"
       # -- if set to true, delete the S3 bucket and corresponding KMS key associated with the Loki bucket
       #loki_force_destroy: "true"
 ```
