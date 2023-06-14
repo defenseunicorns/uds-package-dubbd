@@ -1,9 +1,18 @@
 # Zarf Package K3d
 
-Zarf package that deploys a k3d cluster that has GPU support
+Zarf package that deploys a k3d cluster
+
+## Creation
+
+Check desired values in `zarf-config.yaml`, then utter:
+
+
+```bash
+zarf package create --architecture amd64
+```
 
 ## Deployment
 
 ```bash
-zarf package deploy oci://ghcr.io/runyontr/zarf-package-k3d/k3d-local:v1.26.0-amd64
+zarf package deploy
 ```

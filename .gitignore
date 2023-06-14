@@ -9,3 +9,4 @@ defense-unicorns-distro/preflight.sh
 tmp
 zarf-sbom
 .idea
+**/checksums.txt

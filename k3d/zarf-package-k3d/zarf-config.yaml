@@ -1,5 +1,11 @@
+log-level: info
+architecture: amd64
 package:
   create: 
+    max_package_size: 1000000000
     set:
-      zarf_version: ${ZARF_VERSION}
-    max_package_size: "1000000000"
+      zarf_version: v0.27.0
+      dl_base_url: https://github.com/defenseunicorns/zarf/releases/download
+      k3d_cluster_name: dubbd
+      init_components: "git-server"
+
