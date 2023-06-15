@@ -45,10 +45,14 @@ runs:
 
         latest_package_version="$(echo "$response" | jq -r '.[0].metadata.container.tags[0]')"
 
-        # Check if the latest package version tag contains '-skeleton' and remove it
-        if [[ "$latest_package_version" =~ "-skeleton" ]]
+        # Check if the latest package version tag contains 'skeleton'
+        if [[ "$latest_package_version" =~ "skeleton" ]]
         then
-            latest_package_version="${latest_package_version//-skeleton/}"
+            # Remove 'skeleton' from the package tag
+            latest_package_version="${latest_package_version//skeleton/}"
+
+            # Add 'amd64' to the package tag
+            latest_package_version+="amd64"
         fi
 
         echo "latest-package-version=$(echo "$latest_package_version")" >> $GITHUB_OUTPUT
