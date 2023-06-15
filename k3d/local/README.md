@@ -1,4 +1,4 @@
-# `k3d-local`0 Zarf Package 
+# `k3d-local` Zarf Package 
 
 Zarf package that deploys a k3d cluster with metallb.
 

@@ -1,6 +1,6 @@
 # Defense Unicorns Big Bang Distro for K3D (DUBBD-k3d)
 
-This page shows you how to bootstrap a Local Target Cluster for Local Development. When done, you will have a k3d cluster that can be used for zarf package development/testing or as a sandbox for learning more about zarf.
+This page shows you how to bootstrap a k3d cluster for local DUBBD development, experimentation and learning.
 
 ## Prerequisites
 
@@ -9,23 +9,32 @@ This page shows you how to bootstrap a Local Target Cluster for Local Developmen
 > Minimum compute requirements for single node deployment are at LEAST 48 GB RAM and 12 virtual CPU threads (preferrably in a VM)
 
 ### [Install zarf](https://docs.zarf.dev/docs/getting-started/#installing-zarf)
-### [Install zarf’s Init package](https://docs.zarf.dev/docs/create-a-zarf-package/zarf-init-package)
-
-This is unnecessary when deploying a zarf package that includes init e.g. [zarf-package-k3d](https://docs.zarf.dev/docs/create-a-zarf-package/zarf-init-package).
 
 ### [Install docker](https://docs.docker.com/install/https://docs.docker.com/install/)
 
-### Configure AuthN for GitHub Container Registries
+### Configure AuthN for Container Registries
+
+#### GitHub Container Registry AuthN
 
 1. [Create a (classic) personal access token](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic) for your GitHub user scoped with read/write/delete:packages, and store in a secure location.
     * Note: your use case will only require read:packages if you won't be publishing packages.
-2. Sanity-check docker/zarf authN to OCI registry at ghcr.io, exporting token as CR_PAT env var:
-  1. echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin 
-  2. echo $CR_PAT | zarf tools registry login ghcr.io -u USERNAME --password-stdin 
+2. (Optional) Sanity-check docker/zarf authN to OCI registry at ghcr.io, exporting token as CR_PAT env var:
+  1. `echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin`
+  2. `echo $CR_PAT | zarf tools registry login ghcr.io -u USERNAME --password-stdin`
 3. [Install and configure a credential store for docker login](https://docs.docker.com/engine/reference/commandline/login/#credentials-store)
-4. Validate docker/zarf authN to OCI registry at ghcr.io, using credential store configured in ~/.docker/config.json:
-  1. docker login ghcr.io -u USERNAME
-  2. zarf tools registry login ghcr.io -u USERNAME 
+4. Validate docker/zarf authN to OCI registry at ghcr.io, using credential store configured in `~/.docker/config.json`:
+  1. `docker login ghcr.io -u USERNAME`
+  2. `zarf tools registry login ghcr.io -u USERNAME`
+
+#### `registry1.dso.mil` AuthN 
+
+```bash
+set +o history
+export REGISTRY1_USERNAME="YOUR-USERNAME-HERE"
+export REGISTRY1_PASSWORD="YOUR-PASSWORD-HERE"
+echo $REGISTRY1_PASSWORD | zarf tools registry login registry1.dso.mil --username $REGISTRY1_USERNAME --password-stdin
+set -o history
+```
 
 ### [Install kubectl](https://kubernetes.io/docs/tasks/tools/#kubectlhttps://kubernetes.io/docs/tasks/tools/#kubectl)
 
@@ -33,69 +42,60 @@ This is unnecessary when deploying a zarf package that includes init e.g. [zarf-
 
 ### Create and Bootstrap `k3d` cluster
 
-`k3d/zarf-package-k3d` defines a zarf package that creates a local k3d cluster and bootstraps it with:
+The [`k3d/local/`](./k3d/local) sub-folder defines the `k3d-local` zarf package that, when created and deployed, creates a local k3d cluster and bootstraps it with:
 
-1. zarf 
+1. zarf init pkg
 2. metallb load balancer
 
-```
-cd k3d/zarf-package-k3d
-zarf package --architecture amd64 --confirm
-zarf package deploy
+```bash
+cd k3d/local
+zarf package create --confirm
+zarf package deploy --confirm zarf-package-k3d-local-<ARCH>-<ZARF_VERSION>.tar.zst 
 ```
 
 TODO: ensure the k3d package version syncs its k8s version with the dubbd requiremnets (currently v1.26+).
-TODO: ensure k3d cluster has zarf init package deployed (with git-server component)
 
 ### Validate kubectl context 
 
-TODO: update instructions on managing kubeconfig via `k3d`.
+Deploying the `k3d-local` zarf package runs [`k3d.sh`](./local/scripts/k3d.sh), which merges the new k3d cluster's kubeconfig into your kubeconfig file and sets it as the current kubectl context. 
 
-## Build the package
+At this point you should be able to validate that you can access the k3d cluster and that it has been bootstrapped as expected with e.g. `kubectl get pods -A` and `zarf tools k9s`.
 
-TODO: override neuvector values required for k3d
+See below references for more info on managing kubeconfigs:
+    - https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters
+    - https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig
+    - https://github.com/ahmetb/kubectx
 
-```
-neuvector:
-  values:
-    k3s:
-      enabled: true
-    containerd:
-      enabled: false
-    monitor:
-      install: false```bash
-```
+## Build and Deploy the DUBBD-k3d zarf package
 
-# Login to the registry
-set +o history
-export REGISTRY1_USERNAME="YOUR-USERNAME-HERE"
-export REGISTRY1_PASSWORD="YOUR-PASSWORD-HERE"
-echo $REGISTRY1_PASSWORD | zarf tools registry login registry1.dso.mil --username $REGISTRY1_USERNAME --password-stdin
-set -o history
+### Create the zarf package
 
-# Create the zarf package
-zarf package create --architecture amd64 --confirm
-
-# (Optionally) Publish package to the OCI registry
+```bash
+zarf package create --confirm
 ```
 
-## Deploy the package
+### (Optionally) Publish package to the OCI registry
+
+```bash
+# TODO: check syntax
+zarf package publish --oci-concurrency=15
+```
+
+### Deploy the package
 
 ```bash
 # Modify zarf-config.yaml as needed
 
 # Verify all prereqs are met
 
-# Run the zarf package deploy command
+# Deploy the zarf package, either the..
+#   locally-created package .zst file
 zarf package deploy --confirm zarf-package-big-bang-*.tar.zst
-
-# (Alternatively) Deploy from OCI
-# Login to the registry
-# Run the zarf package deploy command with the desired DUBBD OCI package reference 
+#   OR the published OCI image
 zarf package deploy oci://ghcr.io/defenseunicorns/packages/big-bang-distro-k3d/big-bang-distro-k3d:0.0.1-amd64 --oci-concurrency=15
 ```
 
-## Additional Information
+### Additional Information
 
 When running Big Bang locally, it is common to use local storage using hostpath and some other helm component values must be adjusted.  The Zarf package for DUBBD-k3d is created by overlaying a new local dev values file on top of the existing DUBBD zarf file via:
 
