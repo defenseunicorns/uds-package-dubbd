@@ -6,7 +6,7 @@ metadata:
   version: '###ZARF_PKG_TMPL_ZARF_VERSION###'
   architecture: amd64
   authors: "@runyontr, @timblaktu"
-  source: https://github.com/defenseunicorns/uds-package-dubbd/k3d/zarf-package-k3d
+  source: https://github.com/defenseunicorns/uds-package-dubbd/k3d/local
   vendor: Defense Unicorns
 constants:
   - name: ZARF_VERSION
