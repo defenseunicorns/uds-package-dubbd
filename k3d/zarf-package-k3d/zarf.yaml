@@ -23,18 +23,16 @@ constants:
     value: "###ZARF_PKG_TMPL_INIT_COMPONENTS###"
 components:
   - name: k3d
-    # TODO: generate description field from script docstring using something like:
-    #       sed -n '/^#.*\$/,/^$/p' scripts/script.sh
     description: 'Create k3d cluster named ###ZARF_PKG_TMPL_K3D_CLUSTER_NAME###'
     required: true
     files:
       - source: scripts/k3d.sh
-        target: k3d.sh
+        target: scripts/k3d.sh
         executable: true
     actions:
       onDeploy:
-        before:
-          - cmd: ./k3d.sh
+        after:
+          - cmd: './scripts/k3d.sh ###ZARF_PKG_TMPL_K3D_CLUSTER_NAME###'
       onRemove:
         after:
           - cmd: 'k3d cluster delete ###ZARF_PKG_TMPL_K3D_CLUSTER_NAME###'
@@ -42,24 +40,12 @@ components:
     description: 'Deploy (###ZARF_PKG_TMPL_INIT_COMPONENTS###) components of zarf init package ###ZARF_PKG_TMPL_ZARF_VERSION### to k3d cluster ###ZARF_PKG_TMPL_K3D_CLUSTER_NAME###'
     required: true
     files:
-      - source: init
-        target: init
-      # Manually fetch init pkg
-      # - source: '###ZARF_PKG_TMPL_DL_BASE_URL###/###ZARF_PKG_TMPL_ZARF_VERSION###/zarf-init-###ZARF_PKG_ARCH###-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst'
-      #   target: 'zarf-init-###ZARF_PKG_ARCH###-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst'
-      # - source: '###ZARF_PKG_TMPL_DL_BASE_URL###/###ZARF_PKG_TMPL_ZARF_VERSION###/checksums.txt'
-      #   target: 'checksums.txt'
+      - source: zarf-init-###ZARF_PKG_ARCH###-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst
+        target: zarf-init-###ZARF_PKG_ARCH###-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst
     actions:
       onCreate:
         before:
-          - cmd: ./zarf tools download-init -o init
-        # after:
-        #   - cmd: rm -rf init        
-#         # Manually fetch init pkg
-#         before:
-#           - cmd: |
-#               # wget ###ZARF_PKG_TMPL_DL_BASE_URL###/###ZARF_PKG_TMPL_ZARF_VERSION###/{checksums.txt,zarf-init-###ZARF_PKG_ARCH###-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst}
-#               test "$(sha256sum zarf-init-###ZARF_PKG_ARCH###-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst)" = "$(grep --color=NEVER zarf-init-###ZARF_PKG_ARCH###-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst checksums.txt)"
+          - cmd: ./zarf tools download-init
       onDeploy:
         after: 
           - cmd: 'zarf package deploy zarf-init-###ZARF_PKG_ARCH###-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst --components ###ZARF_PKG_TMPL_INIT_COMPONENTS### --confirm -l warn'
@@ -67,12 +53,12 @@ components:
     required: true
     files:
       - source: scripts/metallb.sh
-        target: metallb.sh
+        target: scripts/metallb.sh
         executable: true
     actions:
       onDeploy:
         after:
-          - cmd: ./metallb.sh
+          - cmd: ./scripts/metallb.sh
     manifests:
       - name: metallb
         files:
