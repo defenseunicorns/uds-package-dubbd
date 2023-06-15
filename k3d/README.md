@@ -37,12 +37,12 @@ zarf package create --architecture amd64 --confirm
 # Verify all prereqs are met
 
 # Run the zarf package deploy command
-zarf package deploy --confirm zarf-package-big-bang-*.tar.zst
+zarf package deploy --confirm zarf-package-dubbd-*.tar.zst
 
 # (Alternatively) Deploy from OCI
 # Login to the registry
 # Run the zarf package deploy command with the desired DUBBD OCI package reference 
-zarf package deploy oci://ghcr.io/defenseunicorns/packages/big-bang-distro-k3d/big-bang-distro-k3d:0.0.1-amd64 --oci-concurrency=15
+zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-k3d:0.0.1-amd64 --oci-concurrency=15
 ```
 
 ## Additional Information

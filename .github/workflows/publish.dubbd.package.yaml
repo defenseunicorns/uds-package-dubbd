@@ -37,3 +37,8 @@ jobs:
         run: zarf package publish zarf-package-*.tar.zst oci://ghcr.io/defenseunicorns/packages
         working-directory: ${{ inputs.working_dir }}
         timeout-minutes: 60
+
+      - name: Publish Zarf Skeleton
+        run: zarf package publish . oci://ghcr.io/defenseunicorns/packages
+        working-directory: ${{ inputs.working_dir }}
+        timeout-minutes: 60

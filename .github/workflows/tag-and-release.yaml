@@ -20,12 +20,6 @@ jobs:
       - id: release-flag
         run: echo "release_created=${{ steps.tag.outputs.release_created || false }}" >> $GITHUB_OUTPUT 
 
-  test-release:
-    needs: tag-new-version
-    if: ${{ needs.tag-new-version.outputs.release_created == 'false'}}
-    uses: ./.github/workflows/ci-on-pull-request.yaml
-    secrets: inherit
-
   publish-dubbd-aws:
     needs: tag-new-version
     if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
@@ -40,4 +34,12 @@ jobs:
     uses: ./.github/workflows/publish.dubbd.package.yaml
     with:
       working_dir: k3d
+    secrets: inherit
+
+  publish-dubbd-core:
+    needs: tag-new-version
+    if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
+    uses: ./.github/workflows/publish.dubbd.package.yaml
+    with:
+      working_dir: defense-unicorns-distro
     secrets: inherit

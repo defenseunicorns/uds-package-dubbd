@@ -24,3 +24,7 @@ output "kms_key_arn" {
   description = "The ARN of the OIDC Provider of the EKS Cluster"
   value       = local.kms_key_arn
 }
+
+output "force_destroy" {
+  value = var.force_destroy
+}

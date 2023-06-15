@@ -3,7 +3,7 @@ metadata:
   name: dubbd
   description: "Defense Unicorns Big Bang Distro"
   # x-release-please-start-version
-  version: "0.2.2"
+  version: "0.2.4"
   # x-release-please-end
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/Big_Bang_Color_Logo_White_text.b10a1bae.webp
@@ -188,7 +188,7 @@ components:
               ./zarf tools kubectl delete apiservices.apiregistration.k8s.io -l helm.toolkit.fluxcd.io/namespace=bigbang,helm.toolkit.fluxcd.io/name=metrics-server --ignore-not-found
               ./zarf tools kubectl delete gitrepositories -n bigbang -l app.kubernetes.io/part-of=bigbang
             description: "Cleaning up Big Bang resources"
-      files:
+    files:
       - source: scripts/on_failure.sh
         target: on_failure.sh
         executable: true
