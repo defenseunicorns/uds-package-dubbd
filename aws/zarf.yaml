@@ -158,7 +158,7 @@ components:
       onDeploy:
         before:
           - cmd: |
-              if [[ "$(./zarf tools kubectl get svc -n istio-system tenant-ingressgateway -o jsonpath='{.metadata.annotations.service\.beta\.kubernetes\.io/aws-load-balancer-internal}')" == "${ZARF_VAR_PRIVATE_TENANT_LB}" ]]; then
+              if [[ "$(./zarf tools kubectl get svc -n istio-system tenant-ingressgateway -o jsonpath='{.metadata.annotations.service\.beta\.kubernetes\.io/aws-load-balancer-internal}' 2>/dev/null)" == "${ZARF_VAR_PRIVATE_TENANT_LB}" ]]; then
                 echo false
               else
                 echo true
