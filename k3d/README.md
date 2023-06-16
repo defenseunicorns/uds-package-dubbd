@@ -70,7 +70,7 @@ zarf package deploy --confirm zarf-package-k3d-local-<ARCH>-<ZARF_VERSION>.tar.z
 
 Deploying the `k3d-local` zarf package runs [`k3d.sh`](./local/scripts/k3d.sh), which merges the new k3d cluster's kubeconfig into your kubeconfig file and sets it as the current kubectl context. 
 
-At this point you should be able to validate that you can access the k3d cluster and that it has been bootstrapped as expected with e.g. `kubectl get pods -A` and `zarf tools k9s`.
+At this point you should be able to validate that you can access the k3d cluster and that it has been bootstrapped as expected with e.g. `zarf tools kubectl get pods -A` and `zarf tools k9s`.
 
 See below references for more info on managing kubeconfigs:
     - https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters
