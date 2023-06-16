@@ -31,12 +31,14 @@ This page shows you how to bootstrap a k3d cluster for local DUBBD development, 
 ```bash
 set +o history
 export REGISTRY1_USERNAME="YOUR-USERNAME-HERE"
-export REGISTRY1_PASSWORD="YOUR-PASSWORD-HERE"
+export REGISTRY2_PASSWORD="YOUR-PASSWORD-HERE"
 echo $REGISTRY1_PASSWORD | zarf tools registry login registry1.dso.mil --username $REGISTRY1_USERNAME --password-stdin
 set -o history
 ```
 
-### [Install kubectl](https://kubernetes.io/docs/tasks/tools/#kubectlhttps://kubernetes.io/docs/tasks/tools/#kubectl)
+### (Optional) [Install kubectl](https://kubernetes.io/docs/tasks/tools/#kubectlhttps://kubernetes.io/docs/tasks/tools/#kubectl)
+
+`kubectl` is embedded within the `zarf` binary, so a standalone installation of `kubectl` is unnecessary. This `kubectl` is accessed using [`zarf tools kubectl`](https://docs.zarf.dev/docs/the-zarf-cli/cli-commands/zarf_tools_kubectl). `zarf` builds the latest stable release tag of the [upstream k8s.io cli and cmd sources](https://github.com/defenseunicorns/zarf/blob/ee4da6a938811e3da1801dac284dd2b2e8ee665f/src/cmd/tools/kubectl.go#L11).)
 
 ### [Install k3d](https://k3d.io/v5.5.1/#installation)
 

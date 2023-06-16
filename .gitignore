@@ -10,3 +10,4 @@ tmp
 zarf-sbom
 .idea
 **/checksums.txt
+**/*.log
