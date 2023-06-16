@@ -12,28 +12,39 @@ This page shows you how to bootstrap a k3d cluster for local DUBBD development, 
 
 ### [Install docker](https://docs.docker.com/install/https://docs.docker.com/install/)
 
-### Configure AuthN for Container Registries
+### Gain Access to GitHub Container Registry (`ghcr.io`)
 
-#### GitHub Container Registry AuthN
+1. Login to your GitHub Account with access to the `defenseunicorns` organization.
+1. [Create a (classic) personal access token](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic) user scoped with `read/write/delete:packages` _as needed_, and store in a secure location.
+    1. _Note: use cases that don't publish packages should remove `write:packages` from the access token's scope below._
 
-1. [Create a (classic) personal access token](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic) for your GitHub user scoped with read/write/delete:packages, and store in a secure location.
-    * Note: your use case will only require read:packages if you won't be publishing packages.
-2. (Optional) Sanity-check docker/zarf authN to OCI registry at ghcr.io, exporting token as CR_PAT env var:
-  1. `echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin`
-  2. `echo $CR_PAT | zarf tools registry login ghcr.io -u USERNAME --password-stdin`
-3. [Install and configure a credential store for docker login](https://docs.docker.com/engine/reference/commandline/login/#credentials-store)
-4. Validate docker/zarf authN to OCI registry at ghcr.io, using credential store configured in `~/.docker/config.json`:
-  1. `docker login ghcr.io -u USERNAME`
-  2. `zarf tools registry login ghcr.io -u USERNAME`
+### Gain Access to Iron Bank Harbor (`registry1.dso.mil`)
 
-#### `registry1.dso.mil` AuthN 
+1. Create account at `https://login.dso.mil`: Platform One's DevSecOps Collaboration Workspace.
+1. Login to Harbor (SSO Option) at `https://registry1.dso.mil` with same creds (accepting user agreements).
+1. In upper right corner, click *<your username>* --> *User Profile*, then click the *Copy* icon next to *CLI secret*, and store in a secure and accessible location. 
+
+### Validate AuthN to Container Registries
 
 ```bash
-set +o history
-export REGISTRY1_USERNAME="YOUR-USERNAME-HERE"
-export REGISTRY2_PASSWORD="YOUR-PASSWORD-HERE"
-echo $REGISTRY1_PASSWORD | zarf tools registry login registry1.dso.mil --username $REGISTRY1_USERNAME --password-stdin
+set +o history  # don't let these secrets end up in plain text shell history
+export GITHUB_USER=<github username>
+export GITHUB_PASS=<github container registry personal access token>
+export IRONBANK_USER=<dso.mil username>
+export IRONBANK_PASS=<iron bank cli secret>
+echo $GITHUB_PASS | zarf tools registry login ghcr.io --username $GITHUB_USER --password-stdin
+echo $IRONBANK_PASS | zarf tools registry login registry1.dso.mil --username $IRONBANK_USER --password-stdin
 set -o history
+```
+
+### (Optional) Secure Container Registry Secrets with Local Credential Store
+
+1. [Install and configure a credential store for docker login](https://docs.docker.com/engine/reference/commandline/login/#credentials-store)
+1. Re-validate docker/zarf authN using the credential store configured in `~/.docker/config.json`:
+
+```bash
+zarf tools registry login ghcr.io --username $GITHUB_USER
+zarf tools registry login registry1.dso.mil --username $IRONBANK_USER
 ```
 
 ### (Optional) [Install kubectl](https://kubernetes.io/docs/tasks/tools/#kubectlhttps://kubernetes.io/docs/tasks/tools/#kubectl)
@@ -54,8 +65,6 @@ cd k3d/local
 zarf package create --confirm
 zarf package deploy --confirm zarf-package-k3d-local-<ARCH>-<ZARF_VERSION>.tar.zst 
 ```
-
-TODO: ensure the k3d package version syncs its k8s version with the dubbd requiremnets (currently v1.26+).
 
 ### Validate kubectl context 
 
@@ -79,7 +88,6 @@ zarf package create --confirm
 ### (Optionally) Publish package to the OCI registry
 
 ```bash
-# TODO: check syntax
 zarf package publish --oci-concurrency=15
 ```
 
@@ -90,7 +98,7 @@ zarf package publish --oci-concurrency=15
 
 # Verify all prereqs are met
 
-# Deploy the zarf package, either the..
+# Deploy the zarf package, EITHER the..
 #   locally-created package .zst file
 zarf package deploy --confirm zarf-package-dubbd-*.tar.zst
 #   OR the published OCI package 
