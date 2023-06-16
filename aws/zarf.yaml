@@ -1,10 +1,10 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
 kind: ZarfPackageConfig
 metadata:
-  name: big-bang-distro-aws
+  name: dubbd-aws
   description: "Defense Unicorns Big Bang Distro"
   # x-release-please-start-version
-  version: "0.2.1"
+  version: "0.2.4"
   # x-release-please-end
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
@@ -100,8 +100,17 @@ components:
             dir: run/loki
       onRemove:
         before:
-          - cmd: "terraform destroy -auto-approve"
-            dir: run/loki
+          - cmd: |
+              if [ -d "run/loki" ]; then
+                cd run/loki
+                if [ "$(terraform output force_destroy)" = true ]; then
+                  terraform destroy -auto-approve
+                else
+                  echo "Skipping remove, force_destroy is set to false"
+                fi
+              else
+                echo "Cannot remove: run/loki directory does not exist"
+              fi
   - name: outputs
     required: true
     actions:
@@ -139,4 +148,5 @@ components:
       bigbang:
         version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
         valuesFiles:
+        - values/aws-istio.yaml
         - values/aws-loki.yaml

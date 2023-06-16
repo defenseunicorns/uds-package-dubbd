@@ -1,0 +1,112 @@
+name: Test DUBBD AWS Upgrade
+
+on:
+  workflow_call:
+
+jobs:
+  test-upgrade:
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Run this step first so we can fail fast in case an invalid package name is provided
+      - name: Get latest package version to upgrade from
+        id: latest-package-version
+        uses: ./.github/actions/latest-package-version
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          package-name: packages/dubbd-aws
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+
+      - uses: ./.github/actions/create-bb-package
+        with:
+          username: ${{ secrets.REGISTRY1_USERNAME }}
+          password: ${{ secrets.REGISTRY1_PASSWORD }}
+          working-dir: aws
+          download-init-package: true        
+          timeout-minutes: 60
+          
+      - name: Set eks_cluster_name
+        id: get_cluster_name
+        env:
+          SHA: ${{ github.sha }}
+        run: |
+          echo "eks_cluster_name=big-bang-aws-upgrade-${SHA:0:7}" >> $GITHUB_OUTPUT
+          echo "short_sha=${SHA:0:7}" >> $GITHUB_OUTPUT
+
+      - name: Package EKSCTL 
+        run: zarf package create --confirm
+        working-directory: .github/workflows/eks
+
+      - name: Create EKS cluster
+        run: |
+          echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+
+          zarf package deploy zarf-package-distro-eks-multi.tar.zst \
+            --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
+            --confirm
+        working-directory: .github/workflows/eks #just holds the zarf-config
+        id: create-cluster
+
+      - name: Show Cluster
+        run: |
+          kubectl get nodes
+          kubectl config get-contexts
+
+      - name: Zarf init
+        run: |
+          zarf init -a amd64 --components=git-server --confirm
+
+      - name: Deploy latest package version
+        env:
+          SHA: ${{ github.sha }}
+        run: |
+          zarf package deploy \
+            oci://ghcr.io/defenseunicorns/packages/dubbd-aws:${{ steps.latest-package-version.outputs.latest-package-version }} \
+            --set loki_force_destroy=true \
+            --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
+            --set state_bucket_name="uds-ci-state-bucket" \
+            --set state_key="tfstate/ci/upgrade/${SHA:0:7}-state-bucket.tfstate" \
+            --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
+            --confirm
+        working-directory: aws
+        timeout-minutes: 60
+
+      - name: Deploy DUBBD-AWS
+        env:
+          SHA: ${{ github.sha }}
+        run: |
+          echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+          zarf package deploy zarf-package-*.tar.zst \
+            --set loki_force_destroy=true \
+            --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
+            --set state_bucket_name="uds-ci-state-bucket" \
+            --set state_key="tfstate/ci/upgrade/${SHA:0:7}-state-bucket.tfstate" \
+            --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
+            --confirm
+        working-directory: aws
+        timeout-minutes: 60
+
+      - name: Remove DUBBD-AWS
+        if: always()
+        run: zarf package remove zarf-package-*.tar.zst --confirm
+        working-directory: aws
+        timeout-minutes: 60
+        continue-on-error: true
+
+      - name: Teardown EKS cluster
+        if: always()
+        # can't do a zarf package remove since there's no kubernetes cluster.
+        run: |
+          ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
+        working-directory: .github/workflows/eks
+        timeout-minutes: 60
+        continue-on-error: true

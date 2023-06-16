@@ -92,9 +92,9 @@ zarf package publish --oci-concurrency=15
 
 # Deploy the zarf package, either the..
 #   locally-created package .zst file
-zarf package deploy --confirm zarf-package-big-bang-*.tar.zst
-#   OR the published OCI image
-zarf package deploy oci://ghcr.io/defenseunicorns/packages/big-bang-distro-k3d/big-bang-distro-k3d:0.0.1-amd64 --oci-concurrency=15
+zarf package deploy --confirm zarf-package-dubbd-*.tar.zst
+#   OR the published OCI package 
+zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-k3d:0.0.1-amd64 --oci-concurrency=15
 ```
 
 ### Additional Information

@@ -1,10 +1,10 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
 kind: ZarfPackageConfig
 metadata:
-  name: big-bang-distro-k3d
+  name: dubbd-k3d
   description: "Defense Unicorns Big Bang Distro K3D Environment"
   # x-release-please-start-version
-  version: "0.2.1"
+  version: "0.2.4"
   # x-release-please-end
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp

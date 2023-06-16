@@ -1,5 +1,6 @@
 istio:
   enabled: true
+  enterprise: true
   ingressGateways:
     admin-ingressgateway:
       type: "LoadBalancer"
@@ -7,6 +8,31 @@ istio:
     tenant-ingressgateway:
       type: "LoadBalancer"
   values:
+    gateways:
+      admin:
+        servers:
+          - hosts:
+              - "*.{{ .Values.domain }}"
+            port:
+              name: https
+              number: 8443
+              protocol: HTTPS
+            tls:
+              credentialName: "admin-cert"
+              mode: "SIMPLE"
+              minProtocolVersion: "TLSV1_3"
+      tenant:
+        servers:
+          - hosts:
+              - "*.{{ .Values.domain }}"
+            port:
+              name: https
+              number: 8443
+              protocol: HTTPS
+            tls:
+              credentialName: "tenant-cert"
+              mode: "SIMPLE"
+              minProtocolVersion: "TLSV1_3"
     meshConfig:
       meshMTLS:
         minProtocolVersion: TLSV1_3

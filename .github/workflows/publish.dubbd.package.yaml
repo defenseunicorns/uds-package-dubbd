@@ -1,12 +1,9 @@
-name: Publish Dubbd
+name: Publish DUBBD Package
 
 # Will remove before merge and make it only tags
 on:
   workflow_call:
     inputs:
-      release_created:
-        required: false
-        type: string
       working_dir:
         required: true
         type: string
@@ -17,46 +14,31 @@ permissions:
 
 jobs:
   publish-package:
-    if: ${{ inputs.release_created == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+      - name: Create DUBBD Package
+        uses: ./.github/actions/create-bb-package
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-west-2
-
-      - name: Install Zarf
-        uses: defenseunicorns/setup-zarf@main
-        with:
-          # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
-          version: v0.27.1
-          download-init-package: true
-
-      - name: Login to Registry1
-        uses: docker/login-action@v2
-        with:
-          registry: registry1.dso.mil
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
-
+          working-dir: ${{ inputs.working_dir }}
+      
       - name: Login to GHCR
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: dummy
           password: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Create Zarf Package
-        run: zarf package create --confirm
-        working-directory: ${{ inputs.working_dir }}
-        timeout-minutes: 60
-      
+
       - name: Publish Zarf Package
         run: zarf package publish zarf-package-*.tar.zst oci://ghcr.io/defenseunicorns/packages
+        working-directory: ${{ inputs.working_dir }}
+        timeout-minutes: 60
+
+      - name: Publish Zarf Skeleton
+        run: zarf package publish . oci://ghcr.io/defenseunicorns/packages
         working-directory: ${{ inputs.working_dir }}
         timeout-minutes: 60
