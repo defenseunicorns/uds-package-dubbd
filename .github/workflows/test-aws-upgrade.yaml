@@ -17,7 +17,7 @@ jobs:
         uses: ./.github/actions/latest-package-version
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          package-name: packages/big-bang-distro-aws
+          package-name: packages/dubbd-aws
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
