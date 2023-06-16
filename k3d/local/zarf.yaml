@@ -33,15 +33,16 @@ components:
     description: 'Deploy zarf init package with components: (###ZARF_PKG_TMPL_INIT_COMPONENTS###) to k3d cluster ###ZARF_PKG_TMPL_K3D_CLUSTER_NAME###'
     required: true
     files:
-      - source: init.tar.zst
-        target: init.tar.zst
+      - source: ./downloads/init.tar.zst
+        target: ./downloads/init.tar.zst
     actions:
       onCreate:
         before:
-          - cmd: ./zarf tools download-init -o init.tar.zst
+          # - cmd: ./zarf tools download-init -o downloads && (cd downloads && ls -tp | grep -v '/$' | tail -n +1 | xargs -I {} rm -- {}) && mv downloads/*.tar.zst downlaods/init.tar.zst
+          - cmd: ./zarf tools download-init -o downloads && (cd downloads && mv *.tar.zst init.tar.zst)
       onDeploy:
         after: 
-          - cmd: 'zarf package deploy init.tar.zst --components ###ZARF_PKG_TMPL_INIT_COMPONENTS### --confirm -l warn'
+          - cmd: 'zarf package deploy init.tar.zst --components ###ZARF_PKG_TMPL_INIT_COMPONENTS### --confirm -l warn && rm -f downloads/*'
   - name: metallb
     required: true
     files:
