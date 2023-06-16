@@ -6,8 +6,6 @@ neuvector:
       enabled: false
     k3s:
       enabled: true
-    monitor:
-      install: false
 
 kyvernoPolicies:
   values:
