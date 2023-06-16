@@ -34,11 +34,11 @@ components:
     required: true
     files:
       - source: ./downloads/init.tar.zst
-        target: ./downloads/init.tar.zst
+        target: ./init.tar.zst
     actions:
       onCreate:
         before:
-          # - cmd: ./zarf tools download-init -o downloads && (cd downloads && ls -tp | grep -v '/$' | tail -n +1 | xargs -I {} rm -- {}) && mv downloads/*.tar.zst downlaods/init.tar.zst
+          # TODO: remove all but the one we just downloaded- cmd: ./zarf tools download-init -o downloads && (cd downloads && ls -tp | grep -v '/$' | tail -n +1 | xargs -I {} rm -- {}) && mv downloads/*.tar.zst downlaods/init.tar.zst
           - cmd: ./zarf tools download-init -o downloads && (cd downloads && mv *.tar.zst init.tar.zst)
       onDeploy:
         after: 
