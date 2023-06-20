@@ -64,7 +64,7 @@ zarf package deploy oci://ghcr.io/defenseunicorns/packages/big-bang-distro-k3d/b
 
 New DUBBD versions can be expected (at a minimum) shortly after each Big Bang release is available.
 
-DUBBD versions will be released as fixes or features are introduced. Following semantic versioning for releases, a new release version is created upon implementing changes that are categorized as fixes or features. For example, if there is a new Big Bang release pulled into DUBBD - that would be considered a new feature, and the minor version number would be incremented in the corresponding DUBBD release.
+DUBBD versions will be released as fixes or features are introduced. Following semantic versioning for releases, a new release version is created upon implementing changes that are categorized as fixes or features.
 
 ### Creating releases
 
