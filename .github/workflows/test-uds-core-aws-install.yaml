@@ -29,67 +29,54 @@ jobs:
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
           working-dir: aws/uds-core-aws
-          download-init-package: true        
           timeout-minutes: 60
-
-      - name: Set eks_cluster_name
-        id: get_cluster_name
-        env:
-          SHA: ${{ github.sha }}
-        run: |
-          echo "eks_cluster_name=uds-core-aws-${SHA:0:7}" >> $GITHUB_OUTPUT
-          echo "short_sha=${SHA:0:7}" >> $GITHUB_OUTPUT
-
-      - name: Package EKSCTL 
-        run: zarf package create --confirm
-        working-directory: .github/workflows/eks
-
-      - name: Create EKS cluster
-        run: |
-          echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
-
-          zarf package deploy zarf-package-distro-eks-multi.tar.zst \
-            --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
-            --confirm
-        working-directory: .github/workflows/eks #just holds the zarf-config
-        id: create-cluster
-
-      ## We need to add functionality to allow the user to bring their own KMS Key Alias
-      
-      - name: Show Cluster
-        run: |
-          kubectl get nodes
-          kubectl config get-contexts
-
-      - name: Zarf init
-        run: |
-          zarf init -a amd64 --components=git-server --confirm
 
       - name: Deploy UDS Core AWS
         env:
           SHA: ${{ github.sha }}
         run: |
-          echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
-
-          zarf package deploy zarf-package-*.tar.zst \
+          zarf package deploy zarf-package-uds-core-aws-*.tar.zst \
             --set loki_force_destroy=true \
-            --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
+            --set vpc_id=vpc-03c1cd73aece8bfea \
+            --set vpc_cidr=192.168.0.0/16 \
+            --set private_subnets=subnet-065bdf771fa18e8be,subnet-053b6dab6cf6276ea,subnet-0f381300221588640 \
+            --set public_subnets=subnet-0de30cd58a6a6d763,subnet-041516854dd66437f,subnet-0283cdc0228b519ea \
+            --set cluster_endpoint_public_access=true \
+            --set name=uds-core-aws-${SHA:0:7} \
             --set state_bucket_name="uds-ci-state-bucket" \
             --set state_key="tfstate/ci/install/${SHA:0:7}-uds-core-aws.tfstate" \
             --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
             --confirm
         working-directory: aws/uds-core-aws
         timeout-minutes: 60
+      - name: Show Cluster
+        run: |
+          kubectl get nodes
+          kubectl config get-contexts
 
       - name: Remove UDS Core AWS
         if: always()
-        run: zarf package remove zarf-package-*.tar.zst --confirm
+        run: |
+          zarf package remove zarf-package-*.tar.zst --confirm \
+            --components=download-terraform,prepare-eks-module,execute-eks-module,output-eks-module,loki-module,loki-bucket,outputs,zarf-init,load-certs,preflight,download-flux,bigbang,dubbd-upgrade
+          zarf package remove zarf-package-*.tar.zst --confirm  --components=destroy-eks
         working-directory: aws/uds-core-aws
         timeout-minutes: 60
 
-      - name: Teardown EKS cluster
+      - name: Cleanup lingering bucket resources
         if: always()
-        # can't do a zarf package remove since there's no kubernetes cluster.
         run: |
-          ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
-        working-directory: .github/workflows/eks
+          if [ -f run/loki/main.tf ]; then
+            cd run/loki
+            terraform destroy
+          fi
+        working-directory: aws/uds-core-aws
+
+      - name: Cleanup lingering cluster resources
+        if: always()
+        run: |
+          if [ -f run/eks/main.tf ]; then
+            cd run/eks
+            terraform destroy
+          fi
+        working-directory: aws/uds-core-aws

@@ -19,6 +19,9 @@ variables:
 - name: TERRAFORM_VERSION
 - name: TERRAFORM_PROVIDER_AWS_VERSION
 
+- name: ZARF_VERSION
+  default: "0.27.1"
+
 - name: STATE_BUCKET_NAME
   description: "Name of the pre-existing Terraform state S3 bucket"
 - name: STATE_KEY
@@ -96,14 +99,14 @@ components:
           - cmd: |
               terraform init -force-copy \
               -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
-              -backend-config="key=${ZARF_VAR_STATE_KEY}" \
+              -backend-config="key=loki-${ZARF_VAR_STATE_KEY}" \
               -backend-config="region=${ZARF_VAR_REGION}" \
               -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
             dir: run/loki
-          - cmd: "terraform plan"
+          - cmd: terraform plan
             dir: run/loki
           - cmd: sleep 15 #time to review
-          - cmd: "terraform apply -auto-approve"
+          - cmd: terraform apply -auto-approve
             dir: run/loki
       onRemove:
         before:
@@ -123,15 +126,15 @@ components:
     actions:
       onDeploy:
         after:
-          - cmd: "terraform output -raw s3_bucket"
+          - cmd: terraform output -raw s3_bucket
             dir: run/loki
             setVariables:
               - name: LOKI_S3_BUCKET
-          - cmd: "terraform output -raw aws_region"
+          - cmd: terraform output -raw aws_region
             dir: run/loki
             setVariables:
               - name: LOKI_S3_AWS_REGION
-          - cmd: "terraform output -raw irsa_role"
+          - cmd: terraform output -raw irsa_role
             dir: run/loki
             setVariables:
               - name: LOKI_S3_ROLE_ARN

@@ -39,6 +39,23 @@ variables:
     description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data"
     default: "false"
 
+  - name: VPC_CIDR
+    description: "VPC CIDR block"
+  - name: VPC_ID
+    description: "VPC ID to deploy the cluster"
+  - name: PRIVATE_SUBNETS
+    description: "Private subnet IDs for cluster as a comma-separated string"
+  - name: PUBLIC_SUBNETS
+    description: "Public subnet IDs for cluster as a comma-separated string"
+
+  # EKS Variables
+  - name: NAME
+    description: "Cluster name to prefix in front of resources"
+    default: "bigbang"
+  - name: CLUSTER_ENDPOINT_PUBLIC_ACCESS
+    description: "Whether or not to allow public access to the cluster."
+    default: "false"
+
 components:
   - name: download-terraform
     required: true
@@ -68,6 +85,18 @@ components:
         target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_linux_amd64.zip
       - source: https://releases.hashicorp.com/terraform-provider-aws/###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
         target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
+  - name: prepare-eks-module
+    required: true
+    import:
+      path: ../eks
+  - name: execute-eks-module
+    required: true
+    import:
+      path: ../eks
+  - name: output-eks-module
+    required: true
+    import:
+      path: ../eks
   - name: loki-module
     required: true
     actions:
@@ -75,6 +104,9 @@ components:
         before:
           - cmd: terraform get -update
             dir: ../loki
+      onDeploy:
+        before:
+          - cmd: mkdir -p run/loki
     files:
       - source: ../loki/.terraform
         target: run/loki/.terraform
@@ -86,7 +118,7 @@ components:
         target: run/loki/output.tf
       - source: ../loki/terraform.tfvars
         target: run/loki/terraform.tfvars
-  - name: execute-terraform
+  - name: loki-bucket
     required: true
     actions:
       onDeploy:
@@ -96,7 +128,7 @@ components:
           - cmd: |
               terraform init -force-copy \
               -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
-              -backend-config="key=${ZARF_VAR_STATE_KEY}" \
+              -backend-config="key=loki-${ZARF_VAR_STATE_KEY}" \
               -backend-config="region=${ZARF_VAR_REGION}" \
               -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
             dir: run/loki
@@ -135,6 +167,22 @@ components:
             dir: run/loki
             setVariables:
               - name: LOKI_S3_ROLE_ARN
+  - name: zarf-init
+    required: true
+    actions:
+      onCreate:
+        before:
+          - cmd: wget -nc https://github.com/defenseunicorns/zarf/releases/download/v0.27.1/zarf-init-amd64-v0.27.1.tar.zst
+            mute: true
+            description: "Download Zarf Init Package"
+      onDeploy:
+        after:
+          - cmd: mkdir -p run/zarf-init
+          - cmd: zarf p deploy ./zarf-init-amd64-v0.27.1.tar.zst --components git-server --confirm
+            dir: run/zarf-init
+    files:
+      - source: zarf-init-amd64-v0.27.1.tar.zst
+        target: run/zarf-init/zarf-init-amd64-v0.27.1.tar.zst
   - name: load-certs
     required: true
     import:
@@ -199,3 +247,7 @@ components:
                 fi
               fi
             description: "Perform DUBBD upgrade steps"
+  - name: destroy-eks
+    required: true
+    import:
+      path: ../eks
