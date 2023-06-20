@@ -28,12 +28,12 @@ jobs:
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
           working-dir: aws
-          download-init-package: true        
+          download-init-package: true
           timeout-minutes: 60
 
       - name: Create k3d cluster
         id: create-cluster
-        uses: defenseunicorns/uds-aws-ci-k3d/.github/actions/cluster
+        uses: defenseunicorns/uds-aws-ci-k3d/.github/actions/cluster@v0.0.1
         with:
           cluster-action: create
           aws-assume-role: ${{ secrets.AWS_COMMERCIAL_ROLE_TO_ASSUME }}
@@ -82,6 +82,6 @@ jobs:
 
       - name: Teardown k3d cluster
         if: always()
-        uses: defenseunicorns/uds-aws-ci-k3d/.github/actions/cluster
+        uses: defenseunicorns/uds-aws-ci-k3d/.github/actions/cluster@v0.0.1
         with:
           cluster-action: destroy
