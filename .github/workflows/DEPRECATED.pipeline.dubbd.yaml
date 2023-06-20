@@ -5,6 +5,10 @@ on:
     branches:
       - NEVER
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   eksctl:
     runs-on: ubuntu-latest
@@ -13,12 +17,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Configure AWS credentials
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ secrets.AWS_COMMERCIAL_ROLE_TO_ASSUME }}
+          role-session-name: ${{ github.job || github.event.client_payload.pull_request.head.sha || github.sha }}
           aws-region: us-west-2
+          role-duration-seconds: 21600
 
       - name: Install Zarf
         uses: defenseunicorns/setup-zarf@main
