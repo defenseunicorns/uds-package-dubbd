@@ -19,13 +19,13 @@ package:
       # -- Name of the EKS cluster
       name: "oursler-big-bang" #"big-bang-aws"
       # -- Name of existing Terraform state bucket
-      state_bucket_name: uds-dev-state-bucket
+      state_bucket_name: oursler-test-state-bucket #uds-dev-state-bucket
       # -- Key path to Terraform state file within the bucket
-      state_key: tfstate/dev/uds-dev-state-bucket-oursler.tfstate
+      state_key: tfstate/oursler.tfstate
       # -- Name of DynamoDB table used for Terraform state locking
-      state_dynamodb_table_name: uds-dev-state-dynamodb
+      state_dynamodb_table_name: oursler-test-state-dynamodb
       # -- AWS region
-      region: us-west-2
+      region: us-east-2
       # -- Bring your own kms key, if omitted a key will be created with an alias prefix of "<cluster name>-loki-"
       #loki_kms_key_arn: "arn:aws:kms:us-west-2:000000000000:key/mrk-0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a"
       # -- If set to true, delete the S3 bucket and corresponding KMS key associated with the Loki bucket
@@ -33,6 +33,6 @@ package:
       cluster_endpoint_public_access: true
       vpc_cidr: "192.168.0.0/16"
       vpc_id: "vpc-03b6e55af0613dda2"
-      private_subnets: ["subnet-01158ab94073f7f23", "subnet-02ccea6028a7b16de", "subnet-0566d42b760fdd20c"]
-      public_subnets: ["subnet-05718ff8c5ca375e4", "subnet-01fbd45595d1ccdaf", "subnet-0dcd7cf4b147d7134"]
-      private_subnets_cidr_blocks: ["192.168.160.0/19", "192.168.96.0/19", "192.168.128.0/19"]
+      private_subnets: "subnet-01158ab94073f7f23,subnet-02ccea6028a7b16de,subnet-0566d42b760fdd20c"
+      public_subnets: "subnet-05718ff8c5ca375e4,subnet-01fbd45595d1ccdaf,subnet-0dcd7cf4b147d7134"
+      private_subnets_cidr_blocks: "192.168.160.0/19,192.168.96.0/19,192.168.128.0/19"

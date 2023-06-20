@@ -30,9 +30,9 @@ locals {
   # kms_key_arn               = var.kms_key_arn == "" ? module.generate_kms[0].kms_key_arn : var.kms_key_arn
 
   vpc_id                      = var.create_vpc ? module.vpc.vpc_id : var.vpc_id
-  private_subnets_cidr_blocks = var.create_vpc ? module.vpc[0].private_subnets_cidr_blocks : var.private_subnets_cidr_blocks
-  private_subnets             = var.create_vpc ? module.vpc[0].private_subnets : var.private_subnets
-  public_subnets              = var.create_vpc ? module.vpc[0].public_subnets : var.public_subnets
+  private_subnets_cidr_blocks = var.create_vpc ? module.vpc[0].private_subnets_cidr_blocks : split(",", var.private_subnets_cidr_blocks)
+  private_subnets             = var.create_vpc ? module.vpc[0].private_subnets : split(",", var.private_subnets)
+  public_subnets              = var.create_vpc ? module.vpc[0].public_subnets : split(",", var.public_subnets)
 }
 
 ###### S3 ######
@@ -45,7 +45,6 @@ module "S3" {
   kubernetes_namespace       = "logging"
   kms_key_arn                = local.kms_key_arn
   force_destroy              = var.force_destroy
-
 }
 
 module "generate_kms" {

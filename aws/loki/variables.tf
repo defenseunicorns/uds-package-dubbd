@@ -104,18 +104,19 @@ variable "vpc_cidr" {
 }
 
 variable "private_subnets" {
-  description = "Private subnet IDs"
-  type        = list(string)
-  default     = []
+  description = "Comma-separated list of private subnet IDs"
+  type        = string
+  default     = null
 }
 
 variable "public_subnets" {
-  description = "Public subnet IDs"
-  type        = list(string)
-  default     = []
+  description = "Comma-separated list of public subnet IDs"
+  type        = string
+  default     = null
 }
 
 variable "private_subnets_cidr_blocks" {
-  type    = list(string)
-  default = []
+  description = "Comma-separated list of private subnet CIDR blocks"
+  type    = string
+  default = null
 }
