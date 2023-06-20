@@ -32,6 +32,8 @@ variables:
   description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data"
   default: "false"
 
+- name: PRIVATE_SUBNETS
+
 components:
   - name: download-terraform
     required: true
@@ -84,6 +86,7 @@ components:
     actions:
       onDeploy:
         before:
+          - cmd: "echo ${ZARF_VAR_REGION}"
           - cmd: "test -d ./loki/ && chmod -R ugo+rwx ./loki/ || echo $?"
             dir: run
           - cmd: |
@@ -93,10 +96,10 @@ components:
               -backend-config="region=${ZARF_VAR_REGION}" \
               -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
             dir: run/loki
-          - cmd: "terraform plan"
+          - cmd: "terraform plan -var-file=terraform.tfvars"
             dir: run/loki
           - cmd: sleep 15 #time to review
-          - cmd: "terraform apply -auto-approve"
+          - cmd: "terraform apply -auto-approve -var-file=terraform.tfvars"
             dir: run/loki
       onRemove:
         before:
@@ -128,25 +131,25 @@ components:
             dir: run/loki
             setVariables:
               - name: LOKI_S3_ROLE_ARN
-  - name: load-certs
-    required: true
-    import:
-      path: ../defense-unicorns-distro
-  - name: preflight
-    required: true
-    import:
-      path: ../defense-unicorns-distro
-  - name: download-flux
-    required: true
-    import:
-      path: ../defense-unicorns-distro
-  - name: bigbang
-    required: true
-    import:
-      path: ../defense-unicorns-distro
-    extensions:
-      bigbang:
-        version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
-        valuesFiles:
-        - values/aws-istio.yaml
-        - values/aws-loki.yaml
+  #- name: load-certs
+    #required: true
+    #import:
+      #path: ../defense-unicorns-distro
+  #- name: preflight
+    #required: true
+    #import:
+      #path: ../defense-unicorns-distro
+  #- name: download-flux
+    #required: true
+    #import:
+      #path: ../defense-unicorns-distro
+  #- name: bigbang
+    #required: true
+    #import:
+      #path: ../defense-unicorns-distro
+    #extensions:
+      #bigbang:
+        #version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
+        #valuesFiles:
+        #- values/aws-istio.yaml
+        #- values/aws-loki.yaml
