@@ -33,7 +33,7 @@ jobs:
 
       - name: Create k3d cluster
         id: create-cluster
-        uses: defenseunicorns/uds-aws-ci-k3d/.github/actions/cluster@v0.0.1
+        uses: defenseunicorns/uds-aws-ci-k3d@update-script-path
         with:
           cluster-action: create
           aws-assume-role: ${{ secrets.AWS_COMMERCIAL_ROLE_TO_ASSUME }}
