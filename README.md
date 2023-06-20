@@ -58,7 +58,15 @@ set -o history
 zarf package deploy oci://ghcr.io/defenseunicorns/packages/big-bang-distro-k3d/big-bang-distro-k3d:0.0.1-amd64 --oci-concurrency=15
 ```
 
-## Creating releases
+## Releases
+
+### When to expect new releases
+
+New DUBBD versions can be expected (at a minimum) shortly after each Big Bang release is available.
+
+DUBBD versions will be released as fixes or features are introduced. Following semantic versioning for releases, a new release version is created upon implementing changes that are categorized as fixes or features. For example, if there is a new Big Bang release pulled into DUBBD - that would be considered a new feature, and the minor version number would be incremented in the corresponding DUBBD release.
+
+### Creating releases
 
 The pipeline uses [release-please-action](https://github.com/google-github-actions/release-please-action) for versioning and releasing OCI packages. This will automatically update `metadata.version` field in zarf.yaml to the same version number that is used for the release tag. To make this work, the `version` field must be surrounded by Release Please's annotations,
 
