@@ -68,12 +68,16 @@ zarf package deploy --confirm zarf-package-k3d-local-<ARCH>-<ZARF_VERSION>.tar.z
 
 #### Architecture Support 
 
-The `k3d-local` package itself may only be deployed to `amd64`, a limitation inherited from DUBBD via IronBank. This is declaratively hard-coded in [`zarf-config.yaml`](./zarf-config.yaml).
+The `k3d-local` package itself may only be _deployed_ to `amd64`, a limitation inherited from DUBBD via IronBank. This `architecture:` constraint is declaratively hard-coded in [`zarf-config.yaml`](./zarf-config.yaml). 
 
-Typically, zarf package _creation_ is supported on any arch (analogous to [cross-compilation](https://en.wikipedia.org/wiki/Cross_compiler)). Currently, however, the `k3d-local` package can only be _created_ on amd64 systems, because:
+In contrast, package _creation_ may be performed on any system/arch, regardless of the package arch. (This is analogous to [cross-compilation](https://en.wikipedia.org/wiki/Cross_compiler)).
 
-1. the `k3d-local` package downloads the `zarf init` package using `zarf tools download-init`
-1. There is a [zarf bug, tracked here](https://github.com/defenseunicorns/zarf/issues/1837) that `zarf tools download-init` ignores `-a`/`--architecture` CLI args and `architecture:` configuration declarations, and always uses the system architecture. This could be worked around with biz logic in our `cmd:` action, but we decided to postpone this in favor of waiting for the bugfix.
+> **Caveat**
+>
+> Currently, the `k3d-local` package can only be _created_ on amd64 systems, because:
+> 
+> * The `k3d-local` package downloads the `zarf init` package using `zarf tools download-init`
+> * There is a [zarf bug, tracked here](https://github.com/defenseunicorns/zarf/issues/1837) that `zarf tools download-init` ignores `-a`/`--architecture` CLI args and `architecture:` configuration declarations, and always uses the system architecture. This could be worked around with biz logic in our `cmd:` action, but we decided to postpone this in favor of waiting for the bugfix.
 
 ### Validate kubectl context 
 
