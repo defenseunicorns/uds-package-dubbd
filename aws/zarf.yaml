@@ -28,6 +28,10 @@ variables:
 - name: REGION
   description: "The AWS region to run the Terraform in"
 
+- name: PRIVATE_TENANT_LB
+  description: "Provision a private/internal load balancer for the tenant ingress gateway"
+  default: "true"
+
 - name: LOKI_FORCE_DESTROY
   description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data"
   default: "false"
@@ -150,3 +154,30 @@ components:
         valuesFiles:
         - values/aws-istio.yaml
         - values/aws-loki.yaml
+    actions:
+      onDeploy:
+        before:
+          - cmd: |
+              if [[ "$(./zarf tools kubectl get svc -n istio-system tenant-ingressgateway -o jsonpath='{.metadata.annotations.service\.beta\.kubernetes\.io/aws-load-balancer-internal}' 2>/dev/null)" == "${ZARF_VAR_PRIVATE_TENANT_LB}" ]]; then
+                echo false
+              else
+                echo true
+              fi
+            description: "Check if tenant ingressgateway needs an update"
+            mute: true
+            setVariables:
+              - name: TENANT_INGRESS_UPDATE
+  - name: dubbd-upgrade
+    required: true
+    actions:
+      onDeploy:
+        after:
+          - cmd: |
+              if [[ "${ZARF_VAR_IS_UPGRADE}" == "true" ]]; then
+                if [[ "${ZARF_VAR_TENANT_INGRESS_UPDATE}" == "true" ]]; then
+                  ./zarf tools kubectl delete svc -n istio-system tenant-ingressgateway
+                  echo "Tenant ingress gateway conifugration was updated. You may need to update DNS records to point to the newly provisioned loadbalancer."
+                  echo "The new hostname can be pulled with: zarf tools kubectl get svc -n istio-system tenant-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'"
+                fi
+              fi
+            description: "Perform DUBBD upgrade steps"

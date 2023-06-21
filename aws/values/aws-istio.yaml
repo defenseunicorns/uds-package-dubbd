@@ -8,5 +8,5 @@ istio:
     tenant-ingressgateway:
       kubernetesResourceSpec:
         serviceAnnotations:
-          service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+          service.beta.kubernetes.io/aws-load-balancer-internal: "###ZARF_VAR_PRIVATE_TENANT_LB###"
           service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
