@@ -2,9 +2,7 @@
 
 This page shows you how to bootstrap a [`k3d`](https://k3d.io) cluster for DUBBD deployment and development.
 
-> **Note**
-> 
-> [On linux systems, "out of the box", `zarf` supports this use case with `k3s`](https://docs.zarf.dev/docs/zarf-tutorials/creating-a-k8s-cluster-with-zarf). The `k3d` variant was created to provide performance and scalability improvements arising from its container-based implementation vs `k3s`' virtual machine-based implementation.
+[On linux systems, "out of the box" `zarf` supports this use case with `k3s`](https://docs.zarf.dev/docs/zarf-tutorials/creating-a-k8s-cluster-with-zarf). This `k3d` variant was created to provide performance and scalability improvements arising from its container-based implementation vs `k3s`' virtual machine-based implementation.
 
 ## Prerequisites
 
