@@ -23,17 +23,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           package-name: packages/dubbd-aws
 
-        # todo: move this step to execute after building the package
-        # We want to know our package can build successfully before creating a cluster,
-        # but this is swapped for now to get faster feedback on the cluster action.
-      - name: Create k3d cluster
-        id: create-cluster
-        uses: defenseunicorns/uds-aws-ci-k3d@update-script-path
-        with:
-          cluster-action: create
-          aws-assume-role: ${{ secrets.AWS_COMMERCIAL_ROLE_TO_ASSUME }}
-          aws-region: us-west-2
-
       - uses: ./.github/actions/create-bb-package
         with:
           username: ${{ secrets.REGISTRY1_USERNAME }}
@@ -41,6 +30,14 @@ jobs:
           working-dir: aws
           download-init-package: true
           timeout-minutes: 60
+
+      - name: Create k3d cluster
+        id: create-cluster
+        uses: defenseunicorns/uds-aws-ci-k3d@update-script-path
+        with:
+          cluster-action: create
+          aws-assume-role: ${{ secrets.AWS_COMMERCIAL_ROLE_TO_ASSUME }}
+          aws-region: us-west-2
       
       - name: Zarf init
         run: |
