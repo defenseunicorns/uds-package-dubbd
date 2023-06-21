@@ -15,21 +15,50 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_COMMERCIAL_ROLE_TO_ASSUME }}
+          role-session-name: ${{ github.job || github.event.client_payload.pull_request.head.sha || github.sha }}
+          aws-region: us-west-2
+          role-duration-seconds: 21600
+
       - uses: ./.github/actions/create-bb-package
         with:
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
           working-dir: aws
-          download-init-package: true
+          download-init-package: true        
           timeout-minutes: 60
 
-      - name: Create k3d cluster
+      - name: Set eks_cluster_name
+        id: get_cluster_name
+        env:
+          SHA: ${{ github.sha }}
+        run: |
+          echo "eks_cluster_name=big-bang-aws-${SHA:0:7}" >> $GITHUB_OUTPUT
+          echo "short_sha=${SHA:0:7}" >> $GITHUB_OUTPUT
+
+      - name: Package EKSCTL 
+        run: zarf package create --confirm
+        working-directory: .github/workflows/eks
+
+      - name: Create EKS cluster
+        run: |
+          echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+
+          zarf package deploy zarf-package-distro-eks-multi.tar.zst \
+            --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
+            --confirm
+        working-directory: .github/workflows/eks #just holds the zarf-config
         id: create-cluster
-        uses: defenseunicorns/uds-aws-ci-k3d@update-script-path
-        with:
-          cluster-action: create
-          aws-assume-role: ${{ secrets.AWS_COMMERCIAL_ROLE_TO_ASSUME }}
-          aws-region: us-west-2
+
+      ## We need to add functionality to allow the user to bring their own KMS Key Alias
+      
+      - name: Show Cluster
+        run: |
+          kubectl get nodes
+          kubectl config get-contexts
 
       - name: Zarf init
         run: |
@@ -57,8 +86,9 @@ jobs:
         working-directory: aws
         timeout-minutes: 60
 
-      - name: Teardown k3d cluster
+      - name: Teardown EKS cluster
         if: always()
-        uses: defenseunicorns/uds-aws-ci-k3d@update-script-path
-        with:
-          cluster-action: destroy
+        # can't do a zarf package remove since there's no kubernetes cluster.
+        run: |
+          ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
+        working-directory: .github/workflows/eks
