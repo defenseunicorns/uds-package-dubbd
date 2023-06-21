@@ -1,0 +1,90 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
+kind: ZarfPackageConfig
+metadata:
+  name: dubbd-aws-eks-iac
+  description: "Defense Unicorns Big Bang Distro"
+  # x-release-please-start-version
+  version: "0.2.3"
+  # x-release-please-end
+  url: https://p1.dso.mil/products/big-bang
+  image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
+  # Big Bang / Iron Bank are only amd64
+  architecture: amd64
+
+variables:
+- name: CREATE_CLUSTER
+  description: "Create an EKS cluster with this package."
+  default: "true"
+- name: NAME
+  description: "Cluster name"
+  default: "bigbang"
+- name: CLUSTER_ENDPOINT_PUBLIC_ACCESS
+  description: "Whether or not to allow public access to the cluster."
+  default: "false"
+- name: VPC_CIDR
+- name: VPC_ID
+- name: PRIVATE_SUBNETS
+  description: "blah blah"
+  default: null
+- name: PUBLIC_SUBNETS
+- name: PRIVATE_SUBNETS_CIDR_BLOCKS
+
+components:
+  - name: prepare-eks-module
+    required: true
+    actions:
+      onCreate:
+        before:
+          - cmd: terraform get -update
+    files:
+    - source: .terraform
+      target: run/eks/.terraform
+    - source: main.tf
+      target: run/eks/main.tf
+    - source: variables.tf
+      target: run/eks/variables.tf
+    - source: output.tf
+      target: run/eks/output.tf
+    - source: terraform.tfvars
+      target: run/eks/terraform.tfvars
+  - name: execute-eks-module
+    required: true
+    actions:
+      onDeploy:
+        before:
+          - cmd: "test -d ./eks/ && chmod -R ugo+rwx ./eks/ || echo $?"
+            dir: run
+          - cmd: |
+              terraform init -force-copy \
+              -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
+              -backend-config="key=eks-${ZARF_VAR_STATE_KEY}" \
+              -backend-config="region=${ZARF_VAR_REGION}" \
+              -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
+            dir: run/eks
+          - cmd: "terraform plan -var-file=terraform.tfvars"
+            dir: run/eks
+          - cmd: sleep 40 #time to review
+          - cmd: "terraform apply -auto-approve -var-file=terraform.tfvars"
+            dir: run/eks
+      onRemove:
+        before:
+          - cmd: |
+              if [ -d "run/eks" ]; then
+                cd run/eks
+                if [ "$(terraform output force_destroy)" = true ]; then
+                  terraform destroy -auto-approve
+                else
+                  echo "Skipping remove, force_destroy is set to false"
+                fi
+              else
+                echo "Cannot remove: run/eks directory does not exist"
+              fi
+  - name: output-eks-module
+    required: true
+    actions:
+      onDeploy:
+        after:
+          - cmd: "terraform output -raw eks_cluster_oidc_arn"
+            dir: run/eks
+            setVariables:
+              - name: EKS_CLUSTER_OIDC_ARN
