@@ -14,7 +14,7 @@ This page shows you how to bootstrap a k3d cluster for local DUBBD development, 
 
 ### Gain Access to GitHub Container Registry (`ghcr.io`)
 
-1. Login to your GitHub Account with access to the `defenseunicorns` organization.
+1. Login to your GitHub Account.
 1. [Create a (classic) personal access token](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic) user scoped with `read/write/delete:packages` _as needed_, and store in a secure location.
     1. _Note: use cases that don't publish packages should remove `write:packages` from the access token's scope below._
 
@@ -99,9 +99,10 @@ zarf package publish --oci-concurrency=15
 # Verify all prereqs are met
 
 # Deploy the zarf package, EITHER the..
-#   locally-created package .zst file
+#  locally-created package .zst file
 zarf package deploy --confirm zarf-package-dubbd-*.tar.zst
-#   OR the published OCI package 
+#  OR a published OCI package (browse release at
+#    https://github.com/defenseunicorns/uds-package-dubbd/pkgs/container/packages%2Fdubbd-k3d)
 zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-k3d:0.0.1-amd64 --oci-concurrency=15
 ```
 
