@@ -176,7 +176,7 @@ components:
               if [ "${ZARF_VAR_IS_UPGRADE}" = "true" ]; then
                 if [ "${ZARF_VAR_TENANT_INGRESS_UPDATE}" = "true" ]; then
                   ./zarf tools kubectl delete svc -n istio-system tenant-ingressgateway
-                  echo "Tenant ingress gateway conifugration was updated. You may need to update DNS records to point to the newly provisioned loadbalancer."
+                  echo "Tenant ingress gateway configuration was updated. You may need to update DNS records to point to the newly provisioned loadbalancer."
                   echo "The new hostname can be pulled with: zarf tools kubectl get svc -n istio-system tenant-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'"
                 fi
               fi
