@@ -1,6 +1,12 @@
 # Defense Unicorns Big Bang Distro for K3D (DUBBD-k3d)
 
-This page shows you how to bootstrap a k3d cluster for local DUBBD development, experimentation and learning.
+This page shows you how to bootstrap a [`k3d`](https://k3d.io) cluster for DUBBD deployment and development.
+
+{% note %}
+
+**Note:** [On linux systems, "out of the box", `zarf` supports this use case with `k3s`](https://docs.zarf.dev/docs/zarf-tutorials/creating-a-k8s-cluster-with-zarf). The `k3d` variant was created to provide performance and scalability improvements arising from its container-based implementation vs `k3s`' virtual machine-based implementation.
+
+{% endnote %}
 
 ## Prerequisites
 
@@ -11,6 +17,8 @@ This page shows you how to bootstrap a k3d cluster for local DUBBD development, 
 ### [Install zarf](https://docs.zarf.dev/docs/getting-started/#installing-zarf)
 
 ### [Install docker](https://docs.docker.com/install/https://docs.docker.com/install/)
+
+### [Install k3d](https://k3d.io/v5.5.1/#installation)
 
 ### Gain Access to GitHub Container Registry (`ghcr.io`)
 
@@ -51,9 +59,7 @@ zarf tools registry login registry1.dso.mil --username $IRONBANK_USER
 
 `kubectl` is embedded within the `zarf` binary, so a standalone installation of `kubectl` is unnecessary. This `kubectl` is accessed using [`zarf tools kubectl`](https://docs.zarf.dev/docs/the-zarf-cli/cli-commands/zarf_tools_kubectl). `zarf` builds the latest stable release tag of the [upstream k8s.io cli and cmd sources](https://github.com/defenseunicorns/zarf/blob/ee4da6a938811e3da1801dac284dd2b2e8ee665f/src/cmd/tools/kubectl.go#L11).)
 
-### [Install k3d](https://k3d.io/v5.5.1/#installation)
-
-### Create and Bootstrap `k3d` cluster
+## Create and Bootstrap `k3d` cluster
 
 The [`k3d/local/`](./k3d/local) sub-folder defines the `k3d-local` zarf package that, when created and deployed, creates a local k3d cluster and bootstraps it with:
 
@@ -72,7 +78,7 @@ The `k3d-local` package itself may only be _deployed_ to `amd64`, a limitation i
 
 In contrast, package _creation_ may be performed on any system/arch, regardless of the package arch. (This is analogous to [cross-compilation](https://en.wikipedia.org/wiki/Cross_compiler)).
 
-> **Caveat**
+> **Warning**
 >
 > Currently, the `k3d-local` package can only be _created_ on amd64 systems, because:
 > 
