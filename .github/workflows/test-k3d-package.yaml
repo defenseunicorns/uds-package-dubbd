@@ -32,8 +32,7 @@ jobs:
           aws-region: us-west-2
 
       - name: Zarf init
-        run: |
-          zarf init -a amd64 --components=git-server --confirm
+        run: zarf init -a amd64 --components=git-server --confirm
 
       - name: Deploy DUBBD on k3d cluster
         run: zarf package deploy zarf-package-*.tar.zst --confirm
