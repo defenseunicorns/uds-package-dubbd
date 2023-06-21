@@ -8,31 +8,6 @@ istio:
     tenant-ingressgateway:
       type: "LoadBalancer"
   values:
-    gateways:
-      admin:
-        servers:
-          - hosts:
-              - "*.{{ .Values.domain }}"
-            port:
-              name: https
-              number: 8443
-              protocol: HTTPS
-            tls:
-              credentialName: "admin-cert"
-              mode: "SIMPLE"
-              minProtocolVersion: "TLSV1_3"
-      tenant:
-        servers:
-          - hosts:
-              - "*.{{ .Values.domain }}"
-            port:
-              name: https
-              number: 8443
-              protocol: HTTPS
-            tls:
-              credentialName: "tenant-cert"
-              mode: "SIMPLE"
-              minProtocolVersion: "TLSV1_3"
     meshConfig:
       meshMTLS:
         minProtocolVersion: TLSV1_3
@@ -62,6 +37,7 @@ istio:
       tls:
         key: "###ZARF_VAR_PUBLIC_KEY###"
         cert: "###ZARF_VAR_PUBLIC_CERT###"
+        minProtocolVersion: "TLSV1_3"
     public: null
     tenant:
       ingressGateway: tenant-ingressgateway
@@ -70,6 +46,7 @@ istio:
       tls:
         key: "###ZARF_VAR_PUBLIC_KEY###"
         cert: "###ZARF_VAR_PUBLIC_CERT###"
+        minProtocolVersion: "TLSV1_3"
 istioOperator:
   enabled: true
   values:

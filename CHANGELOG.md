@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.3.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.2.4...v0.3.0) (2023-06-21)
+
+
+### Features
+
+* allow configuring public/private tenant LB ([#299](https://github.com/defenseunicorns/uds-package-dubbd/issues/299)) ([7863dd0](https://github.com/defenseunicorns/uds-package-dubbd/commit/7863dd0490198ef119a5de4d6e1bc53b4a084e5e))
+
+
+### Bug Fixes
+
+* Update AWS config in CI to use OIDC auth ([#303](https://github.com/defenseunicorns/uds-package-dubbd/issues/303)) ([2d19a84](https://github.com/defenseunicorns/uds-package-dubbd/commit/2d19a8431b7057cab08a4ced6dc275d5a08fd4b2))
+* Update dubbd-aws package name in upgrade job ([#292](https://github.com/defenseunicorns/uds-package-dubbd/issues/292)) ([4b3dc0b](https://github.com/defenseunicorns/uds-package-dubbd/commit/4b3dc0b5bb6f6362e282f907937e2021cd9061e8))
+
+
+### Miscellaneous Chores
+
+* **deps:** update gitlab tag big-bang/bigbang to v2.4.0 [ci-skip] ([#298](https://github.com/defenseunicorns/uds-package-dubbd/issues/298)) ([2b3f49f](https://github.com/defenseunicorns/uds-package-dubbd/commit/2b3f49f397dd9d61d6c03c3936b9bf06aba62612))
+
 ## [0.2.4](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.2.3...v0.2.4) (2023-06-14)
 
 
