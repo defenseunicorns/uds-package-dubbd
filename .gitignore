@@ -1,7 +1,7 @@
 **/*.tfstate
 **/*.tfstate.backup
 *.tar.gz
-*.tar.zst
+**/*.tar.zst
 ~/
 .DS_Store
 defense-unicorns-distro/preflight.sh
@@ -9,3 +9,5 @@ defense-unicorns-distro/preflight.sh
 tmp
 zarf-sbom
 .idea
+**/checksums.txt
+**/*.log

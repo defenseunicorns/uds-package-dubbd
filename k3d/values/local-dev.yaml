@@ -1,3 +1,4 @@
+# override neuvector values required for k3d
 neuvector:
   enabled: true
   values:
