@@ -66,6 +66,18 @@ zarf package create --confirm
 zarf package deploy --confirm zarf-package-k3d-local-<ARCH>-<ZARF_VERSION>.tar.zst 
 ```
 
+#### Architecture Support 
+
+The `k3d-local` package itself may only be deployed to `amd64`, a limitation inherited from DUBBD via IronBank. This is declaratively hard-coded in [`zarf-config.yaml`](./zarf-config.yaml).
+
+Typically, zarf package _creation_ is supported on any arch (analogous to [cross-compilation](https://en.wikipedia.org/wiki/Cross_compiler)). The `k3d-local` package can only be _created_ on amd64 systems, because:
+
+1. the `k3d-local` package downloads the `zarf init` package using `zarf tools download-init`
+1. `zarf tools download-init` does not respect `-a`/`--architecture` CLI args or `architecture:` configuration declarations.
+    * This is a [zarf bug, tracked here](https://github.com/defenseunicorns/zarf/issues/1837).
+
+Currently, Package creation is currently only supported on amd64 systems, due to a bug that `zarf tools download-init` ignores -a/--architecture` args, and always uses the system architecture._
+
 ### Validate kubectl context 
 
 Deploying the `k3d-local` zarf package runs [`k3d.sh`](./local/scripts/k3d.sh), which merges the new k3d cluster's kubeconfig into your kubeconfig file and sets it as the current kubectl context. 
