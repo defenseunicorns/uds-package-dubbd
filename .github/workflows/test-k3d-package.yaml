@@ -36,8 +36,6 @@ jobs:
           zarf init -a amd64 --components=git-server --confirm
 
       - name: Deploy DUBBD on k3d cluster
-        env:
-          SHA: ${{ github.sha }}
         run: zarf package deploy zarf-package-*.tar.zst --confirm
         working-directory: k3d
         timeout-minutes: 60
