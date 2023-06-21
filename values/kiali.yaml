@@ -1,4 +1,3 @@
-
 kiali:
   enabled: true
   ingress:
@@ -10,7 +9,7 @@ kiali:
         memory: "512Mi"
       limits:
         cpu: "500m"
-        memory: "512Mi"
+        memory: "1200Mi"
     cr:
       spec:
         deployment:
