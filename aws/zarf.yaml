@@ -32,7 +32,12 @@ variables:
   description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data"
   default: "false"
 
-- name: PRIVATE_SUBNETS
+- name: CREATE_CLUSTER
+  description: "Create an EKS cluster with this package."
+  default: "true"
+- name: CREATE_VPC
+  description: "Create a VPC with this package."
+  default: "true"
 
 components:
   - name: download-terraform
@@ -86,7 +91,6 @@ components:
     actions:
       onDeploy:
         before:
-          - cmd: "echo ${ZARF_VAR_REGION}"
           - cmd: "test -d ./loki/ && chmod -R ugo+rwx ./loki/ || echo $?"
             dir: run
           - cmd: |

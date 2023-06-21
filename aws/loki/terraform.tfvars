@@ -4,9 +4,11 @@ force_destroy = "###ZARF_VAR_LOKI_FORCE_DESTROY###"
 name_prefix = "###ZARF_VAR_NAME###"
 
 # EKS
-cluster_endpoint_public_access = "true" #"###ZARF_VAR_EKS_PUBLIC_ACCESS###" #true
+create_cluster = "###ZARF_VAR_CREATE_CLUSTER###"
+cluster_endpoint_public_access = "###ZARF_VAR_CLUSTER_ENDPOINT_PUBLIC_ACCESS###"
 
 # VPC
+create_vpc = "###ZARF_VAR_CREATE_VPC###"
 vpc_cidr = "###ZARF_VAR_VPC_CIDR###" #"192.168.0.0/16"
 vpc_id = "###ZARF_VAR_VPC_ID###" #"vpc-03b6e55af0613dda2"
 #private_subnets = ["subnet-01158ab94073f7f23", "subnet-02ccea6028a7b16de", "subnet-0566d42b760fdd20c"]

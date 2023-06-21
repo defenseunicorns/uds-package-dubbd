@@ -30,7 +30,9 @@ package:
       #loki_kms_key_arn: "arn:aws:kms:us-west-2:000000000000:key/mrk-0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a"
       # -- If set to true, delete the S3 bucket and corresponding KMS key associated with the Loki bucket
       loki_force_destroy: "true"
-      cluster_endpoint_public_access: true
+      create_cluster: "true"
+      cluster_endpoint_public_access: "true"
+      create_vpc: "false"
       vpc_cidr: "192.168.0.0/16"
       vpc_id: "vpc-03b6e55af0613dda2"
       private_subnets: "subnet-01158ab94073f7f23,subnet-02ccea6028a7b16de,subnet-0566d42b760fdd20c"
