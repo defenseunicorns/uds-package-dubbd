@@ -12,6 +12,6 @@ on:
       - "k3d/zarf.y*ml"
 
 jobs:
-    test-release:
-        uses: ./.github/workflows/test-k3d-package.yaml
-        secrets: inherit
+  test-release:
+    uses: ./.github/workflows/test-k3d-package.yaml
+    secrets: inherit

@@ -9,10 +9,10 @@ on:
   workflow_call:
 
 jobs:
-    test-release:
-        uses: ./.github/workflows/test-aws-package.yaml
-        secrets: inherit
+  test-release:
+      uses: ./.github/workflows/test-aws-package.yaml
+      secrets: inherit
 
-    test-upgrade:
-        uses: ./.github/workflows/test-aws-upgrade.yaml
-        secrets: inherit
+  test-upgrade:
+      uses: ./.github/workflows/test-aws-upgrade.yaml
+      secrets: inherit
