@@ -2,4 +2,4 @@
 
 ## UDS Core Diagram
 
-![UDS core](./uds-core-architecture.drawio.png)
+![UDS core](./.images/uds-core-architecture.drawio.png)
