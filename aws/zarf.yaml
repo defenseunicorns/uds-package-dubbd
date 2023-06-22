@@ -144,25 +144,25 @@ components:
             dir: run/loki
             setVariables:
               - name: LOKI_S3_ROLE_ARN
-  #- name: load-certs
-    #required: true
-    #import:
-      #path: ../defense-unicorns-distro
-  #- name: preflight
-    #required: true
-    #import:
-      #path: ../defense-unicorns-distro
-  #- name: download-flux
-    #required: true
-    #import:
-      #path: ../defense-unicorns-distro
-  #- name: bigbang
-    #required: true
-    #import:
-      #path: ../defense-unicorns-distro
-    #extensions:
-      #bigbang:
-        #version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
-        #valuesFiles:
-        #- values/aws-istio.yaml
-        #- values/aws-loki.yaml
+  - name: load-certs
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+  - name: preflight
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+  - name: download-flux
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+  - name: bigbang
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+    extensions:
+      bigbang:
+        version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
+        valuesFiles:
+        - values/aws-istio.yaml
+        - values/aws-loki.yaml

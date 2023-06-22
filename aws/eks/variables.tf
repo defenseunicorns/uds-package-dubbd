@@ -28,7 +28,7 @@ variable "cluster_endpoint_public_access" {
 }
 
 variable "vpc_id" {
-  description = "Use this VPC instead of creating a new one."
+  description = "VPC ID where to deploy the cluster"
   type        = string
   default     = null
 }

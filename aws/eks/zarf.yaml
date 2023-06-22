@@ -24,8 +24,6 @@ variables:
 - name: VPC_CIDR
 - name: VPC_ID
 - name: PRIVATE_SUBNETS
-  description: "blah blah"
-  default: null
 - name: PUBLIC_SUBNETS
 - name: PRIVATE_SUBNETS_CIDR_BLOCKS
 
