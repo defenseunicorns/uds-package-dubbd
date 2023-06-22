@@ -17,7 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        # renovate: datasource=github-tags depName=actions/checkout versioning=semver
+        uses: actions/checkout@v3.5.3
 
       - name: Create DUBBD Package
         uses: ./.github/actions/create-bb-package

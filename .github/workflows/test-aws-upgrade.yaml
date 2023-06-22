@@ -13,7 +13,8 @@ jobs:
   
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        # renovate: datasource=github-tags depName=actions/checkout versioning=semver
+        uses: actions/checkout@v3.5.3
 
       # Run this step first so we can fail fast in case an invalid package name is provided
       - name: Get latest package version to upgrade from
