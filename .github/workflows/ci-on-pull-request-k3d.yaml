@@ -1,0 +1,17 @@
+name: CI DUBBD k3d
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/ci-on-pull-request-k3d.y*ml"
+      - "defense-unicorns-distro/**"
+      - "k3d/values/**"
+      - "k3d/zarf-config.y*ml"
+      - "k3d/zarf.y*ml"
+
+jobs:
+  test-release:
+    uses: ./.github/workflows/test-k3d-package.yaml
+    secrets: inherit
