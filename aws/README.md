@@ -50,6 +50,8 @@ package:
       state_dynamodb_table_name: uds-dev-state-dynamodb
       # -- AWS region
       region: us-west-2
+      # -- Provision a private/internal load balancer for the admin ingress gateway, if false a public load balancer will be provisioned
+      private_admin_lb: true
       # -- Provision a private/internal load balancer for the tenant ingress gateway, if false a public load balancer will be provisioned
       private_tenant_lb: true
       # -- if set to true, delete the S3 bucket and corresponding KMS key associated with the Loki bucket
