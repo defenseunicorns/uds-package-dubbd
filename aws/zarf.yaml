@@ -28,6 +28,9 @@ variables:
 - name: REGION
   description: "The AWS region to run the Terraform in"
 
+- name: PRIVATE_ADMIN_LB
+  description: "Provision a private/internal load balancer for the admin ingress gateway"
+  default: "true"
 - name: PRIVATE_TENANT_LB
   description: "Provision a private/internal load balancer for the tenant ingress gateway"
   default: "true"
