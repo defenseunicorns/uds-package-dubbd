@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - ".github/workflows/ci-on-pull-request-k3d.y*ml"
+      - "defense-unicorns-distro/**"
       - "k3d/values/**"
       - "k3d/zarf-config.y*ml"
       - "k3d/zarf.y*ml"
