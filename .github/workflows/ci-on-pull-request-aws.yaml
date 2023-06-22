@@ -5,7 +5,13 @@ on:
     branches:
       - main
     paths-ignore:
-      - '**/README.md'
+      - ".gitignore"
+      - "LICENSE"
+      - "**.md"
+      - "**.json"
+      - "k3d/**"
+      - ".github/workflows/ci-on-pull-request-k3d.y*ml"
+      - ".github/workflows/test-k3d-package.y*ml"
   workflow_call:
 
 jobs:
