@@ -10,7 +10,7 @@ permissions:
 jobs:
   test-clean-install:
     runs-on: ubuntu-latest
-  
+
     steps:
       - name: Checkout repository
         # renovate: datasource=github-tags depName=actions/checkout versioning=semver
