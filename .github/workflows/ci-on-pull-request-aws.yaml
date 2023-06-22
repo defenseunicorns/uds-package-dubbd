@@ -4,11 +4,14 @@ on:
   pull_request:
     branches:
       - main
-    paths:
-      - ".github/workflows/ci-on-pull-request-aws.y*ml"
-      - "aws/**"
-      - "defense-unicorns-distro/**"
-      - "values/**"
+    paths-ignore:
+      - ".gitignore"
+      - "LICENSE"
+      - "**.md"
+      - "**.json"
+      - "k3d/**"
+      - ".github/workflows/ci-on-pull-request-k3d.y*ml"
+      - ".github/workflows/test-k3d-package.y*ml"
   workflow_call:
 
 jobs:
