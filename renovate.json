@@ -10,7 +10,6 @@
   "rebaseStalePrs": true,
   "schedule": ["after 12pm and before 11am every weekday"],
   "dependencyDashboard": true,
-  "commitMessageSuffix": "[ci-skip]",
   "platform": "github",
   "onboarding": false,
   "requireConfig": false,
