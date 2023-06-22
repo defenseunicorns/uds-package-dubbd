@@ -4,8 +4,11 @@ on:
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - '**/README.md'
+    paths:
+      - ".github/workflows/ci-on-pull-request-aws.y*ml"
+      - "aws/**"
+      - "defense-unicorns-distro/**"
+      - "values/**"
   workflow_call:
 
 jobs:
