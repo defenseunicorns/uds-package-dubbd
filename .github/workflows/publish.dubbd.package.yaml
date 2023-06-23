@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Create DUBBD Package
-        uses: ./.github/actions/create-bb-package
+        uses: ./.github/actions/create-zarf-package
         with:
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
