@@ -9,6 +9,8 @@ on:
       - "LICENSE"
       - "**.md"
       - "**.json"
+      - "**.png"
+      - "**.svg"
       - "aws/**"
       - ".github/workflows/ci-on-pull-request-aws.y*ml"
       - ".github/workflows/test-aws-package.y*ml"

@@ -1,5 +1,5 @@
 # docs
 
-## UDS Core Diagram
+## DUBBD AWS Diagram
 
-![UDS core](./.images/uds-core-architecture.drawio.png)
+![DUBBD AWS](./.images/dubbd-aws-architecture.drawio.png)
