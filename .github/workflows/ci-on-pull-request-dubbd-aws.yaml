@@ -1,0 +1,27 @@
+name: CI DUBBD AWS
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "aws/dubbd-aws/**"
+      - "aws/values/**"
+      - "aws/loki/**"
+      - "!.gitignore"
+      - "!LICENSE"
+      - "!**.md"
+      - "!**.json"
+      - "!k3d/**"
+      - "!.github/workflows/ci-on-pull-request-k3d.y*ml"
+      - "!.github/workflows/test-k3d-package.y*ml"
+  workflow_call:
+
+jobs:
+    test-release:
+        uses: ./.github/workflows/test-dubbd-aws-install.yaml
+        secrets: inherit
+
+    test-upgrade:
+        uses: ./.github/workflows/test-dubbd-aws-upgrade.yaml
+        secrets: inherit
