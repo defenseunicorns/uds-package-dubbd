@@ -35,7 +35,15 @@ jobs:
       - name: Get cluster kubeconfig
         id: get_cluster_kubeconfig
         run: |
-          eksctl utils write-kubeconfig -c ${eks_cluster_name}
+          # for ARM systems, set ARCH to: `arm64`, `armv6` or `armv7`
+          ARCH=amd64
+          PLATFORM=$(uname -s)_$ARCH
+          curl -sLO "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
+          # (Optional) Verify checksum
+          curl -sL "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_checksums.txt" | grep $PLATFORM | sha256sum --check
+          tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
+          sudo mv /tmp/eksctl .
+          ./eksctl utils write-kubeconfig -c ${eks_cluster_name}
 #        with: 
 #          eks_cluster_name: "${{inputs.eks_cluster_name}}"
           
