@@ -1,5 +1,5 @@
-name: Create DUBBD Package
-description: Creates a DUBBD Zarf package for the requested path
+name: Create Zarf Package
+description: Creates a Zarf package for the requested path
 
 inputs:
   username:

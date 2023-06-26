@@ -12,9 +12,7 @@ on:
       - "**.png"
       - "**.svg"
       - "aws/**"
-      - ".github/workflows/ci-on-pull-request-aws.y*ml"
-      - ".github/workflows/test-aws-package.y*ml"
-      - ".github/workflows/test-aws-upgrade.y*ml"
+      - ".github/workflows/**aws**.y*ml"
 
 jobs:
   test-release:
