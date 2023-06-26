@@ -104,7 +104,7 @@ jobs:
 
       - name: Remove UDS Core AWS
         if: always()
-        run: zarf package remove zarf-package-*.tar.zst --confirm
+        run: zarf package remove zarf-package-*.tar.zst --components="" --confirm
         working-directory: aws/uds-core-aws
         timeout-minutes: 60
         continue-on-error: true
