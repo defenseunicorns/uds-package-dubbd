@@ -36,8 +36,8 @@ jobs:
         id: get_cluster_kubeconfig
         run: |
           eksctl utils write-kubeconfig -c ${eks_cluster_name}
-        with: 
-          eks_cluster_name: "${{inputs.eks_cluster_name}}"
+#        with: 
+#          eks_cluster_name: "${{inputs.eks_cluster_name}}"
           
       - name: Show Cluster
         run: |
