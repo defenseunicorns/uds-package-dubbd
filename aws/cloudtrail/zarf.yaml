@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
+kind: ZarfPackageConfig
+metadata:
+  name: dubbd-aws-cloudtrail-iac
+  description: "Defense Unicorns Big Bang Distro"
+  # x-release-please-start-version
+  version: "0.2.3"
+  # x-release-please-end
+  url: https://p1.dso.mil/products/big-bang
+  image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
+  # Big Bang / Iron Bank are only amd64
+  architecture: amd64
+
+components:
+  - name: prepare-cloudtrail-module
+    required: true
+    actions:
+      onCreate:
+        before:
+          - cmd: terraform get -update
+    files:
+    - source: .terraform
+      target: run/cloudtrail/.terraform
+    - source: main.tf
+      target: run/cloudtrail/main.tf
+    - source: variables.tf
+      target: run/cloudtrail/variables.tf
+    - source: output.tf
+      target: run/cloudtrail/output.tf
+    - source: terraform.tfvars
+      target: run/cloudtrail/terraform.tfvars
+  - name: cloudtrail
+    required: false
+    actions:
+      onDeploy:
+        before:
+          - cmd: "test -d ./cloudtrail/ && chmod -R ugo+rwx ./cloudtrail/ || echo $?"
+            dir: run
+          - cmd: |
+              terraform init -force-copy \
+              -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
+              -backend-config="key=cloudtrail-${ZARF_VAR_STATE_KEY}" \
+              -backend-config="region=${ZARF_VAR_REGION}" \
+              -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
+            dir: run/cloudtrail
+          - cmd: "terraform plan -var-file=terraform.tfvars"
+            dir: run/cloudtrail
+          - cmd: sleep 15 #time to review
+          - cmd: "terraform apply -auto-approve -var-file=terraform.tfvars"
+            dir: run/cloudtrail
+      onRemove:
+        before:
+          - cmd: |
+              if [ -d "run/cloudtrail" ]; then
+                cd run/cloudtrail
+                terraform destroy -auto-approve
+              else
+                echo "Cannot remove: run/cloudtrail directory does not exist"
+              fi
