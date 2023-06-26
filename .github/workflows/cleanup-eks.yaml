@@ -1,7 +1,7 @@
 name: Cleanup EKS
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
      eks_cluster_name:
        required: true
