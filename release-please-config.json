@@ -6,7 +6,7 @@
       "changelog-path": "CHANGELOG.md",
       "versioning": "always-bump-patch",
       "extra-files": [
-        "aws/zarf.yaml",
+        "aws/dubbd-aws/zarf.yaml",
         "defense-unicorns-distro/zarf.yaml",
         "k3d/zarf.yaml"
       ]

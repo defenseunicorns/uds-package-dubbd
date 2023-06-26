@@ -25,7 +25,7 @@ jobs:
     if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
     uses: ./.github/workflows/publish.dubbd.package.yaml
     with:
-      working_dir: aws
+      working_dir: aws/dubbd-aws
     secrets: inherit
 
   publish-dubbd-k3d:
