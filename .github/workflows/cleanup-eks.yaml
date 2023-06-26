@@ -52,15 +52,21 @@ jobs:
           kubectl get nodes
           kubectl config get-contexts
           kubectl get po -A
-          kubectl get validatingwebhookconfigurations,mutatingwebhookconfigurations
+          kubectl get validatingwebhookconfigurations,mutatingwebhookconfigurations --show-labels
+          kubectl delete validatingwebhookconfigurations -l webhook.kyverno.io/managed-by=kyverno
+          kubectl delete validatingwebhookconfigurations -l app=istiod
+          kubectl delete validatingwebhookconfigurations -l app.kubernetes.io/part-of=kube-prometheus-stack
+          kubectl delete validatingwebhookconfigurations neuvector-validating-crd-webhook
+          kubectl delete mutatingwebhookconfiguration -l webhook.kyverno.io/managed-by=kyverno
+          kubectl delete mutatingwebhookconfiguration -l app=sidecar-injector
+          kubectl delete mutatingwebhookconfiguration -l app.kubernetes.io/part-of=kube-prometheus-stack
 
-#      - name: Teardown EKS cluster
-#        if: always()
-#        # can't do a zarf package remove since there's no kubernetes cluster.
-#        run: |
-#          cat config.yaml | sed "s/###ZARF_VAR_CLUSTER_NAME###/${eks_cluster_name}/g" | eksctl delete cluster -f - --disable-nodegroup-eviction --wait
+      - name: Teardown EKS cluster
+        # can't do a zarf package remove since there's no kubernetes cluster.
+        run: |
+          cat config.yaml | sed "s/###ZARF_VAR_CLUSTER_NAME###/${eks_cluster_name}/g" | eksctl delete cluster -f - --disable-nodegroup-eviction --wait
 #        with:
 #          eks_cluster_name: "${{inputs.eks_cluster_name}}"
-#        working-directory: .github/workflows/eks
-#        timeout-minutes: 60
-#        continue-on-error: true
+        working-directory: .github/workflows/eks
+        timeout-minutes: 60
+        continue-on-error: true
