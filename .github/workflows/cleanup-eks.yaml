@@ -64,7 +64,7 @@ jobs:
       - name: Teardown EKS cluster
         # can't do a zarf package remove since there's no kubernetes cluster.
         run: |
-          cat config.yaml | sed "s/###ZARF_VAR_CLUSTER_NAME###/${eks_cluster_name}/g" | eksctl delete cluster -f - --disable-nodegroup-eviction --wait
+          cat config.yaml | sed "s/###ZARF_VAR_CLUSTER_NAME###/${eks_cluster_name}/g" | ./eksctl delete cluster -f - --disable-nodegroup-eviction --wait
 #        with:
 #          eks_cluster_name: "${{inputs.eks_cluster_name}}"
         working-directory: .github/workflows/eks
