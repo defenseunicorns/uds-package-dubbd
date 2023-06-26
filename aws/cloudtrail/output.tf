@@ -1,15 +1,15 @@
 output "bucket_id" {
-  value = aws_s3_bucket.this[*].id
+  value = module.cloudtrail.bucket_id
 }
 
 output "trail_arn" {
-  value = aws_cloudtrail.this.arn
+  value = module.cloudtrail.trail_arn
 }
 
 output "trail_home_region" {
-  value = aws_cloudtrail.this.home_region
+  value = module.cloudtrail.trail_home_region
 }
 
 output "trail_id" {
-  value = aws_cloudtrail.this.id
+  value = module.cloudtrail.trail_id
 }
