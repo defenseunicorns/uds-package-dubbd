@@ -34,3 +34,6 @@ package:
       #loki_kms_key_arn: "arn:aws:kms:us-west-2:000000000000:key/mrk-0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a"
       # -- If set to true, delete the S3 bucket and corresponding KMS key associated with the Loki bucket
       #loki_force_destroy: "true"
+
+      ## CLOUDTRAIL ##
+      cloudtrail_name: "uds-dev"
