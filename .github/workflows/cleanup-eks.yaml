@@ -1,11 +1,16 @@
 name: Cleanup EKS
 
 on:
-  workflow_dispatch:
-    inputs:
-     eks_cluster_name:
-       required: true
-       type: string
+  push:
+#  workflow_dispatch:
+#    inputs:
+#     eks_cluster_name:
+#       required: true
+#       type: string
+
+env:
+  eks_cluster_name: uds-core-aws-1beb169
+
 
 permissions:
   id-token: write
