@@ -47,10 +47,12 @@ jobs:
 #        with: 
 #          eks_cluster_name: "${{inputs.eks_cluster_name}}"
           
-      - name: Show Cluster
+      - name: Show Cluster & Delete Stuff
         run: |
           kubectl get nodes
           kubectl config get-contexts
+          kubectl get po -A
+          kubectl get validatingwebhookconfigurations,mutatingwebhookconfigurations
 
 #      - name: Teardown EKS cluster
 #        if: always()
