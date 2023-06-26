@@ -1,8 +1,3 @@
-variable "enabled" {
-  description = "Toggle if trail is name"
-  type        = string
-}
-
 variable "name" {
   description = "Name of the trail"
   type        = string

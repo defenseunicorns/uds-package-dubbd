@@ -2,22 +2,11 @@ package:
   create:
     max_package_size: "1000000000"
     set:
-      # renovate: datasource=gitlab-tags depName=big-bang/bigbang versioning=semver registryUrl=https://repo1.dso.mil
-      bigbang_version: "2.4.0"
-      # should line up with the flux version in the BB release, see https://repo1.dso.mil/big-bang/bigbang/-/blob/master/base/flux/gotk-components.yaml#L3
-      flux_version: "0.41.2"
       terraform_version: "1.4.2"
       terraform_provider_aws_version: 4.59.0
   deploy:
+    components: 'cloudtrail'
     set:
-      # -- Domain name for the EKS cluster
-      domain: bigbang.dev
-      # -- TLS key
-      key_file: bigbang.dev.key
-      # -- TLS cert
-      cert_file: bigbang.dev.cert
-      # -- Name of the EKS cluster
-      name: "big-bang-aws"
       # -- Name of existing Terraform state bucket
       state_bucket_name: uds-dev-state-bucket
       # -- Key path to Terraform state file within the bucket
@@ -26,14 +15,5 @@ package:
       state_dynamodb_table_name: uds-dev-state-dynamodb
       # -- AWS region
       region: us-west-2
-      # -- Provision a private/internal load balancer for the admin ingress gateway, if false a public load balancer will be provisioned
-      private_admin_lb: true
-      # -- Provision a private/internal load balancer for the tenant ingress gateway, if false a public load balancer will be provisioned
-      private_tenant_lb: true
-      # -- Bring your own kms key, if omitted a key will be created with an alias prefix of "<cluster name>-loki-"
-      #loki_kms_key_arn: "arn:aws:kms:us-west-2:000000000000:key/mrk-0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a"
-      # -- If set to true, delete the S3 bucket and corresponding KMS key associated with the Loki bucket
-      #loki_force_destroy: "true"
-
-      ## CLOUDTRAIL ##
+      # -- CloudTrail name
       cloudtrail_name: "uds-dev"
