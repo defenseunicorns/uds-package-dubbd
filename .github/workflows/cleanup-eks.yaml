@@ -46,7 +46,8 @@ jobs:
           ./eksctl utils write-kubeconfig -c ${eks_cluster_name}
 #        with: 
 #          eks_cluster_name: "${{inputs.eks_cluster_name}}"
-          
+        working-directory: .github/workflows/eks
+
       - name: Show Cluster & Delete Stuff
         run: |
           kubectl get nodes
