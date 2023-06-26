@@ -53,13 +53,13 @@ jobs:
           kubectl config get-contexts
           kubectl get po -A
           kubectl get validatingwebhookconfigurations,mutatingwebhookconfigurations --show-labels
-          kubectl delete validatingwebhookconfigurations -l webhook.kyverno.io/managed-by=kyverno
-          kubectl delete validatingwebhookconfigurations -l app=istiod
-          kubectl delete validatingwebhookconfigurations -l app.kubernetes.io/part-of=kube-prometheus-stack
-          kubectl delete validatingwebhookconfigurations neuvector-validating-crd-webhook
-          kubectl delete mutatingwebhookconfiguration -l webhook.kyverno.io/managed-by=kyverno
-          kubectl delete mutatingwebhookconfiguration -l app=sidecar-injector
-          kubectl delete mutatingwebhookconfiguration -l app.kubernetes.io/part-of=kube-prometheus-stack
+          kubectl delete validatingwebhookconfigurations -l webhook.kyverno.io/managed-by=kyverno --ignore-not-found
+          kubectl delete validatingwebhookconfigurations -l app=istiod --ignore-not-found
+          kubectl delete validatingwebhookconfigurations -l app.kubernetes.io/part-of=kube-prometheus-stack --ignore-not-found
+          kubectl delete validatingwebhookconfigurations neuvector-validating-crd-webhook --ignore-not-found
+          kubectl delete mutatingwebhookconfiguration -l webhook.kyverno.io/managed-by=kyverno --ignore-not-found
+          kubectl delete mutatingwebhookconfiguration -l app=sidecar-injector --ignore-not-found
+          kubectl delete mutatingwebhookconfiguration -l app.kubernetes.io/part-of=kube-prometheus-stack --ignore-not-found
 
       - name: Teardown EKS cluster
         # can't do a zarf package remove since there's no kubernetes cluster.
