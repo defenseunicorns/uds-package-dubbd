@@ -19,14 +19,14 @@ variables:
   - name: TERRAFORM_VERSION
   - name: TERRAFORM_PROVIDER_AWS_VERSION
 
-  - name: STATE_BUCKET_NAME
-    description: "Name of the pre-existing Terraform state S3 bucket"
-  - name: STATE_KEY
-    description: "Path to the state file key in the state bucket"
-  - name: STATE_DYNAMODB_TABLE_NAME
-    description: "Name of the DynamoDB table used for Terraform state locking"
   - name: REGION
     description: "The AWS region to run the Terraform in"
+  - name: STATE_BUCKET_NAME
+    description: "Name of the pre-existing Terraform state S3 bucket"
+  - name: STATE_DYNAMODB_TABLE_NAME
+    description: "Name of the DynamoDB table used for Terraform state locking"
+  - name: STATE_KEY_LOKI
+    description: "Path to the state file key in the state bucket"
 
   - name: PRIVATE_ADMIN_LB
     description: "Provision a private/internal load balancer for the admin ingress gateway"
@@ -68,7 +68,7 @@ components:
         target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_linux_amd64.zip
       - source: https://releases.hashicorp.com/terraform-provider-aws/###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
         target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
-  - name: loki-module
+  - name: loki-terraform-module
     required: true
     actions:
       onCreate:
@@ -84,26 +84,26 @@ components:
         target: run/loki/variables.tf
       - source: ../s3/output.tf
         target: run/loki/output.tf
-      - source: ../s3/terraform.tfvars
-        target: run/loki/terraform.tfvars
-  - name: execute-terraform
+      - source: ../s3/tf-loki.tfvars
+        target: run/loki/tf-loki.tfvars
+  - name: loki-terraform-execute
     required: true
     actions:
       onDeploy:
         before:
-          - cmd: "test -d ./s3/ && chmod -R ugo+rwx ./s3/ || echo $?"
+          - cmd: "test -d ./loki/ && chmod -R ugo+rwx ./loki/ || echo $?"
             dir: run
           - cmd: |
               terraform init -force-copy \
               -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
-              -backend-config="key=${ZARF_VAR_STATE_KEY}" \
+              -backend-config="key=${ZARF_VAR_STATE_KEY_LOKI}" \
               -backend-config="region=${ZARF_VAR_REGION}" \
               -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
             dir: run/loki
-          - cmd: "terraform plan"
+          - cmd: "terraform plan -var-file=tf-loki.tfvars"
             dir: run/loki
           - cmd: sleep 15 #time to review
-          - cmd: "terraform apply -auto-approve"
+          - cmd: "terraform apply -var-file=tf-loki.tfvars -auto-approve"
             dir: run/loki
       onRemove:
         before:
@@ -111,14 +111,14 @@ components:
               if [ -d "run/loki" ]; then
                 cd run/loki
                 if [ "$(terraform output force_destroy)" = true ]; then
-                  terraform destroy -auto-approve
+                  terraform destroy -var-file=tf-loki.tfvars -auto-approve
                 else
                   echo "Skipping remove, force_destroy is set to false"
                 fi
               else
                 echo "Cannot remove: run/loki directory does not exist"
               fi
-  - name: outputs
+  - name: loki-terraform-outputs
     required: true
     actions:
       onDeploy:

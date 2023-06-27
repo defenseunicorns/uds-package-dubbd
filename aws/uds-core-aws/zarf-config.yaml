@@ -18,14 +18,15 @@ package:
       cert_file: bigbang.dev.cert
       # -- Name of the EKS cluster
       name: "big-bang-aws"
-      # -- Name of existing Terraform state bucket
-      state_bucket_name: uds-dev-state-bucket
-      # -- Key path to Terraform state file within the bucket
-      state_key: tfstate/dev/uds-dev-state-bucket.tfstate
-      # -- Name of DynamoDB table used for Terraform state locking
-      state_dynamodb_table_name: uds-dev-state-dynamodb
+
       # -- AWS region
       region: us-west-2
+      # -- Name of existing Terraform state bucket
+      state_bucket_name: uds-dev-state-bucket
+      # -- Name of DynamoDB table used for Terraform state locking
+      state_dynamodb_table_name: uds-dev-state-dynamodb
+      # -- Key path to Terraform state file within the bucket
+      state_key_loki: tfstate/dev/uds-dev-state-bucket.tfstate
       # -- Provision a private/internal load balancer for the admin ingress gateway, if false a public load balancer will be provisioned
       private_admin_lb: true
       # -- Provision a private/internal load balancer for the tenant ingress gateway, if false a public load balancer will be provisioned
