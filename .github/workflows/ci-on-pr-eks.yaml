@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 jobs:
-  test-loki-bucket-tf:
+  test-eks-cluster-tf:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -34,12 +34,12 @@ jobs:
       - name: Install Go
         uses: actions/setup-go@v4
         with:
-          go-version-file: 'aws/loki/test/go.mod'
+          go-version-file: 'aws/eks/test/go.mod'
 
       - name: Set up gotestfmt
         uses: gotesttools/gotestfmt-action@v2
 
-      - name: Run Loki Tests
+      - name: Run EKS Tests
         env:
 
         run: |

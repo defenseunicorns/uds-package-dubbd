@@ -19,9 +19,6 @@ variables:
 - name: TERRAFORM_VERSION
 - name: TERRAFORM_PROVIDER_AWS_VERSION
 
-- name: ZARF_VERSION
-  default: "0.27.1"
-
 - name: STATE_BUCKET_NAME
   description: "Name of the pre-existing Terraform state S3 bucket"
 - name: STATE_KEY

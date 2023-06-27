@@ -8,6 +8,8 @@ package:
       flux_version: "0.41.2"
       terraform_version: "1.4.2"
       terraform_provider_aws_version: 4.59.0
+      zarf_version: "0.27.1"
+
   deploy:
     set:
       # -- Domain name for the EKS cluster
@@ -21,7 +23,7 @@ package:
       # -- Name of existing Terraform state bucket
       state_bucket_name: uds-dev-state-bucket
       # -- Key path to Terraform state file within the bucket
-      state_key: tfstate/dev/uds-dev-2-state-bucket.tfstate
+      state_key: tfstate/dev/uds-dev-state-bucket.tfstate
       # -- Name of DynamoDB table used for Terraform state locking
       state_dynamodb_table_name: uds-dev-state-dynamodb
       # -- AWS region
