@@ -1,16 +1,11 @@
-name: Cleanup EKS
+name: Adhoc Cleanup EKS
 
 on:
-  push:
-#  workflow_dispatch:
-#    inputs:
-#     eks_cluster_name:
-#       required: true
-#       type: string
-
-env:
-  eks_cluster_name: uds-core-aws-1beb169
-
+  workflow_dispatch:
+    inputs:
+     eks_cluster_name:
+       required: true
+       type: string
 
 permissions:
   id-token: write
@@ -32,8 +27,8 @@ jobs:
           aws-region: us-west-2
           role-duration-seconds: 21600
 
-      - name: Get cluster kubeconfig
-        id: get_cluster_kubeconfig
+      - name: Get cluster kubeconfig & eksctl
+        id: get_cluster_kubeconfig_and_eksctl
         run: |
           # for ARM systems, set ARCH to: `arm64`, `armv6` or `armv7`
           ARCH=amd64
@@ -43,12 +38,10 @@ jobs:
           curl -sL "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_checksums.txt" | grep $PLATFORM | sha256sum --check
           tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
           sudo mv /tmp/eksctl .
-          ./eksctl utils write-kubeconfig -c ${eks_cluster_name}
-#        with: 
-#          eks_cluster_name: "${{inputs.eks_cluster_name}}"
+          ./eksctl utils write-kubeconfig -c ${{inputs.eks_cluster_name}}
         working-directory: .github/workflows/eks
 
-      - name: Show Cluster & Delete Stuff
+      - name: Show Cluster & Delete Cluster Components
         run: |
           kubectl get nodes
           kubectl config get-contexts
@@ -62,12 +55,10 @@ jobs:
           kubectl delete mutatingwebhookconfiguration -l app=sidecar-injector --ignore-not-found
           kubectl delete mutatingwebhookconfiguration -l app.kubernetes.io/part-of=kube-prometheus-stack --ignore-not-found
 
-      - name: Teardown EKS cluster
+      - name: Teardown EKS cluster using eksctl
         # can't do a zarf package remove since there's no kubernetes cluster.
         run: |
-          cat config.yaml | sed "s/###ZARF_VAR_CLUSTER_NAME###/${eks_cluster_name}/g" | ./eksctl delete cluster -f - --disable-nodegroup-eviction --wait
-#        with:
-#          eks_cluster_name: "${{inputs.eks_cluster_name}}"
+          cat config.yaml | sed "s/###ZARF_VAR_CLUSTER_NAME###/${{inputs.eks_cluster_name}}/g" | ./eksctl delete cluster -f - --disable-nodegroup-eviction --wait
         working-directory: .github/workflows/eks
         timeout-minutes: 60
         continue-on-error: true
