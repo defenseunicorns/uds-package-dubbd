@@ -25,3 +25,4 @@ jobs:
   test-upgrade:
     uses: ./.github/workflows/test-k3d-package.yaml
     secrets: inherit
+    
