@@ -74,24 +74,24 @@ components:
       onCreate:
         before:
           - cmd: terraform get -update
-            dir: ../loki
+            dir: ../s3
     files:
-      - source: ../loki/.terraform
+      - source: ../s3/.terraform
         target: run/loki/.terraform
-      - source: ../loki/main.tf
+      - source: ../s3/main.tf
         target: run/loki/main.tf
-      - source: ../loki/variables.tf
+      - source: ../s3/variables.tf
         target: run/loki/variables.tf
-      - source: ../loki/output.tf
+      - source: ../s3/output.tf
         target: run/loki/output.tf
-      - source: ../loki/terraform.tfvars
+      - source: ../s3/terraform.tfvars
         target: run/loki/terraform.tfvars
   - name: execute-terraform
     required: true
     actions:
       onDeploy:
         before:
-          - cmd: "test -d ./loki/ && chmod -R ugo+rwx ./loki/ || echo $?"
+          - cmd: "test -d ./s3/ && chmod -R ugo+rwx ./s3/ || echo $?"
             dir: run
           - cmd: |
               terraform init -force-copy \
