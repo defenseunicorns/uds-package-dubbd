@@ -1,20 +1,26 @@
 name: CI DUBBD k3d
 
 on:
-  pull_request:
-    branches:
-      - main
-    paths-ignore:
-      - ".gitignore"
-      - "LICENSE"
-      - "**.md"
-      - "**.json"
-      - "**.png"
-      - "**.svg"
-      - "aws/**"
-      - ".github/workflows/**aws**.y*ml"
+  branches:
+    - test_k3d_fix
+  # pull_request:
+  #   branches:
+  #     - main
+  #   paths-ignore:
+  #     - ".gitignore"
+  #     - "LICENSE"
+  #     - "**.md"
+  #     - "**.json"
+  #     - "**.png"
+  #     - "**.svg"
+  #     - "aws/**"
+  #     - ".github/workflows/**aws**.y*ml"
 
 jobs:
   test-release:
+    uses: ./.github/workflows/test-k3d-package.yaml
+    secrets: inherit
+
+  test-upgrade:
     uses: ./.github/workflows/test-k3d-package.yaml
     secrets: inherit

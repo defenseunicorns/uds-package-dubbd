@@ -26,7 +26,7 @@ jobs:
       - name: Create k3d cluster
         id: create-cluster
         # renovate: datasource=github-tags depName=defenseunicorns/uds-aws-ci-k3d versioning=semver
-        uses: defenseunicorns/uds-aws-ci-k3d@v0.0.2
+        uses: defenseunicorns/uds-aws-ci-k3d@fix_random_id_state_key
         with:
           cluster-action: create
           aws-assume-role: ${{ secrets.AWS_COMMERCIAL_ROLE_TO_ASSUME }}
@@ -49,6 +49,6 @@ jobs:
       - name: Teardown k3d cluster
         if: always()
         # renovate: datasource=github-tags depName=defenseunicorns/uds-aws-ci-k3d versioning=semver
-        uses: defenseunicorns/uds-aws-ci-k3d@v0.0.2
+        uses: defenseunicorns/uds-aws-ci-k3d@fix_random_id_state_key
         with:
           cluster-action: destroy
