@@ -1,8 +1,9 @@
 name: CI DUBBD k3d
 
 on:
-  branches:
-    - test_k3d_fix
+  push:
+    branches:
+      - test_k3d_fix
   # pull_request:
   #   branches:
   #     - main
