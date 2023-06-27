@@ -2,6 +2,10 @@ variable "name" {
   description = "Name for cluster"
 }
 
+variable "bucket_name" {
+  description = "Name for S3 bucket"
+}
+
 variable "kms_key_arn" {
   type        = string
   description = "KMS Key ARN if known, if not, will be generated"

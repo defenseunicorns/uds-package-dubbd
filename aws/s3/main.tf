@@ -33,7 +33,7 @@ locals {
 
 module "S3" {
   source                     = "github.com/defenseunicorns/terraform-aws-uds-s3?ref=v0.0.1"
-  name_prefix                = var.name
+  name_prefix                = "${var.bucket_name}"
   eks_oidc_provider_arn      = local.oidc_arn
   kubernetes_service_account = "logging-loki"
   kubernetes_namespace       = "logging"
@@ -47,11 +47,11 @@ module "generate_kms" {
   source = "github.com/defenseunicorns/terraform-aws-uds-kms?ref=v0.0.1"
 
   key_owners                = var.key_owner_arns                      # A list of IAM ARNs for those who will have full key permissions (`kms:*`)
-  kms_key_alias_name_prefix = "${var.name}-loki-"                     # Prefix for KMS key alias.
+  kms_key_alias_name_prefix = "${var.bucket_name}"                     # Prefix for KMS key alias.
   kms_key_deletion_window   = 7                                       # Waiting period for scheduled KMS Key deletion. Can be 7-30 days.
-  kms_key_description       = "${var.name} DUBBD deployment Loki Key" # Description for the KMS key.
+  kms_key_description       = "${var.bucket_name} DUBBD deployment Loki Key" # Description for the KMS key.
   tags = {
-    Deployment = "UDS DUBBD ${var.name}"
+    Deployment = "UDS DUBBD ${var.bucket_name}"
   }
 
 }

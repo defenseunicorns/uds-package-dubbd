@@ -11,7 +11,7 @@ Pre-built Zarf Package of [DoD-Platform-One/big-bang](https://github.com/DoD-Pla
 ## DUBBD repo details
 
 - [aws](./aws/) - _DUBBD for aws (EKS)_
-  - loki - _iac for loki_
+  - s3 - _iac for loki and velero
   - values - _values file overrides for aws_
 - [defense-unicorns-distro](./defense-unicorns-distro/) - _base DUBBD package definition_
   - manifests - _k8s manifests_
