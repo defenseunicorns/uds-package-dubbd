@@ -1,0 +1,56 @@
+image:
+  repository: registry1.dso.mil/ironbank/external-dns
+  #repository: registry.k8s.io/external-dns/external-dns
+  # Overrides the image tag whose default is v{{ .Chart.AppVersion }}
+  tag: "v0.13.4"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+rbac:
+  # Specifies whether RBAC resources should be created
+  create: true
+  additionalPermissions: []
+
+# Defaults to `ClusterFirst`.
+# Valid values are: `ClusterFirstWithHostNet`, `ClusterFirst`, `Default` or `None`.
+dnsPolicy:
+
+env: []
+
+topologySpreadConstraints: []
+
+logLevel: info
+logFormat: text
+
+interval: 1m
+triggerLoopOnEvent: false
+
+namespaced: false
+
+sources:
+  - service
+  - ingress
+
+policy: upsert-only
+
+registry: txt
+txtOwnerId: ""
+txtPrefix: ""
+txtSuffix: ""
+
+domainFilters: ["###ZARF_VAR_DOMAIN###"]
+
+provider: aws
+
+extraArgs: []
+
+secretConfiguration:
+  enabled: false
+  mountPath: ""
+  subPath: ""
+  data: {}
+    # credentials: |
+    #   [default]
+    #   aws_access_key_id = $SECRET_ACCESS_KEY
+    #   aws_secret_access_key = $SECRET_ACCESS_KEY
