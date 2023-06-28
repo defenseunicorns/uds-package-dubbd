@@ -86,7 +86,7 @@ module "cloudtrail" {
   use_external_s3_bucket = var.use_external_s3_bucket
   s3_bucket_name         = var.s3_bucket_name
   tags = {
-    Deployment = "UDS DUBBD ${var.name}"
+    Deployment = "UDS Cloudtrail ${var.name}"
   }
 
   depends_on = [

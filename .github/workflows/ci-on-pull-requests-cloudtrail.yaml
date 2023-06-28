@@ -46,7 +46,7 @@ jobs:
           BACKEND_BUCKET: uds-ci-state-bucket
           BACKEND_DYNAMODB_TABLE: uds-ci-state-dynamodb
         run: |
-          CLOUDTRAIL_NAME=cloudtrail-tf-${SHA:0:7} \
+          CLOUDTRAIL_NAME=citf-${SHA:0:5} \
             BACKEND_KEY=tfstate/ci/cloudtrail/${SHA:0:7}-tf.tfstate \
             go test -timeout 40m -json -v . 2>&1 | tee /tmp/gotest.log | gotestfmt
       - name: Upload test log
@@ -85,7 +85,7 @@ jobs:
           SHA: ${{ github.sha }}
         run: |
           zarf package deploy zarf-package-*.tar.zst \
-            --set cloudtrail_name=cloudtrail-zarf-${SHA:0:7} \
+            --set cloudtrail_name=cizarf-${SHA:0:5} \
             --set state_bucket_name="uds-ci-state-bucket" \
             --set state_key="tfstate/ci/cloudtrail/${SHA:0:7}-zarf.tfstate" \
             --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
