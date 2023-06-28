@@ -1,0 +1,64 @@
+name: Adhoc Cleanup EKS
+
+on:
+  workflow_dispatch:
+    inputs:
+     eks_cluster_name:
+       required: true
+       type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  delete-eks:
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_COMMERCIAL_ROLE_TO_ASSUME }}
+          role-session-name: ${{ github.job || github.event.client_payload.pull_request.head.sha || github.sha }}
+          aws-region: us-west-2
+          role-duration-seconds: 21600
+
+      - name: Get cluster kubeconfig & eksctl
+        id: get_cluster_kubeconfig_and_eksctl
+        run: |
+          # for ARM systems, set ARCH to: `arm64`, `armv6` or `armv7`
+          ARCH=amd64
+          PLATFORM=$(uname -s)_$ARCH
+          curl -sLO "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
+          # (Optional) Verify checksum
+          curl -sL "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_checksums.txt" | grep $PLATFORM | sha256sum --check
+          tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
+          sudo mv /tmp/eksctl .
+          ./eksctl utils write-kubeconfig -c ${{inputs.eks_cluster_name}}
+        working-directory: .github/workflows/eks
+
+      - name: Show Cluster & Delete Cluster Components
+        run: |
+          kubectl get nodes
+          kubectl config get-contexts
+          kubectl get po -A
+          kubectl get validatingwebhookconfigurations,mutatingwebhookconfigurations --show-labels
+          kubectl delete validatingwebhookconfigurations -l webhook.kyverno.io/managed-by=kyverno --ignore-not-found
+          kubectl delete validatingwebhookconfigurations -l app=istiod --ignore-not-found
+          kubectl delete validatingwebhookconfigurations -l app.kubernetes.io/part-of=kube-prometheus-stack --ignore-not-found
+          kubectl delete validatingwebhookconfigurations neuvector-validating-crd-webhook --ignore-not-found
+          kubectl delete mutatingwebhookconfiguration -l webhook.kyverno.io/managed-by=kyverno --ignore-not-found
+          kubectl delete mutatingwebhookconfiguration -l app=sidecar-injector --ignore-not-found
+          kubectl delete mutatingwebhookconfiguration -l app.kubernetes.io/part-of=kube-prometheus-stack --ignore-not-found
+
+      - name: Teardown EKS cluster using eksctl
+        # can't do a zarf package remove since there's no kubernetes cluster.
+        run: |
+          cat config.yaml | sed "s/###ZARF_VAR_CLUSTER_NAME###/${{inputs.eks_cluster_name}}/g" | ./eksctl delete cluster -f - --disable-nodegroup-eviction --wait
+        working-directory: .github/workflows/eks
+        timeout-minutes: 60
+        continue-on-error: true

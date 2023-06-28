@@ -9,6 +9,8 @@ on:
       - "LICENSE"
       - "**.md"
       - "**.json"
+      - "**.png"
+      - "**.svg"
       - "aws/**"
       - ".github/workflows/**aws**.y*ml"
 

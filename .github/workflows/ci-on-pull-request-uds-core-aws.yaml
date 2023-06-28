@@ -4,16 +4,13 @@ on:
   pull_request:
     branches:
       - main
-    paths:
-      - "aws/uds-core-aws/**"
-      - "aws/values/**"
-      - "aws/loki/**"
-      - "!LICENSE"
-      - "!**.md"
-      - "!**.json"
-      - "!k3d/**"
-      - "!.github/workflows/ci-on-pull-request-k3d.y*ml"
-      - "!.github/workflows/test-k3d-package.y*ml"
+    paths-ignore:
+      - ".gitignore"
+      - "LICENSE"
+      - "**.md"
+      - "**.json"
+      - "k3d/**"
+      - ".github/workflows/**k3d**.y*ml"
   workflow_call:
 
 jobs:
