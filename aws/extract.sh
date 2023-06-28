@@ -35,8 +35,9 @@ echo "ARCH_NAME: ${ARCH_NAME}"
 echo "ARCH_PROC: ${ARCH_PROC}"
 
 mkdir -p run/loki
+chmod -R ugo+rwx ./run/loki
 unzip -o -q tmp/terraform_${1}_${ARCH_NAME}_${ARCH_PROC}.zip -d run/loki
 
-
 mkdir -p run/velero
+chmod -R ugo+rwx ./run/velero
 unzip -o -q tmp/terraform_${1}_${ARCH_NAME}_${ARCH_PROC}.zip -d run/velero

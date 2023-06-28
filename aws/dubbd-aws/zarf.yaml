@@ -25,9 +25,7 @@ variables:
   description: "Name of the pre-existing Terraform state S3 bucket"
 - name: STATE_DYNAMODB_TABLE_NAME
   description: "Name of the DynamoDB table used for Terraform state locking"
-- name: STATE_KEY_LOKI
-  description: "Path to the state file key in the state bucket"
-- name: STATE_KEY_VELERO
+- name: STATE_KEY
   description: "Path to the state file key in the state bucket"
 
 - name: PRIVATE_ADMIN_LB
@@ -37,12 +35,8 @@ variables:
   description: "Provision a private/internal load balancer for the tenant ingress gateway"
   default: "true"
 
-- name: LOKI_FORCE_DESTROY
-  description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data"
-  default: "false"
-
-- name: VELERO_FORCE_DESTROY
-  description: "Provide a means to force destroy the Velero storage (S3) bucket even if it contains data"
+- name: EPHEMERAL
+  description: "Provide a means to force destroy Loki and Velero storage (S3) buckets even if it contains data"
   default: "false"
 
 components:
@@ -76,7 +70,7 @@ components:
         target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_linux_amd64.zip
       - source: https://releases.hashicorp.com/terraform-provider-aws/###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
         target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
-  - name: loki-terraform-module
+  - name: s3-terraform-setup
     required: true
     actions:
       onCreate:
@@ -94,13 +88,26 @@ components:
       target: run/loki/output.tf
     - source: ../s3/tf-loki.tfvars
       target: run/loki/tf-loki.tfvars
-  - name: loki-terraform-execute
+
+    - source: ../s3/.terraform
+      target: run/velero/.terraform
+    - source: ../s3/main.tf
+      target: run/velero/main.tf
+    - source: ../s3/variables.tf
+      target: run/velero/variables.tf
+    - source: ../s3/output.tf
+      target: run/velero/output.tf
+    - source: ../s3/tf-velero.tfvars
+      target: run/velero/tf-velero.tfvars
+  - name: loki-terraform
     required: true
     actions:
       onDeploy:
         before:
-          - cmd: "test -d ./loki/ && chmod -R ugo+rwx ./loki/ || echo $?"
-            dir: run
+          - cmd: "echo ${ZARF_VAR_STATE_KEY} | sed 's/\.tfstate/-loki.tfstate/g'"
+            dir: run/loki
+            setVariables:
+              - name: STATE_KEY_LOKI
           - cmd: |
               terraform init -force-copy \
               -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
@@ -113,23 +120,6 @@ components:
           - cmd: sleep 15 #time to review
           - cmd: "terraform apply -var-file=tf-loki.tfvars -auto-approve"
             dir: run/loki
-      onRemove:
-        before:
-          - cmd: |
-              if [ -d "run/loki" ]; then
-                cd run/loki
-                if [ "$(terraform output force_destroy)" = true ]; then
-                  terraform destroy -var-file=tf-loki.tfvars -auto-approve
-                else
-                  echo "Skipping remove, force_destroy is set to false"
-                fi
-              else
-                echo "Cannot remove: run/loki directory does not exist"
-              fi
-  - name: loki-terraform-outputs
-    required: true
-    actions:
-      onDeploy:
         after:
           - cmd: "terraform output -raw s3_bucket"
             dir: run/loki
@@ -143,31 +133,28 @@ components:
             dir: run/loki
             setVariables:
               - name: LOKI_S3_ROLE_ARN
-  - name: velero-terraform-module
-    required: true
-    actions:
-      onCreate:
+      onRemove:
         before:
-          - cmd: terraform get -update
-            dir: ../s3
-    files:
-    - source: ../s3/.terraform
-      target: run/velero/.terraform
-    - source: ../s3/main.tf
-      target: run/velero/main.tf
-    - source: ../s3/variables.tf
-      target: run/velero/variables.tf
-    - source: ../s3/output.tf
-      target: run/velero/output.tf
-    - source: ../s3/tf-velero.tfvars
-      target: run/velero/tf-velero.tfvars
-  - name: velero-terraform-execute
+          - cmd: |
+              if [ -d "run/loki" ]; then
+                cd run/loki
+                if [ "$(terraform output force_destroy)" = true ]; then
+                  terraform destroy -var-file=tf-loki.tfvars -auto-approve
+                else
+                  echo "Skipping loki bucket removal, ephemeral is set to false"
+                fi
+              else
+                echo "Cannot remove bucket: run/loki directory does not exist"
+              fi
+  - name: velero-terraform
     required: true
     actions:
       onDeploy:
         before:
-          - cmd: "test -d ./velero/ && chmod -R ugo+rwx ./velero/ || echo $?"
-            dir: run
+          - cmd: "echo ${ZARF_VAR_STATE_KEY} | sed 's/\.tfstate/-velero.tfstate/g'"
+            dir: run/velero
+            setVariables:
+              - name: STATE_KEY_VELERO
           - cmd: |
               terraform init -force-copy \
               -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
@@ -180,23 +167,6 @@ components:
           - cmd: sleep 15 #time to review
           - cmd: "terraform apply -var-file=tf-velero.tfvars -auto-approve"
             dir: run/velero
-      onRemove:
-        before:
-          - cmd: |
-              if [ -d "run/velero" ]; then
-                cd run/velero
-                if [ "$(terraform output force_destroy)" = true ]; then
-                  terraform destroy -var-file=tf-velero.tfvars -auto-approve
-                else
-                  echo "Skipping remove, force_destroy is set to false"
-                fi
-              else
-                echo "Cannot remove: run/velero directory does not exist"
-              fi
-  - name: velero-terraform-outputs
-    required: true
-    actions:
-      onDeploy:
         after:
           - cmd: "terraform output -raw s3_bucket"
             dir: run/velero
@@ -210,8 +180,19 @@ components:
             dir: run/velero
             setVariables:
               - name: VELERO_S3_ROLE_ARN
-
-
+      onRemove:
+        before:
+          - cmd: |
+              if [ -d "run/velero" ]; then
+                cd run/velero
+                if [ "$(terraform output force_destroy)" = true ]; then
+                  terraform destroy -var-file=tf-velero.tfvars -auto-approve
+                else
+                  echo "Skipping velero bucket removal, ephemeral is set to false"
+                fi
+              else
+                echo "Cannot remove velero bucket: run/velero directory does not exist"
+              fi
   - name: load-certs
     required: true
     import:
