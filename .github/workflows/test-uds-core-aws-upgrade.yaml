@@ -92,7 +92,6 @@ jobs:
         run: |
           echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
           zarf package deploy zarf-package-*.tar.zst \
-            --components="" \
             --set loki_force_destroy=true \
             --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
             --set state_bucket_name="uds-ci-state-bucket" \
@@ -104,7 +103,7 @@ jobs:
 
       - name: Remove UDS Core AWS
         if: always()
-        run: zarf package remove zarf-package-*.tar.zst --components="" --confirm
+        run: zarf package remove zarf-package-*.tar.zst --confirm
         working-directory: aws/uds-core-aws
         timeout-minutes: 60
         continue-on-error: true

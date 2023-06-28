@@ -1,0 +1,88 @@
+name: Test Cloudtrail
+
+on:
+  workflow_call:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "aws/cloudtrail/**"
+      - "!*.md"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  test-cloutrail-tf:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: aws/eks/test
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_COMMERCIAL_ROLE_TO_ASSUME }}
+          role-session-name: ${{ github.job || github.event.client_payload.pull_request.head.sha || github.sha }}
+          aws-region: us-west-2
+          role-duration-seconds: 21600
+
+      - name: Install Go
+        uses: actions/setup-go@v4
+        with:
+          go-version-file: 'aws/eks/test/go.mod'
+
+      - name: Set up gotestfmt
+        uses: gotesttools/gotestfmt-action@v2
+
+      - name: Run Cloudtrail Tests
+        env:
+          SHA: ${{ github.sha }}
+          CLOUDTRAIL_NAME: cloudtrail-ci-${SHA:0:7}
+          BACKEND_REGION: us-west-2
+          BACKEND_BUCKET: uds-ci-state-bucket
+          BACKEND_KEY: tfstate/ci/cloudtrail/${SHA:0:7}-cloudtrail.tfstate
+          BACKEND_DYNAMODB_TABLE: uds-ci-state-dynamodb
+        run: |
+          go test -timeout 40m -json -v . 2>&1 | tee /tmp/gotest.log | gotestfmt
+      - name: Upload test log
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: test-log
+          path: /tmp/gotest.log
+          if-no-files-found: error
+  test-cloudtrail-zarf:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - uses: ./.github/actions/create-zarf-package
+        with:
+          working-dir: aws/cloudtrail
+          timeout-minutes: 10
+
+      - name: Deploy Cloudtrail
+        env:
+          SHA: ${{ github.sha }}
+        run: |
+          zarf package deploy zarf-package-*.tar.zst \
+            --set cloudtrail_name=cloudtrail-ci-${SHA:0:7} \
+            --set state_bucket_name="uds-ci-state-bucket" \
+            --set state_key="tfstate/ci/cloudtrail/${SHA:0:7}-cloudtrail.tfstate" \
+            --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
+            --confirm
+        working-directory: aws/cloudtrail
+        timeout-minutes: 10
+
+      - name: Remove Cloudtrail
+        if: always()
+        run: zarf package remove zarf-package-*.tar.zst --confirm
+        working-directory: aws/cloudtrail
+        timeout-minutes: 10

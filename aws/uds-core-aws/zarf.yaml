@@ -68,14 +68,6 @@ components:
         target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_linux_amd64.zip
       - source: https://releases.hashicorp.com/terraform-provider-aws/###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
         target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
-  - name: prepare-cloudtrail-module
-    required: true
-    import:
-      path: ../cloudtrail
-  - name: cloudtrail
-    required: false
-    import:
-      path: ../cloudtrail
   - name: loki-module
     required: true
     actions:

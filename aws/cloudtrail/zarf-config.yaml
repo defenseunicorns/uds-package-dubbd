@@ -5,8 +5,6 @@ package:
       terraform_version: "1.4.2"
       terraform_provider_aws_version: 4.59.0
   deploy:
-    # -- Enable optional cloudtrail component
-    components: "cloudtrail"
     set:
       # -- Name of existing Terraform state bucket
       state_bucket_name: uds-dev-state-bucket

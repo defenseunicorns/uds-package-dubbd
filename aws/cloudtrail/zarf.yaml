@@ -2,13 +2,10 @@
 kind: ZarfPackageConfig
 metadata:
   name: dubbd-aws-cloudtrail-iac
-  description: "Defense Unicorns Big Bang Distro"
+  description: "Defense Unicorns Big Bang Distro Cloudtrail IAC"
   # x-release-please-start-version
-  version: "0.2.3"
+  version: "0.1.0"
   # x-release-please-end
-  url: https://p1.dso.mil/products/big-bang
-  image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
-  # Big Bang / Iron Bank are only amd64
   architecture: amd64
 
 variables:
@@ -69,7 +66,7 @@ components:
     - source: terraform.tfvars
       target: run/cloudtrail/terraform.tfvars
   - name: cloudtrail
-    required: false
+    required: true
     actions:
       onDeploy:
         before:
