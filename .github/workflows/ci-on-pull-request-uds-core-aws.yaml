@@ -4,13 +4,10 @@ on:
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - ".gitignore"
-      - "LICENSE"
-      - "**.md"
-      - "**.json"
-      - "k3d/**"
-      - ".github/workflows/**k3d**.y*ml"
+    paths:
+      - "aws/eks/**"
+      - "aws/uds-core-aws"
+      - "!*.md"
   workflow_call:
 
 jobs:
