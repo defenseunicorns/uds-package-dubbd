@@ -174,17 +174,17 @@ components:
     actions:
       onCreate:
         before:
-          - cmd: "wget -nc https://github.com/defenseunicorns/zarf/releases/download/v###ZARF_PKG_TMPL_ZARF_VERSION###/zarf-init-amd64-v###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst"
+          - cmd: "wget -nc https://github.com/defenseunicorns/zarf/releases/download/###ZARF_PKG_TMPL_ZARF_VERSION###/zarf-init-amd64-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst"
             mute: true
             description: "Download Zarf Init Package"
       onDeploy:
         after:
           - cmd: mkdir -p run/zarf-init
-          - cmd: zarf p deploy ./zarf-init-amd64-v###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst --components git-server --confirm
+          - cmd: zarf p deploy ./zarf-init-amd64-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst --components git-server --confirm
             dir: run/zarf-init
     files:
-      - source: zarf-init-amd64-v###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst
-        target: run/zarf-init/zarf-init-amd64-v###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst
+      - source: zarf-init-amd64-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst
+        target: run/zarf-init/zarf-init-amd64-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst
   - name: load-certs
     required: true
     import:

@@ -32,6 +32,7 @@ func TestEksClusterCreated(t *testing.T) {
 			"bucket": os.Getenv("INPUT_BACKEND_BUCKET"),
 			"key":    os.Getenv("INPUT_BACKEND_KEY"),
 			"region": os.Getenv("INPUT_BACKEND_REGION"),
+      "dynamodb_table": os.Getenv("INPUT_BACKEND_DYNAMODB_TABLE"),
 		},
 
 		NoColor: true,

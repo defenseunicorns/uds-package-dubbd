@@ -8,7 +8,8 @@ package:
       flux_version: "0.41.2"
       terraform_version: "1.4.2"
       terraform_provider_aws_version: 4.59.0
-      zarf_version: "0.27.1"
+      # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
+      zarf_version: "v0.27.1"
 
   deploy:
     set:
