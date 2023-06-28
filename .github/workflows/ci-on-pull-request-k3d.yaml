@@ -13,6 +13,7 @@ on:
       - "**.svg"
       - "aws/**"
       - ".github/workflows/**aws**.y*ml"
+      - ".github/workflows/**cloudtrail**.y*ml"
 
 jobs:
   test-release:
