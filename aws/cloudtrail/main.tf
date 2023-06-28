@@ -81,7 +81,7 @@ resource "aws_kms_alias" "default" {
 
 module "cloudtrail" {
   source = "github.com/defenseunicorns/terraform-aws-uds-cloudtrail?ref=v0.0.1-alpha"
-  name                   = var.name
+  name                   = substr(var.name,0,13) // Shorten name due to length constraints on IAM role
   kms_key_id             = aws_kms_key.default.id
   use_external_s3_bucket = var.use_external_s3_bucket
   s3_bucket_name         = var.s3_bucket_name
