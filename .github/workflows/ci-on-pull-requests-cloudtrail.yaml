@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 jobs:
-  test-cloutrail-tf:
+  test-cloudtrail-tf:
     runs-on: ubuntu-latest
     defaults:
       run:
