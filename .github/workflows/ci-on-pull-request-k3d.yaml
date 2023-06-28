@@ -14,6 +14,7 @@ on:
       - "aws/**"
       - ".github/workflows/**aws**.y*ml"
       - ".github/workflows/**cloudtrail**.y*ml"
+      - ".github/workflows/**uds**.y*ml"
 
 jobs:
   test-release:
