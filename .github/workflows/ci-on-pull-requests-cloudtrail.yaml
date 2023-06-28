@@ -42,13 +42,13 @@ jobs:
       - name: Run Cloudtrail Tests
         env:
           SHA: ${{ github.sha }}
-          CLOUDTRAIL_NAME: cloudtrail-ci-${SHA:0:7}
           BACKEND_REGION: us-west-2
           BACKEND_BUCKET: uds-ci-state-bucket
-          BACKEND_KEY: tfstate/ci/cloudtrail/${SHA:0:7}-cloudtrail.tfstate
           BACKEND_DYNAMODB_TABLE: uds-ci-state-dynamodb
         run: |
-          go test -timeout 40m -json -v . 2>&1 | tee /tmp/gotest.log | gotestfmt
+          CLOUDTRAIL_NAME=cloudtrail-tf-${SHA:0:7} \
+            BACKEND_KEY=tfstate/ci/cloudtrail/${SHA:0:7}-tf.tfstate \
+            go test -timeout 40m -json -v . 2>&1 | tee /tmp/gotest.log | gotestfmt
       - name: Upload test log
         uses: actions/upload-artifact@v2
         if: always()
@@ -64,6 +64,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_COMMERCIAL_ROLE_TO_ASSUME }}
+          role-session-name: ${{ github.job || github.event.client_payload.pull_request.head.sha || github.sha }}
+          aws-region: us-west-2
+          role-duration-seconds: 21600
+
       - uses: ./.github/actions/create-zarf-package
         with:
           username: ${{ secrets.REGISTRY1_USERNAME }}
@@ -77,9 +85,9 @@ jobs:
           SHA: ${{ github.sha }}
         run: |
           zarf package deploy zarf-package-*.tar.zst \
-            --set cloudtrail_name=cloudtrail-ci-${SHA:0:7} \
+            --set cloudtrail_name=cloudtrail-zarf-${SHA:0:7} \
             --set state_bucket_name="uds-ci-state-bucket" \
-            --set state_key="tfstate/ci/cloudtrail/${SHA:0:7}-cloudtrail.tfstate" \
+            --set state_key="tfstate/ci/cloudtrail/${SHA:0:7}-zarf.tfstate" \
             --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
             --confirm
         working-directory: aws/cloudtrail
