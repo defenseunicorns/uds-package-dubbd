@@ -22,6 +22,11 @@ istio:
       hpaSpec:
         minReplicas: 1
         maxReplicas: 3
+        metrics:
+          - type: Resource
+            resource:
+              name: cpu
+              targetAverageUtilization: 80
     values:
       global:
         proxy:
