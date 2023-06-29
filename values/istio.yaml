@@ -20,7 +20,8 @@ istio:
           cpu: "500m"
           memory: "1Gi"
       hpaSpec:
-        maxReplicas: 1
+        minReplicas: 1
+        maxReplicas: 3
     values:
       global:
         proxy:

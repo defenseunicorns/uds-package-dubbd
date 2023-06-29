@@ -20,3 +20,7 @@ kiali:
             limits:
               cpu: "500m"
               memory: "512Mi"
+          hpa:
+            spec:
+              minReplicas: 1
+              maxReplicas: 3
