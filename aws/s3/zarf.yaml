@@ -21,11 +21,11 @@ name: &common_s3_template
           setVariables:
             - name: STATE_KEY_FULL
         - cmd: |
-            terraform init -force-copy # \
-            # -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
-            # -backend-config="key=${ZARF_VAR_STATE_KEY_FULL}" \
-            # -backend-config="region=${ZARF_VAR_REGION}" \
-            # -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
+            terraform init -force-copy \
+            -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
+            -backend-config="key=${ZARF_VAR_STATE_KEY_FULL}" \
+            -backend-config="region=${ZARF_VAR_REGION}" \
+            -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
         - cmd: "terraform plan && sleep 15"
         - cmd: "terraform apply -auto-approve"
       after:
