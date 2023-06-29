@@ -22,11 +22,14 @@ istio:
       hpaSpec:
         minReplicas: 1
         maxReplicas: 3
+        # Requires k8s 1.23+; autoscaling/v2
         metrics:
           - type: Resource
             resource:
               name: cpu
-              targetAverageUtilization: 80
+              target:
+                type: Utilization
+                averageUtilization: 80
     values:
       global:
         proxy:
