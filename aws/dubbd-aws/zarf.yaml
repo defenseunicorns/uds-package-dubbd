@@ -70,129 +70,86 @@ components:
         target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_linux_amd64.zip
       - source: https://releases.hashicorp.com/terraform-provider-aws/###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
         target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
-  - name: s3-terraform-setup
+  # s3 Loki components
+  # pre component sets BUCKET_SUFFIX in onDeploy before we call the real component
+  # this pre-component only exists because you cannot setVariable in onCreate
+  - name: s3-loki-pre
     required: true
     actions:
-      onCreate:
-        before:
-          - cmd: terraform get -update
-            dir: ../s3
-    files:
-    - source: ../s3/.terraform
-      target: run/loki/.terraform
-    - source: ../s3/main.tf
-      target: run/loki/main.tf
-    - source: ../s3/variables.tf
-      target: run/loki/variables.tf
-    - source: ../s3/output.tf
-      target: run/loki/output.tf
-    - source: ../s3/tf-loki.tfvars
-      target: run/loki/tf-loki.tfvars
+     onDeploy:
+      before:
+        - cmd: echo "loki"
+          setVariables:
+            - name: BUCKET_SUFFIX
 
-    - source: ../s3/.terraform
-      target: run/velero/.terraform
-    - source: ../s3/main.tf
-      target: run/velero/main.tf
-    - source: ../s3/variables.tf
-      target: run/velero/variables.tf
-    - source: ../s3/output.tf
-      target: run/velero/output.tf
-    - source: ../s3/tf-velero.tfvars
-      target: run/velero/tf-velero.tfvars
-  - name: loki-terraform
+# Component actually sets up the bucket
+  - name: s3-loki
     required: true
+    import: 
+      path: components/s3mockup
+    files:
+      - source: "../s3"
+        target: "run/loki"
     actions:
       onDeploy:
-        before:
-          - cmd: "echo ${ZARF_VAR_STATE_KEY} | sed 's/\.tfstate/-loki.tfstate/g'"
-            dir: run/loki
-            setVariables:
-              - name: STATE_KEY_LOKI
-          - cmd: |
-              terraform init -force-copy \
-              -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
-              -backend-config="key=${ZARF_VAR_STATE_KEY_LOKI}" \
-              -backend-config="region=${ZARF_VAR_REGION}" \
-              -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
-            dir: run/loki
-          - cmd: "terraform plan -var-file=tf-loki.tfvars"
-            dir: run/loki
-          - cmd: sleep 15 #time to review
-          - cmd: "terraform apply -var-file=tf-loki.tfvars -auto-approve"
-            dir: run/loki
         after:
-          - cmd: "terraform output -raw s3_bucket"
-            dir: run/loki
+          - cmd: "echo ${ZARF_VAR_S3_BUCKET}"
             setVariables:
-              - name: LOKI_S3_BUCKET
-          - cmd: "terraform output -raw aws_region"
-            dir: run/loki
+              - name: LOKI_S3_BUCKET    
+          - cmd: "echo ${ZARF_VAR_S3_AWS_REGION}"
             setVariables:
               - name: LOKI_S3_AWS_REGION
-          - cmd: "terraform output -raw irsa_role"
-            dir: run/loki
+          - cmd: "echo ${ZARF_VAR_S3_ROLE_ARN}"
             setVariables:
-              - name: LOKI_S3_ROLE_ARN
-      onRemove:
-        before:
-          - cmd: |
-              if [ -d "run/loki" ]; then
-                cd run/loki
-                if [ "$(terraform output force_destroy)" = true ]; then
-                  terraform destroy -var-file=tf-loki.tfvars -auto-approve
-                else
-                  echo "Skipping loki bucket removal, ephemeral is set to false"
-                fi
-              else
-                echo "Cannot remove bucket: run/loki directory does not exist"
-              fi
-  - name: velero-terraform
+              - name: LOKI_S3_ROLE_ARN    
+  # this now just tests if the var is available
+  - name: s3-loki-post
     required: true
     actions:
+     onDeploy:
+      after:
+        - cmd: echo $ZARF_VAR_LOKI_S3_BUCKET 
+
+  # s3 Velero components
+  # pre component sets BUCKET_SUFFIX in onDeploy before we call the real component
+  # this pre-component only exists because you cannot setVariable in onCreate
+  - name: s3-velero-pre
+    required: true
+    actions:
+     onDeploy:
+      before:
+        - cmd: echo "velero"
+          setVariables:
+            - name: BUCKET_SUFFIX
+
+# Component actually sets up the bucket
+  - name: s3-velero
+    required: true
+    import: 
+      path: components/s3mockup
+    files:
+      - source: "../s3"
+        target: "run/velero"
+    actions:
       onDeploy:
-        before:
-          - cmd: "echo ${ZARF_VAR_STATE_KEY} | sed 's/\.tfstate/-velero.tfstate/g'"
-            dir: run/velero
-            setVariables:
-              - name: STATE_KEY_VELERO
-          - cmd: |
-              terraform init -force-copy \
-              -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
-              -backend-config="key=${ZARF_VAR_STATE_KEY_VELERO}" \
-              -backend-config="region=${ZARF_VAR_REGION}" \
-              -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
-            dir: run/velero
-          - cmd: "terraform plan -var-file=tf-velero.tfvars"
-            dir: run/velero
-          - cmd: sleep 15 #time to review
-          - cmd: "terraform apply -var-file=tf-velero.tfvars -auto-approve"
-            dir: run/velero
         after:
-          - cmd: "terraform output -raw s3_bucket"
-            dir: run/velero
+          - cmd: "echo ${ZARF_VAR_S3_BUCKET}"
             setVariables:
-              - name: VELERO_S3_BUCKET
-          - cmd: "terraform output -raw aws_region"
-            dir: run/velero
+              - name: VELERO_S3_BUCKET    
+          - cmd: "echo ${ZARF_VAR_S3_AWS_REGION}"
             setVariables:
               - name: VELERO_S3_AWS_REGION
-          - cmd: "terraform output -raw irsa_role"
-            dir: run/velero
+          - cmd: "echo ${ZARF_VAR_S3_ROLE_ARN}"
             setVariables:
-              - name: VELERO_S3_ROLE_ARN
-      onRemove:
-        before:
-          - cmd: |
-              if [ -d "run/velero" ]; then
-                cd run/velero
-                if [ "$(terraform output force_destroy)" = true ]; then
-                  terraform destroy -var-file=tf-velero.tfvars -auto-approve
-                else
-                  echo "Skipping velero bucket removal, ephemeral is set to false"
-                fi
-              else
-                echo "Cannot remove velero bucket: run/velero directory does not exist"
-              fi
+              - name: VELERO_S3_ROLE_ARN    
+  # this now just tests if the var is available
+  - name: s3-velero-post
+    required: true
+    actions:
+     onDeploy:
+      after:
+        - cmd: echo $ZARF_VAR_VELERO_S3_BUCKET 
+
   - name: load-certs
     required: true
     import:

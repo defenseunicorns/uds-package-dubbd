@@ -1,0 +1,61 @@
+---
+kind: ZarfPackageConfig
+metadata:
+  name: "s3-module"
+  description: S3 generic module mockup
+
+# common s3 lifecycle template
+name: &common_s3_template
+  required: true
+  actions: 
+    onCreate:
+      before:
+        - cmd: pwd
+        - cmd: terraform get -update
+    onDeploy:
+      before:
+        - cmd: "echo ${ZARF_VAR_NAME}-${ZARF_VAR_BUCKET_SUFFIX}"
+          setVariables:
+            - name: BUCKET_NAME
+        - cmd: "echo ${ZARF_VAR_STATE_KEY}-${ZARF_VAR_NAME}-${ZARF_VAR_BUCKET_NAME}.tfstate"
+          setVariables:
+            - name: STATE_KEY_FULL
+        - cmd: |
+            terraform init -force-copy # \
+            # -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
+            # -backend-config="key=${ZARF_VAR_STATE_KEY_FULL}" \
+            # -backend-config="region=${ZARF_VAR_REGION}" \
+            # -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
+        - cmd: "terraform plan && sleep 15"
+        - cmd: "terraform apply -auto-approve"
+      after:
+        - cmd: "terraform output -raw s3_bucket"
+          setVariables:
+            - name: S3_BUCKET
+        - cmd: "terraform output -raw aws_region"
+          setVariables:
+            - name: S3_AWS_REGION
+        - cmd: "terraform output -raw irsa_role"
+          setVariables:
+            - name: S3_ROLE_ARN
+      onRemove:
+        before:
+          - cmd: |
+              if [ -d "run/${ZARF_VAR_BUCKET_SUFFIX}" ]; then
+                cd run/${ZARF_VAR_BUCKET_SUFFIX}
+                if [ "$(terraform output force_destroy)" = true ]; then
+                  terraform destroy -auto-approve
+                else
+                  echo "Skipping ${ZARF_VAR_BUCKET_SUFFIX} bucket removal, ephemeral is set to false"
+                fi
+              else
+                echo "Cannot remove bucket: run/${ZARF_VAR_BUCKET_SUFFIX} directory does not exist"
+              fi
+
+
+components:
+  - <<: *common_s3_template
+    name: s3-loki
+  
+  - <<: *common_s3_template
+    name: s3-velero
