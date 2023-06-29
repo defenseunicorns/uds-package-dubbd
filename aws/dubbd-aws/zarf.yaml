@@ -70,7 +70,10 @@ components:
         target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_linux_amd64.zip
       - source: https://releases.hashicorp.com/terraform-provider-aws/###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
         target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
-  # s3 Loki components
+  
+  
+  
+  ######## s3 Loki components ##########
   # pre component sets BUCKET_SUFFIX in onDeploy before we call the real component
   # this pre-component only exists because you cannot setVariable in onCreate
   - name: s3-loki-pre
@@ -81,6 +84,9 @@ components:
         - cmd: echo "loki"
           setVariables:
             - name: BUCKET_SUFFIX
+        - cmd: "echo ${ZARF_VAR_NAME}-${ZARF_VAR_BUCKET_SUFFIX}"
+          setVariables:
+            - name: BUCKET_NAME
 
 # Component actually sets up the bucket
   - name: s3-loki
@@ -102,7 +108,7 @@ components:
           - cmd: "echo ${ZARF_VAR_S3_ROLE_ARN}"
             setVariables:
               - name: LOKI_S3_ROLE_ARN    
-  # this now just tests if the var is available
+  # this now just tests if the var is available delete after successful CI run
   - name: s3-loki-post
     required: true
     actions:
@@ -110,7 +116,9 @@ components:
       after:
         - cmd: echo $ZARF_VAR_LOKI_S3_BUCKET 
 
-  # s3 Velero components
+
+
+  ######### s3 Velero components ########
   # pre component sets BUCKET_SUFFIX in onDeploy before we call the real component
   # this pre-component only exists because you cannot setVariable in onCreate
   - name: s3-velero-pre
@@ -121,6 +129,9 @@ components:
         - cmd: echo "velero"
           setVariables:
             - name: BUCKET_SUFFIX
+        - cmd: "echo ${ZARF_VAR_NAME}-${ZARF_VAR_BUCKET_SUFFIX}"
+          setVariables:
+            - name: BUCKET_NAME
 
 # Component actually sets up the bucket
   - name: s3-velero
@@ -142,13 +153,15 @@ components:
           - cmd: "echo ${ZARF_VAR_S3_ROLE_ARN}"
             setVariables:
               - name: VELERO_S3_ROLE_ARN    
-  # this now just tests if the var is available
+  # this now just tests if the var is available delete after successful CI run
   - name: s3-velero-post
     required: true
     actions:
      onDeploy:
       after:
         - cmd: echo $ZARF_VAR_VELERO_S3_BUCKET 
+
+
 
   - name: load-certs
     required: true
