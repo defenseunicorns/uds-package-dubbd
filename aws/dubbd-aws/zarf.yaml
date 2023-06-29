@@ -86,7 +86,7 @@ components:
   - name: s3-loki
     required: true
     import: 
-      path: components/s3mockup
+      path: ../s3
     files:
       - source: "../s3"
         target: "run/loki"
@@ -126,7 +126,7 @@ components:
   - name: s3-velero
     required: true
     import: 
-      path: components/s3mockup
+      path: ../s3
     files:
       - source: "../s3"
         target: "run/velero"

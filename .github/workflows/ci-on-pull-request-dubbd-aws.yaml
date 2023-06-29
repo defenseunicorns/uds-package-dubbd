@@ -1,17 +1,20 @@
 name: CI DUBBD AWS
 
 on:
-  pull_request:
+  push:
     branches:
-      - main
-    paths-ignore:
-      - ".gitignore"
-      - "LICENSE"
-      - "**.md"
-      - "**.json"
-      - "aws/uds-core-aws/**"
-      - "k3d/**"
-      - ".github/workflows/**k3d**.y*ml"
+      - alt-velero-to-s3
+  # pull_request:
+  #   branches:
+  #     - main
+  #   paths-ignore:
+  #     - ".gitignore"
+  #     - "LICENSE"
+  #     - "**.md"
+  #     - "**.json"
+  #     - "aws/uds-core-aws/**"
+  #     - "k3d/**"
+  #     - ".github/workflows/**k3d**.y*ml"
   workflow_call:
 
 jobs:
