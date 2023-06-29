@@ -39,6 +39,16 @@ variables:
   description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data"
   default: "false"
 
+# Set this to true when deploying dubbd-aws on a cluster that isn't an EKS cluster
+- name: DISABLE_EKS
+  description: "Disable fetching the name of an existing EKS cluster"
+  default: "false"
+
+# Set this to false when deploying dubbd-aws on a cluster that isn't an EKS cluster
+- name: CREATE_IRSA
+  description: "Disable creating IRSA IAM resources"
+  default: "true"
+
 components:
   - name: download-terraform
     required: true

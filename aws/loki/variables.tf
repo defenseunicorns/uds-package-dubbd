@@ -1,3 +1,15 @@
+variable "disable_eks" {
+  type        = bool
+  description = "Disable fetching EKS cluster name"
+  default     = false
+}
+
+variable "create_irsa" {
+  type        = bool
+  description = "Disable creating IRSA IAM resources"
+  default     = true
+}
+
 variable "name" {
   description = "Name for cluster"
   type        = string
