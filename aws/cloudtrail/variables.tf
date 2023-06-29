@@ -14,3 +14,9 @@ variable "s3_bucket_name" {
   type        = string
   default     = null
 }
+
+variable "key_owner_arns" {
+  description = "ARNS of KMS key owners, needed for use of key"
+  type        = list(string)
+  default     = []
+}
