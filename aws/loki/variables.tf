@@ -1,9 +1,3 @@
-variable "disable_eks" {
-  description = "Disable EKS IRSA integration"
-  type        = bool
-  default     = false
-}
-
 variable "name" {
   description = "Name for cluster"
   type        = string
