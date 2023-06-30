@@ -6,6 +6,8 @@ terraform {
   }
 }
 
+data "aws_region" "current" {}
+
 locals {
   generate_kms_key = var.create_kms_key ? 1 : 0
   kms_key_arn      = var.kms_key_arn == null ? module.generate_kms[0].kms_key_arn : var.kms_key_arn
