@@ -1,33 +1,16 @@
 image:
   repository: registry1.dso.mil/ironbank/external-dns
-  #repository: registry.k8s.io/external-dns/external-dns
-  # Overrides the image tag whose default is v{{ .Chart.AppVersion }}
   tag: "v0.13.4"
   pullPolicy: IfNotPresent
 
-# Defaults to `ClusterFirst`.
-# Valid values are: `ClusterFirstWithHostNet`, `ClusterFirst`, `Default` or `None`.
-dnsPolicy:
-
-env: []
-
-logLevel: info
-logFormat: text
-
-interval: 1m
-triggerLoopOnEvent: false
-
 sources:
-  - service
   - istio-virtualservice
-  #- istio-gateway
 
 policy: upsert-only
 
 registry: txt
 txtOwnerId: "###ZARF_VAR_HOSTED_ZONE_ID###"
 txtPrefix: "external-dns."
-txtSuffix: ""
 
 domainFilters: ["###ZARF_VAR_DOMAIN###"]
 
