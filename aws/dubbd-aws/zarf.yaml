@@ -131,7 +131,7 @@ components:
             dir: run/loki
             setVariables:
               - name: LOKI_S3_AWS_REGION
-          - cmd: ../terraform output -raw irsa_role
+          - cmd: echo ""
             dir: run/loki
             setVariables:
               - name: LOKI_S3_ROLE_ARN
