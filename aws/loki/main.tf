@@ -42,7 +42,7 @@ module "S3" {
   kubernetes_namespace       = "logging"
   kms_key_arn                = local.kms_key_arn
   force_destroy              = var.force_destroy
-  create_irsa                = var.create_irsa
+  create_irsa                = var.disable_eks ? false : true
 }
 
 module "generate_kms" {
