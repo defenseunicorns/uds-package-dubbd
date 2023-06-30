@@ -215,6 +215,7 @@ components:
         valuesFiles:
         - ../values/aws-istio.yaml
         - ../values/aws-loki.yaml
+        - ../values/aws-velero.yaml
     actions:
       onDeploy:
         before:

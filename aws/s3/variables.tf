@@ -42,3 +42,12 @@ variable "create_kms_key" {
   type        = bool
   default     = true
 }
+
+variable "kubernetes_service_account" {
+  description = "irsa serviceAccount name "
+  default     = ""
+}
+variable "kubernetes_namespace" {
+  description = "irsa serviceAccount namespace "
+  default     = ""
+}
