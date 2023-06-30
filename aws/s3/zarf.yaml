@@ -33,7 +33,6 @@ name: &common_s3_template
             terraform plan
             sleep 15
             terraform apply -auto-approve
-      after:
         - cmd: "cd ${ZARF_VAR_UNIQUE_PATH} && terraform output -raw s3_bucket"
           setVariables:
             - name: S3_BUCKET
