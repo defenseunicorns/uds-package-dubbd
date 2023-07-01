@@ -24,7 +24,7 @@ jobs:
           role-duration-seconds: 21600
 
       - name: Add k3d override values to DUBBD AWS package
-        run: yq -i '.components[] |= select(.name == \"bigbang\").extensions.bigbang.valuesFiles += [\"../values/k3d-overrides.yaml\"]' zarf.yaml"
+        run: yq -i '.components[] |= select(.name == "bigbang").extensions.bigbang.valuesFiles += ["../values/k3d-overrides.yaml"]' zarf.yaml
         working-directory: aws/dubbd-aws
 
       - uses: ./.github/actions/create-zarf-package
