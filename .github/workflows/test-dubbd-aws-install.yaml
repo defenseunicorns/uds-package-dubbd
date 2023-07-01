@@ -23,6 +23,10 @@ jobs:
           aws-region: us-west-2
           role-duration-seconds: 21600
 
+      - name: Add k3d override values to DUBBD AWS package
+        run: yq -i '.components[] |= select(.name == \"bigbang\").extensions.bigbang.valuesFiles += [\"../values/k3d-overrides.yaml\"]' zarf.yaml"
+        working-directory: aws/dubbd-aws
+
       - uses: ./.github/actions/create-zarf-package
         name: Create Zarf package
         with:
@@ -32,34 +36,14 @@ jobs:
           download-init-package: true        
           timeout-minutes: 60
 
-      - name: Set eks_cluster_name
-        id: get_cluster_name
-        env:
-          SHA: ${{ github.sha }}
-        run: |
-          echo "eks_cluster_name=dubbd-aws-${SHA:0:7}" >> $GITHUB_OUTPUT
-          echo "short_sha=${SHA:0:7}" >> $GITHUB_OUTPUT
-
-      - name: Package EKSCTL 
-        run: zarf package create --confirm
-        working-directory: .github/workflows/eks
-
-      - name: Create EKS cluster
-        run: |
-          echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
-
-          zarf package deploy zarf-package-distro-eks-multi.tar.zst \
-            --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
-            --confirm
-        working-directory: .github/workflows/eks #just holds the zarf-config
+      - name: Create k3d cluster
         id: create-cluster
-
-      ## We need to add functionality to allow the user to bring their own KMS Key Alias
-      
-      - name: Show Cluster
-        run: |
-          kubectl get nodes
-          kubectl config get-contexts
+        # renovate: datasource=github-tags depName=defenseunicorns/uds-aws-ci-k3d versioning=semver
+        uses: defenseunicorns/uds-aws-ci-k3d@v0.0.3
+        with:
+          cluster-action: create
+          aws-assume-role: ${{ secrets.AWS_COMMERCIAL_ROLE_TO_ASSUME }}
+          aws-region: us-west-2
 
       - name: Zarf init
         run: |
@@ -69,11 +53,9 @@ jobs:
         env:
           SHA: ${{ github.sha }}
         run: |
-          echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
-
           zarf package deploy zarf-package-*.tar.zst \
             --set loki_force_destroy=true \
-            --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
+            --set name="dubbd-aws-install-${SHA:0:7}" \
             --set state_bucket_name="uds-ci-state-bucket" \
             --set state_key="tfstate/ci/install/${SHA:0:7}-dubbd-aws.tfstate" \
             --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
@@ -87,9 +69,9 @@ jobs:
         working-directory: aws/dubbd-aws
         timeout-minutes: 60
 
-      - name: Teardown EKS cluster
+      - name: Teardown k3d cluster
         if: always()
-        # can't do a zarf package remove since there's no kubernetes cluster.
-        run: |
-          ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
-        working-directory: .github/workflows/eks
+        # renovate: datasource=github-tags depName=defenseunicorns/uds-aws-ci-k3d versioning=semver
+        uses: defenseunicorns/uds-aws-ci-k3d@v0.0.3
+        with:
+          cluster-action: destroy

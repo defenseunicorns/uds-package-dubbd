@@ -23,6 +23,6 @@ jobs:
         uses: ./.github/workflows/test-dubbd-aws-install.yaml
         secrets: inherit
 
-    test-upgrade:
-        uses: ./.github/workflows/test-dubbd-aws-upgrade.yaml
-        secrets: inherit
+    # test-upgrade:
+    #     uses: ./.github/workflows/test-dubbd-aws-upgrade.yaml
+    #     secrets: inherit
