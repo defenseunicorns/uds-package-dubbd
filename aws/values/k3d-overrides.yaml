@@ -20,15 +20,15 @@ kyvernoPolicies:
       restrict-host-path-mount:
         parameters:
           allow:
-           - "###ZARF_VAR_HOST_PATH###"
+           - "/var/lib/rancher/k3s/storage/*"
       restrict-host-path-mount-pv:
         parameters:
           allow:
-           - "###ZARF_VAR_HOST_PATH###"
+           - "/var/lib/rancher/k3s/storage/*"
       restrict-host-path-write:
         parameters:
           allow:
-           - "###ZARF_VAR_HOST_PATH###"
+           - "/var/lib/rancher/k3s/storage/*"
       restrict-image-registries:
         exclude:
           any:
