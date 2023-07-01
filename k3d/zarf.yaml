@@ -17,6 +17,7 @@ metadata:
 
 variables:
 - name: HOST_PATH
+  description: "Filepath to allow persistent volumes to be mounted as a HostPath volume in k3d clusters"
   default: /var/lib/rancher/k3s/storage/*
   prompt: false
 

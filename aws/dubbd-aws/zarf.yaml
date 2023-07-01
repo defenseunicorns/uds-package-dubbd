@@ -39,6 +39,11 @@ variables:
   description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data"
   default: "false"
 
+- name: HOST_PATH
+  description: "Filepath to allow persistent volumes to be mounted as a HostPath volume in k3d clusters"
+  default: "/var/lib/rancher/k3s/storage/*"
+  prompt: false
+
 components:
   - name: download-terraform
     required: true
