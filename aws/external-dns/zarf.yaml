@@ -23,16 +23,15 @@ components:
   - name: external-dns-chart
     required: true
     charts:
+      # https://artifacthub.io/packages/helm/external-dns/external-dns
+      # renovate: datasource=helm
       - name: external-dns
+        url: https://kubernetes-sigs.github.io/external-dns
         version: 1.13.0
-        #version: external-dns-helm-chart-1.13.0
         namespace: external-dns
         releaseName: external-dns
-        url: https://kubernetes-sigs.github.io/external-dns/
-        #url: https://github.com/kubernetes-sigs/external-dns.git
-        #gitPath: charts/external-dns
-        url: https://kubernetes-sigs.github.io/external-dns/
         valuesFiles:
         - ../values/aws-external-dns.yaml
     images:
+      # renovate: datasource=docker
       - "registry1.dso.mil/ironbank/external-dns:v0.13.4"
