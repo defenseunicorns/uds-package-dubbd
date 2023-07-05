@@ -204,14 +204,6 @@ components:
             dir: run/route53-policy
             setVariables:
               - name: ROUTE53_ROLE_ARN
-  - name: external-dns-k8s-manifests
-    required: true
-    import:
-      path: ../external-dns
-  - name: external-dns-chart
-    required: true
-    import:
-      path: ../external-dns
   - name: load-certs
     required: true
     import:
@@ -257,6 +249,14 @@ components:
             mute: true
             setVariables:
               - name: TENANT_INGRESS_UPDATE
+  - name: external-dns-k8s-manifests
+    required: true
+    import:
+      path: ../external-dns
+  - name: external-dns-chart
+    required: true
+    import:
+      path: ../external-dns
   - name: dubbd-upgrade
     required: true
     actions:
