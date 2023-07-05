@@ -191,11 +191,7 @@ components:
           - cmd: |
               if [ -d "run/route53-policy" ]; then
                 cd run/route53-policy
-                if [ "$(terraform output force_destroy)" = true ]; then
-                  terraform destroy -auto-approve
-                else
-                  echo "Skipping remove, force_destroy is set to false"
-                fi
+                terraform destroy -auto-approve
               else
                 echo "Cannot remove: run/route53-policy directory does not exist"
               fi
