@@ -148,7 +148,7 @@ components:
             - name: STATE_KEY_PREFIX
         - cmd: "echo ${ZARF_STATE_KEY_PREFIX}-${ZARF_VAR_STATE_KEY}"
           setVariables:
-            - name: STATE_KEY
+            - name: ROUTE53_POLICY_STATE_KEY
   - name: route53-policy-module
     required: true
     actions:
@@ -177,7 +177,7 @@ components:
           - cmd: |
               terraform init -force-copy \
               -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
-              -backend-config="key=${ZARF_VAR_STATE_KEY}" \
+              -backend-config="key=${ZARF_VAR_ROUTE53_POLICY_STATE_KEY}" \
               -backend-config="region=${ZARF_VAR_REGION}" \
               -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}
             dir: run/route53-policy
@@ -208,7 +208,7 @@ components:
             dir: run/route53-policy
             setVariables:
               - name: ROUTE53_ROLE_ARN
-  - name: external-dns
+  - name: external-dns-chart
     required: true
     import:
       path: ../external-dns

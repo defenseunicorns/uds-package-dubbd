@@ -16,8 +16,8 @@ variables:
   default: "bigbang.dev"
 - name: HOSTED_ZONE_ID
   description: "Hosted zone ID of the DNS zone"
-- name: ARN
-  description: "ARN"
+- name: ROUTE53_ROLE_ARN
+  description: "ROUTE53_ROLE_ARN"
 
 components:
   - name: external-dns-chart
