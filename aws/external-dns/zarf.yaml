@@ -35,3 +35,7 @@ components:
     images:
       # renovate: datasource=docker
       - "registry1.dso.mil/ironbank/external-dns:v0.13.4"
+    manifests:
+      - name: k8s-manifests
+        files:
+          - ../k8s-manifests/aws-external-dns-ns.yaml
