@@ -20,12 +20,14 @@ variables:
   description: "ROUTE53_ROLE_ARN"
 
 components:
-  - name: external-dns-chart
+  - name: external-dns-k8s-manifests
     required: true
     manifests:
       - name: k8s-manifests
         files:
           - ../k8s-manifests/aws-external-dns-ns.yaml
+  - name: external-dns-chart
+    required: true
     charts:
       # https://artifacthub.io/packages/helm/external-dns/external-dns
       # renovate: datasource=helm
