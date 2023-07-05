@@ -22,6 +22,10 @@ variables:
 components:
   - name: external-dns-chart
     required: true
+    manifests:
+      - name: k8s-manifests
+        files:
+          - ../k8s-manifests/aws-external-dns-ns.yaml
     charts:
       # https://artifacthub.io/packages/helm/external-dns/external-dns
       # renovate: datasource=helm
@@ -35,7 +39,3 @@ components:
     images:
       # renovate: datasource=docker
       - "registry1.dso.mil/ironbank/external-dns:v0.13.4"
-    manifests:
-      - name: k8s-manifests
-        files:
-          - ../k8s-manifests/aws-external-dns-ns.yaml
