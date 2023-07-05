@@ -146,7 +146,7 @@ components:
         - cmd: echo "route53-policy"
           setVariables:
             - name: STATE_KEY_PREFIX
-        - cmd: "echo ${ZARF_STATE_KEY_PREFIX}-${ZARF_VAR_STATE_KEY}"
+        - cmd: echo "${ZARF_VAR_STATE_KEY_PREFIX}-${ZARF_VAR_STATE_KEY}"
           setVariables:
             - name: ROUTE53_POLICY_STATE_KEY
   - name: route53-policy-module
