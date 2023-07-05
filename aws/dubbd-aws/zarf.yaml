@@ -179,7 +179,7 @@ components:
               -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
               -backend-config="key=${ZARF_VAR_ROUTE53_POLICY_STATE_KEY}" \
               -backend-config="region=${ZARF_VAR_REGION}" \
-              -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}
+              -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
             dir: run/route53-policy
           - cmd: "terraform plan"
             dir: run/route53-policy
