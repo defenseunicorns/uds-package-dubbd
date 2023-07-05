@@ -230,6 +230,9 @@ components:
       onDeploy:
         before:
           - cmd: |
+              ./zarf tools kubectl label ns -l app.kubernetes.io/part-of=dubbd-aws zarf.dev/agent-
+            description: "Remove Zarf ignore namespace labels for DUBBD AWS"
+          - cmd: |
               if [ "$(./zarf tools kubectl get svc -n istio-system admin-ingressgateway -o jsonpath='{.metadata.annotations.service\.beta\.kubernetes\.io/aws-load-balancer-internal}' 2>/dev/null)" = "${ZARF_VAR_PRIVATE_ADMIN_LB}" ]; then
                 echo false
               else
