@@ -3,8 +3,6 @@ package:
     max_package_size: "1000000000"
   deploy:
     set:
-      domain: dns-bigbang.dev
-      #hosted_zone_id: "Z01199743G6EXT72FPM4N"
-      hosted_zone_id: "notarealone"
-      #arn: "arn:aws:iam::331924599099:role/eksctl-bigbang-dns-addon-iamserviceaccount-e-Role1-EBVGILHP38DN"
+      domain: bigbang.dev
+      hosted_zone_id: "notarealzone"
       route53_role_arn: "arn:aws:iam::000000000000:role/eksctl-bigbang-dns-addon-iamserviceaccount-e-Role1-ABC123ABC123"
