@@ -20,7 +20,16 @@ istio:
           cpu: "500m"
           memory: "1Gi"
       hpaSpec:
-        maxReplicas: 1
+        minReplicas: 1
+        maxReplicas: 3
+        # Requires k8s 1.23+; autoscaling/v2
+        metrics:
+          - type: Resource
+            resource:
+              name: cpu
+              target:
+                type: Utilization
+                averageUtilization: 80
     values:
       global:
         proxy:

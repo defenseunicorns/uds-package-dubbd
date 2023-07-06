@@ -14,3 +14,4 @@ neuvector:
             always_reload: true
             scan_config:
               auto_scan: true
+            no_telemetry_report: true

@@ -3,11 +3,14 @@ package:
     max_package_size: "1000000000"
     set:
       # renovate: datasource=gitlab-tags depName=big-bang/bigbang versioning=semver registryUrl=https://repo1.dso.mil
-      bigbang_version: "2.4.1"
+      bigbang_version: "2.5.0"
       # should line up with the flux version in the BB release, see https://repo1.dso.mil/big-bang/bigbang/-/blob/master/base/flux/gotk-components.yaml#L3
       flux_version: "0.41.2"
       terraform_version: "1.4.2"
       terraform_provider_aws_version: 4.59.0
+      # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
+      zarf_version: "v0.27.1"
+
   deploy:
     set:
       # -- Domain name for the EKS cluster
@@ -32,6 +35,16 @@ package:
       private_admin_lb: true
       # -- Provision a private/internal load balancer for the tenant ingress gateway, if false a public load balancer will be provisioned
       private_tenant_lb: true
+      # -- VPC ID
+      vpc_id: vpc-089e6f8e2dd1d8591
+      # -- VPC CIDR block
+      vpc_cidr: 192.168.0.0/16
+      # -- Private subnet IDs for cluster as a comma-separated string
+      private_subnets: subnet-089bba221efd8a2e2,subnet-08ce3b3da0a310d75,subnet-0b71abd76c74ea47a
+      # -- Public subnet IDs for cluster as a comma-separated string
+      public_subnets: subnet-04469f93c6f962949,subnet-04d87e6a555915c79,subnet-061e0c1827bd519b0
+      # -- Allow public access to cluster
+      cluster_endpoint_public_access: false
       # -- Bring your own kms key, if omitted a key will be created with an alias prefix of "<cluster name>-loki-"
       #loki_kms_key_arn: "arn:aws:kms:us-west-2:000000000000:key/mrk-0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a"
       # -- If set to true, delete the S3 bucket and corresponding KMS key associated with the Loki bucket

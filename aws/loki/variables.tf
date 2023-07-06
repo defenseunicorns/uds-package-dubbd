@@ -1,5 +1,6 @@
 variable "name" {
   description = "Name for cluster"
+  type        = string
 }
 
 variable "kms_key_arn" {
@@ -24,7 +25,6 @@ variable "key_owner_arns" {
   type        = list(string)
   default     = []
 }
-
 
 # taken from zarf bb repo
 variable "kms_key_deletion_window" {

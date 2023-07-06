@@ -1,4 +1,6 @@
 **/*.tfstate
+**/.terraform
+**/.terraform.lock.hcl
 **/*.tfstate.backup
 *.tar.gz
 **/*.tar.zst
