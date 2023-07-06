@@ -7,6 +7,7 @@
       "versioning": "always-bump-patch",
       "extra-files": [
         "aws/dubbd-aws/zarf.yaml",
+        "aws/external-dns/zarf.yaml",
         "defense-unicorns-distro/zarf.yaml",
         "k3d/zarf.yaml"
       ]
