@@ -7,14 +7,14 @@ on:
     paths-ignore:
       - ".gitignore"
       - "LICENSE"
-      - "**.md"
-      - "**.json"
-      - "**.png"
-      - "**.svg"
+      - "**/*.md"
+      - "**/*.json"
+      - "**/*.png"
+      - "**/*.svg"
       - "aws/**"
-      - ".github/workflows/**aws**.y*ml"
-      - ".github/workflows/**cloudtrail**.y*ml"
-      - ".github/workflows/**uds**.y*ml"
+      - ".github/workflows/*aws*.y*ml"
+      - ".github/workflows/*cloudtrail*.y*ml"
+      - ".github/workflows/*uds*.y*ml"
 
 jobs:
   test-release:
