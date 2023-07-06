@@ -6,7 +6,6 @@
     "config:base"
   ],
   "timezone": "America/New_York",
-  "repositories": ["defenseunicorns/uds-package-dubbd"],
   "rebaseStalePrs": true,
   "schedule": ["after 12pm and before 11am every weekday"],
   "dependencyDashboard": true,
