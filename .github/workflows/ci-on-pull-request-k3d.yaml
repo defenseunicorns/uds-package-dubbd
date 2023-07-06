@@ -11,7 +11,7 @@ on:
       - "**/*.json"
       - "**/*.png"
       - "**/*.svg"
-      - "aws/**/*"
+      - "aws/**"
       - ".github/workflows/*aws*.y*ml"
       - ".github/workflows/*cloudtrail*.y*ml"
       - ".github/workflows/*uds*.y*ml"
