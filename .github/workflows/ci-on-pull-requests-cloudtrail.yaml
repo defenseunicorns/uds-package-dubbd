@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - "aws/cloudtrail/**"
+      - "aws/cloudtrail/**/*"
       - "!**/*.md"
       - ".github/workflows/ci-on-pull-requests-cloudtrail.yaml"
 

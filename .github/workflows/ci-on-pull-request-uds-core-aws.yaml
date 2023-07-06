@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "aws/eks/**"
+      - "aws/eks/**/*"
       - "aws/uds-core-aws"
       - "!**/*.md"
       - ".github/workflows/ci-on-pull-request-uds-core-aws.yaml"
