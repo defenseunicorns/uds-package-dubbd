@@ -10,8 +10,12 @@ on:
       - "**.md"
       - "**.json"
       - "aws/uds-core-aws/**"
+      - "aws/cloudtrail/**"
       - "k3d/**"
       - ".github/workflows/**k3d**.y*ml"
+      - ".github/workflows/**cloudtrail**.y*ml"
+      - ".github/workflows/**uds**.y*ml"
+
   workflow_call:
 
 jobs:
