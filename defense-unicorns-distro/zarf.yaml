@@ -175,7 +175,7 @@ components:
               ./zarf tools kubectl delete alerts grafana -n monitoring --ignore-not-found
               ./zarf tools kubectl delete helmrelease -n bigbang promtail --ignore-not-found
               ./zarf tools kubectl delete helmrelease -n bigbang loki --ignore-not-found
-              ./zarf tools kubectl delete kiali -n kiali kiali --ignore-not-found
+              ./zarf tools kubectl delete kiali -n kiali kiali --ignore-not-found --timeout 0 # Timeout will be based on the size of the object
               ./zarf tools kubectl delete helmrelease -n bigbang tempo --ignore-not-found
               ./zarf tools kubectl delete helmrelease -n bigbang neuvector --ignore-not-found
               ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io neuvector-validating-crd-webhook --ignore-not-found
@@ -188,7 +188,7 @@ components:
               ./zarf tools kubectl delete apiservices.apiregistration.k8s.io -l helm.toolkit.fluxcd.io/namespace=bigbang,helm.toolkit.fluxcd.io/name=metrics-server --ignore-not-found
               ./zarf tools kubectl delete gitrepositories -n bigbang -l app.kubernetes.io/part-of=bigbang
             description: "Cleaning up Big Bang resources"
-            maxTotalSeconds: 1200 # 20 min
+            maxTotalSeconds: 3600 # 1 hour
     files:
       - source: scripts/on_failure.sh
         target: on_failure.sh
