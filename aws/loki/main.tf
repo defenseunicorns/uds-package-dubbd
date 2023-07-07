@@ -33,6 +33,16 @@ locals {
   # kms_key_arn               = var.kms_key_arn == "" ? module.generate_kms[0].kms_key_arn : var.kms_key_arn
 }
 
+moved {
+  from = module.S3.module.irsa.aws_iam_role.this[0]
+  to   = module.S3.module.irsa[0].aws_iam_role.this[0]
+}
+
+moved {
+  from = module.S3.module.irsa_policy.aws_iam_policy.policy[0]
+  to   = module.S3.module.irsa_policy[0].aws_iam_policy.policy[0]
+}
+
 module "S3" {
   source                     = "github.com/defenseunicorns/terraform-aws-uds-s3?ref=v0.0.3"
   name_prefix                = var.name
