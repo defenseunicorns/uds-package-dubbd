@@ -172,23 +172,23 @@ components:
           - cmd: "test -d ./route53-policy/ && chmod -R ugo+rwx ./route53-policy/ || echo $?"
             dir: run
           - cmd: |
-              terraform init -force-copy \
+              ../terraform init -force-copy \
               -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
               -backend-config="key=${ZARF_VAR_ROUTE53_POLICY_STATE_KEY}" \
               -backend-config="region=${ZARF_VAR_REGION}" \
               -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
             dir: run/route53-policy
-          - cmd: "terraform plan"
+          - cmd: ../terraform plan
             dir: run/route53-policy
           - cmd: sleep 15 #time to review
-          - cmd: "terraform apply -auto-approve"
+          - cmd: ../terraform apply -auto-approve
             dir: run/route53-policy
       onRemove:
         before:
           - cmd: |
               if [ -d "run/route53-policy" ]; then
                 cd run/route53-policy
-                terraform destroy -auto-approve
+                ../terraform destroy -auto-approve
               else
                 echo "Cannot remove: run/route53-policy directory does not exist"
               fi
@@ -197,7 +197,7 @@ components:
     actions:
       onDeploy:
         after:
-          - cmd: "terraform output -raw route53_role_arn"
+          - cmd: ../terraform output -raw route53_role_arn
             dir: run/route53-policy
             setVariables:
               - name: ROUTE53_ROLE_ARN
