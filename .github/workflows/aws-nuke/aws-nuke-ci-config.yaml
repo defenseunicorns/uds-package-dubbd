@@ -1,0 +1,29 @@
+regions:
+  - global
+  - us-east-2
+  - us-east-1
+  - us-west-1
+  - us-west-2
+
+account-blocklist:
+  - "999999999999" # production
+
+accounts:
+  248783118822:
+    filters:
+      S3Bucket:
+        - property: "tag:nuke"
+          value: "DO-NOT-DELETE"
+      S3Object:
+        - property: Key
+          type: contains
+          value: "tfstate"
+
+resource-types:
+  # only nuke these three resources
+  targets:
+    - S3Object
+    - S3Bucket
+    - EC2Instance
+    - EKSNodegroups
+    - EKSCluster
