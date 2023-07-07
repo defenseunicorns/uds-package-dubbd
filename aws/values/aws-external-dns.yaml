@@ -10,7 +10,7 @@ policy: upsert-only
 
 registry: txt
 txtOwnerId: "###ZARF_VAR_HOSTED_ZONE_ID###"
-txtPrefix: "external-dns."
+txtPrefix: "external-dns.###ZARF_VAR_NAME###."
 
 domainFilters: ["###ZARF_VAR_DOMAIN###"]
 

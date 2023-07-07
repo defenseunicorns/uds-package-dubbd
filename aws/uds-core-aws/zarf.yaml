@@ -41,6 +41,9 @@ variables:
     description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data"
     default: "false"
 
+  - name: HOSTED_ZONE_ID
+    description: "Hosted zone ID of the DNS zone"
+
   - name: VPC_CIDR
     description: "VPC CIDR block"
   - name: VPC_ID
@@ -236,6 +239,10 @@ components:
             setVariables:
               - name: ROUTE53_ROLE_ARN
   - name: zarf-init
+    required: true
+    actions:
+      onCreate:
+        before:
           - cmd: "wget -nc https://github.com/defenseunicorns/zarf/releases/download/###ZARF_PKG_TMPL_ZARF_VERSION###/zarf-init-amd64-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst"
             mute: true
             description: "Download Zarf Init Package"
