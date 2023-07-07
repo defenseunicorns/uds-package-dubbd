@@ -10,6 +10,8 @@ data "aws_eks_cluster" "existing" {
   name = var.name
 }
 
+data "aws_partition" "current" {}
+
 module "iam_assumable_role_admin" {
   source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
   version                       = "5.27.0"
@@ -36,7 +38,7 @@ resource "aws_iam_policy" "external_dns" {
         "route53:ChangeResourceRecordSets"
       ]
       Resource = [
-        "arn:aws:route53:::hostedzone/*"
+        "arn:${data.aws_partition.current.partition}:route53:::hostedzone/*"
       ]
     },
     {
@@ -47,7 +49,7 @@ resource "aws_iam_policy" "external_dns" {
         "route53:ListTagsForResource"
       ]
       Resource = [
-        "*"
+        "*" # TODO: A tiny bit more specific on resources
       ]
     }
   ]

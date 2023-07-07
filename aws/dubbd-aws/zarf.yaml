@@ -39,9 +39,6 @@ variables:
   description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data"
   default: "false"
 
-- name: HOSTED_ZONE_ID
-  description: "Hosted zone ID of the DNS zone"
-
 components:
   - name: download-terraform
     required: true

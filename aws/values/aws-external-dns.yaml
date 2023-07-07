@@ -1,7 +1,6 @@
 image:
   repository: registry1.dso.mil/ironbank/external-dns
   tag: "v0.13.4"
-  pullPolicy: IfNotPresent
 
 sources:
   - istio-virtualservice
@@ -9,7 +8,7 @@ sources:
 policy: upsert-only
 
 registry: txt
-txtOwnerId: "###ZARF_VAR_HOSTED_ZONE_ID###"
+txtOwnerId: "###ZARF_VAR_NAME###"
 txtPrefix: "external-dns.###ZARF_VAR_NAME###."
 
 domainFilters: ["###ZARF_VAR_DOMAIN###"]

@@ -82,7 +82,6 @@ jobs:
             --set state_bucket_name="uds-ci-state-bucket" \
             --set state_key="tfstate/ci/upgrade/${SHA:0:7}-dubbd-aws" \
             --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
-            --set hosted_zone_id="UDS0CI0ZONE0ID" \
             --confirm
         working-directory: aws/dubbd-aws
         timeout-minutes: 60
@@ -98,7 +97,6 @@ jobs:
             --set state_bucket_name="uds-ci-state-bucket" \
             --set state_key="tfstate/ci/upgrade/${SHA:0:7}-dubbd-aws" \
             --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
-            --set hosted_zone_id="UDS0CI0ZONE0ID" \
             --confirm
         working-directory: aws/dubbd-aws
         timeout-minutes: 60

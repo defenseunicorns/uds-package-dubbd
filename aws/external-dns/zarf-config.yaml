@@ -4,5 +4,4 @@ package:
   deploy:
     set:
       domain: bigbang.dev
-      hosted_zone_id: "notarealzone"
-      route53_role_arn: "arn:aws:iam::000000000000:role/eksctl-bigbang-dns-addon-iamserviceaccount-e-Role1-ABC123ABC123"
+      route53_role_arn: "arn:aws:iam::000000000000:role/iamserviceaccount-role"

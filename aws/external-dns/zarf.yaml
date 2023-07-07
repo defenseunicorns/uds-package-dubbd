@@ -14,8 +14,6 @@ variables:
 - name: DOMAIN
   description: "Name of domain to use for the DNS zone"
   default: "bigbang.dev"
-- name: HOSTED_ZONE_ID
-  description: "Hosted zone ID of the DNS zone"
 - name: ROUTE53_ROLE_ARN
   description: "ROUTE53_ROLE_ARN"
 

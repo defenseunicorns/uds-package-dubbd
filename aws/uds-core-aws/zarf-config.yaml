@@ -21,8 +21,6 @@ package:
       cert_file: bigbang.dev.cert
       # -- Name of the EKS cluster
       name: "big-bang-aws"
-      # -- Name of the Route53 hosted DNS zone
-      hosted_zone_id: "UDS0DEV0ZONE0ID"
       # -- Name of existing Terraform state bucket
       state_bucket_name: uds-dev-state-bucket
       # -- Key path to Terraform state file within the bucket
