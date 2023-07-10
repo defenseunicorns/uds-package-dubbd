@@ -23,8 +23,6 @@ data "aws_region" "current" {}
 
 locals {
   oidc_url_without_protocol = substr(data.aws_eks_cluster.existing.identity[0].oidc[0].issuer, 8, -1)
-  # removes "https://"
-  oidc_arn                  = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/${local.oidc_url_without_protocol}"
 
   generate_kms_key = var.create_kms_key ? 1 : 0
   kms_key_arn      = var.kms_key_arn == null ? module.generate_kms[0].kms_key_arn : var.kms_key_arn
@@ -33,38 +31,64 @@ locals {
   # kms_key_arn               = var.kms_key_arn == "" ? module.generate_kms[0].kms_key_arn : var.kms_key_arn
 }
 
-moved {
-  from = module.S3.module.irsa.aws_iam_role.this[0]
-  to   = module.S3.module.irsa[0].aws_iam_role.this[0]
-}
-
-moved {
-  from = module.S3.module.irsa_policy.aws_iam_policy.policy[0]
-  to   = module.S3.module.irsa_policy[0].aws_iam_policy.policy[0]
-}
-
 module "S3" {
-  source                     = "github.com/defenseunicorns/terraform-aws-uds-s3?ref=v0.0.3"
-  name_prefix                = var.name
-  eks_oidc_provider_arn      = local.oidc_arn
-  kubernetes_service_account = "logging-loki"
-  kubernetes_namespace       = "logging"
-  kms_key_arn                = local.kms_key_arn
-  force_destroy              = var.force_destroy
-  create_bucket_lifecycle     = true
+  source                  = "github.com/defenseunicorns/terraform-aws-uds-s3?ref=v0.0.3"
+  name_prefix             = var.name
+  kms_key_arn             = local.kms_key_arn
+  force_destroy           = var.force_destroy
+  create_bucket_lifecycle = true
+  create_irsa             = false
+  eks_oidc_provider_arn   = "" // Upgrade to v0.0.4 should allow us to remove this
 }
 
 module "generate_kms" {
   count  = local.generate_kms_key
   source = "github.com/defenseunicorns/terraform-aws-uds-kms?ref=v0.0.1"
 
-  key_owners                = var.key_owner_arns
+  key_owners = var.key_owner_arns
   # A list of IAM ARNs for those who will have full key permissions (`kms:*`)
-  kms_key_alias_name_prefix = "${var.name}-loki-"                     # Prefix for KMS key alias.
+  kms_key_alias_name_prefix = "${var.name}-loki-" # Prefix for KMS key alias.
   kms_key_deletion_window   = 7
   # Waiting period for scheduled KMS Key deletion. Can be 7-30 days.
-  kms_key_description       = "${var.name} DUBBD deployment Loki Key" # Description for the KMS key.
-  tags                      = {
+  kms_key_description = "${var.name} DUBBD deployment Loki Key" # Description for the KMS key.
+  tags = {
     Deployment = "UDS DUBBD ${var.name}"
   }
+}
+
+module "irsa" {
+  source                        = "github.com/defenseunicorns/terraform-aws-uds-irsa?ref=v0.0.1"
+  name                          = var.name
+  provider_url                  = local.oidc_url_without_protocol
+  oidc_fully_qualified_subjects = ["system:serviceaccount:logging:logging-loki"]
+  policy_arns                   = [aws_iam_policy.loki_policy.arn]
+}
+
+resource "aws_iam_policy" "loki_policy" {
+  name        = "LokiPolicy-${random_id.default.hex}"
+  path        = "/"
+  description = "IAM policy for Loki to have necessary permissions to use S3 for storing logs."
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = ["s3:ListBucket"]
+        Resource = ["arn:${data.aws_partition.current.partition}:s3:::${module.S3.s3_bucket}"]
+      },
+      {
+        Effect   = "Allow"
+        Action   = ["s3:*Object"]
+        Resource = ["arn:${data.aws_partition.current.partition}:s3:::${module.S3.s3_bucket}/*"]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "kms:GenerateDataKey",
+          "kms:Decrypt"
+        ]
+        Resource = ["${local.kms_key_arn}"]
+      }
+    ]
+  })
 }

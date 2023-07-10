@@ -2,8 +2,8 @@ output "aws_region" {
   value = data.aws_region.current.name
 }
 
-output "irsa_role" {
-  value = module.S3.irsa_role
+output "irsa_role_arn" {
+  value = module.irsa.role_arn
 }
 
 output "s3" {
@@ -12,11 +12,6 @@ output "s3" {
 
 output "s3_bucket" {
   value = module.S3.s3_bucket
-}
-
-output "eks_cluster_oidc_arn" {
-  description = "The ARN of the OIDC Provider of the EKS Cluster"
-  value       = local.oidc_arn
 }
 
 output "kms_key_arn" {
