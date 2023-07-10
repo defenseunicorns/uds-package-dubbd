@@ -169,6 +169,72 @@ components:
             dir: run/loki
             setVariables:
               - name: LOKI_S3_ROLE_ARN
+  - name: route53-policy-pre
+    required: true
+    actions:
+     onDeploy:
+      before:
+        - cmd: echo "route53-policy"
+          setVariables:
+            - name: STATE_KEY_PREFIX
+        - cmd: echo "${ZARF_VAR_STATE_KEY_PREFIX}-${ZARF_VAR_STATE_KEY}"
+          setVariables:
+            - name: ROUTE53_POLICY_STATE_KEY
+  - name: route53-policy-module
+    required: true
+    actions:
+      onCreate:
+        before:
+          - cmd: terraform get -update
+            dir: ../route53-policy
+    files:
+    - source: ../route53-policy/.terraform
+      target: run/route53-policy/.terraform
+    - source: ../route53-policy/main.tf
+      target: run/route53-policy/main.tf
+    - source: ../route53-policy/variables.tf
+      target: run/route53-policy/variables.tf
+    - source: ../route53-policy/output.tf
+      target: run/route53-policy/output.tf
+    - source: ../route53-policy/terraform.tfvars
+      target: run/route53-policy/terraform.tfvars
+  - name: execute-route53-policy-terraform
+    required: true
+    actions:
+      onDeploy:
+        before:
+          - cmd: "test -d ./route53-policy/ && chmod -R ugo+rwx ./route53-policy/ || echo $?"
+            dir: run
+          - cmd: |
+              terraform init -force-copy \
+              -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
+              -backend-config="key=${ZARF_VAR_ROUTE53_POLICY_STATE_KEY}" \
+              -backend-config="region=${ZARF_VAR_REGION}" \
+              -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
+            dir: run/route53-policy
+          - cmd: "terraform plan"
+            dir: run/route53-policy
+          - cmd: sleep 15 #time to review
+          - cmd: "terraform apply -auto-approve"
+            dir: run/route53-policy
+      onRemove:
+        before:
+          - cmd: |
+              if [ -d "run/route53-policy" ]; then
+                cd run/route53-policy
+                terraform destroy -auto-approve
+              else
+                echo "Cannot remove: run/route53-policy directory does not exist"
+              fi
+  - name: route53-policy-outputs
+    required: true
+    actions:
+      onDeploy:
+        after:
+          - cmd: "terraform output -raw route53_role_arn"
+            dir: run/route53-policy
+            setVariables:
+              - name: ROUTE53_ROLE_ARN
   - name: zarf-init
     required: true
     actions:
@@ -211,6 +277,9 @@ components:
       onDeploy:
         before:
           - cmd: |
+              ./zarf tools kubectl label ns -l app.kubernetes.io/part-of=dubbd-aws zarf.dev/agent-
+            description: "Remove Zarf ignore namespace labels for DUBBD AWS"
+          - cmd: |
               if [ "$(./zarf tools kubectl get svc -n istio-system admin-ingressgateway -o jsonpath='{.metadata.annotations.service\.beta\.kubernetes\.io/aws-load-balancer-internal}' 2>/dev/null)" = "${ZARF_VAR_PRIVATE_ADMIN_LB}" ]; then
                 echo false
               else
@@ -230,6 +299,14 @@ components:
             mute: true
             setVariables:
               - name: TENANT_INGRESS_UPDATE
+  - name: external-dns-k8s-manifests
+    required: true
+    import:
+      path: ../external-dns
+  - name: external-dns-chart
+    required: true
+    import:
+      path: ../external-dns
   - name: dubbd-upgrade
     required: true
     actions:

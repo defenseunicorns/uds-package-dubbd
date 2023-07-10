@@ -11,7 +11,14 @@ Pre-built Zarf Package of [DoD-Platform-One/big-bang](https://github.com/DoD-Pla
 ## DUBBD repo details
 
 - [aws](./aws/) - _DUBBD for aws (EKS)_
+  - cloudtrail - _iac for cloudtrail_
+  - [dubbd-aws](./aws/dubbd-aws) - _DUBBD package for aws (imports DUBBD base)_
+  - eks - _iac for EKS_
+  - external-dns - _external-dns package_
+  - k8s-manifests - _k8s manifest files for aws_
   - loki - _iac for loki_
+  - route53-policy - _iac for route53_
+  - [uds-core-aws](./aws/uds-core-aws) - _UDS core package for aws (imports DUBBD aws)_
   - values - _values file overrides for aws_
 - [defense-unicorns-distro](./defense-unicorns-distro/) - _base DUBBD package definition_
   - manifests - _k8s manifests_
