@@ -6,7 +6,8 @@
 - AWS EKS cluster -- K8s v1.26+
 - AWS EKS cluster has Zarf init package deployed (with `git-server` component)
 - Local K8s context is pointing to the above cluster
-- Existing S3 bucket with a Terraform state file present and DynamoDB table for state locking
+- Existing AWS S3 bucket with a Terraform state file present and AWS DynamoDB table for state locking
+- AWS Route53 hosted DNS zone (matching the `domain` that will be used in the DUBBD-AWS configuration)
 - A `~/.docker/config.json` file. Zarf [currently requires this](https://github.com/defenseunicorns/zarf/issues/1795) to deploy from an OCI registry
 
 ## Build the package (optional)
