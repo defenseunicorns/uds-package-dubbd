@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.4.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.4.0...v0.4.1) (2023-07-10)
+
+
+### Features
+
+* add external-dns ([#346](https://github.com/defenseunicorns/uds-package-dubbd/issues/346)) ([3428065](https://github.com/defenseunicorns/uds-package-dubbd/commit/342806501a03f33feb97ba4d351bf6e9c3b69b68))
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.298 ([#349](https://github.com/defenseunicorns/uds-package-dubbd/issues/349)) ([9da2a21](https://github.com/defenseunicorns/uds-package-dubbd/commit/9da2a21d097c48d9fe865a3413f5c4c83fbaa868))
+
+
+### Miscellaneous
+
+* **deps:** bump google.golang.org/grpc from 1.51.0 to 1.53.0 in /aws/cloudtrail/test ([#361](https://github.com/defenseunicorns/uds-package-dubbd/issues/361)) ([10b202d](https://github.com/defenseunicorns/uds-package-dubbd/commit/10b202de072d03a17ef151b35bf903d7edf04d13))
+* **deps:** bump google.golang.org/grpc from 1.51.0 to 1.53.0 in /aws/eks/test ([#362](https://github.com/defenseunicorns/uds-package-dubbd/issues/362)) ([3dc2fd8](https://github.com/defenseunicorns/uds-package-dubbd/commit/3dc2fd8f0abae06cb04eb918ad48e982785a2755))
+
 ## [0.4.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.3.0...v0.4.0) (2023-07-06)
 
 
