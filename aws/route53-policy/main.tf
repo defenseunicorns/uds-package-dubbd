@@ -2,8 +2,8 @@ provider "aws" {
 }
 
 terraform {
-  backend "s3" {
-  }
+#  backend "s3" {
+#  }
 }
 
 data "aws_eks_cluster" "existing" {
@@ -12,13 +12,18 @@ data "aws_eks_cluster" "existing" {
 
 data "aws_partition" "current" {}
 
-module "iam_assumable_role_admin" {
-  source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version                       = "5.27.0"
-  create_role                   = true
-  role_name                     = "external-dns-role-${var.name}"
-  provider_url                  = substr(data.aws_eks_cluster.existing.identity[0].oidc[0].issuer, 8, -1)
-  role_policy_arns              = [length(aws_iam_policy.external_dns) >= 1 ? aws_iam_policy.external_dns.arn : ""]
+# using du irsa module
+module "irsa" {
+  source = "github.com/defenseunicorns/terraform-aws-uds-irsa?ref=v0.0.1"
+
+  name = "external-dns-role-${var.name}"
+
+  policy_arns = [
+   length(aws_iam_policy.external_dns) >= 1 ? aws_iam_policy.external_dns.arn : ""
+  ]
+
+  provider_url = substr(data.aws_eks_cluster.existing.identity[0].oidc[0].issuer, 8, -1)
+
   oidc_fully_qualified_subjects = ["system:serviceaccount:external-dns:external-dns"]
 }
 
