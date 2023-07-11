@@ -53,6 +53,7 @@ components:
               else
                 echo "${ZARF_VAR_LOKI_FORCE_DESTROY}"
               fi
+            mute: true
             setVariables:
               - name: LOKI_FORCE_DESTROY
   - name: download-terraform
