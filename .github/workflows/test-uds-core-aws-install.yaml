@@ -36,7 +36,7 @@ jobs:
           SHA: ${{ github.sha }}
         run: |
           zarf package deploy zarf-package-uds-core-aws-*.tar.zst \
-            --set loki_force_destroy=true \
+            --set ephemeral=true \
             --set vpc_id=vpc-03c1cd73aece8bfea \
             --set vpc_cidr=192.168.0.0/16 \
             --set private_subnets=subnet-065bdf771fa18e8be,subnet-053b6dab6cf6276ea,subnet-0f381300221588640 \

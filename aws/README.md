@@ -55,7 +55,9 @@ package:
       private_admin_lb: true
       # -- Provision a private/internal load balancer for the tenant ingress gateway, if false a public load balancer will be provisioned
       private_tenant_lb: true
-      # -- if set to true, delete the S3 bucket and corresponding KMS key associated with the Loki bucket
+      # -- If set to true, force delete all resources on removal (i.e. loki S3 bucket, PVCs, etc)
+      ephemeral: false
+      # -- If set to true, delete the S3 bucket and corresponding KMS key associated with the Loki bucket. Overrides ephemeral setting.
       #loki_force_destroy: "true"
 ```
 
