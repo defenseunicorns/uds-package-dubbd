@@ -35,11 +35,27 @@ variables:
   description: "Provision a private/internal load balancer for the tenant ingress gateway"
   default: "true"
 
-- name: LOKI_FORCE_DESTROY
-  description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data"
+- name: EPHEMERAL
+  description: "Set whether the cluster should be considered ephemeral - if true all resources will be force destroyed on removal"
   default: "false"
+- name: LOKI_FORCE_DESTROY
+  description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data, overrides ephemeral setting"
 
 components:
+  - name: set-ephemeral
+    required: true
+    actions:
+      onDeploy:
+        before:
+          - cmd: |
+              if [ -z "${ZARF_VAR_LOKI_FORCE_DESTROY}" ]; then
+                echo "${ZARF_VAR_EPHEMERAL}"
+              else
+                echo "${ZARF_VAR_LOKI_FORCE_DESTROY}"
+              fi
+            mute: true
+            setVariables:
+              - name: LOKI_FORCE_DESTROY
   - name: download-terraform
     required: true
     actions:
