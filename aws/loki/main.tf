@@ -32,13 +32,12 @@ locals {
 }
 
 module "S3" {
-  source                  = "github.com/defenseunicorns/terraform-aws-uds-s3?ref=v0.0.3"
+  source                  = "github.com/defenseunicorns/terraform-aws-uds-s3?ref=v0.0.4"
   name_prefix             = var.name
   kms_key_arn             = local.kms_key_arn
   force_destroy           = var.force_destroy
   create_bucket_lifecycle = true
   create_irsa             = false
-  eks_oidc_provider_arn   = "" // Upgrade to v0.0.4 should allow us to remove this
 }
 
 module "generate_kms" {
