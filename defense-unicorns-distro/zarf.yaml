@@ -44,6 +44,9 @@ variables:
 - name: SLACK_CHANNEL
   default: "#alerts"
   description: Slack channel for alerts
+- name: EPHEMERAL
+  description: "Set whether the cluster should be considered ephemeral - if true all resources will be force destroyed on removal"
+  default: "false"
 
 components:
   - name: load-certs
@@ -187,6 +190,12 @@ components:
               ./zarf tools kubectl delete helmrelease -n bigbang metrics-server --ignore-not-found
               ./zarf tools kubectl delete apiservices.apiregistration.k8s.io -l helm.toolkit.fluxcd.io/namespace=bigbang,helm.toolkit.fluxcd.io/name=metrics-server --ignore-not-found
               ./zarf tools kubectl delete gitrepositories -n bigbang -l app.kubernetes.io/part-of=bigbang
+              if [ "${ZARF_VAR_EPHEMERAL}" = "true" ]; then
+                ./zarf tools kubectl delete pvc -n logging -l app.kubernetes.io/name=logging-loki
+                ./zarf tools kubectl delete pvc -n monitoring -l app.kubernetes.io/name=grafana
+                ./zarf tools kubectl delete pvc -n monitoring -l app.kubernetes.io/name=prometheus
+                ./zarf tools kubectl delete pvc -n tempo -l app.kubernetes.io/name=tempo
+              fi
             description: "Cleaning up Big Bang resources"
     files:
       - source: scripts/on_failure.sh

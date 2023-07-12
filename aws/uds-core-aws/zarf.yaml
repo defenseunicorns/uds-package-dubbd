@@ -40,8 +40,6 @@ variables:
   - name: EPHEMERAL
     description: "Set whether the cluster should be considered ephemeral - if true all resources will be force destroyed on removal"
     default: "false"
-  - name: LOKI_FORCE_DESTROY
-    description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data, overrides ephemeral setting"
 
   - name: VPC_CIDR
     description: "VPC CIDR block"
@@ -241,6 +239,14 @@ components:
             dir: run/route53-policy
             setVariables:
               - name: ROUTE53_ROLE_ARN
+  - name: storage-class
+    required: true
+    import:
+      path: ../dubbd-aws
+    actions:
+      onDeploy:
+        after:
+          - cmd: "./zarf tools kubectl patch storageclass dubbd-default-gp3 -p '{\"metadata\": {\"annotations\":{\"storageclass.kubernetes.io/is-default-class\":\"false\"}}}'"
   - name: zarf-init
     required: true
     actions:

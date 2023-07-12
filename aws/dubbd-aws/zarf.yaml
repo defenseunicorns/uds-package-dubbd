@@ -38,8 +38,6 @@ variables:
 - name: EPHEMERAL
   description: "Set whether the cluster should be considered ephemeral - if true all resources will be force destroyed on removal"
   default: "false"
-- name: LOKI_FORCE_DESTROY
-  description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data, overrides ephemeral setting"
 
 components:
   - name: set-ephemeral
@@ -238,10 +236,6 @@ components:
     required: true
     import:
       path: ../../defense-unicorns-distro
-    manifests:
-      - name: storage-class
-        files:
-          - ../k8s-manifests/dubbd-storage-class.yaml
   - name: download-flux
     required: true
     import:
@@ -250,12 +244,17 @@ components:
     required: true
     actions:
       onDeploy:
-        before:
-          - cmd: ./zarf tools kubectl get csidrivers eds.csi.aws.com >/dev/null 2>&1 && echo true || echo false
+        after:
+          - cmd: ./zarf tools kubectl get csidrivers ebs.csi.aws.com >/dev/null 2>&1 && (./zarf tools kubectl apply -f dubbd-storage-class.yaml >/dev/null 2>&1 && echo dubbd-default-gp3) || echo ""
             mute: true
-            description: "Detect if EBS CSI Driver is available"
+            description: "Determine storage class to use"
             setVariables:
-              - name: EBS_CSI_INSTALLED
+              - name: STORAGE_CLASS_NAME
+          - cmd: rm -rf dubbd-storage-class.yaml
+            mute: true
+    files:
+      - source: ../k8s-manifests/dubbd-storage-class.yaml
+        target: dubbd-storage-class.yaml
   - name: bigbang
     required: true
     import:
@@ -266,6 +265,7 @@ components:
         valuesFiles:
         - ../values/aws-istio.yaml
         - ../values/aws-loki.yaml
+        - ../values/aws-storage-class.yaml
     actions:
       onDeploy:
         before:
