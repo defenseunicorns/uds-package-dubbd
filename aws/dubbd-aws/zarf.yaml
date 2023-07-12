@@ -56,6 +56,19 @@ components:
             mute: true
             setVariables:
               - name: LOKI_FORCE_DESTROY
+          - cmd: |
+              if [ -z "${ZARF_VAR_PVC_POLICY}" ]; then
+                if [ "${ZARF_VAR_EPHEMERAL}" = "true" ]; then
+                  echo "Delete"
+                else
+                  echo "Retain"
+                fi
+              else
+                echo "${ZARF_VAR_PVC_POLICY}"
+              fi
+            mute: true
+            setVariables:
+              - name: PVC_POLICY
   - name: download-terraform
     required: true
     actions:
@@ -225,10 +238,24 @@ components:
     required: true
     import:
       path: ../../defense-unicorns-distro
+    manifests:
+      - name: storage-class
+        files:
+          - ../k8s-manifests/dubbd-storage-class.yaml
   - name: download-flux
     required: true
     import:
       path: ../../defense-unicorns-distro
+  - name: storage-class
+    required: true
+    actions:
+      onDeploy:
+        before:
+          - cmd: ./zarf tools kubectl get csidrivers eds.csi.aws.com >/dev/null 2>&1 && echo true || echo false
+            mute: true
+            description: "Detect if EBS CSI Driver is available"
+            setVariables:
+              - name: EBS_CSI_INSTALLED
   - name: bigbang
     required: true
     import:

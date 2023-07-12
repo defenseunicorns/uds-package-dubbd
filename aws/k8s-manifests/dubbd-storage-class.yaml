@@ -1,0 +1,10 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: dubbd-default-gp3
+allowVolumeExpansion: true
+provisioner: kubernetes.io/aws-ebs
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+  type: gp3
+reclaimPolicy: "###ZARF_VAR_PVC_POLICY###"
