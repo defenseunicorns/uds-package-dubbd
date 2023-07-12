@@ -44,7 +44,7 @@ variables:
     description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data, overrides ephemeral setting"
 
   - name: EXEMPT_NAMESPACES
-    description: "Regex of namespaces to be exempt from cluster policies"
+    description: "List of namespaces to be exempt from cluster policies (must contain zarf)"
     default: '[ "zarf", "calico-apiserver", "calico-system", "tigera-operator" ]'
 
   - name: VPC_CIDR
