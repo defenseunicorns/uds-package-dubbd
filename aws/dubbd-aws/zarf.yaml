@@ -222,6 +222,7 @@ components:
         version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
         valuesFiles:
         - ../values/aws-istio.yaml
+        - ../values/aws-kyverno.yaml
         - ../values/aws-loki.yaml
     actions:
       onDeploy:

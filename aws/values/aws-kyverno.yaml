@@ -1,0 +1,9 @@
+kyvernoPolicies:
+  values:
+    exclude:
+      any:
+      - resources:
+          namespaces:
+          - calico-apiserver
+          - calico-system
+          - tigera-operator
