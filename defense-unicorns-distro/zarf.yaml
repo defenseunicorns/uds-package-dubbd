@@ -3,7 +3,7 @@ metadata:
   name: dubbd
   description: "Defense Unicorns Big Bang Distro"
   # x-release-please-start-version
-  version: "0.3.0"
+  version: "0.4.1"
   # x-release-please-end
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/Big_Bang_Color_Logo_White_text.b10a1bae.webp
@@ -183,6 +183,7 @@ components:
               ./zarf tools kubectl delete helmrelease -n bigbang kyverno-policies --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang kyverno --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete validatingwebhookconfigurations.admissionregistration.k8s.io kyverno-policy-validating-webhook-cfg kyverno-resource-validating-webhook-cfg --ignore-not-found --timeout=20m
+              ./zarf tools kubectl delete mutatingwebhookconfiguration.admissionregistration.k8s.io -l webhook.kyverno.io/managed-by=kyverno --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang kiali --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang metrics-server --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete apiservices.apiregistration.k8s.io -l helm.toolkit.fluxcd.io/namespace=bigbang,helm.toolkit.fluxcd.io/name=metrics-server --ignore-not-found --timeout=20m

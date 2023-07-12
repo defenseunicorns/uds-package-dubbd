@@ -1,5 +1,49 @@
 # Changelog
 
+## [0.4.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.4.0...v0.4.1) (2023-07-10)
+
+
+### Features
+
+* add external-dns ([#346](https://github.com/defenseunicorns/uds-package-dubbd/issues/346)) ([3428065](https://github.com/defenseunicorns/uds-package-dubbd/commit/342806501a03f33feb97ba4d351bf6e9c3b69b68))
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.298 ([#349](https://github.com/defenseunicorns/uds-package-dubbd/issues/349)) ([9da2a21](https://github.com/defenseunicorns/uds-package-dubbd/commit/9da2a21d097c48d9fe865a3413f5c4c83fbaa868))
+
+
+### Miscellaneous
+
+* **deps:** bump google.golang.org/grpc from 1.51.0 to 1.53.0 in /aws/cloudtrail/test ([#361](https://github.com/defenseunicorns/uds-package-dubbd/issues/361)) ([10b202d](https://github.com/defenseunicorns/uds-package-dubbd/commit/10b202de072d03a17ef151b35bf903d7edf04d13))
+* **deps:** bump google.golang.org/grpc from 1.51.0 to 1.53.0 in /aws/eks/test ([#362](https://github.com/defenseunicorns/uds-package-dubbd/issues/362)) ([3dc2fd8](https://github.com/defenseunicorns/uds-package-dubbd/commit/3dc2fd8f0abae06cb04eb918ad48e982785a2755))
+
+## [0.4.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.3.0...v0.4.0) (2023-07-06)
+
+
+### Features
+
+* document local dev env setup and uds iac quick start as an onboarding resource ([#279](https://github.com/defenseunicorns/uds-package-dubbd/issues/279)) ([84d47d2](https://github.com/defenseunicorns/uds-package-dubbd/commit/84d47d23c5de37914465cbae84347ec76d5e1921))
+* add cloudtrail ([#339](https://github.com/defenseunicorns/uds-package-dubbd/issues/339)) ([94b771c](https://github.com/defenseunicorns/uds-package-dubbd/commit/94b771c1ce802f9ef62a5ec4084a0e522c0fecd7))
+* Adds HPA for istiod, modified HPA for kiali ([#353](https://github.com/defenseunicorns/uds-package-dubbd/issues/353)) ([c5d6732](https://github.com/defenseunicorns/uds-package-dubbd/commit/c5d6732c7e6ffba7c74bdd4645aeef8a486f3392))
+* enable auto_scan for neuvector by default ([#319](https://github.com/defenseunicorns/uds-package-dubbd/issues/319)) ([42c44e8](https://github.com/defenseunicorns/uds-package-dubbd/commit/42c44e85962eda61e9f02e2eeb4a9f0e2f6d50d2))
+
+
+### Bug Fixes
+
+* disable telemetry for neuvector ([#355](https://github.com/defenseunicorns/uds-package-dubbd/issues/355)) ([fca32e0](https://github.com/defenseunicorns/uds-package-dubbd/commit/fca32e0afe010eaa03a8fa40d9f3edf2c79db389))
+* make admin ingress configurable ([#316](https://github.com/defenseunicorns/uds-package-dubbd/issues/316)) ([f78f388](https://github.com/defenseunicorns/uds-package-dubbd/commit/f78f388708a86538afa470681e9892354af4819f))
+* update conditionals on ingress upgrade to fix syntax ([#309](https://github.com/defenseunicorns/uds-package-dubbd/issues/309)) ([01167a6](https://github.com/defenseunicorns/uds-package-dubbd/commit/01167a69006cd50c1f8c5fd5d84a171ab449567d))
+* Update workflow path filters ([#320](https://github.com/defenseunicorns/uds-package-dubbd/issues/320)) ([18c47cd](https://github.com/defenseunicorns/uds-package-dubbd/commit/18c47cd57d60c833e9db9e7fbd25fbf177800516))
+
+
+### Miscellaneous
+
+* **deps:** update defenseunicorns/uds-aws-ci-k3d action to v0.0.3 ([#344](https://github.com/defenseunicorns/uds-package-dubbd/issues/344)) ([bb04cc2](https://github.com/defenseunicorns/uds-package-dubbd/commit/bb04cc2a9be1e8e727859998d0a3b8c8d589db60))
+* **deps:** update docker image quay.io/metallb/controller to v0.13.10 [ci-skip] ([#310](https://github.com/defenseunicorns/uds-package-dubbd/issues/310)) ([702c15a](https://github.com/defenseunicorns/uds-package-dubbd/commit/702c15a98b97d8d864b5b72042f176423f16b611))
+* **deps:** update docker image quay.io/metallb/speaker to v0.13.10 [ci-skip] ([#311](https://github.com/defenseunicorns/uds-package-dubbd/issues/311)) ([c86883f](https://github.com/defenseunicorns/uds-package-dubbd/commit/c86883f200d8b2249e42d6d86ee4bcda6d42a85d))
+* **deps:** update gitlab tag big-bang/bigbang to v2.5.0 ([#351](https://github.com/defenseunicorns/uds-package-dubbd/issues/351)) ([3369cbe](https://github.com/defenseunicorns/uds-package-dubbd/commit/3369cbef71edc38d9aaa1e18b83230f9221072cc))
+
 ## [0.3.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.2.4...v0.3.0) (2023-06-21)
 
 

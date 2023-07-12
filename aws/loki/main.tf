@@ -33,14 +33,25 @@ locals {
   # kms_key_arn               = var.kms_key_arn == "" ? module.generate_kms[0].kms_key_arn : var.kms_key_arn
 }
 
+moved {
+  from = module.S3.module.irsa.aws_iam_role.this[0]
+  to   = module.S3.module.irsa[0].aws_iam_role.this[0]
+}
+
+moved {
+  from = module.S3.module.irsa_policy.aws_iam_policy.policy[0]
+  to   = module.S3.module.irsa_policy[0].aws_iam_policy.policy[0]
+}
+
 module "S3" {
-  source                     = "github.com/defenseunicorns/terraform-aws-uds-s3?ref=v0.0.1"
+  source                     = "github.com/defenseunicorns/terraform-aws-uds-s3?ref=v0.0.3"
   name_prefix                = var.name
   eks_oidc_provider_arn      = local.oidc_arn
   kubernetes_service_account = "logging-loki"
   kubernetes_namespace       = "logging"
   kms_key_arn                = local.kms_key_arn
   force_destroy              = var.force_destroy
+  create_bucket_lifecycle     = true
 }
 
 module "generate_kms" {

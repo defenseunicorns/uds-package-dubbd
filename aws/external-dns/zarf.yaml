@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
+kind: ZarfPackageConfig
+metadata:
+  name: dubbd-aws-external-dns-helm-chart
+  description: "Defense Unicorns Big Bang Distro - External DNS Helm Chart"
+  # x-release-please-start-version
+  version: "0.4.1"
+  # x-release-please-end
+  url: https://github.com/kubernetes-sigs/external-dns
+  # Big Bang / Iron Bank are only amd64
+  architecture: amd64
+  
+variables:
+- name: DOMAIN
+  description: "Name of domain to use for the DNS zone"
+  default: "bigbang.dev"
+- name: ROUTE53_ROLE_ARN
+  description: "ROUTE53_ROLE_ARN"
+
+components:
+  - name: external-dns-k8s-manifests
+    required: true
+    manifests:
+      - name: k8s-manifests
+        files:
+          - ../k8s-manifests/aws-external-dns-ns.yaml
+  - name: external-dns-chart
+    required: true
+    charts:
+      # https://artifacthub.io/packages/helm/external-dns/external-dns
+      # renovate: datasource=helm
+      - name: external-dns
+        url: https://kubernetes-sigs.github.io/external-dns
+        version: 1.13.0
+        namespace: external-dns
+        releaseName: external-dns
+        valuesFiles:
+        - ../values/aws-external-dns.yaml
+    images:
+      # renovate: datasource=docker
+      - "registry1.dso.mil/ironbank/external-dns:v0.13.4"

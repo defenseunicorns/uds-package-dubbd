@@ -7,7 +7,8 @@ on:
     paths:
       - "aws/eks/**"
       - "aws/uds-core-aws"
-      - "!*.md"
+      - "!**/*.md"
+      - ".github/workflows/ci-on-pull-request-uds-core-aws.yaml"
   workflow_call:
 
 jobs:

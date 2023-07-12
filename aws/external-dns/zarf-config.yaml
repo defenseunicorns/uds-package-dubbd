@@ -1,0 +1,7 @@
+package:
+  create:
+    max_package_size: "1000000000"
+  deploy:
+    set:
+      domain: bigbang.dev
+      route53_role_arn: "arn:aws:iam::000000000000:role/iamserviceaccount-role"

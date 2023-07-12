@@ -4,9 +4,15 @@
       "release-type": "simple",
       "draft": false,
       "changelog-path": "CHANGELOG.md",
+      "changelog-sections": [
+        { "type": "feat", "section": "Features", "hidden": false },
+        { "type": "fix", "section": "Bug Fixes", "hidden": false },
+        { "type": "chore", "section": "Miscellaneous", "hidden": false }
+      ],
       "versioning": "always-bump-patch",
       "extra-files": [
         "aws/dubbd-aws/zarf.yaml",
+        "aws/external-dns/zarf.yaml",
         "defense-unicorns-distro/zarf.yaml",
         "k3d/zarf.yaml"
       ]
