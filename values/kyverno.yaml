@@ -1,5 +1,9 @@
 kyvernoPolicies:
   values:
+    exclude:
+      any:
+      - resources:
+          namespaces: ###ZARF_VAR_EXEMPT_NAMESPACES###
     policies:
       restrict-image-registries:
         parameters:
@@ -8,4 +12,3 @@ kyvernoPolicies:
           - registry.dso.mil
           - 127.0.0.1 # zarf registry
           - "###ZARF_VAR_APPROVED_REGISTRIES###"
-
