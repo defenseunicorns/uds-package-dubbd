@@ -29,7 +29,7 @@ jobs:
         uses: defenseunicorns/setup-zarf@main
         with:
           # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
-          version: v0.27.1
+          version: v0.28.2
           download-init-package: true
 
       - name: Login to Registry1
