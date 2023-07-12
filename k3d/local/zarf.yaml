@@ -66,8 +66,8 @@ components:
         files:
           - manifests/metallb/metallb-native.yaml
     images:
-      - quay.io/metallb/controller:v0.13.9
-      - quay.io/metallb/speaker:v0.13.9
+      - quay.io/metallb/controller:v0.13.10
+      - quay.io/metallb/speaker:v0.13.10
   - name: finish
     required: true
     actions:
