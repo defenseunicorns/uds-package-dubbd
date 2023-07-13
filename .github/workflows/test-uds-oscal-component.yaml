@@ -35,3 +35,18 @@ jobs:
       
       - name: Create UDS Core AWS OSCAL-Component File  
         run: ./component-generator/bin/component-generator aggregate --input .github/workflows/oscal/config-uds-core-aws-oscal-component.yaml
+      
+      - name: Clean Up
+        run: rm -rf component-generator
+
+      - name: Commit OSCAL-Component Files
+        run: |
+          git config --global user.email "no-reply@github.com"
+          git config --global user.name "GitHub Actions"
+          git add oscal-component.yaml aws/dubbd-aws/oscal-component.yaml aws/uds-core-aws/oscal-component.yaml
+          git commit -m "Add OSCAL"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git push origin ${{ github.ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
