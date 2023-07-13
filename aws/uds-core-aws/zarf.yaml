@@ -246,7 +246,7 @@ components:
     actions:
       onDeploy:
         after:
-          - cmd: "./zarf tools kubectl patch storageclass dubbd-default-gp3 -p '{\"metadata\": {\"annotations\":{\"storageclass.kubernetes.io/is-default-class\":\"false\"}}}'"
+          - cmd: "./zarf tools kubectl patch storageclass dubbd-default-gp3 -p '{\"metadata\": {\"annotations\":{\"storageclass.kubernetes.io/is-default-class\":\"true\"}}}'"
   - name: zarf-init
     required: true
     actions:

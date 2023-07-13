@@ -245,7 +245,12 @@ components:
     actions:
       onDeploy:
         after:
-          - cmd: ./zarf tools kubectl get csidrivers ebs.csi.aws.com >/dev/null 2>&1 && (./zarf tools kubectl apply -f dubbd-storage-class.yaml >/dev/null 2>&1 && echo dubbd-default-gp3) || echo ""
+          - cmd: |
+              if ./zarf tools kubectl get csidrivers ebs.csi.aws.com >/dev/null 2>&1 ; then
+                ./zarf tools kubectl apply -f dubbd-storage-class.yaml >/dev/null 2>&1 && echo dubbd-default-gp3
+              else
+                ./zarf tools kubectl get storageclass --output=jsonpath='{range .items[?(@.metadata.annotations.storageclass\.kubernetes\.io/is-default-class=="true")]}{.metadata.name}{end}'
+              fi
             mute: true
             description: "Determine storage class to use"
             setVariables:
@@ -292,6 +297,16 @@ components:
             mute: true
             setVariables:
               - name: TENANT_INGRESS_UPDATE
+      onRemove:
+        after:
+          - cmd: |
+              if [ "$(./zarf tools kubectl get storageclass dubbd-default-gp3 -o jsonpath='{.reclaimPolicy}' 2>/dev/null)" = "Delete" ]; then
+                ./zarf tools kubectl delete pvc -n logging -l app.kubernetes.io/name=logging-loki --ignore-not-found
+                ./zarf tools kubectl delete pvc -n monitoring -l app.kubernetes.io/name=grafana --ignore-not-found
+                ./zarf tools kubectl delete pvc -n monitoring -l app.kubernetes.io/name=prometheus --ignore-not-found
+                ./zarf tools kubectl delete pvc -n tempo -l app.kubernetes.io/name=tempo --ignore-not-found
+              fi
+            description: "Remove DUBBD ephemeral PVCs if required"
   - name: external-dns-k8s-manifests
     required: true
     import:
