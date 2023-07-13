@@ -1,0 +1,20 @@
+name: ./aws/dubbd-aws/oscal-component.yaml # Name of the generated file
+metadata: # OSCAL-compliant metadata
+  title: DUBBD AWS
+  version: 0.0.1
+  oscal-version: 1.0.4
+  parties:
+    - uuid: f3cf70f8-ba44-4e55-9ea3-389ef24847d3
+      name: Defense Unicorns
+      links:
+        - href: https://defenseunicorns.com
+          rel: website
+      type: organization
+components: # Define paths on the local filesystem or remote paths in git repositories to OSCAL component definition files
+  remote:
+    - git: https://repo1.dso.mil/big-bang/bigbang.git@2.5.0
+      path: oscal-component.yaml
+    - git: https://github.com/defenseunicorns/terraform-aws-uds-s3@main
+      path: oscal-component.yaml
+    - git: https://github.com/defenseunicorns/terraform-aws-uds-kms@main
+      path: oscal-component.yaml

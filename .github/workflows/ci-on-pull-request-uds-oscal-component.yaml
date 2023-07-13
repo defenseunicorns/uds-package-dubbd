@@ -1,0 +1,26 @@
+name: CI DUBBD OSCAL
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - ".gitignore"
+      - "LICENSE"
+      - "**/*.md"
+      - "**/*.json"
+      - "**/*.png"
+      - "**/*.svg"
+      - "aws/cloudtrail/**"
+      - "k3d/**"
+      - ".github/workflows/*k3d*.y*ml"
+      - ".github/workflows/*cloudtrail*.y*ml"
+      - ".github/workflows/*uds*.y*ml"
+
+  workflow_call:
+
+jobs:
+    test-release-oscal:
+        uses: ./.github/workflows/test-uds-oscal-component.yaml
+        secrets: inherit
+

@@ -12,9 +12,13 @@ on:
       - "**/*.png"
       - "**/*.svg"
       - "aws/**"
+      - "oscal-component.y*ml"
+      -  aws/dubbd-aws/oscal-component.y*ml
+      -  aws/uds-core-aws/oscal-component.y*ml
       - ".github/workflows/*aws*.y*ml"
       - ".github/workflows/*cloudtrail*.y*ml"
       - ".github/workflows/*uds*.y*ml"
+      - ".github/workflows/oscal/*oscal-component.y*ml"
 
 jobs:
   test-release:
