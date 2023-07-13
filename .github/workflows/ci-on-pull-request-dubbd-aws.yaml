@@ -15,8 +15,8 @@ on:
       - "aws/cloudtrail/**"
       - "k3d/**"
       - "oscal-component.y*ml"
-      -  aws/dubbd-aws/oscal-component.y@ml
-      -  aws/uds-core-aws/oscal-component.y@ml
+      -  aws/dubbd-aws/oscal-component.y*ml
+      -  aws/uds-core-aws/oscal-component.y*ml
       - ".github/workflows/*k3d*.y*ml"
       - ".github/workflows/*cloudtrail*.y*ml"
       - ".github/workflows/*uds*.y*ml"

@@ -1,6 +1,6 @@
 name: ./aws/uds-core-aws/oscal-component.yaml # Name of the generated file
 metadata: # OSCAL-compliant metadata
-  title: DUBBD
+  title: UDS Core AWS
   version: 0.0.1
   oscal-version: 1.0.4
   parties:
