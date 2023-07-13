@@ -14,11 +14,11 @@ components: # Define paths on the local filesystem or remote paths in git reposi
     remote:
     - git: https://repo1.dso.mil/big-bang/bigbang.git@2.5.0
       path: oscal-component.yaml
-    - git: https://github.com/defenseunicorns/terraform-aws-uds-s3
+    - git: https://github.com/defenseunicorns/terraform-aws-uds-s3@main
       path: oscal-component.yaml
-    - git: https://github.com/defenseunicorns/terraform-aws-uds-kms
+    - git: https://github.com/defenseunicorns/terraform-aws-uds-kms@main
       path: oscal-component.yaml
-    - git: https://github.com/defenseunicorns/terraform-aws-uds-vpc
+    - git: https://github.com/defenseunicorns/terraform-aws-uds-vpc@main
       path: oscal-component.yaml
-    - git: https://github.com/defenseunicorns/terraform-aws-uds-eks
+    - git: https://github.com/defenseunicorns/terraform-aws-uds-eks@main
       path: oscal-component.yaml

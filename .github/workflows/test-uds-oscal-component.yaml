@@ -12,18 +12,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Uses Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'
+
       - name: Download Component Generator
-        run: git clone https://github.com/defenseunicorns/component-generator.git
-      
-      - name: Create Component Generator
-        run: make build
+        run: |
+          git clone https://github.com/defenseunicorns/component-generator.git
+          cd component-generator/
+          make build
+          cd ..
 
       - name: Create DUBBD OSCAL-Componenet File
-        run: ./bin/component-generator aggregate --input ./oscal/config-dubbd-oscal-components.yaml
+        run: ./component-generator/bin/component-generator aggregate --input .github/workflows/oscal/config-dubbd-oscal-component.yaml
        
       - name: Create DUBBD AWS OSCAL-Component File  
-        run: ./bin/component-generator aggregate --input ./oscal/config-dubbd-aws-oscal-components.yaml
+        run: ./component-generator/bin/component-generator aggregate --input .github/workflows/oscal/config-dubbd-aws-oscal-component.yaml
       
       - name: Create UDS Core AWS OSCAL-Component File  
-        run: ./bin/component-generator aggregate --input ./oscal/config-uds-core-aws-oscal-components.yaml
-      
+        run: ./component-generator/bin/component-generator aggregate --input .github/workflows/oscal/config-uds-core-aws-oscal-component.yaml
