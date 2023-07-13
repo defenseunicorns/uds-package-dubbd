@@ -1,0 +1,29 @@
+name: Test DUBBD OSCAL
+
+on:
+  workflow_call:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  test-clean-install:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Component Generator
+        run: git clone https://github.com/defenseunicorns/component-generator.git
+      
+      - name: Create Component Generator
+        run: make build
+
+      - name: Create DUBBD OSCAL-Componenet File
+        run: ./bin/component-generator aggregate --input ./config-dubbd-oscal-components.yaml
+       
+      - name: Create DUBBD AWS OSCAL-Component File  
+        run: ./bin/component-generator aggregate --input ./config-dubbd-aws-oscal-components.yaml
+      
+      - name: Create UDS Core AWS OSCAL-Component File  
+        run: ./bin/component-generator aggregate --input ./config-uds-core-aws-oscal-components.yaml
+      
