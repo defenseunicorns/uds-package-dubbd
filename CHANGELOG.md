@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.4.2](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.4.1...v0.4.2) (2023-07-13)
+
+
+### Features
+
+* add kyverno ns exclude ([#393](https://github.com/defenseunicorns/uds-package-dubbd/issues/393)) ([dc5d924](https://github.com/defenseunicorns/uds-package-dubbd/commit/dc5d9243fe61c4c71cc67764bd008f1e87093c12))
+
+
+### Bug Fixes
+
+* Add 20 min timeout for bigbang onRemove ([#360](https://github.com/defenseunicorns/uds-package-dubbd/issues/360)) ([5de8134](https://github.com/defenseunicorns/uds-package-dubbd/commit/5de8134ed5f9ac5d7c133a4e9a4c5328446fab52))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.299 ([#386](https://github.com/defenseunicorns/uds-package-dubbd/issues/386)) ([9bea307](https://github.com/defenseunicorns/uds-package-dubbd/commit/9bea307a0d59be451b3a96de591646ab74867f34))
+* missing webhook deletion for kyverno ([7b6cf38](https://github.com/defenseunicorns/uds-package-dubbd/commit/7b6cf38937d8926d517608131a9ff1246fcc9ba4))
+
+
+### Miscellaneous
+
+* **deps:** update dependency defenseunicorns/zarf to v0.28.2 ([#341](https://github.com/defenseunicorns/uds-package-dubbd/issues/341)) ([e616375](https://github.com/defenseunicorns/uds-package-dubbd/commit/e6163755642aacc77ee9574d340560006d607bd0))
+
 ## [0.4.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.4.0...v0.4.1) (2023-07-10)
 
 
