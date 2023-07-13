@@ -47,6 +47,6 @@ jobs:
           git add .
           git commit -m "Add OSCAL"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          git push origin ${{ github.head_ref }}
+          git push --force origin ${{ github.head_ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
