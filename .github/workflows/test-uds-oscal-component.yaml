@@ -19,11 +19,11 @@ jobs:
         run: make build
 
       - name: Create DUBBD OSCAL-Componenet File
-        run: ./bin/component-generator aggregate --input ./config-dubbd-oscal-components.yaml
+        run: ./bin/component-generator aggregate --input ./oscal/config-dubbd-oscal-components.yaml
        
       - name: Create DUBBD AWS OSCAL-Component File  
-        run: ./bin/component-generator aggregate --input ./config-dubbd-aws-oscal-components.yaml
+        run: ./bin/component-generator aggregate --input ./oscal/config-dubbd-aws-oscal-components.yaml
       
       - name: Create UDS Core AWS OSCAL-Component File  
-        run: ./bin/component-generator aggregate --input ./config-uds-core-aws-oscal-components.yaml
+        run: ./bin/component-generator aggregate --input ./oscal/config-uds-core-aws-oscal-components.yaml
       

@@ -11,7 +11,6 @@ on:
       - "**/*.json"
       - "**/*.png"
       - "**/*.svg"
-      # - "aws/uds-core-aws/**" #Not 100% sure yet, may need to remove this since oscal is going to go there too.
       - "aws/cloudtrail/**"
       - "k3d/**"
       - ".github/workflows/*k3d*.y*ml"
@@ -22,9 +21,6 @@ on:
 
 jobs:
     test-release:
-        uses: ./.github/workflows/test-dubbd-aws-install.yaml
+        uses: ./.github/workflows/test-uds-oscal-component.yaml
         secrets: inherit
 
-    test-upgrade:
-        uses: ./.github/workflows/test-dubbd-aws-upgrade.yaml
-        secrets: inherit
