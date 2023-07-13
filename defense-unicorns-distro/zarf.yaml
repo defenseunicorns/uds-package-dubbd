@@ -24,6 +24,9 @@ variables:
   default: bigbang.dev.key
   description: "This file contains the key for the ingress gateways"
   prompt: false
+- name: EXEMPT_NAMESPACES
+  description: "List of namespaces to be exempt from cluster policies (must contain zarf)"
+  default: '[ "zarf" ]'
 - name: APPROVED_REGISTRIES
   description: "Regex of approved registries to allow in cluster"
   default: "127.0.0.1* | registry1.dso.mil"
