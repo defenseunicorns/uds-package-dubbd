@@ -41,6 +41,10 @@ variables:
     description: "Set whether the cluster should be considered ephemeral - if true all resources will be force destroyed on removal"
     default: "false"
 
+  - name: EXEMPT_NAMESPACES
+    description: "List of namespaces to be exempt from cluster policies (must contain zarf)"
+    default: '[ "zarf", "calico-apiserver", "calico-system", "tigera-operator" ]'
+
   - name: VPC_CIDR
     description: "VPC CIDR block"
   - name: VPC_ID
