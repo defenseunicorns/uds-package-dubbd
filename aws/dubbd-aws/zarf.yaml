@@ -38,6 +38,10 @@ variables:
 - name: EPHEMERAL
   description: "Set whether the cluster should be considered ephemeral - if true all resources will be force destroyed on removal"
   default: "false"
+- name: LOKI_FORCE_DESTROY
+  description: "If set to true, delete the S3 bucket and corresponding KMS key associated with the Loki bucket. Overrides ephemeral setting."
+- name: PVC_POLICY
+  description: "Affects DUBBD's default storage class reclaimPolicy, either `Retain` or `Delete`. No effect if EBS CSI Driver is not installed. Overrides ephemeral setting."
 
 - name: EXEMPT_NAMESPACES
   description: "List of namespaces to be exempt from cluster policies (must contain zarf)"
