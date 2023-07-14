@@ -6,11 +6,6 @@ terraform {
   }
 }
 
-# taken from zarf bb repo
-resource "random_id" "default" {
-  byte_length = 2
-}
-
 data "aws_eks_cluster" "existing" {
   name = var.name
 }
@@ -22,8 +17,6 @@ data "aws_partition" "current" {}
 data "aws_region" "current" {}
 
 locals {
-  oidc_url_without_protocol = substr(data.aws_eks_cluster.existing.identity[0].oidc[0].issuer, 8, -1)
-
   generate_kms_key = var.create_kms_key ? 1 : 0
   kms_key_arn      = var.kms_key_arn == null ? module.generate_kms[0].kms_key_arn : var.kms_key_arn
   # The conditional may need to look like this depending on how we decide to handle the way varf wants to template things
@@ -81,14 +74,14 @@ module "generate_kms" {
 
 module "irsa" {
   source                        = "github.com/defenseunicorns/terraform-aws-uds-irsa?ref=v0.0.1"
-  name                          = var.name
-  provider_url                  = local.oidc_url_without_protocol
+  name                          = "${var.name}-loki-irsa-role"
+  provider_url                  = substr(data.aws_eks_cluster.existing.identity[0].oidc[0].issuer, 8, -1)
   oidc_fully_qualified_subjects = ["system:serviceaccount:logging:logging-loki"]
   policy_arns                   = [aws_iam_policy.loki_policy.arn]
 }
 
 resource "aws_iam_policy" "loki_policy" {
-  name        = "LokiPolicy-${random_id.default.hex}"
+  name        = "${var.name}-loki-irsa-policy"
   path        = "/"
   description = "IAM policy for Loki to have necessary permissions to use S3 for storing logs."
   policy = jsonencode({
