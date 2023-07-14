@@ -102,8 +102,6 @@ components:
       target: run/loki/main.tf
     - source: ../loki/variables.tf
       target: run/loki/variables.tf
-    - source: ../loki/moved.tf
-      target: run/loki/moved.tf
     - source: ../loki/output.tf
       target: run/loki/output.tf
     - source: ../loki/terraform.tfvars

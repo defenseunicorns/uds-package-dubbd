@@ -32,12 +32,36 @@ locals {
 }
 
 module "S3" {
-  source                  = "github.com/defenseunicorns/terraform-aws-uds-s3?ref=v0.0.4"
+  source                  = "github.com/defenseunicorns/terraform-aws-uds-s3?ref=refactor-s3" # TODO: create v0.0.5 release
   name_prefix             = var.name
   kms_key_arn             = local.kms_key_arn
   force_destroy           = var.force_destroy
   create_bucket_lifecycle = true
-  create_irsa             = false
+}
+
+resource "aws_s3_bucket_policy" "bucket_policy" {
+  bucket = module.S3.bucket_name
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "s3:ListBucket",
+          "s3:GetObject",
+          "s3:PutObject"
+        ]
+        Effect = "Allow"
+        Principal = {
+          AWS = module.irsa.role_arn
+        }
+        Resource = [
+          module.S3.bucket_arn,
+          "${module.S3.bucket_arn}/*"
+        ]
+      }
+    ]
+  })
 }
 
 module "generate_kms" {
@@ -73,12 +97,12 @@ resource "aws_iam_policy" "loki_policy" {
       {
         Effect   = "Allow"
         Action   = ["s3:ListBucket"]
-        Resource = ["arn:${data.aws_partition.current.partition}:s3:::${module.S3.s3_bucket}"]
+        Resource = ["arn:${data.aws_partition.current.partition}:s3:::${module.S3.bucket_name}"]
       },
       {
         Effect   = "Allow"
         Action   = ["s3:*Object"]
-        Resource = ["arn:${data.aws_partition.current.partition}:s3:::${module.S3.s3_bucket}/*"]
+        Resource = ["arn:${data.aws_partition.current.partition}:s3:::${module.S3.bucket_name}/*"]
       },
       {
         Effect = "Allow"
