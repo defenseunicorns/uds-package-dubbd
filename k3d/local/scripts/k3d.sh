@@ -12,8 +12,8 @@ else
     --k3s-arg "--disable=traefik@server:*" \
     --k3s-arg "--disable=metrics-server@server:*" \
     --k3s-arg "--disable=servicelb@server:*" \
-    --port 443:443@loadbalancer \
-    --port 80:8080@loadbalancer \
+    --volume /tmp/dubbd:/var/lib/rancher/k3s/storage@all \
+    --volume /etc/machine-id:/etc/machine-id \
     ${K3D_CLUSTER_NAME}
 fi
 # Write or merge kubeconfig(s) from k3d cluster(s) into kubeconfig file,
