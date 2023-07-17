@@ -40,8 +40,10 @@ variables:
   default: "false"
 - name: LOKI_FORCE_DESTROY
   description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data, overrides ephemeral setting"
-- name: VELERO_FORCE_DESTROY
-  description: "Provide a means to force destroy the Velero storage (S3) bucket even if it contains data, overrides ephemeral setting"
+
+- name: EXEMPT_NAMESPACES
+  description: "List of namespaces to be exempt from cluster policies (must contain zarf)"
+  default: '[ "zarf", "calico-apiserver", "calico-system", "tigera-operator" ]'
 
 components:
   - name: set-ephemeral
@@ -55,6 +57,7 @@ components:
               else
                 echo "${ZARF_VAR_LOKI_FORCE_DESTROY}"
               fi
+            mute: true
             setVariables:
               - name: LOKI_FORCE_DESTROY
           - cmd: |
