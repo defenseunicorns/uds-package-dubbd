@@ -1,0 +1,118 @@
+addons:
+  velero:
+    enabled: true
+    plugins:
+    - aws
+    values:
+      backupsEnabled: true
+      configMaps: { }
+      configuration:
+        backupStorageLocation:
+          bucket:  "###ZARF_VAR_VELERO_S3_BUCKET###"
+          caCert: null
+          config: { }
+          name: null
+          prefix: null
+          provider: aws
+        backupSyncPeriod: null
+        defaultVolumesToRestic: null
+        extraEnvVars: { }
+        features: null
+        logFormat: null
+        logLevel: null
+        provider: aws
+        fsBackupTimeout: null
+        restoreOnlyMode: null
+        restoreResourcePriorities: null
+        volumeSnapshotLocation:
+          config:
+            region: "###ZARF_VAR_VELERO_S3_AWS_REGION###"
+          name: default
+          provider: aws
+      credentials:
+        existingSecret: null
+        extraEnvVars: { }
+        extraSecretRef: ""
+        name: null
+        secretContents: { }
+        useSecret: true
+      deployRestic: false
+      dnsPolicy: ClusterFirst
+      plugins:
+        aws:
+          enabled: true
+          name: velero-plugin-for-aws
+          image:
+            repository: registry1.dso.mil/ironbank/opensource/velero/velero-plugin-for-aws
+            tag: v1.6.1
+          container:
+            imagePullPolicy: IfNotPresent
+            volumeMounts:
+              - mountPath: /target
+                name: plugins
+            resources:
+              requests:
+                memory: 512Mi
+                cpu: 100m
+              limits:
+                memory: 512Mi
+                cpu: 100m
+      enableHelmHooks: true
+      extraVolumeMounts: [ ]
+      extraVolumes: [ ]
+      image:
+        repository: registry1.dso.mil/ironbank/opensource/velero/velero
+        tag: v1.10.2
+        pullPolicy: IfNotPresent
+      imagePullSecrets:
+        - name: private-registry
+      installCRDs: true
+      metrics:
+        enabled: true
+        podAnnotations:
+          prometheus.io/path: /metrics
+          prometheus.io/port: "8085"
+          prometheus.io/scrape: "true"
+        scrapeInterval: 30s
+        scrapeTimeout: 10s
+        serviceMonitor:
+          additionalLabels: { }
+          enabled: false
+      # nodeSelector:
+      #   category: selinux
+      podAnnotations: { }
+      podLabels: { }
+      priorityClassName: ""
+      rbac:
+        clusterAdministrator: true
+        create: true
+      resources:
+        requests:
+          cpu: 500m
+          memory: 128Mi
+        limits:
+          cpu: 1000m
+          memory: 512Mi
+      nodeAgent:
+        dnsPolicy: ClusterFirst
+        extraVolumeMounts: [ ]
+        extraVolumes: [ ]
+        podVolumePath: /var/lib/kubelet/pods
+        priorityClassName: ""
+        privileged: false
+        resources: { }
+        securityContext: { }
+        tolerations: [ ]
+      securityContext: { }
+      serviceAccount:
+        server:
+          create: true
+          name: null
+          annotations:
+            eks.amazonaws.com/role-arn: "###ZARF_VAR_LOKI_S3_ROLE_ARN###"
+      snapshotsEnabled: true
+      kubectl:
+        image:
+          repository: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl
+          tag: v1.26.4
+

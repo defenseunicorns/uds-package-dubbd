@@ -35,6 +35,7 @@ echo "ARCH_NAME: ${ARCH_NAME}"
 echo "ARCH_PROC: ${ARCH_PROC}"
 
 # todo: actually use the terraform binary we download
-#mkdir -p run/loki
+mkdir -p run/loki && chmod -R ugo+rwx run/loki
+mkdir -p run/velero && chmod -R ugo+rwx run/velero
 #mkdir -p run/eks
 unzip -o -q tmp/terraform_${1}_${ARCH_NAME}_${ARCH_PROC}.zip -d run
