@@ -241,6 +241,6 @@ components:
         before:
         - cmd: |
             if [ "${ZARF_VAR_IS_UPGRADE}" = "true" ]; then
-              echo "Performing pre-upgrade steps" >/dev/null 2>&1
+              echo "Performing post-upgrade steps" >/dev/null 2>&1
             fi
           description: "Perform DUBBD post-upgrade steps"
