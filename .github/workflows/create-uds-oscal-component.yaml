@@ -1,0 +1,101 @@
+name: Create and Update DUBBD OSCAL
+
+on:
+  workflow_call:
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  create-and-update-dubbd-oscal:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Uses Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.20"
+
+      - name: Download Component Generator
+        run: |
+          git clone https://github.com/defenseunicorns/component-generator.git
+          cd component-generator/
+          make build
+          cd ..
+
+      - name: Create DUBBD OSCAL-Componenet File
+        run: ./component-generator/bin/component-generator aggregate --input .github/workflows/oscal/config-dubbd-oscal-component.yaml
+
+      - name: Create DUBBD AWS OSCAL-Component File
+        run: ./component-generator/bin/component-generator aggregate --input .github/workflows/oscal/config-dubbd-aws-oscal-component.yaml
+
+      - name: Create UDS Core AWS OSCAL-Component File
+        run: ./component-generator/bin/component-generator aggregate --input .github/workflows/oscal/config-uds-core-aws-oscal-component.yaml
+
+      - name: Clean Up
+        run: rm -rf component-generator
+
+      - name: Commit OSCAL-Component Files
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          additions=()
+          removed=()
+          while IFS= read -r -d $'\0' status_line; do
+              filename="${status_line:3}"
+              git_status="${status_line:0:2}"
+
+              if [ "$git_status" = "D " ]; then
+                  removed+=("$filename")
+              else
+                  additions+=("$filename")
+              fi
+          done < <(git status --porcelain=v1 -z)
+
+          if [ "${#additions[@]}" -eq 0 ] ; then
+            echo "No files updated, skipping commit"
+            exit 0
+          fi
+
+          commitMessage="chore: Create or Update OSCAL Documents"
+
+          # for now, we ignore $removed files, but they could be handled similarly (it's just harder to send two lists of positional input files into jq)
+          # jq's iteration over inputs will skip over files with 0 lines (empty files)
+
+          jq \
+            --null-input \
+            --raw-input \
+            --arg repositoryNameWithOwner "$GITHUB_REPOSITORY" \
+            --arg branchName "$GITHUB_REF_NAME" \
+            --arg expectedHeadOid "$GITHUB_SHA" \
+            --arg commitMessage "$commitMessage" \
+            '
+          {
+            "query": "mutation ($input: CreateCommitOnBranchInput!) { createCommitOnBranch(input: $input) { commit { url } } }",
+            "variables": {
+              "input": {
+                "branch": {
+                  "repositoryNameWithOwner": $repositoryNameWithOwner,
+                  "branchName": $branchName
+                },
+                "message": {
+                  "headline": $commitMessage
+                },
+                "fileChanges": {
+                  "additions": [reduce inputs as $line ({}; .[input_filename] += [$line]) | map_values(join("\n")) | to_entries[] | {path: .key, contents: .value | @base64}]
+                },
+                "expectedHeadOid": $expectedHeadOid
+              }
+            }
+          }' "${additions[@]}" | curl https://api.github.com/graphql \
+            --silent \
+            --fail-with-body \
+            --oauth2-bearer "$(gh auth token)" \
+            --data @-

@@ -73,6 +73,22 @@
       ],
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
       "datasourceTemplate": "github-tags"
+    },
+    {
+      "fileMatch": [ 
+        "^.github/workflow/oscal/.*\\.ya?ml$",
+        "^aws/loki/main\\.tf",
+        "^aws/cloudtrail/main\\.tf"
+      ],
+      "matchStrings": ["https://github.com/(?<depName>.*)/(?<currentValue>v\\d+\\.\\d+\\.\\d+)"],
+      "datasourceTemplate": "github-tags",
+      "versioningTemplate": "semver"
+    },
+    {
+      "fileMatch": ["^.github/workflow/oscal/.*\\.ya?ml$"],
+      "matchStrings": ["https://repo1.dso.mil/(?<depName>.*)/(?<currentValue>v\\d+\\.\\d+\\.\\d+)"],
+      "datasourceTemplate": "gitlab-tags",
+      "versioningTemplate": "semver"
     }
   ],
   "packageRules": [
