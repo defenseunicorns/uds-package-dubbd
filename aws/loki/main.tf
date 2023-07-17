@@ -25,7 +25,7 @@ locals {
 }
 
 module "S3" {
-  source                  = "github.com/defenseunicorns/terraform-aws-uds-s3?ref=refactor-s3" # TODO: create v0.0.5 release
+  source                  = "github.com/defenseunicorns/terraform-aws-uds-s3?ref=v0.0.5"
   name_prefix             = var.name
   kms_key_arn             = local.kms_key_arn
   force_destroy           = var.force_destroy
