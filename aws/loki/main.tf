@@ -44,7 +44,7 @@ moved {
 }
 
 module "S3" {
-  source                     = "github.com/defenseunicorns/terraform-aws-uds-s3?ref=v0.0.3"
+  source                     = "github.com/defenseunicorns/terraform-aws-uds-s3?ref=v0.0.5"
   name_prefix                = var.name
   eks_oidc_provider_arn      = local.oidc_arn
   kubernetes_service_account = "logging-loki"
