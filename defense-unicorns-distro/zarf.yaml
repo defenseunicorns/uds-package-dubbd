@@ -59,14 +59,14 @@ components:
     actions:
       onDeploy:
         after:
-        - cmd: "cat ###ZARF_VAR_CERT_FILE###"
+        - cmd: "cat ${ZARF_VAR_CERT_FILE}"
           description: Read cert file into values
           mute: true
           setVariables:
             - name: PUBLIC_CERT
               sensitive: true
               autoIndent: true
-        - cmd: "cat ###ZARF_VAR_KEY_FILE###"
+        - cmd: "cat ${ZARF_VAR_KEY_FILE}"
           description: read the cert
           mute: true
           setVariables:
