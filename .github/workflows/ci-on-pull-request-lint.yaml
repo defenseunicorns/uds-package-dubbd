@@ -1,3 +1,5 @@
+name: YAML Lint Configs
+
 on:
   pull_request:
     branches:

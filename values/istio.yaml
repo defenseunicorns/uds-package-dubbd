@@ -44,8 +44,10 @@ istio:
       hosts:
         - "*.{{ .Values.domain }}"
       tls:
-        key: "###ZARF_VAR_PUBLIC_KEY###"
-        cert: "###ZARF_VAR_PUBLIC_CERT###"
+        key: |
+          ###ZARF_VAR_PUBLIC_KEY###
+        cert: |
+          ###ZARF_VAR_PUBLIC_CERT###
         minProtocolVersion: "TLSV1_3"
     public: null
     tenant:
@@ -53,8 +55,10 @@ istio:
       hosts:
         - "*.{{ .Values.domain }}"
       tls:
-        key: "###ZARF_VAR_PUBLIC_KEY###"
-        cert: "###ZARF_VAR_PUBLIC_CERT###"
+        key: |
+          ###ZARF_VAR_PUBLIC_KEY###
+        cert: |
+          ###ZARF_VAR_PUBLIC_CERT###
         minProtocolVersion: "TLSV1_3"
 istioOperator:
   enabled: true
