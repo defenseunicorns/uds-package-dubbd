@@ -9,17 +9,17 @@ metadata:
   architecture: amd64
 
 variables:
-- name: TERRAFORM_VERSION
-- name: TERRAFORM_PROVIDER_AWS_VERSION
+  - name: TERRAFORM_VERSION
+  - name: TERRAFORM_PROVIDER_AWS_VERSION
 
-- name: STATE_BUCKET_NAME
-  description: "Name of the pre-existing Terraform state S3 bucket"
-- name: STATE_KEY
-  description: "Path to the state file key in the state bucket"
-- name: STATE_DYNAMODB_TABLE_NAME
-  description: "Name of the DynamoDB table used for Terraform state locking"
-- name: REGION
-  description: "The AWS region to run the Terraform in"
+  - name: STATE_BUCKET_NAME
+    description: "Name of the pre-existing Terraform state S3 bucket"
+  - name: STATE_KEY
+    description: "Path to the state file key in the state bucket"
+  - name: STATE_DYNAMODB_TABLE_NAME
+    description: "Name of the DynamoDB table used for Terraform state locking"
+  - name: REGION
+    description: "The AWS region to run the Terraform in"
 
 components:
   - name: download-terraform
@@ -55,16 +55,16 @@ components:
         before:
           - cmd: terraform get -update
     files:
-    - source: .terraform
-      target: run/cloudtrail/.terraform
-    - source: main.tf
-      target: run/cloudtrail/main.tf
-    - source: variables.tf
-      target: run/cloudtrail/variables.tf
-    - source: output.tf
-      target: run/cloudtrail/output.tf
-    - source: terraform.tfvars
-      target: run/cloudtrail/terraform.tfvars
+      - source: .terraform
+        target: run/cloudtrail/.terraform
+      - source: main.tf
+        target: run/cloudtrail/main.tf
+      - source: variables.tf
+        target: run/cloudtrail/variables.tf
+      - source: output.tf
+        target: run/cloudtrail/output.tf
+      - source: terraform.tfvars
+        target: run/cloudtrail/terraform.tfvars
   - name: cloudtrail
     required: true
     actions:
