@@ -140,7 +140,7 @@ components:
             if [ "${ZARF_VAR_IS_UPGRADE}" = "true" ]; then
               ./zarf tools kubectl delete helmrelease -n bigbang kyverno-policies --ignore-not-found --timeout=20m
             fi
-          description: "Remove kyverno-policies Helm Release before upgrading to Kyverno 1.9.2"
+          description: "DUBBD pre-upgrade: Remove kyverno-policies Helm Release before upgrading to Kyverno 1.9.2"
   - name: bigbang
     required: true
     actions:

@@ -299,4 +299,4 @@ components:
                   echo "The new hostname can be pulled with: zarf tools kubectl get svc -n istio-system tenant-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'"
                 fi
               fi
-            description: "Recreate Istio Ingress Gateway resources if their configuration changed"
+            description: "DUBBD post-upgrade: Recreate Istio Ingress Gateway resources if their configuration changed"
