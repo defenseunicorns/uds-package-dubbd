@@ -7,4 +7,4 @@ provisioner: kubernetes.io/aws-ebs
 volumeBindingMode: WaitForFirstConsumer
 parameters:
   type: gp3
-reclaimPolicy: "###ZARF_VAR_PVC_POLICY###"
+reclaimPolicy: "###ZARF_VAR_PVC_RECLAIM_POLICY###"
