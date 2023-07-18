@@ -11,7 +11,7 @@ output "s3" {
 }
 
 output "s3_bucket" {
-  value = module.S3.s3_bucket
+  value = module.S3.bucket_name
 }
 
 output "kms_key_arn" {

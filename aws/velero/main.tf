@@ -84,8 +84,6 @@ module "generate_kms" {
 
 module "irsa" {
 
-  # /home/chris/Documents/projects/repos/terraform-aws-uds-irsa
-
   source = "../../../terraform-aws-uds-irsa"
   # source                        = "github.com/defenseunicorns/terraform-aws-uds-irsa?ref=v0.0.1"
   name                       = "${local.name}-irsa"
