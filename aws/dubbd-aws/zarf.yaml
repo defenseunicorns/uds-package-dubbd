@@ -46,10 +46,6 @@ variables:
   default: '[ "zarf", "calico-apiserver", "calico-system", "tigera-operator" ]'
 
 components:
-  - name: preflight
-    required: true
-    import:
-      path: ../../defense-unicorns-distro
   - name: set-ephemeral
     required: true
     actions:
@@ -64,6 +60,10 @@ components:
             mute: true
             setVariables:
               - name: LOKI_FORCE_DESTROY
+  - name: preflight
+    required: true
+    import:
+      path: ../../defense-unicorns-distro
   - name: download-terraform
     required: true
     actions:
