@@ -90,6 +90,11 @@ components:
         - cmd: "./zarf tools kubectl version --short || true"
           setVariables:
             - name: OUTPUT
+        - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null 2>&1 && echo true || echo false"
+          mute: true
+          description: "Detect if this is an upgrade"
+          setVariables:
+            - name: IS_UPGRADE
         after:
         - cmd: ./preflight.sh
         - cmd: rm preflight.sh
@@ -135,11 +140,6 @@ components:
               ./zarf tools kubectl label ns -l app.kubernetes.io/part-of=bigbang zarf.dev/agent-
             description: "Remove Zarf ignore namespace labels for Big Bang"
             mute: true
-          - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null 2>&1 && echo true || echo false"
-            mute: true
-            description: "Detect if this is an upgrade"
-            setVariables:
-              - name: IS_UPGRADE
           - cmd: ./flux suspend source git bigbang -n bigbang --verbose --timeout=5m || true
             dir: run/flux
             description: "Suspend Big Bang GitRepository"
@@ -194,8 +194,6 @@ components:
               ./zarf tools kubectl delete helmrelease -n bigbang metrics-server --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete apiservices.apiregistration.k8s.io -l helm.toolkit.fluxcd.io/namespace=bigbang,helm.toolkit.fluxcd.io/name=metrics-server --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete gitrepositories -n bigbang -l app.kubernetes.io/part-of=bigbang --ignore-not-found --timeout=20m
-              ./zarf tools kubectl delete helmrelease -n bigbang bigbang --ignore-not-found --timeout=20m
-              ./zarf tools kubectl delete gitrepositories -n bigbang bigbang --ignore-not-found --timeout=20m
             description: "Cleaning up Big Bang resources"
             maxTotalSeconds: 3600 # 1 hour
     files:
