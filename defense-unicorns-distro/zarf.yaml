@@ -56,35 +56,32 @@ components:
         target: bigbang.dev.cert
       - source: bigbang.dev.key
         target: bigbang.dev.key
-      - source: scripts/cat_cert.sh
-        target: cat_certs.sh
-        executable: true
-      - source: scripts/cat_key.sh
-        target: cat_key.sh
-        executable: true
     actions:
       onDeploy:
         after:
-        - cmd: ./cat_certs.sh
-          description: read the cert
+        - cmd: "cat ###ZARF_VAR_CERT_FILE###"
+          description: Read cert file into values
           mute: true
           setVariables:
             - name: PUBLIC_CERT
               sensitive: true
-        - cmd: ./cat_key.sh
+              autoIndent: true
+        - cmd: "cat ###ZARF_VAR_KEY_FILE###"
           description: read the cert
           mute: true
           setVariables:
             - name: PUBLIC_KEY
               sensitive: true
-        - cmd: rm cat_certs.sh
-        - cmd: rm cat_key.sh
+              autoIndent: true
+        - cmd: rm bigbang.dev.cert
+        - cmd: rm bigbang.dev.key
   - name: preflight
     required: true
     actions:
       onDeploy:
         before:
         - cmd: "./zarf tools kubectl version --short || true"
+          mute: true
           setVariables:
             - name: OUTPUT
         after:

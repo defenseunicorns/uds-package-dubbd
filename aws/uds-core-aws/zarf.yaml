@@ -256,7 +256,7 @@ components:
       onDeploy:
         after:
           - cmd: mkdir -p run/zarf-init
-          - cmd: zarf p deploy ./zarf-init-amd64-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst --components git-server --confirm
+          - cmd: ./zarf p deploy ./zarf-init-amd64-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst --components git-server --confirm
             dir: run/zarf-init
     files:
       - source: zarf-init-amd64-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst
