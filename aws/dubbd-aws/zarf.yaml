@@ -254,10 +254,14 @@ components:
       onDeploy:
         after:
           - cmd: |
-              if ./zarf tools kubectl get csidrivers ebs.csi.aws.com >/dev/null 2>&1 ; then
-                ./zarf tools kubectl apply -f dubbd-storage-class.yaml >/dev/null 2>&1 && echo dubbd-default-gp3
+              if [ "${ZARF_VAR_IS_UPGRADE}" = "true" ] && ./zarf tools kubectl get pvc -n tempo storage-tempo-tempo-0 >/dev/null 2>&1 ; then
+                ./zarf tools kubectl get pvc -n tempo storage-tempo-tempo-0 -o jsonpath='{.spec.storageClassName}'
               else
-                ./zarf tools kubectl get storageclass --output=jsonpath='{range .items[?(@.metadata.annotations.storageclass\.kubernetes\.io/is-default-class=="true")]}{.metadata.name}{end}'
+                if ./zarf tools kubectl get csidrivers ebs.csi.aws.com >/dev/null 2>&1 ; then
+                  ./zarf tools kubectl apply -f dubbd-storage-class.yaml >/dev/null 2>&1 && echo dubbd-default-gp3
+                else
+                  ./zarf tools kubectl get storageclass --output=jsonpath='{range .items[?(@.metadata.annotations.storageclass\.kubernetes\.io/is-default-class=="true")]}{.metadata.name}{end}'
+                fi
               fi
             mute: true
             description: "Determine storage class to use"
