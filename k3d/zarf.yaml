@@ -21,15 +21,15 @@ variables:
   prompt: false
 
 components:
+  - name: preflight
+    required: true
+    import:
+      path: ../defense-unicorns-distro
   - name: load-certs
     required: true
     import:
       path: ../defense-unicorns-distro
   - name: download-flux
-    required: true
-    import:
-      path: ../defense-unicorns-distro
-  - name: preflight
     required: true
     import:
       path: ../defense-unicorns-distro

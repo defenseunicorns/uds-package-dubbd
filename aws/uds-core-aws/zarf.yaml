@@ -69,6 +69,10 @@ components:
     required: true
     import:
       path: ../dubbd-aws
+  - name: preflight
+    required: true
+    import:
+      path: ../../defense-unicorns-distro
   - name: download-terraform
     required: true
     actions:
@@ -266,10 +270,6 @@ components:
     import:
       path: ../../defense-unicorns-distro
   - name: download-flux
-    required: true
-    import:
-      path: ../../defense-unicorns-distro
-  - name: preflight
     required: true
     import:
       path: ../../defense-unicorns-distro
