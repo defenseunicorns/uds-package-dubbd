@@ -23,9 +23,12 @@ data "aws_region" "current" {}
 
 locals {
   oidc_url_without_protocol = substr(data.aws_eks_cluster.existing.identity[0].oidc[0].issuer, 8, -1)
+  oidc_arn                  = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/${local.oidc_url_without_protocol}"
 
   generate_kms_key = var.create_kms_key ? 1 : 0
   kms_key_arn      = var.kms_key_arn == null ? module.generate_kms[0].kms_key_arn : var.kms_key_arn
+  name             = "${var.name}-velero"
+
   # The conditional may need to look like this depending on how we decide to handle the way varf wants to template things
   # generate_kms_key          = var.kms_key_arn == "" ? 1 : 0
   # kms_key_arn               = var.kms_key_arn == "" ? module.generate_kms[0].kms_key_arn : var.kms_key_arn
@@ -33,7 +36,7 @@ locals {
 
 module "S3" {
   source                  = "github.com/defenseunicorns/terraform-aws-uds-s3?ref=v0.0.5"
-  name_prefix             = var.name
+  name_prefix             = "${var.bucket_name}-"
   kms_key_arn             = local.kms_key_arn
   force_destroy           = var.force_destroy
   create_bucket_lifecycle = true
@@ -70,21 +73,30 @@ module "generate_kms" {
 
   key_owners = var.key_owner_arns
   # A list of IAM ARNs for those who will have full key permissions (`kms:*`)
-  kms_key_alias_name_prefix = "${var.name}-velero-" # Prefix for KMS key alias.
+  kms_key_alias_name_prefix = "${local.name}-" # Prefix for KMS key alias.
   kms_key_deletion_window   = 7
   # Waiting period for scheduled KMS Key deletion. Can be 7-30 days.
-  kms_key_description = "${var.name} DUBBD deployment Velero Key" # Description for the KMS key.
+  kms_key_description = "${local.name} DUBBD deployment Velero Key" # Description for the KMS key.
   tags = {
-    Deployment = "UDS DUBBD ${var.name}"
+    Deployment = "UDS DUBBD ${local.name}"
   }
 }
 
 module "irsa" {
-  source                        = "github.com/defenseunicorns/terraform-aws-uds-irsa?ref=v0.0.1"
-  name                          = var.name
-  provider_url                  = local.oidc_url_without_protocol
-  oidc_fully_qualified_subjects = ["system:serviceaccount:velero:velero-velero-server"]
-  policy_arns                   = [aws_iam_policy.velero_policy.arn]
+
+  # /home/chris/Documents/projects/repos/terraform-aws-uds-irsa
+
+  source = "../../../terraform-aws-uds-irsa"
+  # source                        = "github.com/defenseunicorns/terraform-aws-uds-irsa?ref=v0.0.1"
+  name                       = "${local.name}-irsa"
+  kubernetes_service_account = var.kubernetes_service_account
+  kubernetes_namespace       = var.kubernetes_namespace
+  oidc_provider_arn          = local.oidc_arn
+
+  role_policy_arns = tomap({
+    "velero"       = aws_iam_policy.velero_policy.arn
+  })
+
 }
 
 
@@ -93,7 +105,7 @@ resource "random_id" "unique_id" {
 }
 
 resource "aws_iam_policy" "velero_policy" {
-  name        = "VeleroPolicy-${random_id.unique_id.hex}"
+  name        = "${local.name}-irsa-${random_id.unique_id.hex}"
   path        = "/"
   description = "Policy to give Velero necessary permissions for cluster backups."
 
@@ -126,7 +138,7 @@ resource "aws_iam_policy" "velero_policy" {
             "s3:ListMultipartUploadParts"
           ]
           Resource = [
-            "arn:${data.aws_partition.current.partition}:s3:::${var.bucket_name}/*"
+            "arn:${data.aws_partition.current.partition}:s3:::${module.S3.bucket_name}/*"
           ]
         },
         {
@@ -135,7 +147,7 @@ resource "aws_iam_policy" "velero_policy" {
             "s3:ListBucket"
           ],
           Resource = [
-            "arn:${data.aws_partition.current.partition}:s3:::${var.bucket_name}/*"
+            "arn:${data.aws_partition.current.partition}:s3:::${module.S3.bucket_name}/*"
           ]
         }
       ]

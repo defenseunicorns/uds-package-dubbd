@@ -40,6 +40,8 @@ variables:
   default: "false"
 - name: LOKI_FORCE_DESTROY
   description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data, overrides ephemeral setting"
+- name: VELERO_FORCE_DESTROY
+  description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data, overrides ephemeral setting"
 
 - name: EXEMPT_NAMESPACES
   description: "List of namespaces to be exempt from cluster policies (must contain zarf)"
@@ -126,7 +128,7 @@ components:
             setVariables:
               - name: STATE_KEY_LOKI
           - cmd: |
-              terraform init -force-copy \
+              ../terraform init -force-copy \
               -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
               -backend-config="key=${ZARF_VAR_STATE_KEY_LOKI}" \
               -backend-config="region=${ZARF_VAR_REGION}" \
@@ -196,16 +198,16 @@ components:
               - name: STATE_KEY_VELERO
           - cmd: "echo ${ZARF_VAR_STATE_KEY_VELERO}"
           - cmd: |
-              terraform init -force-copy \
+              ../terraform init -force-copy \
               -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
               -backend-config="key=${ZARF_VAR_STATE_KEY_VELERO}" \
               -backend-config="region=${ZARF_VAR_REGION}" \
               -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
             dir: run/velero
-          - cmd: ../terraform plan
+          - cmd: ../terraform plan --out=velero.out
             dir: run/velero
           - cmd: sleep 15 #time to review
-          - cmd: ../terraform apply -auto-approve
+          - cmd: ../terraform apply velero.out 
             dir: run/velero
       onRemove:
         before:
