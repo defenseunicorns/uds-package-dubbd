@@ -56,7 +56,7 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
         ]
         Effect = "Allow"
         Principal = {
-          AWS = module.irsa.role_arn
+          AWS = "${module.irsa.role_arn}"
         }
         Resource = [
           module.S3.bucket_arn,
