@@ -2,7 +2,7 @@
 kind: ZarfPackageConfig
 metadata:
   name: k3d-local
-  description: Defense Unicorns k3d environment 
+  description: Defense Unicorns k3d environment
   architecture: amd64
   authors: "@runyontr, @timblaktu"
   source: https://github.com/defenseunicorns/uds-package-dubbd/k3d/local
@@ -48,7 +48,7 @@ components:
               cp -f "$F" init.tar.zst
               ls -lath *.zst downloads
       onDeploy:
-        after: 
+        after:
           - cmd: |
               zarf package deploy init.tar.zst --components '###ZARF_PKG_TMPL_INIT_COMPONENTS###' --confirm -l warn
   - name: metallb
