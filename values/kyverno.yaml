@@ -1,5 +1,10 @@
 kyverno:
   values:
+    extraArgs:
+      - --clientRateLimitQPS=300
+      - --clientRateLimitBurst=300
+      - --enablePolicyException=true
+      - --loggingFormat=text
     updateStrategy:
       rollingUpdate:
         maxUnavailable: 0
