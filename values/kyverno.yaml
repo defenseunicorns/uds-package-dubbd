@@ -1,3 +1,9 @@
+kyverno:
+  values:
+    updateStrategy:
+      rollingUpdate:
+        maxUnavailable: 0
+
 kyvernoPolicies:
   values:
     exclude:
