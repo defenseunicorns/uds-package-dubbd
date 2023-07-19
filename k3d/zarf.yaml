@@ -21,15 +21,19 @@ variables:
   prompt: false
 
 components:
-  - name: load-certs
-    required: true
-    import:
-      path: ../defense-unicorns-distro
   - name: preflight
     required: true
     import:
       path: ../defense-unicorns-distro
+  - name: load-certs
+    required: true
+    import:
+      path: ../defense-unicorns-distro
   - name: download-flux
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+  - name: dubbd-pre-upgrade
     required: true
     import:
       path: ../defense-unicorns-distro
@@ -42,3 +46,7 @@ components:
         version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
         valuesFiles:
         - values/local-dev.yaml
+  - name: dubbd-post-upgrade
+    required: true
+    import:
+      path: ../defense-unicorns-distro
