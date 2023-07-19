@@ -52,6 +52,26 @@ variables:
   default: "false"
 
 components:
+  - name: preflight
+    required: true
+    actions:
+      onDeploy:
+        before:
+        - cmd: "./zarf tools kubectl version --short || true"
+          setVariables:
+            - name: OUTPUT
+        - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null 2>&1 && echo true || echo false"
+          mute: true
+          description: "Detect if this is an upgrade"
+          setVariables:
+            - name: IS_UPGRADE
+        after:
+        - cmd: ./preflight.sh
+        - cmd: rm preflight.sh
+    files:
+    - source: scripts/preflight.sh
+      target: preflight.sh
+      executable: true
   - name: load-certs
     required: true
     files:
@@ -82,26 +102,6 @@ components:
               sensitive: true
         - cmd: rm cat_certs.sh
         - cmd: rm cat_key.sh
-  - name: preflight
-    required: true
-    actions:
-      onDeploy:
-        before:
-        - cmd: "./zarf tools kubectl version --short || true"
-          setVariables:
-            - name: OUTPUT
-        - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null 2>&1 && echo true || echo false"
-          mute: true
-          description: "Detect if this is an upgrade"
-          setVariables:
-            - name: IS_UPGRADE
-        after:
-        - cmd: ./preflight.sh
-        - cmd: rm preflight.sh
-    files:
-    - source: scripts/preflight.sh
-      target: preflight.sh
-      executable: true
   - name: download-flux
     required: true
     actions:
@@ -129,6 +129,8 @@ components:
         target: tmp/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_windows_amd64.zip
       - source: https://github.com/fluxcd/flux2/releases/download/v###ZARF_PKG_TMPL_FLUX_VERSION###/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_windows_arm64.zip
         target: tmp/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_windows_arm64.zip
+  - name: dubbd-pre-upgrade
+    required: true
   - name: bigbang
     required: true
     actions:
@@ -217,3 +219,5 @@ components:
         - ../values/monitoring.yaml
         - ../values/neuvector.yaml
         - ../values/tempo.yaml
+  - name: dubbd-post-upgrade
+    required: true

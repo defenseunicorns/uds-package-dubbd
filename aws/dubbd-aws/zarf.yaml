@@ -75,6 +75,10 @@ components:
             mute: true
             setVariables:
               - name: PVC_RECLAIM_POLICY
+  - name: preflight
+    required: true
+    import:
+      path: ../../defense-unicorns-distro
   - name: download-terraform
     required: true
     actions:
@@ -240,11 +244,11 @@ components:
     required: true
     import:
       path: ../../defense-unicorns-distro
-  - name: preflight
+  - name: download-flux
     required: true
     import:
       path: ../../defense-unicorns-distro
-  - name: download-flux
+  - name: dubbd-pre-upgrade
     required: true
     import:
       path: ../../defense-unicorns-distro
@@ -327,7 +331,7 @@ components:
     required: true
     import:
       path: ../external-dns
-  - name: dubbd-upgrade
+  - name: dubbd-post-upgrade
     required: true
     actions:
       onDeploy:
@@ -345,4 +349,4 @@ components:
                   echo "The new hostname can be pulled with: zarf tools kubectl get svc -n istio-system tenant-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'"
                 fi
               fi
-            description: "Perform DUBBD upgrade steps"
+            description: "DUBBD post-upgrade: Recreate Istio Ingress Gateway resources if their configuration changed"

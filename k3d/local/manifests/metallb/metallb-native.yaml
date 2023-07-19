@@ -1,3 +1,4 @@
+# sourced from: https://raw.githubusercontent.com/metallb/metallb/v0.13.10/config/manifests/metallb-native.yaml
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -12,6 +13,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.1
+  creationTimestamp: null
   name: addresspools.metallb.io
 spec:
   conversion:
@@ -388,8 +390,9 @@ spec:
                 type: integer
               communities:
                 description: The BGP communities to be associated with the announcement.
-                  Each item can be a community of the form 1234:1234 or the name of
-                  an alias defined in the Community CRD.
+                  Each item can be a standard community of the form 1234:1234, a large
+                  community of the form large:1234:1234:1234 or the name of an alias
+                  defined in the Community CRD.
                 items:
                   type: string
                 type: array
@@ -533,6 +536,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.1
+  creationTimestamp: null
   name: bgppeers.metallb.io
 spec:
   conversion:
@@ -881,7 +885,8 @@ spec:
                       type: string
                     value:
                       description: The BGP community value corresponding to the given
-                        name.
+                        name. Can be a standard community of the form 1234:1234 or
+                        a large community of the form large:1234:1234:1234.
                       type: string
                   type: object
                 type: array
@@ -1411,6 +1416,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - metallb.io
   resources:
   - addresspools
@@ -1483,6 +1496,12 @@ rules:
   - get
   - list
   - watch
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  verbs:
+  - list
 - apiGroups:
   - ""
   resources:
@@ -1657,6 +1676,15 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: speaker
+  namespace: metallb-system
+---
+apiVersion: v1
+data:
+  excludel2.yaml: |
+    announcedInterfacesToExclude: ["docker.*", "cbr.*", "dummy.*", "virbr.*", "lxcbr.*", "veth.*", "lo", "^cali.*", "^tunl.*", "flannel.*", "kube-ipvs.*", "cni.*", "^nodelocaldns.*"]
+kind: ConfigMap
+metadata:
+  name: metallb-excludel2
   namespace: metallb-system
 ---
 apiVersion: v1
@@ -1842,6 +1870,9 @@ spec:
         - mountPath: /etc/ml_secret_key
           name: memberlist
           readOnly: true
+        - mountPath: /etc/metallb
+          name: metallb-excludel2
+          readOnly: true
       hostNetwork: true
       nodeSelector:
         kubernetes.io/os: linux
@@ -1859,6 +1890,10 @@ spec:
         secret:
           defaultMode: 420
           secretName: memberlist
+      - configMap:
+          defaultMode: 256
+          name: metallb-excludel2
+        name: metallb-excludel2
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration

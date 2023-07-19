@@ -71,6 +71,10 @@ components:
     required: true
     import:
       path: ../dubbd-aws
+  - name: preflight
+    required: true
+    import:
+      path: ../../defense-unicorns-distro
   - name: download-terraform
     required: true
     actions:
@@ -275,14 +279,14 @@ components:
     required: true
     import:
       path: ../../defense-unicorns-distro
-  - name: preflight
-    required: true
-    import:
-      path: ../../defense-unicorns-distro
   - name: download-flux
     required: true
     import:
       path: ../../defense-unicorns-distro
+  - name: dubbd-pre-upgrade
+    required: true
+    import:
+      path: ../dubbd-aws
   - name: bigbang
     required: true
     import:
@@ -327,25 +331,10 @@ components:
     required: true
     import:
       path: ../external-dns
-  - name: dubbd-upgrade
+  - name: dubbd-post-upgrade
     required: true
-    actions:
-      onDeploy:
-        after:
-          - cmd: |
-              if [ "${ZARF_VAR_IS_UPGRADE}" = "true" ]; then
-                if [ "${ZARF_VAR_ADMIN_INGRESS_UPDATE}" = "true" ]; then
-                  ./zarf tools kubectl delete svc -n istio-system admin-ingressgateway
-                  echo "Admin ingress gateway configuration was updated. You may need to update DNS records to point to the newly provisioned loadbalancer."
-                  echo "The new hostname can be pulled with: zarf tools kubectl get svc -n istio-system admin-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'"
-                fi
-                if [ "${ZARF_VAR_TENANT_INGRESS_UPDATE}" = "true" ]; then
-                  ./zarf tools kubectl delete svc -n istio-system tenant-ingressgateway
-                  echo "Tenant ingress gateway configuration was updated. You may need to update DNS records to point to the newly provisioned loadbalancer."
-                  echo "The new hostname can be pulled with: zarf tools kubectl get svc -n istio-system tenant-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'"
-                fi
-              fi
-            description: "Perform DUBBD upgrade steps"
+    import:
+      path: ../dubbd-aws
   - name: destroy-eks
     required: true
     import:
