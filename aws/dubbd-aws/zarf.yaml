@@ -258,8 +258,10 @@ components:
       onDeploy:
         after:
           - cmd: |
-              if [ "${ZARF_VAR_IS_UPGRADE}" = "true" ] && ./zarf tools kubectl get pvc -n tempo storage-tempo-tempo-0 >/dev/null 2>&1 ; then
-                ./zarf tools kubectl get pvc -n tempo storage-tempo-tempo-0 -o jsonpath='{.spec.storageClassName}'
+              if [ "${ZARF_VAR_IS_UPGRADE}" = "true" ] && ./zarf tools kubectl get statefulset -n tempo tempo-tempo >/dev/null 2>&1; then
+                if ! [ "$(./zarf tools kubectl get statefulset -n tempo tempo-tempo -o jsonpath='{.spec.volumeClaimTemplates[0].spec.storageClassName}' 2>&1)" = "" ]; then
+                  ./zarf tools kubectl get statefulset -n tempo tempo-tempo -o jsonpath='{.spec.volumeClaimTemplates[0].spec.storageClassName}' 2>&1
+                fi
               else
                 if ./zarf tools kubectl get csidrivers ebs.csi.aws.com >/dev/null 2>&1 ; then
                   ./zarf tools kubectl apply -f dubbd-storage-class.yaml >/dev/null 2>&1 && echo dubbd-default-gp3
