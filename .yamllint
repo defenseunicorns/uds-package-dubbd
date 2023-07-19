@@ -1,8 +1,10 @@
 yaml-files:
-  - '**/values/*.y*ml'
-  - '**/zarf.y*ml'
-  - '**/zarf-config.y*ml'
+  - '**/*.y*ml'
   - '.yamllint'
+
+# Ignore files from upstream
+ignore:
+  - 'k3d/local/manifests/metallb/metallb-native.yaml'
 
 rules:
   anchors: enable
