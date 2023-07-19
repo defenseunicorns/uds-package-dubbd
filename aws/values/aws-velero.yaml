@@ -10,7 +10,8 @@ addons:
         backupStorageLocation:
           bucket:  "###ZARF_VAR_VELERO_S3_BUCKET###"
           caCert: null
-          config: { }
+          config: 
+            region: "###ZARF_VAR_VELERO_S3_AWS_REGION###"
           name: null
           prefix: null
           provider: aws
