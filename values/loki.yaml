@@ -1,6 +1,33 @@
 loki:
   strategy: "monolith"
   values:
+    # Values for Monolith strategy
     singleBinary:
       persistence:
           size: "###ZARF_VAR_LOKI_PVC_SIZE###"
+    # Values for Scalable strategy
+    write:
+      autoscaling:
+        enabled: true
+        minReplicas: 1
+        maxReplicas: 3
+        targetCPUUtilizationPercentage: 80
+    read:
+      autoscaling:
+        enabled: true
+        minReplicas: 1
+        maxReplicas: 3
+        targetCPUUtilizationPercentage: 80
+    backend:
+      resources:
+        limits:
+          cpu: 200m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 256Mi
+      autoscaling:
+        enabled: true
+        minReplicas: 1
+        maxReplicas: 3
+        targetCPUUtilizationPercentage: 80
