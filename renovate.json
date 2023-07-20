@@ -83,12 +83,6 @@
       "matchStrings": ["https://github.com/(?<depName>.*)/(?<currentValue>v\\d+\\.\\d+\\.\\d+)"],
       "datasourceTemplate": "github-tags",
       "versioningTemplate": "semver"
-    },
-    {
-      "fileMatch": ["^.github/workflow/oscal/.*\\.ya?ml$"],
-      "matchStrings": ["https://repo1.dso.mil/(?<depName>.*)/(?<currentValue>v\\d+\\.\\d+\\.\\d+)"],
-      "datasourceTemplate": "gitlab-tags",
-      "versioningTemplate": "semver"
     }
   ],
   "packageRules": [
