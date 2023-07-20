@@ -54,21 +54,21 @@ components:
     actions:
       onDeploy:
         before:
-        - cmd: "./zarf tools kubectl version --short || true"
-          setVariables:
-            - name: OUTPUT
-        - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null 2>&1 && echo true || echo false"
-          mute: true
-          description: "Detect if this is an upgrade"
-          setVariables:
-            - name: IS_UPGRADE
+          - cmd: "./zarf tools kubectl version --short || true"
+            setVariables:
+              - name: OUTPUT
+          - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null 2>&1 && echo true || echo false"
+            mute: true
+            description: "Detect if this is an upgrade"
+            setVariables:
+              - name: IS_UPGRADE
         after:
-        - cmd: ./preflight.sh
-        - cmd: rm preflight.sh
+          - cmd: ./preflight.sh
+          - cmd: rm preflight.sh
     files:
-    - source: scripts/preflight.sh
-      target: preflight.sh
-      executable: true
+      - source: scripts/preflight.sh
+        target: preflight.sh
+        executable: true
   - name: load-certs
     required: true
     files:

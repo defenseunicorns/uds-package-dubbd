@@ -10,7 +10,7 @@ permissions:
 jobs:
   test-clean-install:
     runs-on: ubuntu-latest
-  
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
