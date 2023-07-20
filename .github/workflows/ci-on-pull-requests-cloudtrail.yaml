@@ -51,7 +51,7 @@ jobs:
             BACKEND_KEY=tfstate/ci/cloudtrail/${SHA:0:7}-tf.tfstate \
             go test -timeout 40m -json -v . 2>&1 | tee /tmp/gotest.log | gotestfmt
       - name: Upload test log
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: always()
         with:
           name: test-log

@@ -4,7 +4,7 @@ metadata:
   name: dubbd-k3d
   description: "Defense Unicorns Big Bang Distro K3D Environment"
   # x-release-please-start-version
-  version: "0.4.2"
+  version: "0.5.0"
   # x-release-please-end
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
@@ -21,15 +21,19 @@ variables:
   prompt: false
 
 components:
-  - name: load-certs
-    required: true
-    import:
-      path: ../defense-unicorns-distro
   - name: preflight
     required: true
     import:
       path: ../defense-unicorns-distro
+  - name: load-certs
+    required: true
+    import:
+      path: ../defense-unicorns-distro
   - name: download-flux
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+  - name: dubbd-pre-upgrade
     required: true
     import:
       path: ../defense-unicorns-distro
@@ -42,3 +46,7 @@ components:
         version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
         valuesFiles:
         - values/local-dev.yaml
+  - name: dubbd-post-upgrade
+    required: true
+    import:
+      path: ../defense-unicorns-distro

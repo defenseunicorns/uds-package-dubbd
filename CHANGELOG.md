@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.5.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.4.2...v0.5.0) (2023-07-19)
+
+
+### Features
+
+* add dubbd pre-upgrade & update refs ([#411](https://github.com/defenseunicorns/uds-package-dubbd/issues/411)) ([675b79a](https://github.com/defenseunicorns/uds-package-dubbd/commit/675b79a1c9fac491f40bd811305cf496f1cae6a3))
+* add HPA for Loki ([#419](https://github.com/defenseunicorns/uds-package-dubbd/issues/419)) ([f3d788a](https://github.com/defenseunicorns/uds-package-dubbd/commit/f3d788a6897abbffc7b20b7085026d0a897652ad))
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.300 ([#397](https://github.com/defenseunicorns/uds-package-dubbd/issues/397)) ([1d475e8](https://github.com/defenseunicorns/uds-package-dubbd/commit/1d475e8080b66ea18d5cddf25250bd2f22984a60))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.301 ([#405](https://github.com/defenseunicorns/uds-package-dubbd/issues/405)) ([a4b7267](https://github.com/defenseunicorns/uds-package-dubbd/commit/a4b72674b49202287a26a95966e6cbcb5b9484ac))
+* k3d local installation ([#403](https://github.com/defenseunicorns/uds-package-dubbd/issues/403)) ([33cfcff](https://github.com/defenseunicorns/uds-package-dubbd/commit/33cfcff5b5b676d8626e367c19802e0fa7e1f6a6))
+
+
+### Miscellaneous
+
+* **deps:** update actions/upload-artifact action to v3 ([#350](https://github.com/defenseunicorns/uds-package-dubbd/issues/350)) ([2df824e](https://github.com/defenseunicorns/uds-package-dubbd/commit/2df824e8162520ad5a027c5ff1abab4e29f168e6))
+* **deps:** update gitlab tag big-bang/bigbang to v2.6.0 ([#401](https://github.com/defenseunicorns/uds-package-dubbd/issues/401)) ([ae919ef](https://github.com/defenseunicorns/uds-package-dubbd/commit/ae919efab41f4b25ab913cc672e36aaac391603e))
+
 ## [0.4.2](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.4.1...v0.4.2) (2023-07-13)
 
 
