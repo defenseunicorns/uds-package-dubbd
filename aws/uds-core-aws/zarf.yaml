@@ -69,10 +69,6 @@ components:
     required: true
     import:
       path: ../dubbd-aws
-  - name: preflight
-    required: true
-    import:
-      path: ../../defense-unicorns-distro
   - name: download-terraform
     required: true
     actions:
@@ -113,6 +109,10 @@ components:
     required: true
     import:
       path: ../eks
+  - name: preflight
+    required: true
+    import:
+      path: ../../defense-unicorns-distro
   - name: loki-module
     required: true
     actions:
