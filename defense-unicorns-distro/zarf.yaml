@@ -87,7 +87,7 @@ components:
                 sensitive: true
                 autoIndent: true
           - cmd: "cat ${ZARF_VAR_KEY_FILE}"
-            description: read the cert
+            description: Read key file into values
             mute: true
             setVariables:
               - name: PUBLIC_KEY
