@@ -71,10 +71,6 @@ components:
     required: true
     import:
       path: ../dubbd-aws
-  - name: preflight
-    required: true
-    import:
-      path: ../../defense-unicorns-distro
   - name: download-terraform
     required: true
     actions:
@@ -115,6 +111,10 @@ components:
     required: true
     import:
       path: ../eks
+  - name: preflight
+    required: true
+    import:
+      path: ../../defense-unicorns-distro
   - name: loki-module
     required: true
     actions:
@@ -258,7 +258,10 @@ components:
     actions:
       onDeploy:
         after:
-          - cmd: "./zarf tools kubectl patch storageclass dubbd-default-gp3 -p '{\"metadata\": {\"annotations\":{\"storageclass.kubernetes.io/is-default-class\":\"true\"}}}' || true"
+          - cmd: |
+              pre_default_sc=$(./zarf tools kubectl get storageclass --output=jsonpath='{range .items[?(@.metadata.annotations.storageclass\.kubernetes\.io/is-default-class=="true")]}{.metadata.name}{end}')
+              ./zarf tools kubectl patch storageclass ${pre_default_sc} -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}' || true
+              ./zarf tools kubectl patch storageclass dubbd-default-sc -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}' || true
             mute: true
             description: "Update DUBBD storage class to cluster default"
   - name: zarf-init

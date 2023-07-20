@@ -62,19 +62,6 @@ components:
             mute: true
             setVariables:
               - name: LOKI_FORCE_DESTROY
-          - cmd: |
-              if [ -z "${ZARF_VAR_PVC_RECLAIM_POLICY}" ]; then
-                if [ "${ZARF_VAR_EPHEMERAL}" = "true" ]; then
-                  echo "Delete"
-                else
-                  echo "Retain"
-                fi
-              else
-                echo "${ZARF_VAR_PVC_RECLAIM_POLICY}"
-              fi
-            mute: true
-            setVariables:
-              - name: PVC_RECLAIM_POLICY
   - name: preflight
     required: true
     import:
@@ -248,10 +235,6 @@ components:
     required: true
     import:
       path: ../../defense-unicorns-distro
-  - name: dubbd-pre-upgrade
-    required: true
-    import:
-      path: ../../defense-unicorns-distro
   - name: storage-class
     required: true
     actions:
@@ -264,7 +247,7 @@ components:
                 fi
               else
                 if ./zarf tools kubectl get csidrivers ebs.csi.aws.com >/dev/null 2>&1 ; then
-                  ./zarf tools kubectl apply -f dubbd-storage-class.yaml >/dev/null 2>&1 && echo dubbd-default-gp3
+                  ./zarf tools kubectl apply -f dubbd-storage-class.yaml >/dev/null 2>&1 && echo dubbd-default-sc
                 else
                   ./zarf tools kubectl get storageclass --output=jsonpath='{range .items[?(@.metadata.annotations.storageclass\.kubernetes\.io/is-default-class=="true")]}{.metadata.name}{end}'
                 fi
@@ -278,6 +261,10 @@ components:
     files:
       - source: ../k8s-manifests/dubbd-storage-class.yaml
         target: dubbd-storage-class.yaml
+  - name: dubbd-pre-upgrade
+    required: true
+    import:
+      path: ../../defense-unicorns-distro
   - name: bigbang
     required: true
     import:
@@ -315,16 +302,6 @@ components:
             mute: true
             setVariables:
               - name: TENANT_INGRESS_UPDATE
-      onRemove:
-        after:
-          - cmd: |
-              if [ "$(./zarf tools kubectl get storageclass dubbd-default-gp3 -o jsonpath='{.reclaimPolicy}' 2>/dev/null)" = "Delete" ]; then
-                ./zarf tools kubectl delete pvc -n logging -l app.kubernetes.io/name=logging-loki --ignore-not-found
-                ./zarf tools kubectl delete pvc -n monitoring -l app.kubernetes.io/name=grafana --ignore-not-found
-                ./zarf tools kubectl delete pvc -n monitoring -l app.kubernetes.io/name=prometheus --ignore-not-found
-                ./zarf tools kubectl delete pvc -n tempo -l app.kubernetes.io/name=tempo --ignore-not-found
-              fi
-            description: "Remove DUBBD ephemeral PVCs if required"
   - name: external-dns-k8s-manifests
     required: true
     import:

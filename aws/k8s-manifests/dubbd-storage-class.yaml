@@ -1,7 +1,7 @@
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  name: dubbd-default-gp3
+  name: dubbd-default-sc
 allowVolumeExpansion: true
 provisioner: kubernetes.io/aws-ebs
 volumeBindingMode: WaitForFirstConsumer
