@@ -17,11 +17,10 @@ data "aws_partition" "current" {}
 data "aws_region" "current" {}
 
 locals {
-  generate_kms_key = var.create_kms_key ? 1 : 0
-  kms_key_arn      = var.kms_key_arn == null ? module.generate_kms[0].kms_key_arn : var.kms_key_arn
-  # The conditional may need to look like this depending on how we decide to handle the way varf wants to template things
-  # generate_kms_key          = var.kms_key_arn == "" ? 1 : 0
-  # kms_key_arn               = var.kms_key_arn == "" ? module.generate_kms[0].kms_key_arn : var.kms_key_arn
+  generate_kms_key          = var.create_kms_key ? 1 : 0
+  kms_key_arn               = var.kms_key_arn == null ? module.generate_kms[0].kms_key_arn : var.kms_key_arn
+  oidc_arn                  = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/${local.oidc_url_without_protocol}"
+  oidc_url_without_protocol = substr(data.aws_eks_cluster.existing.identity[0].oidc[0].issuer, 8, -1)
 }
 
 module "S3" {
@@ -73,11 +72,14 @@ module "generate_kms" {
 }
 
 module "irsa" {
-  source                        = "github.com/defenseunicorns/terraform-aws-uds-irsa?ref=v0.0.1"
-  name                          = "${var.name}-loki-irsa-role"
-  provider_url                  = substr(data.aws_eks_cluster.existing.identity[0].oidc[0].issuer, 8, -1)
-  oidc_fully_qualified_subjects = ["system:serviceaccount:logging:logging-loki"]
-  policy_arns                   = [aws_iam_policy.loki_policy.arn]
+  source                     = "github.com/defenseunicorns/terraform-aws-uds-irsa?ref=v0.0.2"
+  name                       = "${var.name}-loki-irsa-role"
+  kubernetes_namespace       = "logging"
+  kubernetes_service_account = "logging-loki"
+  oidc_provider_arn          = local.oidc_arn
+  role_policy_arns = tomap({
+    "loki" = aws_iam_policy.loki_policy.arn }
+  )
 }
 
 resource "aws_iam_policy" "loki_policy" {
