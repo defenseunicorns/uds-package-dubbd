@@ -15,17 +15,8 @@ addons:
           config:
             region: "###ZARF_VAR_VELERO_S3_AWS_REGION###"
           provider: aws
-      plugins:
-        aws:
-          image:
-            repository: registry1.dso.mil/ironbank/opensource/velero/velero-plugin-for-aws
-      image:
-        repository: registry1.dso.mil/ironbank/opensource/velero/velero
       serviceAccount:
         server:
           annotations:
             eks.amazonaws.com/role-arn: "###ZARF_VAR_VELERO_S3_ROLE_ARN###"
-      kubectl:
-        image:
-          repository: registry1.dso.mil/ironbank/opensource/kubernetes/kubectl
 
