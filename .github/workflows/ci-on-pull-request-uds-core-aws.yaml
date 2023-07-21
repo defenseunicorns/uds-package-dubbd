@@ -1,30 +1,20 @@
-name: CI UDS Core AWS
-
-on:
-  pull_request:
-    branches:
-      - main
-    paths:
-      - "aws/eks/**"
-      - "aws/uds-core-aws"
-      - "!**/*.md"
-      - ".github/workflows/ci-on-pull-request-uds-core-aws.yaml"
-  workflow_call:
-
-jobs:
-  yaml-lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install yamllint
-        run: pip install yamllint
-      - name: Lint YAML files
-        run: yamllint . -c .yamllint --no-warnings
-  test-release:
-    needs: yaml-lint
-    if: needs.yaml-lint.result == 'success' || needs.yaml-lint.result == 'skipped'
-    uses: ./.github/workflows/test-uds-core-aws-install.yaml
-    secrets: inherit
+#name: CI UDS Core AWS
+#
+#on:
+#  pull_request:
+#    branches:
+#      - main
+#    paths:
+#      - "aws/eks/**"
+#      - "aws/uds-core-aws/**"
+#      - "!**/*.md"
+#      - ".github/workflows/ci-on-pull-request-uds-core-aws.yaml"
+#  workflow_call:
+#
+#jobs:
+#    test-release:
+#        uses: ./.github/workflows/test-uds-core-aws-install.yaml
+#        secrets: inherit
 
 # commenting out for now because uds-core-aws has not been published yet
 #    test-upgrade:

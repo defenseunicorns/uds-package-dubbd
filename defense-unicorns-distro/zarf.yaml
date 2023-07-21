@@ -47,8 +47,29 @@ variables:
   - name: SLACK_CHANNEL
     default: "#alerts"
     description: Slack channel for alerts
+  - name: EPHEMERAL
+    description: "Set whether the cluster should be considered ephemeral - if true all resources will be force destroyed on removal"
+    default: "false"
 
 components:
+  - name: set-ephemeral
+    required: true
+    actions:
+      onDeploy:
+        before:
+          - cmd: |
+              if [ -z "${ZARF_VAR_PVC_RECLAIM_POLICY}" ]; then
+                if [ "${ZARF_VAR_EPHEMERAL}" = "true" ]; then
+                  echo "Delete"
+                else
+                  echo "Retain"
+                fi
+              else
+                echo "${ZARF_VAR_PVC_RECLAIM_POLICY}"
+              fi
+            mute: true
+            setVariables:
+              - name: PVC_RECLAIM_POLICY
   - name: preflight
     required: true
     actions:
@@ -122,6 +143,8 @@ components:
         target: tmp/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_windows_amd64.zip
       - source: https://github.com/fluxcd/flux2/releases/download/v###ZARF_PKG_TMPL_FLUX_VERSION###/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_windows_arm64.zip
         target: tmp/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_windows_arm64.zip
+  - name: storage-class
+    required: true
   - name: dubbd-pre-upgrade
     required: true
   - name: bigbang
@@ -169,6 +192,7 @@ components:
         before:
           - cmd: |
               ./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"spec":{"suspend":true}}'
+              ./zarf tools kubectl delete helmrelease -n bigbang velero --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang istio --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang istio-operator --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang monitoring --ignore-not-found --timeout=20m
@@ -188,9 +212,18 @@ components:
               ./zarf tools kubectl delete helmrelease -n bigbang kiali --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang metrics-server --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete apiservices.apiregistration.k8s.io -l helm.toolkit.fluxcd.io/namespace=bigbang,helm.toolkit.fluxcd.io/name=metrics-server --ignore-not-found --timeout=20m
-              ./zarf tools kubectl delete gitrepositories -n bigbang -l app.kubernetes.io/part-of=bigbang --timeout=20m
+              ./zarf tools kubectl delete gitrepositories -n bigbang -l app.kubernetes.io/part-of=bigbang --ignore-not-found --timeout=20m
             description: "Cleaning up Big Bang resources"
             maxTotalSeconds: 3600 # 1 hour
+        after:
+          - cmd: |
+              if [ "$(./zarf tools kubectl get storageclass dubbd-default-sc -o jsonpath='{.reclaimPolicy}' 2>/dev/null)" = "Delete" ]; then
+                ./zarf tools kubectl delete pvc -n logging -l app.kubernetes.io/name=logging-loki --ignore-not-found --timeout=2m
+                ./zarf tools kubectl delete pvc -n monitoring -l app.kubernetes.io/name=grafana --ignore-not-found --timeout=2m
+                ./zarf tools kubectl delete pvc -n monitoring -l app.kubernetes.io/name=prometheus --ignore-not-found --timeout=2m
+                ./zarf tools kubectl delete pvc -n tempo -l app.kubernetes.io/name=tempo --ignore-not-found --timeout=2m
+              fi
+            description: "Remove DUBBD ephemeral PVCs if required"
     files:
       - source: scripts/on_failure.sh
         target: on_failure.sh

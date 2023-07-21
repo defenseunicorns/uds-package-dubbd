@@ -27,7 +27,7 @@ locals {
 
   generate_kms_key = var.create_kms_key ? 1 : 0
   kms_key_arn      = var.kms_key_arn == null ? module.generate_kms[0].kms_key_arn : var.kms_key_arn
-  name             = "${var.name}-loki"
+  name             = "${var.name}-velero"
 
   # The conditional may need to look like this depending on how we decide to handle the way varf wants to template things
   # generate_kms_key          = var.kms_key_arn == "" ? 1 : 0
@@ -76,12 +76,11 @@ module "generate_kms" {
   kms_key_alias_name_prefix = "${local.name}-" # Prefix for KMS key alias.
   kms_key_deletion_window   = 7
   # Waiting period for scheduled KMS Key deletion. Can be 7-30 days.
-  kms_key_description = "${var.name} DUBBD deployment Loki Key" # Description for the KMS key.
+  kms_key_description = "${local.name} DUBBD deployment Velero Key" # Description for the KMS key.
   tags = {
     Deployment = "UDS DUBBD ${local.name}"
   }
 }
-
 
 module "irsa" {
   source                        = "github.com/defenseunicorns/terraform-aws-uds-irsa?ref=v0.0.2"
@@ -91,41 +90,63 @@ module "irsa" {
   oidc_provider_arn          = local.oidc_arn
 
   role_policy_arns = tomap({
-    "loki"       = aws_iam_policy.loki_policy.arn
+    "velero"       = aws_iam_policy.velero_policy.arn
   })
 
 }
+
 
 resource "random_id" "unique_id" {
   byte_length = 4
 }
 
-
-resource "aws_iam_policy" "loki_policy" {
+resource "aws_iam_policy" "velero_policy" {
   name        = "${local.name}-irsa-${random_id.unique_id.hex}"
   path        = "/"
-  description = "IAM policy for Loki to have necessary permissions to use S3 for storing logs."
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect   = "Allow"
-        Action   = ["s3:ListBucket"]
-        Resource = ["arn:${data.aws_partition.current.partition}:s3:::${module.S3.bucket_name}"]
-      },
-      {
-        Effect   = "Allow"
-        Action   = ["s3:*Object"]
-        Resource = ["arn:${data.aws_partition.current.partition}:s3:::${module.S3.bucket_name}/*"]
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "kms:GenerateDataKey",
-          "kms:Decrypt"
-        ]
-        Resource = ["${local.kms_key_arn}"]
-      }
-    ]
+  description = "Policy to give Velero necessary permissions for cluster backups."
+
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode(
+    {
+      Version = "2012-10-17",
+      Statement = [
+        {
+          Effect = "Allow",
+          Action = [
+            "ec2:DescribeVolumes",
+            "ec2:DescribeSnapshots",
+            "ec2:CreateTags",
+            "ec2:CreateVolume",
+            "ec2:CreateSnapshot",
+            "ec2:DeleteSnapshot"
+          ]
+          Resource = [
+            "*"
+          ]
+        },
+        {
+          Effect = "Allow"
+          Action = [
+            "s3:GetObject",
+            "s3:DeleteObject",
+            "s3:PutObject",
+            "s3:AbortMultipartUpload",
+            "s3:ListMultipartUploadParts"
+          ]
+          Resource = [
+            "arn:${data.aws_partition.current.partition}:s3:::${module.S3.bucket_name}/*"
+          ]
+        },
+        {
+          Effect = "Allow",
+          Action = [
+            "s3:ListBucket"
+          ],
+          Resource = [
+            "arn:${data.aws_partition.current.partition}:s3:::${module.S3.bucket_name}/*"
+          ]
+        }
+      ]
   })
 }
+

@@ -41,7 +41,9 @@ variables:
     description: "Set whether the cluster should be considered ephemeral - if true all resources will be force destroyed on removal"
     default: "false"
   - name: LOKI_FORCE_DESTROY
-    description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data, overrides ephemeral setting"
+    description: "If set to true, delete the S3 bucket and corresponding KMS key associated with the Loki bucket. Overrides ephemeral setting."
+  - name: PVC_RECLAIM_POLICY
+    description: "Affects DUBBD's default storage class reclaimPolicy, either `Retain` or `Delete`. No effect if EBS CSI Driver is not installed. Overrides ephemeral setting."
 
   - name: EXEMPT_NAMESPACES
     description: "List of namespaces to be exempt from cluster policies (must contain zarf)"
@@ -249,6 +251,19 @@ components:
             dir: run/route53-policy
             setVariables:
               - name: ROUTE53_ROLE_ARN
+  - name: storage-class
+    required: true
+    import:
+      path: ../dubbd-aws
+    actions:
+      onDeploy:
+        after:
+          - cmd: |
+              pre_default_sc=$(./zarf tools kubectl get storageclass --output=jsonpath='{range .items[?(@.metadata.annotations.storageclass\.kubernetes\.io/is-default-class=="true")]}{.metadata.name}{end}')
+              ./zarf tools kubectl patch storageclass ${pre_default_sc} -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}' || true
+              ./zarf tools kubectl patch storageclass dubbd-default-sc -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}' || true
+            mute: true
+            description: "Update DUBBD storage class to cluster default"
   - name: zarf-init
     required: true
     actions:
