@@ -16,9 +16,9 @@ metadata:
   vendor: Defense Unicorns
 
 variables:
-- name: HOST_PATH
-  default: /var/lib/rancher/k3s/storage/*
-  prompt: false
+  - name: HOST_PATH
+    default: /var/lib/rancher/k3s/storage/*
+    prompt: false
 
 components:
   - name: preflight
@@ -45,7 +45,7 @@ components:
       bigbang:
         version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
         valuesFiles:
-        - values/local-dev.yaml
+          - values/local-dev.yaml
   - name: dubbd-post-upgrade
     required: true
     import:

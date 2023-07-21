@@ -9,13 +9,13 @@ metadata:
   url: https://github.com/kubernetes-sigs/external-dns
   # Big Bang / Iron Bank are only amd64
   architecture: amd64
-  
+
 variables:
-- name: DOMAIN
-  description: "Name of domain to use for the DNS zone"
-  default: "bigbang.dev"
-- name: ROUTE53_ROLE_ARN
-  description: "ROUTE53_ROLE_ARN"
+  - name: DOMAIN
+    description: "Name of domain to use for the DNS zone"
+    default: "bigbang.dev"
+  - name: ROUTE53_ROLE_ARN
+    description: "ROUTE53_ROLE_ARN"
 
 components:
   - name: external-dns-k8s-manifests
@@ -35,7 +35,7 @@ components:
         namespace: external-dns
         releaseName: external-dns
         valuesFiles:
-        - ../values/aws-external-dns.yaml
+          - ../values/aws-external-dns.yaml
     images:
       # renovate: datasource=docker
       - "registry1.dso.mil/ironbank/external-dns:v0.13.4"

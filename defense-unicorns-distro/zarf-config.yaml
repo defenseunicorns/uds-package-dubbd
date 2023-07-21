@@ -1,5 +1,5 @@
 package:
-  create: 
+  create:
     max_package_size: "1000000000"
     set:
       # renovate: datasource=gitlab-tags depName=big-bang/bigbang versioning=semver registryUrl=https://repo1.dso.mil

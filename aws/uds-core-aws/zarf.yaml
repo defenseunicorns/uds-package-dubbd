@@ -188,14 +188,14 @@ components:
   - name: route53-policy-pre
     required: true
     actions:
-     onDeploy:
-      before:
-        - cmd: echo "route53-policy"
-          setVariables:
-            - name: STATE_KEY_PREFIX
-        - cmd: echo "${ZARF_VAR_STATE_KEY_PREFIX}-${ZARF_VAR_STATE_KEY}"
-          setVariables:
-            - name: ROUTE53_POLICY_STATE_KEY
+      onDeploy:
+        before:
+          - cmd: echo "route53-policy"
+            setVariables:
+              - name: STATE_KEY_PREFIX
+          - cmd: echo "${ZARF_VAR_STATE_KEY_PREFIX}-${ZARF_VAR_STATE_KEY}"
+            setVariables:
+              - name: ROUTE53_POLICY_STATE_KEY
   - name: route53-policy-module
     required: true
     actions:
@@ -204,16 +204,16 @@ components:
           - cmd: terraform get -update
             dir: ../route53-policy
     files:
-    - source: ../route53-policy/.terraform
-      target: run/route53-policy/.terraform
-    - source: ../route53-policy/main.tf
-      target: run/route53-policy/main.tf
-    - source: ../route53-policy/variables.tf
-      target: run/route53-policy/variables.tf
-    - source: ../route53-policy/output.tf
-      target: run/route53-policy/output.tf
-    - source: ../route53-policy/terraform.tfvars
-      target: run/route53-policy/terraform.tfvars
+      - source: ../route53-policy/.terraform
+        target: run/route53-policy/.terraform
+      - source: ../route53-policy/main.tf
+        target: run/route53-policy/main.tf
+      - source: ../route53-policy/variables.tf
+        target: run/route53-policy/variables.tf
+      - source: ../route53-policy/output.tf
+        target: run/route53-policy/output.tf
+      - source: ../route53-policy/terraform.tfvars
+        target: run/route53-policy/terraform.tfvars
   - name: execute-route53-policy-terraform
     required: true
     actions:
@@ -275,7 +275,7 @@ components:
       onDeploy:
         after:
           - cmd: mkdir -p run/zarf-init
-          - cmd: zarf p deploy ./zarf-init-amd64-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst --components git-server --confirm
+          - cmd: ./zarf p deploy ./zarf-init-amd64-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst --components git-server --confirm
             dir: run/zarf-init
     files:
       - source: zarf-init-amd64-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst

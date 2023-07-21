@@ -16,38 +16,38 @@ metadata:
   vendor: Defense Unicorns
 
 variables:
-- name: TERRAFORM_VERSION
-- name: TERRAFORM_PROVIDER_AWS_VERSION
+  - name: TERRAFORM_VERSION
+  - name: TERRAFORM_PROVIDER_AWS_VERSION
 
-- name: STATE_BUCKET_NAME
-  description: "Name of the pre-existing Terraform state S3 bucket"
-- name: STATE_KEY
-  description: "Path to the state file key in the state bucket"
-- name: STATE_DYNAMODB_TABLE_NAME
-  description: "Name of the DynamoDB table used for Terraform state locking"
-- name: REGION
-  description: "The AWS region to run the Terraform in"
+  - name: STATE_BUCKET_NAME
+    description: "Name of the pre-existing Terraform state S3 bucket"
+  - name: STATE_KEY
+    description: "Path to the state file key in the state bucket"
+  - name: STATE_DYNAMODB_TABLE_NAME
+    description: "Name of the DynamoDB table used for Terraform state locking"
+  - name: REGION
+    description: "The AWS region to run the Terraform in"
 
-- name: PRIVATE_ADMIN_LB
-  description: "Provision a private/internal load balancer for the admin ingress gateway"
-  default: "true"
-- name: PRIVATE_TENANT_LB
-  description: "Provision a private/internal load balancer for the tenant ingress gateway"
-  default: "true"
+  - name: PRIVATE_ADMIN_LB
+    description: "Provision a private/internal load balancer for the admin ingress gateway"
+    default: "true"
+  - name: PRIVATE_TENANT_LB
+    description: "Provision a private/internal load balancer for the tenant ingress gateway"
+    default: "true"
 
-- name: EPHEMERAL
-  description: "Set whether the cluster should be considered ephemeral - if true all resources will be force destroyed on removal"
-  default: "false"
-- name: LOKI_FORCE_DESTROY
-  description: "If set to true, delete the S3 bucket and corresponding KMS key associated with the Loki bucket. Overrides ephemeral setting."
-- name: VELERO_FORCE_DESTROY
-  description: "If set to true, delete the S3 bucket and corresponding KMS key associated with the Velero bucket. Overrides ephemeral setting."
-- name: PVC_RECLAIM_POLICY
-  description: "Affects DUBBD's default storage class reclaimPolicy, either `Retain` or `Delete`. No effect if EBS CSI Driver is not installed. Overrides ephemeral setting."
+  - name: EPHEMERAL
+    description: "Set whether the cluster should be considered ephemeral - if true all resources will be force destroyed on removal"
+    default: "false"
+  - name: LOKI_FORCE_DESTROY
+    description: "If set to true, delete the S3 bucket and corresponding KMS key associated with the Loki bucket. Overrides ephemeral setting."
+  - name: VELERO_FORCE_DESTROY
+    description: "If set to true, delete the S3 bucket and corresponding KMS key associated with the Velero bucket. Overrides ephemeral setting."
+  - name: PVC_RECLAIM_POLICY
+    description: "Affects DUBBD's default storage class reclaimPolicy, either `Retain` or `Delete`. No effect if EBS CSI Driver is not installed. Overrides ephemeral setting."
 
-- name: EXEMPT_NAMESPACES
-  description: "List of namespaces to be exempt from cluster policies (must contain zarf)"
-  default: '[ "zarf", "calico-apiserver", "calico-system", "tigera-operator" ]'
+  - name: EXEMPT_NAMESPACES
+    description: "List of namespaces to be exempt from cluster policies (must contain zarf)"
+    default: '[ "zarf", "calico-apiserver", "calico-system", "tigera-operator" ]'
 
 components:
   - name: set-ephemeral
@@ -115,22 +115,22 @@ components:
           - cmd: terraform get -update
             dir: ../loki
     files:
-    - source: ../loki/.terraform
-      target: run/loki/.terraform
-    - source: ../loki/main.tf
-      target: run/loki/main.tf
-    - source: ../loki/variables.tf
-      target: run/loki/variables.tf
-    - source: ../loki/output.tf
-      target: run/loki/output.tf
-    - source: ../loki/terraform.tfvars
-      target: run/loki/terraform.tfvars
+      - source: ../loki/.terraform
+        target: run/loki/.terraform
+      - source: ../loki/main.tf
+        target: run/loki/main.tf
+      - source: ../loki/variables.tf
+        target: run/loki/variables.tf
+      - source: ../loki/output.tf
+        target: run/loki/output.tf
+      - source: ../loki/terraform.tfvars
+        target: run/loki/terraform.tfvars
   - name: loki-execute-terraform
     required: true
     actions:
       onDeploy:
         before:
-          - cmd: "echo ${ZARF_VAR_STATE_KEY} | sed 's/\.tfstate/-loki.tfstate/g'"
+          - cmd: echo ${ZARF_VAR_STATE_KEY} | sed 's/\.tfstate/-loki.tfstate/g'
             dir: run/loki
             setVariables:
               - name: STATE_KEY_LOKI
@@ -184,22 +184,22 @@ components:
           - cmd: terraform get -update
             dir: ../velero
     files:
-    - source: ../velero/.terraform
-      target: run/velero/.terraform
-    - source: ../velero/main.tf
-      target: run/velero/main.tf
-    - source: ../velero/variables.tf
-      target: run/velero/variables.tf
-    - source: ../velero/output.tf
-      target: run/velero/output.tf
-    - source: ../velero/terraform.tfvars
-      target: run/velero/terraform.tfvars
+      - source: ../velero/.terraform
+        target: run/velero/.terraform
+      - source: ../velero/main.tf
+        target: run/velero/main.tf
+      - source: ../velero/variables.tf
+        target: run/velero/variables.tf
+      - source: ../velero/output.tf
+        target: run/velero/output.tf
+      - source: ../velero/terraform.tfvars
+        target: run/velero/terraform.tfvars
   - name: velero-execute-terraform
     required: true
     actions:
       onDeploy:
         before:
-          - cmd: "echo ${ZARF_VAR_STATE_KEY} | sed 's/\.tfstate/-velero.tfstate/g'"
+          - cmd: echo ${ZARF_VAR_STATE_KEY} | sed 's/\.tfstate/-velero.tfstate/g'
             dir: run/velero
             setVariables:
               - name: STATE_KEY_VELERO
@@ -211,7 +211,7 @@ components:
               -backend-config="region=${ZARF_VAR_REGION}" \
               -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
             dir: run/velero
-          - cmd: ../terraform plan 
+          - cmd: ../terraform plan
             dir: run/velero
           - cmd: sleep 15 #time to review
           - cmd: ../terraform apply -auto-approve
@@ -249,14 +249,14 @@ components:
   - name: route53-policy-pre
     required: true
     actions:
-     onDeploy:
-      before:
-        - cmd: echo "route53-policy"
-          setVariables:
-            - name: STATE_KEY_PREFIX
-        - cmd: echo "${ZARF_VAR_STATE_KEY_PREFIX}-${ZARF_VAR_STATE_KEY}"
-          setVariables:
-            - name: ROUTE53_POLICY_STATE_KEY
+      onDeploy:
+        before:
+          - cmd: echo "route53-policy"
+            setVariables:
+              - name: STATE_KEY_PREFIX
+          - cmd: echo "${ZARF_VAR_STATE_KEY_PREFIX}-${ZARF_VAR_STATE_KEY}"
+            setVariables:
+              - name: ROUTE53_POLICY_STATE_KEY
   - name: route53-policy-module
     required: true
     actions:
@@ -265,16 +265,16 @@ components:
           - cmd: terraform get -update
             dir: ../route53-policy
     files:
-    - source: ../route53-policy/.terraform
-      target: run/route53-policy/.terraform
-    - source: ../route53-policy/main.tf
-      target: run/route53-policy/main.tf
-    - source: ../route53-policy/variables.tf
-      target: run/route53-policy/variables.tf
-    - source: ../route53-policy/output.tf
-      target: run/route53-policy/output.tf
-    - source: ../route53-policy/terraform.tfvars
-      target: run/route53-policy/terraform.tfvars
+      - source: ../route53-policy/.terraform
+        target: run/route53-policy/.terraform
+      - source: ../route53-policy/main.tf
+        target: run/route53-policy/main.tf
+      - source: ../route53-policy/variables.tf
+        target: run/route53-policy/variables.tf
+      - source: ../route53-policy/output.tf
+        target: run/route53-policy/output.tf
+      - source: ../route53-policy/terraform.tfvars
+        target: run/route53-policy/terraform.tfvars
   - name: execute-route53-policy-terraform
     required: true
     actions:
@@ -358,10 +358,10 @@ components:
       bigbang:
         version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
         valuesFiles:
-        - ../values/aws-istio.yaml
-        - ../values/aws-loki.yaml
-        - ../values/aws-velero.yaml
-        - ../values/aws-storage-class.yaml
+          - ../values/aws-istio.yaml
+          - ../values/aws-loki.yaml
+          - ../values/aws-velero.yaml
+          - ../values/aws-storage-class.yaml
     actions:
       onDeploy:
         before:

@@ -11,7 +11,7 @@ loki:
       admin: "###ZARF_VAR_LOKI_S3_BUCKET###"
   values:
     serviceAccount:
-      annotations: 
+      annotations:
         eks.amazonaws.com/role-arn: "###ZARF_VAR_LOKI_S3_ROLE_ARN###"
     loki:
       storage:

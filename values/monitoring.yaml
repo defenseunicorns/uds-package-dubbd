@@ -1,4 +1,3 @@
-
 monitoring:
   enabled: true
   ingress:

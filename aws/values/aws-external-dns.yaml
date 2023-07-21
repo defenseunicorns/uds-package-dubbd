@@ -15,7 +15,7 @@ domainFilters: ["###ZARF_VAR_DOMAIN###"]
 
 provider: aws
 
-extraArgs: 
+extraArgs:
   - --aws-prefer-cname
 
 serviceAccount:

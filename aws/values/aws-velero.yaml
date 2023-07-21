@@ -2,12 +2,12 @@ addons:
   velero:
     enabled: true
     plugins:
-    - aws
+      - aws
     values:
       configuration:
         backupStorageLocation:
-          bucket:  "###ZARF_VAR_VELERO_S3_BUCKET###"
-          config: 
+          bucket: "###ZARF_VAR_VELERO_S3_BUCKET###"
+          config:
             region: "###ZARF_VAR_VELERO_S3_AWS_REGION###"
           provider: aws
         provider: aws
@@ -19,4 +19,3 @@ addons:
         server:
           annotations:
             eks.amazonaws.com/role-arn: "###ZARF_VAR_VELERO_S3_ROLE_ARN###"
-

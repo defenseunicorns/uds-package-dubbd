@@ -66,4 +66,4 @@ metadata:
   name: alertmanager-address
   namespace: flux-system
 stringData:
-    address: https://monitoring-monitoring-kube-alertmanager.monitoring.svc:9093/api/v2/alerts/"
+  address: https://monitoring-monitoring-kube-alertmanager.monitoring.svc:9093/api/v2/alerts/"
