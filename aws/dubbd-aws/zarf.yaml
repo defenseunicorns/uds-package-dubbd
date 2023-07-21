@@ -130,7 +130,7 @@ components:
     actions:
       onDeploy:
         before:
-          - cmd: "echo ${ZARF_VAR_STATE_KEY} | sed 's/\.tfstate/-loki.tfstate/g'"
+          - cmd: echo ${ZARF_VAR_STATE_KEY} | sed 's/\.tfstate/-loki.tfstate/g'
             dir: run/loki
             setVariables:
               - name: STATE_KEY_LOKI
@@ -184,22 +184,22 @@ components:
           - cmd: terraform get -update
             dir: ../velero
     files:
-    - source: ../velero/.terraform
-      target: run/velero/.terraform
-    - source: ../velero/main.tf
-      target: run/velero/main.tf
-    - source: ../velero/variables.tf
-      target: run/velero/variables.tf
-    - source: ../velero/output.tf
-      target: run/velero/output.tf
-    - source: ../velero/terraform.tfvars
-      target: run/velero/terraform.tfvars
+      - source: ../velero/.terraform
+        target: run/velero/.terraform
+      - source: ../velero/main.tf
+        target: run/velero/main.tf
+      - source: ../velero/variables.tf
+        target: run/velero/variables.tf
+      - source: ../velero/output.tf
+        target: run/velero/output.tf
+      - source: ../velero/terraform.tfvars
+        target: run/velero/terraform.tfvars
   - name: velero-execute-terraform
     required: true
     actions:
       onDeploy:
         before:
-          - cmd: "echo ${ZARF_VAR_STATE_KEY} | sed 's/\.tfstate/-velero.tfstate/g'"
+          - cmd: echo ${ZARF_VAR_STATE_KEY} | sed 's/\.tfstate/-velero.tfstate/g'
             dir: run/velero
             setVariables:
               - name: STATE_KEY_VELERO
@@ -211,7 +211,7 @@ components:
               -backend-config="region=${ZARF_VAR_REGION}" \
               -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
             dir: run/velero
-          - cmd: ../terraform plan 
+          - cmd: ../terraform plan
             dir: run/velero
           - cmd: sleep 15 #time to review
           - cmd: ../terraform apply -auto-approve
