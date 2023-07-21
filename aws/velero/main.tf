@@ -145,7 +145,16 @@ resource "aws_iam_policy" "velero_policy" {
           Resource = [
             "arn:${data.aws_partition.current.partition}:s3:::${module.S3.bucket_name}/*"
           ]
+        },
+        {
+          Effect = "Allow"
+          Action = [
+            "kms:GenerateDataKey",
+            "kms:Decrypt"
+          ]
+          Resource = ["${local.kms_key_arn}"]
         }
+
       ]
   })
 }
