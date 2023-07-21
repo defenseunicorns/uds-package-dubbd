@@ -196,6 +196,7 @@ components:
         before:
           - cmd: |
               ./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"spec":{"suspend":true}}'
+              ./zarf tools kubectl delete helmrelease -n bigbang velero --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang istio --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang istio-operator --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang monitoring --ignore-not-found --timeout=20m
