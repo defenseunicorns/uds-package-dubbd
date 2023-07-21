@@ -40,6 +40,8 @@ variables:
   default: "false"
 - name: LOKI_FORCE_DESTROY
   description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data, overrides ephemeral setting"
+- name: VELERO_FORCE_DESTROY
+  description: "Provide a means to force destroy the Velero storage (S3) bucket even if it contains data, overrides ephemeral setting"
 
 - name: EXEMPT_NAMESPACES
   description: "List of namespaces to be exempt from cluster policies (must contain zarf)"
@@ -60,6 +62,15 @@ components:
             mute: true
             setVariables:
               - name: LOKI_FORCE_DESTROY
+          - cmd: |
+              if [ -z "${ZARF_VAR_VELERO_FORCE_DESTROY}" ]; then
+                echo "${ZARF_VAR_EPHEMERAL}"
+              else
+                echo "${ZARF_VAR_VELERO_FORCE_DESTROY}"
+              fi
+            mute: true
+            setVariables:
+              - name: VELERO_FORCE_DESTROY
   - name: preflight
     required: true
     import:
@@ -69,7 +80,9 @@ components:
     actions:
       onDeploy:
         after:
-          - cmd: rm -f run/loki/terraform || true
+          - cmd: |
+              rm -f run/loki/terraform || true
+              rm -f run/velero/terraform || true
             description: Clean up previous install since archiver doesn't overwrite the output
           - cmd: "./extract-terraform.sh ###ZARF_PKG_TMPL_TERRAFORM_VERSION### ###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###"
           # - cmd: rm -rf tmp
@@ -110,17 +123,19 @@ components:
       target: run/loki/output.tf
     - source: ../loki/terraform.tfvars
       target: run/loki/terraform.tfvars
-  - name: execute-terraform
+  - name: loki-execute-terraform
     required: true
     actions:
       onDeploy:
         before:
-          - cmd: "test -d ./loki/ && chmod -R ugo+rwx ./loki/ || echo $?"
-            dir: run
+          - cmd: "echo ${ZARF_VAR_STATE_KEY} | sed 's/\.tfstate/-loki.tfstate/g'"
+            dir: run/loki
+            setVariables:
+              - name: STATE_KEY_LOKI
           - cmd: |
               ../terraform init -force-copy \
               -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
-              -backend-config="key=loki-${ZARF_VAR_STATE_KEY}" \
+              -backend-config="key=${ZARF_VAR_STATE_KEY_LOKI}" \
               -backend-config="region=${ZARF_VAR_REGION}" \
               -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
             dir: run/loki
@@ -142,7 +157,7 @@ components:
               else
                 echo "Cannot remove: run/loki directory does not exist"
               fi
-  - name: outputs
+  - name: loki-outputs
     required: true
     actions:
       onDeploy:
@@ -155,10 +170,80 @@ components:
             dir: run/loki
             setVariables:
               - name: LOKI_S3_AWS_REGION
-          - cmd: ../terraform output -raw irsa_role
+          - cmd: ../terraform output -raw irsa_role_arn
             dir: run/loki
             setVariables:
               - name: LOKI_S3_ROLE_ARN
+  - name: velero-module
+    required: true
+    actions:
+      onCreate:
+        before:
+          - cmd: terraform get -update
+            dir: ../velero
+    files:
+    - source: ../velero/.terraform
+      target: run/velero/.terraform
+    - source: ../velero/main.tf
+      target: run/velero/main.tf
+    - source: ../velero/variables.tf
+      target: run/velero/variables.tf
+    - source: ../velero/output.tf
+      target: run/velero/output.tf
+    - source: ../velero/terraform.tfvars
+      target: run/velero/terraform.tfvars
+  - name: velero-execute-terraform
+    required: true
+    actions:
+      onDeploy:
+        before:
+          - cmd: "echo ${ZARF_VAR_STATE_KEY} | sed 's/\.tfstate/-velero.tfstate/g'"
+            dir: run/velero
+            setVariables:
+              - name: STATE_KEY_VELERO
+          - cmd: "echo ${ZARF_VAR_STATE_KEY_VELERO}"
+          - cmd: |
+              ../terraform init -force-copy \
+              -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
+              -backend-config="key=${ZARF_VAR_STATE_KEY_VELERO}" \
+              -backend-config="region=${ZARF_VAR_REGION}" \
+              -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
+            dir: run/velero
+          - cmd: ../terraform plan 
+            dir: run/velero
+          - cmd: sleep 15 #time to review
+          - cmd: ../terraform apply -auto-approve
+            dir: run/velero
+      onRemove:
+        before:
+          - cmd: |
+              if [ -d "run/velero" ]; then
+                cd run/velero
+                if [ "$(../terraform output force_destroy)" = true ]; then
+                  ../terraform destroy -auto-approve
+                else
+                  echo "Skipping remove, force_destroy is set to false"
+                fi
+              else
+                echo "Cannot remove: run/velero directory does not exist"
+              fi
+  - name: velero-outputs
+    required: true
+    actions:
+      onDeploy:
+        after:
+          - cmd: ../terraform output -raw s3_bucket
+            dir: run/velero
+            setVariables:
+              - name: VELERO_S3_BUCKET
+          - cmd: ../terraform output -raw aws_region
+            dir: run/velero
+            setVariables:
+              - name: VELERO_S3_AWS_REGION
+          - cmd: ../terraform output -raw irsa_role_arn
+            dir: run/velero
+            setVariables:
+              - name: VELERO_S3_ROLE_ARN
   - name: route53-policy-pre
     required: true
     actions:
@@ -247,6 +332,7 @@ components:
         valuesFiles:
         - ../values/aws-istio.yaml
         - ../values/aws-loki.yaml
+        - ../values/aws-velero.yaml
     actions:
       onDeploy:
         before:
