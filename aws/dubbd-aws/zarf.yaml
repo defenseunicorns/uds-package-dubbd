@@ -39,9 +39,11 @@ variables:
   description: "Set whether the cluster should be considered ephemeral - if true all resources will be force destroyed on removal"
   default: "false"
 - name: LOKI_FORCE_DESTROY
-  description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data, overrides ephemeral setting"
+  description: "If set to true, delete the S3 bucket and corresponding KMS key associated with the Loki bucket. Overrides ephemeral setting."
 - name: VELERO_FORCE_DESTROY
-  description: "Provide a means to force destroy the Velero storage (S3) bucket even if it contains data, overrides ephemeral setting"
+  description: "If set to true, delete the S3 bucket and corresponding KMS key associated with the Velero bucket. Overrides ephemeral setting."
+- name: PVC_RECLAIM_POLICY
+  description: "Affects DUBBD's default storage class reclaimPolicy, either `Retain` or `Delete`. No effect if EBS CSI Driver is not installed. Overrides ephemeral setting."
 
 - name: EXEMPT_NAMESPACES
   description: "List of namespaces to be exempt from cluster policies (must contain zarf)"
@@ -318,6 +320,32 @@ components:
     required: true
     import:
       path: ../../defense-unicorns-distro
+  - name: storage-class
+    required: true
+    actions:
+      onDeploy:
+        after:
+          - cmd: |
+              if [ "${ZARF_VAR_IS_UPGRADE}" = "true" ] && ./zarf tools kubectl get statefulset -n tempo tempo-tempo >/dev/null 2>&1; then
+                if ! [ "$(./zarf tools kubectl get statefulset -n tempo tempo-tempo -o jsonpath='{.spec.volumeClaimTemplates[0].spec.storageClassName}' 2>&1)" = "" ]; then
+                  ./zarf tools kubectl get statefulset -n tempo tempo-tempo -o jsonpath='{.spec.volumeClaimTemplates[0].spec.storageClassName}' 2>&1
+                fi
+              else
+                if ./zarf tools kubectl get csidrivers ebs.csi.aws.com >/dev/null 2>&1 ; then
+                  ./zarf tools kubectl apply -f dubbd-storage-class.yaml >/dev/null 2>&1 && echo dubbd-default-sc
+                else
+                  ./zarf tools kubectl get storageclass --output=jsonpath='{range .items[?(@.metadata.annotations.storageclass\.kubernetes\.io/is-default-class=="true")]}{.metadata.name}{end}'
+                fi
+              fi
+            mute: true
+            description: "Determine storage class to use"
+            setVariables:
+              - name: STORAGE_CLASS_NAME
+          - cmd: rm -rf dubbd-storage-class.yaml
+            mute: true
+    files:
+      - source: ../k8s-manifests/dubbd-storage-class.yaml
+        target: dubbd-storage-class.yaml
   - name: dubbd-pre-upgrade
     required: true
     import:
@@ -333,6 +361,7 @@ components:
         - ../values/aws-istio.yaml
         - ../values/aws-loki.yaml
         - ../values/aws-velero.yaml
+        - ../values/aws-storage-class.yaml
     actions:
       onDeploy:
         before:
