@@ -19,3 +19,17 @@ addons:
         server:
           annotations:
             eks.amazonaws.com/role-arn: "###ZARF_VAR_VELERO_S3_ROLE_ARN###"
+      schedules:
+        udsbackup:
+          disabled: false
+          schedule: "0 3 * * *"
+          useOwnerReferencesInBackup: false
+          template:
+            csiSnapshotTimeout: 0s
+            includeClusterResources: false
+            includedNamespaces:
+            - monitoring
+            - tempo
+            snapshotVolumes: true
+            ttl: "240h"
+
