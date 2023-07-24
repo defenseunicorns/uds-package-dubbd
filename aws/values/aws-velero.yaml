@@ -28,8 +28,7 @@ addons:
             csiSnapshotTimeout: 0s
             includeClusterResources: false
             includedNamespaces:
-            - monitoring
-            - tempo
+              - monitoring
+              - tempo
             snapshotVolumes: true
             ttl: "240h"
-
