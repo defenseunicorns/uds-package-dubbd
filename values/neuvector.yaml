@@ -5,8 +5,7 @@ neuvector:
   values:
     containerd:
       enabled: true
-    monitor:
-      install: true
+      path: "###ZARF_VAR_CONTAINER_RUNTIME_SOCKET###"
     controller:
       secret:
         data:
