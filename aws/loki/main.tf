@@ -23,6 +23,7 @@ locals {
   oidc_url_without_protocol = substr(data.aws_eks_cluster.existing.identity[0].oidc[0].issuer, 8, -1)
 }
 
+# Resource declaration for s3 module
 module "S3" {
   source                  = "github.com/defenseunicorns/terraform-aws-uds-s3?ref=v0.0.5"
   name_prefix             = var.name
@@ -31,6 +32,7 @@ module "S3" {
   create_bucket_lifecycle = true
 }
 
+# Bucket policy to create for s3 bucket
 resource "aws_s3_bucket_policy" "bucket_policy" {
   bucket = module.S3.bucket_name
 
@@ -56,6 +58,7 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
   })
 }
 
+# KMS key for loki
 module "generate_kms" {
   count  = local.generate_kms_key
   source = "github.com/defenseunicorns/terraform-aws-uds-kms?ref=v0.0.2"
@@ -71,6 +74,7 @@ module "generate_kms" {
   }
 }
 
+# irsa resources for loki
 module "irsa" {
   source                     = "github.com/defenseunicorns/terraform-aws-uds-irsa?ref=v0.0.2"
   name                       = "${var.name}-loki-irsa-role"
@@ -82,6 +86,7 @@ module "irsa" {
   )
 }
 
+# Granting irsa permissions on loki s3 bucket
 resource "aws_iam_policy" "loki_policy" {
   name        = "${var.name}-loki-irsa-policy"
   path        = "/"
