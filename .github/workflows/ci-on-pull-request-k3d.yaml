@@ -13,8 +13,8 @@ on:
       - "**/*.svg"
       - "aws/**"
       - "oscal-component.y*ml"
-      -  aws/dubbd-aws/oscal-component.y*ml
-      -  aws/uds-core-aws/oscal-component.y*ml
+      - "aws/dubbd-aws/oscal-component.y*ml"
+      - "aws/uds-core-aws/oscal-component.y*ml"
       - ".github/workflows/*aws*.y*ml"
       - ".github/workflows/*cloudtrail*.y*ml"
       - ".github/workflows/*uds*.y*ml"
