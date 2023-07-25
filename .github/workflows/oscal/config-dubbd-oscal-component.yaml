@@ -7,11 +7,11 @@ metadata: # OSCAL-compliant metadata
     - uuid: f3cf70f8-ba44-4e55-9ea3-389ef24847d3
       name: Defense Unicorns
       links:
-      - href: https://defenseunicorns.com
-        rel: website
+        - href: https://defenseunicorns.com
+          rel: website
       type: organization
 components: # Define paths on the local filesystem or remote paths in git repositories to OSCAL component definition files
-    remote:
+  remote:
     - git: https://repo1.dso.mil/big-bang/product/packages/kiali.git@1.70.0-bb.0
       path: oscal-component.yaml
     - git: https://repo1.dso.mil/big-bang/product/packages/tempo.git@1.2.0-bb.2
@@ -28,7 +28,7 @@ components: # Define paths on the local filesystem or remote paths in git reposi
       path: oscal-component.yaml
     - git: https://repo1.dso.mil/big-bang/product/packages/kyverno.git@2.7.2-bb.0
       path: oscal-component.yaml
-    # - git: https://repo1.dso.mil/big-bang/product/packages/kyverno-policies.git@1.1.0-bb.7
-    #   path: oscal-component.yaml
-    # - git: https://repo1.dso.mil/big-bang/product/packages/kyverno-reporter.git@2.16.0-bb.1
-    #   path: oscal-component.yaml
+  # - git: https://repo1.dso.mil/big-bang/product/packages/kyverno-policies.git@1.1.0-bb.7
+  #   path: oscal-component.yaml
+  # - git: https://repo1.dso.mil/big-bang/product/packages/kyverno-reporter.git@2.16.0-bb.1
+  #   path: oscal-component.yaml

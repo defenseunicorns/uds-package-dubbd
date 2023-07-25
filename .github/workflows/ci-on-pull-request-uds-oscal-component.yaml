@@ -20,7 +20,6 @@ on:
   workflow_call:
 
 jobs:
-    test-release-oscal:
-        uses: ./.github/workflows/create-uds-oscal-component.yaml
-        secrets: inherit
-
+  test-release-oscal:
+    uses: ./.github/workflows/create-uds-oscal-component.yaml
+    secrets: inherit
