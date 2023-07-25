@@ -109,3 +109,12 @@ jobs:
             --fail-with-body \
             --oauth2-bearer "$(gh auth token)" \
             --data @-
+
+      - name: TEST
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          BRANCH_NAME=$(echo $GITHUB_REF | cut -d'/' -f3)
+          echo $BRANCH_NAME
+
