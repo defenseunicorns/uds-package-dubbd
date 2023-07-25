@@ -26,9 +26,7 @@ addons:
           useOwnerReferencesInBackup: false
           template:
             csiSnapshotTimeout: 0s
-            includeClusterResources: false
             includedNamespaces:
               - monitoring
               - tempo
-            snapshotVolumes: true
             ttl: "240h"
