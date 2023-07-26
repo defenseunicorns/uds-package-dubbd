@@ -11,7 +11,7 @@ variable "kms_key_arn" {
 
 variable "key_alias" {
   description = "alias for KMS Key"
-  default     = "bigbang-loki"
+  default     = "bigbang-velero"
 }
 
 variable "force_destroy" {

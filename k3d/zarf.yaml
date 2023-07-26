@@ -4,7 +4,7 @@ metadata:
   name: dubbd-k3d
   description: "Defense Unicorns Big Bang Distro K3D Environment"
   # x-release-please-start-version
-  version: "0.5.0"
+  version: "0.5.1"
   # x-release-please-end
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
@@ -16,9 +16,9 @@ metadata:
   vendor: Defense Unicorns
 
 variables:
-- name: HOST_PATH
-  default: /var/lib/rancher/k3s/storage/*
-  prompt: false
+  - name: HOST_PATH
+    default: /var/lib/rancher/k3s/storage/*
+    prompt: false
 
 components:
   - name: preflight
@@ -45,7 +45,7 @@ components:
       bigbang:
         version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
         valuesFiles:
-        - values/local-dev.yaml
+          - values/local-dev.yaml
   - name: dubbd-post-upgrade
     required: true
     import:

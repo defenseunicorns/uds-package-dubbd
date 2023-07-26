@@ -1,0 +1,32 @@
+addons:
+  velero:
+    enabled: true
+    plugins:
+      - aws
+    values:
+      configuration:
+        backupStorageLocation:
+          bucket: "###ZARF_VAR_VELERO_S3_BUCKET###"
+          config:
+            region: "###ZARF_VAR_VELERO_S3_AWS_REGION###"
+          provider: aws
+        provider: aws
+        volumeSnapshotLocation:
+          config:
+            region: "###ZARF_VAR_VELERO_S3_AWS_REGION###"
+          provider: aws
+      serviceAccount:
+        server:
+          annotations:
+            eks.amazonaws.com/role-arn: "###ZARF_VAR_VELERO_S3_ROLE_ARN###"
+      schedules:
+        udsbackup:
+          disabled: false
+          schedule: "0 3 * * *"
+          useOwnerReferencesInBackup: false
+          template:
+            csiSnapshotTimeout: 0s
+            includedNamespaces:
+              - monitoring
+              - tempo
+            ttl: "240h"

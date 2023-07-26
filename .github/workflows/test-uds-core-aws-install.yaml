@@ -10,7 +10,7 @@ permissions:
 jobs:
   test-clean-install:
     runs-on: ubuntu-latest
-  
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -63,12 +63,21 @@ jobs:
         working-directory: aws/uds-core-aws
         timeout-minutes: 60
 
-      - name: Cleanup lingering bucket resources
+      - name: Cleanup lingering loki bucket resources
         if: always()
         run: |
           if [ -f run/loki/main.tf ]; then
             cd run/loki
-            terraform destroy
+            terraform destroy -auto-approve
+          fi
+        working-directory: aws/uds-core-aws
+
+      - name: Cleanup lingering velero bucket resources
+        if: always()
+        run: |
+          if [ -f run/velero/main.tf ]; then
+            cd run/velero
+            terraform destroy -auto-approve
           fi
         working-directory: aws/uds-core-aws
 
@@ -77,6 +86,6 @@ jobs:
         run: |
           if [ -f run/eks/main.tf ]; then
             cd run/eks
-            terraform destroy
+            terraform destroy -auto-approve
           fi
         working-directory: aws/uds-core-aws

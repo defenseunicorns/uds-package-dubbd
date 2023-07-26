@@ -4,7 +4,7 @@ loki:
     # Values for Monolith strategy
     singleBinary:
       persistence:
-          size: "###ZARF_VAR_LOKI_PVC_SIZE###"
+        size: "###ZARF_VAR_LOKI_PVC_SIZE###"
     # Values for Scalable strategy
     write:
       autoscaling:

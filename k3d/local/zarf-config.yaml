@@ -4,10 +4,9 @@
 log-level: info
 architecture: amd64
 package:
-  create: 
+  create:
     max_package_size: 1000000000
     set:
       dl_base_url: https://github.com/defenseunicorns/zarf/releases/download
       k3d_cluster_name: dubbd
       init_components: "git-server"
-

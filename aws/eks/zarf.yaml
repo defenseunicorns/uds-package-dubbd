@@ -22,16 +22,16 @@ components:
         before:
           - cmd: mkdir -p run/eks
     files:
-    - source: .terraform
-      target: run/eks/.terraform
-    - source: main.tf
-      target: run/eks/main.tf
-    - source: variables.tf
-      target: run/eks/variables.tf
-    - source: output.tf
-      target: run/eks/output.tf
-    - source: terraform.tfvars
-      target: run/eks/terraform.tfvars
+      - source: .terraform
+        target: run/eks/.terraform
+      - source: main.tf
+        target: run/eks/main.tf
+      - source: variables.tf
+        target: run/eks/variables.tf
+      - source: output.tf
+        target: run/eks/output.tf
+      - source: terraform.tfvars
+        target: run/eks/terraform.tfvars
 
   - name: execute-eks-module
     required: true
