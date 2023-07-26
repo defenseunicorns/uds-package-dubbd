@@ -19,6 +19,10 @@ variables:
   - name: HOST_PATH
     default: /var/lib/rancher/k3s/storage/*
     prompt: false
+  - name: CONTAINER_RUNTIME_SOCKET
+    default: "/run/k3s/containerd/containerd.sock"
+    description: "Path for container runtime socket"
+    prompt: false
 
 components:
   - name: preflight

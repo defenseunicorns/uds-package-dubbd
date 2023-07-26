@@ -41,6 +41,10 @@ variables:
   - name: LOKI_PVC_SIZE
     default: "40Gi"
     description: Size of the PVC for Loki when running in dev mode
+  - name: CONTAINER_RUNTIME_SOCKET
+    default: "/var/run/containerd/containerd.sock"
+    description: "Path for container runtime socket"
+    prompt: false
   - name: SLACK_URL
     default: https://none.dev
     description: Slack Webhook URL for alerts
