@@ -1,22 +1,22 @@
-#name: CI UDS Core AWS
-#
-#on:
-#  pull_request:
-#    branches:
-#      - main
-#    paths:
-#      - "aws/eks/**"
-#      - "aws/uds-core-aws/**"
-#      - "!**/*.md"
-#      - ".github/workflows/ci-on-pull-request-uds-core-aws.yaml"
-#  workflow_call:
-#
-#jobs:
-#    test-release:
-#        uses: ./.github/workflows/test-uds-core-aws-install.yaml
-#        secrets: inherit
+name: CI UDS Core AWS
 
-# commenting out for now because uds-core-aws has not been published yet
-#    test-upgrade:
-#        uses: ./.github/workflows/test-uds-core-aws-upgrade.yaml
-#        secrets: inherit
+on:
+  pull_request:
+    branches:
+      - never
+    paths:
+      - "aws/eks/**"
+      - "aws/uds-core-aws/**"
+      - "!**/*.md"
+      - ".github/workflows/ci-on-pull-request-uds-core-aws.yaml"
+  workflow_call:
+
+jobs:
+    test-release:
+        uses: ./.github/workflows/test-uds-core-aws-install.yaml
+        secrets: inherit
+
+ commenting out for now because uds-core-aws has not been published yet
+    test-upgrade:
+        uses: ./.github/workflows/test-uds-core-aws-upgrade.yaml
+        secrets: inherit
