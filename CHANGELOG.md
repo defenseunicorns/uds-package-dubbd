@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.5.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.5.0...v0.5.1) (2023-07-25)
+
+
+### Features
+
+* add authservice istio extensionProvider ([#424](https://github.com/defenseunicorns/uds-package-dubbd/issues/424)) ([85c494c](https://github.com/defenseunicorns/uds-package-dubbd/commit/85c494cf40ce8bb43c237891fefd46496563062c))
+* add default storage class for DUBBD ([#417](https://github.com/defenseunicorns/uds-package-dubbd/issues/417)) ([7dd37dd](https://github.com/defenseunicorns/uds-package-dubbd/commit/7dd37dd0d68fbca7757268ec6e190b33e990452a))
+* add IAC for Velero deployment ([#420](https://github.com/defenseunicorns/uds-package-dubbd/issues/420)) ([1e460f5](https://github.com/defenseunicorns/uds-package-dubbd/commit/1e460f563066badff73b35defaec73e611d2c901))
+
+
+### Bug Fixes
+
+* Adding kms:GenerateDataKey kms:Decrypt to velero policy ([#428](https://github.com/defenseunicorns/uds-package-dubbd/issues/428)) ([1efe72b](https://github.com/defenseunicorns/uds-package-dubbd/commit/1efe72bf1320d6f76fd1825d8fecc45d8b428999))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.305 ([#416](https://github.com/defenseunicorns/uds-package-dubbd/issues/416)) ([f29519c](https://github.com/defenseunicorns/uds-package-dubbd/commit/f29519c3eff4a15a0cdaf98a2f8264e530ef0cec))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.307 ([#437](https://github.com/defenseunicorns/uds-package-dubbd/issues/437)) ([10902f0](https://github.com/defenseunicorns/uds-package-dubbd/commit/10902f087fc7d62a8462d8f8fd0153503054845a))
+* **deps:** update module github.com/gruntwork-io/terratest to v0.43.8 ([#375](https://github.com/defenseunicorns/uds-package-dubbd/issues/375)) ([5040605](https://github.com/defenseunicorns/uds-package-dubbd/commit/5040605a8606c0470231166e2acc643bfb4a1ba6))
+* **deps:** update module github.com/gruntwork-io/terratest to v0.43.9 ([#438](https://github.com/defenseunicorns/uds-package-dubbd/issues/438)) ([57f7607](https://github.com/defenseunicorns/uds-package-dubbd/commit/57f76076717f53ec7b43eba8f8825b34520283bf))
+
+
+### Miscellaneous
+
+* **deps:** update dependency defenseunicorns/zarf to v0.28.3 ([#421](https://github.com/defenseunicorns/uds-package-dubbd/issues/421)) ([fc32a54](https://github.com/defenseunicorns/uds-package-dubbd/commit/fc32a54e613ede698b3fb934235d96909650ef2f))
+* **deps:** update terraform github.com/defenseunicorns/terraform-aws-uds-kms to v0.0.2 ([#415](https://github.com/defenseunicorns/uds-package-dubbd/issues/415)) ([379b979](https://github.com/defenseunicorns/uds-package-dubbd/commit/379b97952b4ddb9a20bea6440bbfa1c852ff17ac))
+* update packaging standards, add yamllint in CI ([#414](https://github.com/defenseunicorns/uds-package-dubbd/issues/414)) ([f5c7a73](https://github.com/defenseunicorns/uds-package-dubbd/commit/f5c7a7350b5e54e158725547dda0667746e29c78))
+
 ## [0.5.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.4.2...v0.5.0) (2023-07-19)
 
 
