@@ -12,11 +12,11 @@ on:
   workflow_call:
 
 jobs:
-    test-release:
-        uses: ./.github/workflows/test-uds-core-aws-install.yaml
-        secrets: inherit
+  test-release:
+    uses: ./.github/workflows/test-uds-core-aws-install.yaml
+    secrets: inherit
 
- commenting out for now because uds-core-aws has not been published yet
-    test-upgrade:
-        uses: ./.github/workflows/test-uds-core-aws-upgrade.yaml
-        secrets: inherit
+# commenting out for now because uds-core-aws has not been published yet
+    #test-upgrade:
+    #    uses: ./.github/workflows/test-uds-core-aws-upgrade.yaml
+    #    secrets: inherit
