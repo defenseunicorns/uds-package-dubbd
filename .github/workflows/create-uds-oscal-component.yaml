@@ -50,7 +50,12 @@ jobs:
           npx prettier oscal-component.yaml aws/dubbd-aws/oscal-component.yaml aws/uds-core-aws/oscal-component.yaml --write
           npm uninstall --save-dev prettier
           rm -rf node_modules/
-
+          ls -al
+          rm package.json
+          rm package-lock.json
+          ls -al
+          echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
+          echo "GITHUB_REF_NAME: $GITHUB_REF_NAME"
       - name: Commit OSCAL-Component Files
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
