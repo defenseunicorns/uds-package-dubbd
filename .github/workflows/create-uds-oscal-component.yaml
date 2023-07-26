@@ -43,7 +43,7 @@ jobs:
 
       - name: Clean Up
         run: rm -rf component-generator
-      
+
       - name: Yaml Formatter and Cleanup
         run: |
           npm install --save-dev --save-exact prettier
