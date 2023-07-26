@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.5.2](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.5.1...v0.5.2) (2023-07-26)
+
+
+### Features
+
+* Adding default backup schedule for monitoring and tempo pvcs ([#440](https://github.com/defenseunicorns/uds-package-dubbd/issues/440)) ([fe1ae19](https://github.com/defenseunicorns/uds-package-dubbd/commit/fe1ae19f290005ffaffce9d41448530014701f8a))
+
+
+### Bug Fixes
+
+* ci for uds core syntax ([#449](https://github.com/defenseunicorns/uds-package-dubbd/issues/449)) ([813ffc2](https://github.com/defenseunicorns/uds-package-dubbd/commit/813ffc2ad6217f7c5fb421c259a9901f700a8e5c))
+* deadend ci-on-pull-request-uds-core-aws job to fire on the never branch so we don't receive github spam ([#448](https://github.com/defenseunicorns/uds-package-dubbd/issues/448)) ([de5d8d4](https://github.com/defenseunicorns/uds-package-dubbd/commit/de5d8d4494cb96d12c76effdc77f3194d4d4217f))
+
 ## [0.5.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.5.0...v0.5.1) (2023-07-25)
 
 
