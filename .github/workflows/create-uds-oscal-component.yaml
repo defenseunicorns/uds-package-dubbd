@@ -43,11 +43,13 @@ jobs:
 
       - name: Clean Up
         run: rm -rf component-generator
-
-      - name: Yaml Formatter
+      
+      - name: Yaml Formatter and Cleanup
         run: |
           npm install --save-dev --save-exact prettier
           npx prettier oscal-component.yaml aws/dubbd-aws/oscal-component.yaml aws/uds-core-aws/oscal-component.yaml --write
+          npm uninstall --save-dev prettier
+          rm -rf node_modules/
 
       - name: Commit OSCAL-Component Files
         env:
@@ -64,7 +66,7 @@ jobs:
 
               if [ "$git_status" = "D " ]; then
                   removed+=("$filename")
-              elif [ -f "$filename" ]; then
+              else
                   additions+=("$filename")
               fi
           done < <(git status --porcelain=v1 -z)
