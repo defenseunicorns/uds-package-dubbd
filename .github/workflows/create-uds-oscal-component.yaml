@@ -54,8 +54,6 @@ jobs:
           rm -rf node_modules/
           rm package.json
           rm package-lock.json
-          echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
-          echo "GITHUB_REF_NAME: $GITHUB_REF_NAME"
 
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v4
