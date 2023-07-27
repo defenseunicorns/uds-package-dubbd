@@ -1,0 +1,61 @@
+name: Create and Update DUBBD OSCAL
+
+on:
+  workflow_call:
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  create-and-update-dubbd-oscal:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Uses Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.20"
+
+      - name: Node and NPM
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+
+      - name: Download Component Generator
+        run: |
+          git clone https://github.com/defenseunicorns/component-generator.git
+          cd component-generator/
+          make build
+          cd ..
+
+      - name: Create DUBBD OSCAL-Componenet File
+        run: ./component-generator/bin/component-generator aggregate --input .github/workflows/oscal/config-dubbd-oscal-component.yaml
+
+      - name: Create DUBBD AWS OSCAL-Component File
+        run: ./component-generator/bin/component-generator aggregate --input .github/workflows/oscal/config-dubbd-aws-oscal-component.yaml
+
+      - name: Create UDS Core AWS OSCAL-Component File
+        run: ./component-generator/bin/component-generator aggregate --input .github/workflows/oscal/config-uds-core-aws-oscal-component.yaml
+
+      - name: Clean Up
+        run: rm -rf component-generator
+
+      - name: Yaml Formatter and Cleanup
+        run: |
+          npm install --save-dev --save-exact prettier
+          npx prettier oscal-component.yaml aws/dubbd-aws/oscal-component.yaml aws/uds-core-aws/oscal-component.yaml --write
+          npm uninstall --save-dev prettier
+          rm -rf node_modules/
+          rm package.json
+          rm package-lock.json
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          skip_checkout: true

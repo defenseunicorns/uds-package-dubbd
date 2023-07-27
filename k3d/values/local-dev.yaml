@@ -1,12 +1,3 @@
-# override neuvector values required for k3d
-neuvector:
-  enabled: true
-  values:
-    containerd:
-      enabled: false
-    k3s:
-      enabled: true
-
 kyvernoPolicies:
   values:
     policies:
@@ -43,10 +34,3 @@ kyvernoPolicies:
             - resources:
                 namespaces:
                   - metallb-system
-
-#istio:
-#  ingressGateways:
-#    public-ingressgateway:
-#      type: "NodePort"
-#    passthrough-ingressgateway:
-#      type: "NodePort"
