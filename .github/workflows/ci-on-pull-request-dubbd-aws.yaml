@@ -13,6 +13,7 @@ on:
       - "**/*.svg"
       - "aws/uds-core-aws/**"
       - "aws/cloudtrail/**"
+      - "aws/**/test/**"
       - "k3d/**"
       - ".github/workflows/*k3d*.y*ml"
       - ".github/workflows/*cloudtrail*.y*ml"
