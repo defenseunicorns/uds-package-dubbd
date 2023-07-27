@@ -12,6 +12,7 @@ on:
       - "**/*.png"
       - "**/*.svg"
       - "aws/**"
+      - "on-prem/**"
       - "oscal-component.y*ml"
       - ".github/workflows/*aws*.y*ml"
       - ".github/workflows/*cloudtrail*.y*ml"
