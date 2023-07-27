@@ -13,6 +13,7 @@
       "extra-files": [
         "aws/dubbd-aws/zarf.yaml",
         "aws/external-dns/zarf.yaml",
+        "on-prem/zarf.yaml",
         "defense-unicorns-distro/zarf.yaml",
         "k3d/zarf.yaml"
       ]
