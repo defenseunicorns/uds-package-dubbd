@@ -12,9 +12,11 @@ on:
       - "**/*.png"
       - "**/*.svg"
       - "aws/**"
+      - "oscal-component.y*ml"
       - ".github/workflows/*aws*.y*ml"
       - ".github/workflows/*cloudtrail*.y*ml"
       - ".github/workflows/*uds*.y*ml"
+      - "**/*oscal-component.y*aml"
 
 jobs:
   yaml-lint:
