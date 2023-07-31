@@ -247,6 +247,7 @@ components:
           - ../values/promtail.yaml
           - ../values/kiali.yaml
           - ../values/monitoring.yaml
+          - ../values/monitoring-resources.yaml
           - ../values/neuvector.yaml
           - ../values/tempo.yaml
   - name: dubbd-post-upgrade
