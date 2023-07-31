@@ -17,30 +17,6 @@ monitoring:
           requests:
             cpu: "100m"
             memory: "256Mi"
-    grafana:
-      resources:
-        limits:
-          cpu: "500m"
-          memory: "512Mi"
-        requests:
-          cpu: "100m"
-          memory: "256Mi"
-      sidecar:
-        resources:
-          limits:
-            cpu: "500m"
-            memory: "100Mi"
-          requests:
-            cpu: "50m"
-            memory: "50Mi"
-      downloadDashboards:
-        resources:
-          limits:
-            cpu: "20m"
-            memory: "20Mi"
-          requests:
-            cpu: "20m"
-            memory: "20Mi"
     kube-state-metrics:
       resources:
         limits:
@@ -99,3 +75,29 @@ monitoring:
           requests:
             cpu: "100m"
             memory: "2Gi"
+
+grafana:
+  values:
+    resources:
+      limits:
+        cpu: "500m"
+        memory: "512Mi"
+      requests:
+        cpu: "100m"
+        memory: "256Mi"
+    sidecar:
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "100Mi"
+        requests:
+          cpu: "50m"
+          memory: "50Mi"
+    downloadDashboards:
+      resources:
+        limits:
+          cpu: "20m"
+          memory: "20Mi"
+        requests:
+          cpu: "20m"
+          memory: "20Mi"
