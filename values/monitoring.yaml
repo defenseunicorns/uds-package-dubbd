@@ -20,6 +20,8 @@ monitoring:
                   storage: "###ZARF_VAR_MONITORING_PROMETHEUS_PVC_SIZE###"
 
 grafana:
+  ingress:
+    gateway: "admin"
   values:
     persistence:
       type: pvc
