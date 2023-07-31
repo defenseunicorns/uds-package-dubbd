@@ -1,12 +1,12 @@
 ## [Velero](https://velero.io)
-Velero is a backup service installed by default with the UDS-aws package.   
-As a part of the UDS install a default schedule to backup the Prometheus and Tempo `PersistentVolumes` and `PersistentVolumeClaims` is included
+Velero is a backup service installed by default with the UDS DUBBD-AWS package.   
+As a part of the UDS install a default schedule to backup the Prometheus and Tempo `PersistentVolumes` and `PersistentVolumeClaims` is included.
 
-The `backup` data and `restore` logs are persisted in an S3 bucket with the following naming convention, `<cluster name>-velero-<date>`
+The `backup` data and `restore` logs are persisted in an S3 bucket with the following naming convention, `<cluster name>-velero-<date>`.
 
 
 
-### Key resources to consider
+### Key Resources to Consider
 
 When a Velero CR is added to the cluster the appropriate controllers workflow is executed.  
 > This detail implies that the manifest can be created/edited manually or with the `velero` cli
@@ -25,7 +25,7 @@ The Schedule API type is used as a repeatable request for the Velero server to p
 
 #### `restore.velero.io`
 The `restore` API type is used as a request for the Velero server to perform a Restore. Once created, the Velero Server immediately starts the Restore process.   
-Velero's default restore policy is configured to be non-destructive during restore and never overwrite existing data in the cluster
+Velero's default restore policy is configured to be non-destructive during restore and never overwrite existing data in the cluster.
 * [`restore` API Definition](https://velero.io/docs/main/api-types/restore/)
 * [`restore` Reference](https://velero.io/docs/main/restore-reference/)
 * [`restore` Workflow](https://velero.io/docs/main/restore-reference/#detailed-restore-workflow)
@@ -38,14 +38,14 @@ Resource Filtering can be applied to both `backups` and `restores`. This allows 
 * [Exclude Filtering](https://velero.io/docs/v1.11/resource-filtering/#includes)
 * [Resource Policy Filtering](https://velero.io/docs/v1.11/resource-filtering/#resource-policies)
 
-### [Adding a new backup](https://velero.io/docs/main/backup-reference/)
+### [Adding a New Backup](https://velero.io/docs/main/backup-reference/)
 
 A backup can be created 
 * Automatically on an interval from a `schedule` in the cluster
-* On demand from a `schedule` in the cluster
-* On demand as a stand alone request
+* On-demand from a `schedule` in the cluster
+* On-demand as a stand alone request
 
-The default schedule can be found here
+The schedule can be found here
 ```
 $ kubectl -n velero get schedule
 
