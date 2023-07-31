@@ -20,8 +20,8 @@ Use the `Backup`  API type to request the Velero server to perform a backup. Onc
 
 #### `schedules.velero.io`
 The Schedule API type is used as a repeatable request for the Velero server to perform a backup for a given cron notation. Once created, the Velero Server will start the backup process. It will then wait for the next valid point of the given cron expression and execute the backup process on a repeating basis.  It can also be used as a template for on-demand backups.   
-* [`schudules` API Definition](https://velero.io/docs/main/api-types/schedule/)   
-* [`schudules` Reference](https://velero.io/docs/main/backup-reference/#schedule-a-backup)
+* [`schedules` API Definition](https://velero.io/docs/main/api-types/schedule/)   
+* [`schedules` Reference](https://velero.io/docs/main/backup-reference/#schedule-a-backup)
 
 #### `restore.velero.io`
 The `restore` API type is used as a request for the Velero server to perform a Restore. Once created, the Velero Server immediately starts the Restore process.   
