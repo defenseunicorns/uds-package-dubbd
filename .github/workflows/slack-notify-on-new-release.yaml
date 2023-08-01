@@ -1,0 +1,36 @@
+---
+name: Slack Notification on Version Release
+
+on:
+  pull_request:
+    branches:
+      - faux-main-you-can-delete-me
+
+jobs:
+  send-notification:
+    runs-on: ubuntu-latest
+    name: New version released
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Send Slack notification
+        id: slack
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: 'uds-new-release'
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ":mega: :mega DUBBD <version> <release notes body> "
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
