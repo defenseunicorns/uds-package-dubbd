@@ -2,14 +2,14 @@
 name: Slack Notification on Version Release
 
 on:
-  pull_request:
-    branches:
-      - faux-main-you-can-delete-me
-# push:
+# pull_request:
 #   branches:
 #     - faux-main-you-can-delete-me
-#   tags:
-#     - test-tag
+  push:
+    branches:
+      - slack-message-on-new-version
+    tags:
+      - v0.0.6
 
 jobs:
   send-notification:
@@ -31,7 +31,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ":mega: DUBBD ${{ github.ref}} is published! <version> <release notes body> "
+                    "text": ":mega: DUBBD ${{ github.event.release.tag_name }} is published! <version> <release notes body> "
                   }
                 }
               ]
