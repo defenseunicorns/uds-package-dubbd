@@ -26,7 +26,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ":mega: :mega DUBBD <version> <release notes body> "
+                    "text": ":mega: DUBBD ${{ github.event.release.tag_name}} is published! <version> <release notes body> "
                   }
                 }
               ]
