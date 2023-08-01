@@ -5,6 +5,11 @@ on:
   pull_request:
     branches:
       - faux-main-you-can-delete-me
+# push:
+#   branches:
+#     - faux-main-you-can-delete-me
+#   tags:
+#     - test-tag
 
 jobs:
   send-notification:
@@ -26,7 +31,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ":mega: DUBBD ${{ github.event.release.tag_name}} is published! <version> <release notes body> "
+                    "text": ":mega: DUBBD ${{ github.ref}} is published! <version> <release notes body> "
                   }
                 }
               ]
