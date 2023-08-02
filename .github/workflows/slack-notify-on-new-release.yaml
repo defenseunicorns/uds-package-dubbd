@@ -51,7 +51,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ":scroll: *Release Notes:*\n"
+                    "text": ":scroll: *Release Notes:*\n$(echo -n ${{ env.RELEASE_BODY_BASE64 }} | base64 --decode)"
                   }
                 }
               ]
@@ -59,4 +59,3 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-# "text": ":scroll: *Release Notes:*\n$(echo -n ${{ env.RELEASE_BODY_BASE64 }} | base64 --decode)"
