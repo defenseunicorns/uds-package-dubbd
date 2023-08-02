@@ -1,10 +1,8 @@
 name: Slack Notification on Version Release
 
 on:
-  push:
-    branches:
-      - faux-main-you-can-delete-me
-      - slack-message-on-new-version
+  release:
+    types: [published]
 
 jobs:
   send-notification:
@@ -52,16 +50,9 @@ jobs:
                     "type": "mrkdwn",
                     "text": "${{ env.RELEASE_BODY }}"
                   }
-                }, 
-                {
-                  "type": "divider"
                 },
                 {
-                  "type": "section",
-                  "text": {
-                    "text": "## *Sally* has requested you set the deadline for the Nano launch project",
-                    "type": "mrkdwn"
-                  }
+                  "type": "divider"
                 }
               ]
             }
