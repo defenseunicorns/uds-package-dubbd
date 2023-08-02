@@ -22,7 +22,7 @@ jobs:
           echo "RELEASE_TAG=$release_tag" >> $GITHUB_ENV
 
           # Base64 encode the release_body and store it as a single-line environment variable
-          release_body=$(echo -n "$release_json" | jq -r '.body' | base64)
+          release_body=$(echo "$release_json" | jq -r '.body' | base64 -w 0)
           echo "RELEASE_BODY_BASE64=$release_body" >> $GITHUB_ENV
           echo $release_json
           echo "-----\n"
