@@ -120,6 +120,37 @@ components:
                 autoIndent: true
           - cmd: rm bigbang.dev.cert
           - cmd: rm bigbang.dev.key
+  - name: generate-credentials
+    required: true
+    files: 
+      - source: manifests/admin-interface-credentials.yaml
+        target: admin-interface-credentials.yaml
+    actions:
+      onDeploy:
+        before:
+          - cmd: "if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then kubectl get secret -n zarf dubbd-admin-interface-credentials -ojsonpath='{.data.grafana-password}'; else openssl rand -base64 24 | base64; fi"
+            mute: true
+            setVariables:
+              - name: GRAFANA_PASSWORD
+                sensitive: true
+                autoIndent: true
+          - cmd: "if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then kubectl get secret -n zarf dubbd-admin-interface-credentials -ojsonpath='{.data.neuvector-password}'; else openssl rand -base64 24 | base64; fi"
+            mute: true
+            setVariables:
+              - name: NEUVECTOR_PASSWORD
+                sensitive: true
+                autoIndent: true
+        after:
+          - wait:
+              cluster:
+                kind: secret
+                name: dubbd-admin-interface-credentials
+                namespace: zarf
+    manifests:
+      - name: admin-interface-creds            
+        namespace: zarf
+        files:
+          - ./manifests/admin-interface-credentials.yaml
   - name: download-flux
     required: true
     actions:

@@ -9,6 +9,7 @@ monitoring:
       prometheus:
         enabled: false
     grafana:
+      adminPassword: "###ZARF_VAR_GRAFANA_ADMIN_PASSWORD###"
       persistence:
         type: pvc
         enabled: true
