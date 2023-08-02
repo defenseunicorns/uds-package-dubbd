@@ -51,7 +51,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ":scroll: *Release Notes:*\n$(echo -n ${{ env.RELEASE_BODY_BASE64 }} | base64 --decode)"
+                    "text": ":scroll: *Release Notes:*\n`$(echo -n ${{ env.RELEASE_BODY_BASE64 }} | base64 --decode)`"
                   }
                 }
               ]
