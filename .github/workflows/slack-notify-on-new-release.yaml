@@ -44,6 +44,13 @@ jobs:
                     "emoji": true
 
                   }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ env.RELEASE_TAG }} this will be the body \n is published! "
+                  }
                 }
               ]
             }
