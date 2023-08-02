@@ -50,12 +50,11 @@ jobs:
                     "type": "plain_text",
                     "text": ":mega: DUBBD ${{ env.RELEASE_TAG }} is published! ",
                     "emoji": true
-
                   }
                 },
-            		{
-            			"type": "divider"
-            		},
+                {
+                	"type": "divider"
+                },
                 {
                   "type": "section",
                   "text": {
