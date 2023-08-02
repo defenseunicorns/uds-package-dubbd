@@ -1,16 +1,10 @@
----
 name: Slack Notification on Version Release
 
 on:
-# release:
-#   types: [published]
-
   push:
     branches:
       - faux-main-you-can-delete-me
       - slack-message-on-new-version
-#   tags:
-#     - v0.0.6
 
 jobs:
   send-notification:
@@ -34,8 +28,6 @@ jobs:
           release_body=$(echo "$release_json" | jq -r '.body')
           echo "RELEASE_BODY=$release_body" >> $GITHUB_ENV
 
-
-
       - name: Send Slack notification
         id: slack
         uses: slackapi/slack-github-action@v1.24.0
@@ -48,18 +40,18 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": ":mega: DUBBD ${{ env.RELEASE_TAG }} is published! ",
+                    "text": ":mega: DUBBD ${{ env.RELEASE_TAG }} is published!",
                     "emoji": true
                   }
                 },
                 {
-                	"type": "divider"
+                  "type": "divider"
                 },
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "${{ env.RELEASE_TAG }} this will be the body \n is published! "
+                    "text": ":scroll: *Release Notes:*\n${{ format(env.RELEASE_BODY) }}"
                   }
                 }
               ]
