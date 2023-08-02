@@ -25,7 +25,9 @@ jobs:
         run: |
           release_json=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases/latest")
           release_tag=$(echo "$release_json" | jq -r '.tag_name') >> $GITHUB_OUTPUT
+          release_body=$(echo "$release_json" | jq -r '.body') >> $GITHUB_OUTPUT
           echo "RELEASE_TAG=$release_tag" >> $GITHUB_ENV
+          echo "RELEASE_BODY=$release_body" >> $GITHUB_ENV
 
 
       - name: Send Slack notification
@@ -40,7 +42,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ":mega: DUBBD ${{ env.RELEASE_TAG }} is published! <release notes body> "
+                    "text": ":mega: DUBBD ${{ env.RELEASE_TAG }} is published! ${{ env.RELEASE_BODY }} "
                   }
                 }
               ]
