@@ -1,4 +1,3 @@
-
 name: Slack Notification on Version Release
 
 on:
@@ -48,7 +47,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ":scroll: *Release Notes:*\n$(cat release_body_base64.txt | base64 --decode)"
+                    "text": ":scroll: *Release Notes:*\n${{ steps.get_release.outputs.release_body }}"
                   }
                 }
               ]
