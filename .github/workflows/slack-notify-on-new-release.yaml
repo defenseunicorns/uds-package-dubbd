@@ -42,7 +42,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ":mega: DUBBD ${{ env.RELEASE_TAG }} is published! ${{ env.RELEASE_BODY }} "
+                    "text": ":mega: DUBBD ${{ env.RELEASE_TAG }} is published! ${{ format(env.RELEASE_BODY) }} "
                   }
                 }
               ]
