@@ -61,6 +61,7 @@ jobs:
                   "text": {
                     "text": "*Sally* has requested you set the deadline for the Nano launch project",
                     "type": "mrkdwn"
+                  }
                 }
               ]
             }
