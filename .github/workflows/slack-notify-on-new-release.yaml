@@ -23,6 +23,7 @@ jobs:
 
           # Base64 encode the release_body and store it in a file
           echo "$release_json" | jq -r '.body' | base64 > release_body_base64.txt
+          cat release_body_base64.txt
 
       - name: Send Slack notification
         id: slack
