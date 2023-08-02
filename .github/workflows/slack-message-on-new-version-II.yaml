@@ -1,0 +1,65 @@
+name: Slack Notification on Version Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  send-notification:
+    runs-on: ubuntu-latest
+    name: New version released
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Dump Github context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Send Slack notification
+        id: slack
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: 'uds-new-release'
+          payload: |
+            {
+              blocks: [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "${{ github.event.release.tag_name}} is published!"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Author:*\n${{ github.actor }}"
+                  }
+                },
+                 {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Information:*"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ${{ toJSON(github.event.release.body) }}
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ github.event.release.html_url }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
