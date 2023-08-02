@@ -1,3 +1,4 @@
+
 name: Slack Notification on Version Release
 
 on:
@@ -21,9 +22,8 @@ jobs:
           release_tag=$(echo "$release_json" | jq -r '.tag_name')
           echo "RELEASE_TAG=$release_tag" >> $GITHUB_ENV
 
-          # Base64 encode the release_body and store it as a single-line environment variable
-          release_body=$(echo "$release_json" | jq -r '.body' | base64)
-          echo "RELEASE_BODY_BASE64=$release_body" >> $GITHUB_ENV
+          # Base64 encode the release_body and store it in a file
+          echo "$release_json" | jq -r '.body' | base64 > release_body_base64.txt
 
       - name: Send Slack notification
         id: slack
@@ -48,7 +48,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ":scroll: *Release Notes:*\n$(echo -n ${{ env.RELEASE_BODY_BASE64 }} | base64 --decode)"
+                    "text": ":scroll: *Release Notes:*\n$(cat release_body_base64.txt | base64 --decode)"
                   }
                 }
               ]
@@ -56,4 +56,3 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-
