@@ -24,7 +24,7 @@ jobs:
           release_body=$(echo "$release_json" | jq -r '.body')
           release_body="$(echo "$release_body" | sed -z 's/\n/\\n/g')"
           echo "RELEASE_BODY=$release_body" >> $GITHUB_ENV
-          echo "---/n"
+          echo "---"
           echo $release_body
 
       - name: Send Slack notification
@@ -34,26 +34,7 @@ jobs:
           channel-id: 'uds-new-release'
           payload: |
             {
-              "blocks": [
-                {
-                  "type": "header",
-                  "text": {
-                    "type": "plain_text",
-                    "text": ":mega: DUBBD ${{ env.RELEASE_TAG }} is published!",
-                    "emoji": true
-                  }
-                },
-                {
-                  "type": "divider"
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": ":scroll: *Release Notes:*\n${{ env.RELEASE_BODY }}"
-                  }
-                }
-              ]
+              "text": ":mega: *Release Notes:*\n${{ env.RELEASE_BODY }}"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
