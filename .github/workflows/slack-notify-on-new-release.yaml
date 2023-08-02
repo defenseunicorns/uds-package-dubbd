@@ -34,7 +34,26 @@ jobs:
           channel-id: 'uds-new-release'
           payload: |
             {
-              "text": ":mega: *Release Notes:*\n${{ env.RELEASE_BODY }}"
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": ":mega: DUBBD ${{ env.RELEASE_TAG }} is published!",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ env.RELEASE_BODY }}"
+                  }
+                }
+              ]
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
