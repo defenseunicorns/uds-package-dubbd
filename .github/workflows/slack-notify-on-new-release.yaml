@@ -7,7 +7,7 @@ on:
 
   push:
     branches:
-      - slack-message-on-new-version
+      - faux-main-you-can-delete-me
 #   tags:
 #     - v0.0.6
 
