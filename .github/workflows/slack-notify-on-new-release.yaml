@@ -45,6 +45,9 @@ jobs:
 
                   }
                 },
+            		{
+            			"type": "divider"
+            		},
                 {
                   "type": "section",
                   "text": {
