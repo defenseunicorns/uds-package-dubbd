@@ -21,9 +21,15 @@ jobs:
           release_tag=$(echo "$release_json" | jq -r '.tag_name')
           echo "RELEASE_TAG=$release_tag" >> $GITHUB_ENV
 
+          release_body_stripped=$(echo "$release_json" | jq -r '.body')
+          release_body_stripped="$(echo "$release_body_stripped" | sed -z 's/\n/\\n/g')"
+          echo "RELEASE_BODY=$release_body_stripped" >> $GITHUB_ENV
+          echo $release_body_stripped
+
           # Base64 encode the release_body and store it as a single-line environment variable
           release_body=$(echo "$release_json" | jq -r '.body' | base64 -w 0)
           echo "RELEASE_BODY_BASE64=$release_body" >> $GITHUB_ENV
+
           echo $release_json
           echo "-----\n"
           echo $release_body
