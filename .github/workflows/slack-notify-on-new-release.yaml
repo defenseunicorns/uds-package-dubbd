@@ -39,7 +39,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ":mega: DUBBD ${{ steps.get_release.outputs.release_tag }} is published! <release notes body> "
+                    "text": ":mega: DUBBD  is published! <release notes body> "
                   }
                 }
               ]
