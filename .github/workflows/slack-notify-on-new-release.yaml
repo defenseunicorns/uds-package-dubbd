@@ -51,9 +51,6 @@ jobs:
                     "type": "mrkdwn",
                     "text": "${{ env.RELEASE_BODY }}"
                   }
-                },
-                {
-                  "type": "divider"
                 }
               ]
             }
