@@ -4,7 +4,7 @@ metadata:
   name: dubbd-aws
   description: "Defense Unicorns Big Bang Distro"
   # x-release-please-start-version
-  version: "0.5.2"
+  version: "0.6.0"
   # x-release-please-end
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
