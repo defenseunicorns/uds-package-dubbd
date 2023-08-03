@@ -42,6 +42,13 @@ jobs:
                     "text": ":mega: DUBBD ${{ env.RELEASE_TAG }} is published!",
                     "emoji": true
                   }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "${{ env.RELEASE_BODY }}"
+                  }
                 }
               ]
             }
