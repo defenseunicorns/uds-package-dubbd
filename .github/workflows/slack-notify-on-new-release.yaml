@@ -50,7 +50,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "${{ env.RELEASE_BODY }
+                    "text": "${{ env.RELEASE_BODY }}"
                   }
                 }
               ]
