@@ -1,7 +1,9 @@
 name: Slack Notification on Version Release
 
 on:
-  workflow_call:
+  push:
+    branches:
+      - slack-message-on-new-version-III
 
 jobs:
   send-notification:
