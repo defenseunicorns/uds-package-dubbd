@@ -49,4 +49,3 @@ jobs:
     if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
     uses: ./.github/workflows/slack-notify-on-new-release.yaml
     secrets: inherit
-
