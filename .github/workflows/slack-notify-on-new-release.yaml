@@ -50,7 +50,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "## [0.6.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.5.2...v0.6.0) (2023-08-03)\n\n\n### Features\n\n* improve neuvector config setup across distros ([#442](https://github.com/defenseunicorns/uds-package-dubbd/issues/442)) ([770d1e0](https://github.com/defenseunicorns/uds-package-dubbd/commit/770d1e0a66e1fd7ca6c0401e8b366aa099d61996))\n* initial oscal componenet ([#446](https://github.com/defenseunicorns/uds-package-dubbd/issues/446)) ([7d0dced](https://github.com/defenseunicorns/uds-package-dubbd/commit/7d0dced367d4103b608e5c2c745436d5dcb6e7c0))\n\n\n### Bug Fixes\n\n* add monitoring resources to zarf.yaml ([#462]"
+                    "text": "## [0.6.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.5.2...v0.6.0) (2023-08-03)\n\n\n### Features\n\n* improve neuvector config setup across distros ([#442](https://github.com/defenseunicorns/uds-package-dubbd/issues/442)) ([770d1e0](https://github.com/defenseunicorns/uds-package-dubbd/commit/770d1e0a66e1fd7ca6c0401e8b366aa099d61996))\n* initial oscal componenet ([#446](https://github.com/defenseunicorns/uds-package-dubbd/issues/446)) ([7d0dced](https://github.com/defenseunicorns/uds-package-dubbd/commit/7d0dced367d4103b608e5c2c745436d5dcb6e7c0))\n\n\n### Bug Fixes\n\n* add monitoring resources to zarf.yaml ([#462](https://github.com/defenseunicorns/uds-package-dubbd/issues/462)) "
                   }
                 }
               ]
