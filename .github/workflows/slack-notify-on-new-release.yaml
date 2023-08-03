@@ -45,7 +45,15 @@ jobs:
                 },
                 {
                   "type": "divider"
-                }              ]
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "{{ env.RELEASE_BODY }}"
+                  }
+                }
+              ]
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
