@@ -62,6 +62,15 @@ jobs:
           payload: |
             {
               "text": "Deployment finished (Completed)",
+              "blocks": [
+               {
+            			"type": "section",
+            			"text": {
+            				"type": "mrkdwn",
+            				"text": ":mega: *DUBBD <${{ env.RELEASE_HTML_URL }}|${{ env.RELEASE_TAG }}> has been released!* :mega:"
+            			}
+            		}
+              ]
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
