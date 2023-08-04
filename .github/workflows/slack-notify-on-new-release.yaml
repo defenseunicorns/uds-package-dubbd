@@ -48,7 +48,6 @@ jobs:
             				"type": "mrkdwn",
             				"text": ":mega: *DUBBD <${{ env.RELEASE_HTML_URL }}|${{ env.RELEASE_TAG }}> has been released!* :mega:"
             			},
-                  "unfurl_links": true
             		}
               ]
             }
@@ -63,19 +62,6 @@ jobs:
           payload: |
             {
               "text": "Deployment finished (Completed)",
-              "attachments": [
-                {
-                  "pretext": "Deployment finished",
-                  "color": "28a745",
-                  "fields": [
-                    {
-                      "title": "Status",
-                      "short": true,
-                      "value": "Completed"
-                    }
-                  ]
-                }
-              ]
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
