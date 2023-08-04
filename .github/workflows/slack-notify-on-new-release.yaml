@@ -63,7 +63,7 @@ jobs:
           payload: |
             {
               "text": "Deployment finished (Completed)",
-              "unfurl_links": true
+              "unfurl_links": true,
               "blocks": [
                {
             			"type": "section",
