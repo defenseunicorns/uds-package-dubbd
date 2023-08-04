@@ -18,11 +18,10 @@ jobs:
           release_tag=$(echo "$release_json" | jq -r '.tag_name')
           echo "RELEASE_TAG=$release_tag" >> $GITHUB_ENV
 
-          release_body=$(echo "$release_json" | jq -r '.body')
-          release_body="$(echo "$release_body" | sed -z 's/\n/\\n/g')"
-          echo "RELEASE_BODY=$release_body" >> $GITHUB_ENV
+          release_html_url=$(echo "$release_json" | jq -r '.html_url')
+          echo "RELEASE_HTML_URL=$release_html_url" >> $GITHUB_ENV
           echo "---"
-          echo $release_body
+          echo $release_html_url
 
       - name: Send Slack notification
         id: slack
@@ -32,27 +31,13 @@ jobs:
           payload: |
             {
               "blocks": [
-                {
-                  "type": "header",
-                  "text": {
-                    "type": "plain_text",
-                    "text": ":mega: DUBBD ${{ env.RELEASE_TAG }} is published!",
-                    "emoji": true
-                  }
-                },
-                {
-                  "type": "divider"
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "${{ env.RELEASE_BODY }}"
-                  }
-                },
-                {
-                  "type": "divider"
-                }
+               {
+            			"type": "section",
+            			"text": {
+            				"type": "mrkdwn",
+            				"text": ":mega: *DUBBD <${{ env.RELEASE_HTML_URL }}|${{ env.RELEASE_TAG }}> has been released!* :mega:"
+            			}
+            		}
               ]
             }
         env:
