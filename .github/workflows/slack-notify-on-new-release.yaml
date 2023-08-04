@@ -35,7 +35,7 @@ jobs:
             {
               "blocks": [
                {
-            			"type": "section",
+            			"type": "header",
             			"text": {
             				"type": "mrkdwn",
             				"text": ":mega: DUBBD <${{ env.RELEASE_BODY }}|${{ env.RELEASE_TAG }}> has been released!"
