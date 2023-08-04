@@ -24,4 +24,4 @@ neuvector:
             - username: admin
               password: ###ZARF_VAR_NEUVECTOR_ADMIN_PASSWORD###
               role: admin
-              fullname: metrics
+              fullname: admin
