@@ -131,6 +131,18 @@ components:
               - name: GRAFANA_ADMIN_PASSWORD
                 sensitive: true
                 autoIndent: true
+          - cmd: "openssl rand -base64 24"
+            mute: true
+            setVariables:
+              - name: NEUVECTOR_METRICS_PASSWORD
+                sensitive: true
+                autoIndent: true
+          - cmd: "if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then kubectl get secret -n zarf dubbd-admin-interface-credentials -ojsonpath='{.data.neuvector-password}' | base64 -d; else openssl rand -base64 24; fi"
+            mute: true
+            setVariables:
+              - name: NEUVECTOR_ADMIN_PASSWORD
+                sensitive: true
+                autoIndent: true                
         after:
           - wait:
               cluster:
