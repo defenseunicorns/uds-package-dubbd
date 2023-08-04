@@ -38,7 +38,7 @@ jobs:
             			"type": "section",
             			"text": {
             				"type": "mrkdwn",
-            				"text": "This is a mrkdwn section block :ghost: *this is bold*, and ~this is crossed out~, and <https://google.com|this is a link>"
+            				"text": ":mega: DUBBD <https://github.com/defenseunicorns/uds-package-dubbd/releases/tag/v0.6.0|this is a link>"
             			}
             		}
               ]
