@@ -43,3 +43,9 @@ jobs:
     with:
       working_dir: defense-unicorns-distro
     secrets: inherit
+
+  notify-public-uds:
+    needs: tag-new-version
+    if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
+    uses: ./.github/workflows/slack-notify-on-new-release.yaml
+    secrets: inherit
