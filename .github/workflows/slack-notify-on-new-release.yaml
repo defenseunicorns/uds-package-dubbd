@@ -41,7 +41,7 @@ jobs:
           # For posting a simple plain text message
           payload: |
             {
-              "unfurl_links": true
+              "unfurl_links": true,
               "blocks": [
                {
             			"type": "section",
