@@ -1,10 +1,10 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
 kind: ZarfPackageConfig
 metadata:
-  name: dubbd-on-prem
-  description: "Defense Unicorns Big Bang Distro for On-Prem RKE2 Environment"
+  name: dubbd-rke2
+  description: "Defense Unicorns Big Bang Distro for RKE2"
   # x-release-please-start-version
-  version: "0.6.0"
+  version: "0.6.1"
   # x-release-please-end
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
@@ -55,8 +55,6 @@ components:
     extensions:
       bigbang:
         version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
-        # valuesFiles:
-        #   - values/on-prem-istio.yaml
   - name: dubbd-post-upgrade
     required: true
     import:

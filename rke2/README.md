@@ -1,6 +1,6 @@
-# Defense Unicorns Big Bang Distro for On-Premise Environments (DUBBD-On-Prem)
+# Defense Unicorns Big Bang Distro for RKE2 (DUBBD-RKE2)
 
-This package is designed to deploy DUBBD to on-prem environments leveraging RKE2 as the Kubernetes distribution.
+This package is designed to deploy DUBBD to environments leveraging RKE2 as the Kubernetes distribution.
 
 > **Warning**
 > This package is a WIP and not configured for production deployments yet.
@@ -13,10 +13,10 @@ This package is designed to deploy DUBBD to on-prem environments leveraging RKE2
 - Local K8s context is pointing to the above cluster
 - A `~/.docker/config.json` file. Zarf [currently requires this](https://github.com/defenseunicorns/zarf/issues/1795) to deploy from an OCI registry
 
-## Configure DUBBD-On-Prem
+## Configure DUBBD-RKE2
 
-The recommended way to configure DUBBD-On-Prem is via a `zarf-config.yaml` file located in the same directory that you will be performing the deploy. The available `zarf-config.yaml` configurations are shown below. 
-> Note the keys that are not commented out are **required** to deploy DUBBD-On-Prem.
+The recommended way to configure DUBBD-RKE2 is via a `zarf-config.yaml` file located in the same directory that you will be performing the deploy. The available `zarf-config.yaml` configurations are shown below. 
+> Note the keys that are not commented out are **required** to deploy DUBBD-RKE2.
 
 ```yaml
 package:

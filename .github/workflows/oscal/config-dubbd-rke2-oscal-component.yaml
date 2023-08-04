@@ -1,4 +1,4 @@
-name: ./on-prem/oscal-component.yaml # Name of the generated file
+name: ./rke2/oscal-component.yaml # Name of the generated file
 metadata: # OSCAL-compliant metadata
   title: DUBBD
   version: 0.0.1
