@@ -34,9 +34,20 @@ jobs:
           # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
           channel-id: '@chris,#uds-pull-requests'
           # For posting a simple plain text message
+          payload: |
+            {
+              "blocks": [
+               {
+            			"type": "section",
+            			"text": {
+            				"type": "mrkdwn",
+            				"text": ":mega: *DUBBD <${{ env.RELEASE_HTML_URL }}|${{ env.RELEASE_TAG }}> has been released!* :mega:"
+            			}
+            		}
+              ]
+            }
 
-          slack-message: "DUBBD ${{ env.RELEASE_HTML_URL }} ${{ env.RELEASE_TAG }} has been released!"
-#         slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+            #          slack-message: "DUBBD ${{ env.RELEASE_HTML_URL }} ${{ env.RELEASE_TAG }} has been released!"
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
