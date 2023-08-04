@@ -24,6 +24,7 @@ jobs:
           echo "RELEASE_HTML_URL=$release_html_url" >> $GITHUB_ENV
 
           release_body=$(echo "$release_json" | jq -r '.body')
+          release_body="$(echo "$release_body" | sed -z 's/\n/\\n/g')"
           echo "RELEASE_BODY=$release_body" >> $GITHUB_ENV
 
           echo "---"
