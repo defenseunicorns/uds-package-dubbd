@@ -122,19 +122,10 @@ components:
           - cmd: rm bigbang.dev.key
   - name: generate-credentials
     required: true
-    files:
-      - source: manifests/admin-interface-credentials.yaml
-        target: admin-interface-credentials.yaml
     actions:
       onDeploy:
         before:
-          - cmd: "if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then kubectl get secret -n zarf dubbd-admin-interface-credentials -ojsonpath='{.data.grafana-password}'; else openssl rand -base64 24 | base64; fi"
-            mute: true
-            setVariables:
-              - name: GRAFANA_ADMIN_PASSWORD_BASE64
-                sensitive: true
-                autoIndent: true
-          - cmd: echo $ZARF_VAR_GRAFANA_ADMIN_PASSWORD_BASE64 | base64 -d
+          - cmd: "if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then kubectl get secret -n zarf dubbd-admin-interface-credentials -ojsonpath='{.data.grafana-password}' | base64 -d; else openssl rand -base64 24; fi"
             mute: true
             setVariables:
               - name: GRAFANA_ADMIN_PASSWORD
