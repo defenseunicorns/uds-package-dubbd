@@ -7,3 +7,7 @@ See the instructions below for querying the passwords for each component.
 ```bash
 kubectl get secret -n zarf dubbd-admin-interface-credentials -ojsonpath='{.data.grafana-password}' | base64 -d
 ```
+## NeuVector
+```bash
+kubectl get secret -n zarf dubbd-admin-interface-credentials -ojsonpath='{.data.neuvector-password}' | base64 -d
+```
