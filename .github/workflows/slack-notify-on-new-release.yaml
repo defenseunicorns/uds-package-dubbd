@@ -39,18 +39,8 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": ":mega: DUBBD ${{ env.RELEASE_TAG }} is published!",
+                    "text": ":mega: DUBBD ${{ env.RELEASE_BODY }} is published!",
                     "emoji": true
-                  }
-                },
-                {
-                  "type": "divider"
-                },
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": "${{ env.RELEASE_BODY }}"
                   }
                 }
               ]
