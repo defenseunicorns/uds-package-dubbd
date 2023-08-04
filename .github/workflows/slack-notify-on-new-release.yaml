@@ -34,13 +34,13 @@ jobs:
           payload: |
             {
               "blocks": [
-                {
-                  "type": "section",
-                  "text": {
-                    "type": "mrkdwn",
-                    "text": ":mega: DUBBD <https://github.com/defenseunicorns/uds-package-dubbd/releases/tag/v0.6.0|v0.6.0> is published!",
-                  }
-                }
+               {
+            			"type": "section",
+            			"text": {
+            				"type": "mrkdwn",
+            				"text": "This is a mrkdwn section block :ghost: *this is bold*, and ~this is crossed out~, and <https://google.com|this is a link>"
+            			}
+            		}
               ]
             }
         env:
