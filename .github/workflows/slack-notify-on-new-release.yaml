@@ -61,7 +61,7 @@ jobs:
           update-ts: ${{ steps.slack.outputs.ts }}
           payload: |
             {
-              "text": "${{env.RELEASE_BODY}}"
+              "text": "Release Notes: \n ${{env.RELEASE_BODY}}"
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
