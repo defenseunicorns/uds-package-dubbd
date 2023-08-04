@@ -125,6 +125,7 @@ components:
     actions:
       onDeploy:
         before:
+          #TODO: change all calls to kubectl to ./zarf tools kubectl 
           - cmd: "if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then kubectl get secret -n zarf dubbd-admin-interface-credentials -ojsonpath='{.data.grafana-password}' | base64 -d; else openssl rand -base64 24; fi"
             mute: true
             setVariables:
