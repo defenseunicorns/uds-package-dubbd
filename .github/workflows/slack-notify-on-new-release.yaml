@@ -22,6 +22,10 @@ jobs:
 
           release_html_url=$(echo "$release_json" | jq -r '.html_url')
           echo "RELEASE_HTML_URL=$release_html_url" >> $GITHUB_ENV
+
+          release_body=$(echo "$release_json" | jq -r '.body')
+          echo "RELEASE_BODY=$release_body" >> $GITHUB_ENV
+
           echo "---"
           echo $release_html_url
 
@@ -56,20 +60,7 @@ jobs:
           update-ts: ${{ steps.slack.outputs.ts }}
           payload: |
             {
-              "text": "Deployment finished (Completed)",
-              "attachments": [
-                {
-                  "pretext": "Deployment finished",
-                  "color": "28a745",
-                  "fields": [
-                    {
-                      "title": "Status",
-                      "short": true,
-                      "value": "Completed"
-                    }
-                  ]
-                }
-              ]
+              "text": "${{env.RELEASE_BODY}}"
             }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
