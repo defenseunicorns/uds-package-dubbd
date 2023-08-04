@@ -47,7 +47,7 @@ jobs:
             			"text": {
             				"type": "mrkdwn",
             				"text": ":mega: *DUBBD <${{ env.RELEASE_HTML_URL }}|${{ env.RELEASE_TAG }}> has been released!* :mega:"
-            			},
+            			}
             		}
               ]
             }
