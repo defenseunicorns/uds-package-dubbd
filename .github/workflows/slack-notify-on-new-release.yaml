@@ -41,6 +41,7 @@ jobs:
           # For posting a simple plain text message
           payload: |
             {
+              "unfurl_links": true
               "blocks": [
                {
             			"type": "section",
@@ -62,7 +63,7 @@ jobs:
           payload: |
             {
               "text": "Deployment finished (Completed)",
-              "unfurl_links": true,
+              "unfurl_links": true
               "blocks": [
                {
             			"type": "section",
@@ -76,23 +77,23 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
-     - name: Send Slack notification
-       id: slack
-       uses: slackapi/slack-github-action@v1.24.0
-       with:
-         channel-id: 'uds-new-release'
-         payload: |
-           {
-             "blocks": [
-              {
-           			"type": "section",
-           			"text": {
-           				"type": "mrkdwn",
-           				"text": "${{ env.RELEASE_HTML_URL }}"
-           			}
-           		}
-             ]
-           }
-       env:
-         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-         SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+#     - name: Send Slack notification
+#       id: slack
+#       uses: slackapi/slack-github-action@v1.24.0
+#       with:
+#         channel-id: 'uds-new-release'
+#         payload: |
+#           {
+#             "blocks": [
+#              {
+#           			"type": "section",
+#           			"text": {
+#           				"type": "mrkdwn",
+#           				"text": ":mega: *DUBBD <${{ env.RELEASE_HTML_URL }}|${{ env.RELEASE_TAG }}> has been released!* :mega:"
+#           			}
+#           		}
+#             ]
+#           }
+#       env:
+#         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+#         SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
