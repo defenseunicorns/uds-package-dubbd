@@ -122,7 +122,7 @@ components:
           - cmd: rm bigbang.dev.key
   - name: generate-credentials
     required: true
-    files: 
+    files:
       - source: manifests/admin-interface-credentials.yaml
         target: admin-interface-credentials.yaml
     actions:
@@ -139,7 +139,7 @@ components:
             setVariables:
               - name: GRAFANA_ADMIN_PASSWORD
                 sensitive: true
-                autoIndent: true                
+                autoIndent: true
         after:
           - wait:
               cluster:
@@ -147,7 +147,7 @@ components:
                 name: dubbd-admin-interface-credentials
                 namespace: zarf
     manifests:
-      - name: admin-interface-creds            
+      - name: admin-interface-creds
         namespace: zarf
         files:
           - ./manifests/admin-interface-credentials.yaml
