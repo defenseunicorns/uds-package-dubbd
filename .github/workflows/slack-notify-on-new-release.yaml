@@ -46,8 +46,6 @@ jobs:
             		}
               ]
             }
-
-            #          slack-message: "DUBBD ${{ env.RELEASE_HTML_URL }} ${{ env.RELEASE_TAG }} has been released!"
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
