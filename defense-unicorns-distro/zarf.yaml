@@ -131,15 +131,15 @@ components:
           - cmd: "if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then kubectl get secret -n zarf dubbd-admin-interface-credentials -ojsonpath='{.data.grafana-password}'; else openssl rand -base64 24 | base64; fi"
             mute: true
             setVariables:
-              - name: GRAFANA_PASSWORD
+              - name: GRAFANA_ADMIN_PASSWORD_BASE64
                 sensitive: true
                 autoIndent: true
-          - cmd: "if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then kubectl get secret -n zarf dubbd-admin-interface-credentials -ojsonpath='{.data.neuvector-password}'; else openssl rand -base64 24 | base64; fi"
+          - cmd: echo $ZARF_VAR_GRAFANA_ADMIN_PASSWORD_BASE64 | base64 -d
             mute: true
             setVariables:
-              - name: NEUVECTOR_PASSWORD
+              - name: GRAFANA_ADMIN_PASSWORD
                 sensitive: true
-                autoIndent: true
+                autoIndent: true                
         after:
           - wait:
               cluster:
