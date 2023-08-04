@@ -1,6 +1,6 @@
-# Defense Unicorns Big Bang Distro for VMware On-Premise Environments (DUBBD-On-Prem)
+# Defense Unicorns Big Bang Distro for On-Premise Environments (DUBBD-On-Prem)
 
-This package is designed to deploy DUBBD to on-prem environments leveraging VMware for virtualization and RKE2 as the specific Kubernetes distribution on top.
+This package is designed to deploy DUBBD to on-prem environments leveraging RKE2 as the Kubernetes distribution.
 
 > **Warning**
 > This package is a WIP and not configured for production deployments yet.
