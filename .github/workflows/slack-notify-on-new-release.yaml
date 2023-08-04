@@ -1,7 +1,9 @@
 name: Slack Notification on Version Release
 
 on:
-  workflow_call:
+  push:
+    branches:
+      - slack-bot-message-on-new-release
 
 jobs:
   send-notification:
@@ -23,23 +25,38 @@ jobs:
           echo "---"
           echo $release_html_url
 
-      - name: Send Slack notification
+      - name: Post to a Slack channel
         id: slack
         uses: slackapi/slack-github-action@v1.24.0
         with:
-          channel-id: 'uds-new-release'
-          payload: |
-            {
-              "blocks": [
-               {
-            			"type": "section",
-            			"text": {
-            				"type": "mrkdwn",
-            				"text": ":mega: *DUBBD <${{ env.RELEASE_HTML_URL }}|${{ env.RELEASE_TAG }}> has been released!* :mega:"
-            			}
-            		}
-              ]
-            }
+          # Slack channel id, channel name, or user id to post message.
+          # See also: https://api.slack.com/methods/chat.postMessage#channels
+          # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
+          channel-id: 'uds-new-release-app'
+          # For posting a simple plain text message
+
+          slack-message: "DUBBD ${{ env.RELEASE_HTML_URL }} ${{ env.RELEASE_TAG }} has been released!"
+#         slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+#     - name: Send Slack notification
+#       id: slack
+#       uses: slackapi/slack-github-action@v1.24.0
+#       with:
+#         channel-id: 'uds-new-release'
+#         payload: |
+#           {
+#             "blocks": [
+#              {
+#           			"type": "section",
+#           			"text": {
+#           				"type": "mrkdwn",
+#           				"text": ":mega: *DUBBD <${{ env.RELEASE_HTML_URL }}|${{ env.RELEASE_TAG }}> has been released!* :mega:"
+#           			}
+#           		}
+#             ]
+#           }
+#       env:
+#         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+#         SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
