@@ -35,11 +35,10 @@ jobs:
             {
               "blocks": [
                 {
-                  "type": "header",
+                  "type": "section",
                   "text": {
                     "type": "mrkdwn",
                     "text": ":mega: DUBBD  <${{ env.RELEASE_BODY }}|${{ env.RELEASE_TAG }}> is published!",
-                    "emoji": true
                   }
                 }
               ]
