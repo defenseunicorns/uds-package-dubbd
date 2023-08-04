@@ -9,7 +9,7 @@ jobs:
     name: New version released
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Get Latest Release
         id: get_release
@@ -35,7 +35,7 @@ jobs:
             			"type": "section",
             			"text": {
             				"type": "mrkdwn",
-            				"text": ":mega: @here *DUBBD <${{ env.RELEASE_HTML_URL }}|${{ env.RELEASE_TAG }}> has been released!* :mega:"
+            				"text": ":mega: *DUBBD <${{ env.RELEASE_HTML_URL }}|${{ env.RELEASE_TAG }}> has been released!* :mega:"
             			}
             		}
               ]
