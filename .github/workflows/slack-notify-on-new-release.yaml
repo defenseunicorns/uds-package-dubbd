@@ -46,6 +46,29 @@ jobs:
             		}
               ]
             }
+      - uses: slackapi/slack-github-action@v1.24.0
+        with:
+          # Unlike the step posting a new message, this step does not accept a channel name.
+          # Please use a channel ID, not a name here.
+          channel-id: "@chris,#uds-pull-requests"
+          update-ts: ${{ steps.slack.outputs.ts }}
+          payload: |
+            {
+              "text": "Deployment finished (Completed)",
+              "attachments": [
+                {
+                  "pretext": "Deployment finished",
+                  "color": "28a745",
+                  "fields": [
+                    {
+                      "title": "Status",
+                      "short": true,
+                      "value": "Completed"
+                    }
+                  ]
+                }
+              ]
+            }
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
