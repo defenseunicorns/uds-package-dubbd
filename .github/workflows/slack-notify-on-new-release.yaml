@@ -38,7 +38,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ":mega: DUBBD  <${{ env.RELEASE_BODY }}|${{ env.RELEASE_TAG }}> is published!",
+                    "text": ":mega: DUBBD <https://github.com/defenseunicorns/uds-package-dubbd/releases/tag/v0.6.0|v0.6.0> is published!",
                   }
                 }
               ]
@@ -46,4 +46,6 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+            #                     "text": ":mega: DUBBD  <${{ env.RELEASE_BODY }}|${{ env.RELEASE_TAG }}> is published!",
+
 
