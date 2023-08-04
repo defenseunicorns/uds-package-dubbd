@@ -200,6 +200,7 @@ components:
               ./zarf tools kubectl delete helmrelease -n bigbang istio --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang istio-operator --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang monitoring --ignore-not-found --timeout=20m
+              ./zarf tools kubectl delete helmrelease -n bigbang grafana --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete providers grafana -n monitoring --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete alerts grafana -n monitoring --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang promtail --ignore-not-found --timeout=20m
