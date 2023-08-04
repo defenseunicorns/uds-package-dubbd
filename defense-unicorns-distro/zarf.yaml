@@ -3,7 +3,7 @@ metadata:
   name: dubbd
   description: "Defense Unicorns Big Bang Distro"
   # x-release-please-start-version
-  version: "0.5.2"
+  version: "0.6.0"
   # x-release-please-end
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/Big_Bang_Color_Logo_White_text.b10a1bae.webp
@@ -278,6 +278,7 @@ components:
           - ../values/promtail.yaml
           - ../values/kiali.yaml
           - ../values/monitoring.yaml
+          - ../values/monitoring-resources.yaml
           - ../values/neuvector.yaml
           - ../values/tempo.yaml
   - name: dubbd-post-upgrade

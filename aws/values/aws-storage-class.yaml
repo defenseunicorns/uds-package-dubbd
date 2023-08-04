@@ -5,15 +5,17 @@ tempo:
 
 monitoring:
   values:
-    grafana:
-      persistence:
-        storageClassName: ###ZARF_VAR_STORAGE_CLASS_NAME###
     prometheus:
       prometheusSpec:
         storageSpec:
           volumeClaimTemplate:
             spec:
               storageClassName: ###ZARF_VAR_STORAGE_CLASS_NAME###
+
+grafana:
+  values:
+    persistence:
+      storageClassName: ###ZARF_VAR_STORAGE_CLASS_NAME###
 
 loki:
   values:

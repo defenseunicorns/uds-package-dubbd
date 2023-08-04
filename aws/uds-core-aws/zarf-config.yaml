@@ -3,9 +3,9 @@ package:
     max_package_size: "1000000000"
     set:
       # renovate: datasource=gitlab-tags depName=big-bang/bigbang versioning=semver registryUrl=https://repo1.dso.mil
-      bigbang_version: "2.6.0"
+      bigbang_version: "2.7.1"
       # should line up with the flux version in the BB release, see https://repo1.dso.mil/big-bang/bigbang/-/blob/master/base/flux/gotk-components.yaml#L3
-      flux_version: "0.41.2"
+      flux_version: "2.0.1"
       terraform_version: "1.4.2"
       terraform_provider_aws_version: 4.59.0
       # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
