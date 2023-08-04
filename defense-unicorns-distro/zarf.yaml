@@ -130,7 +130,8 @@ components:
             setVariables:
               - name: GRAFANA_ADMIN_PASSWORD
                 sensitive: true
-          - cmd: "openssl rand -base64 24"
+          - cmd: "if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then kubectl get secret -n neuvector neuvector-prometheus-exporter-pod-secret -ojsonpath='{.data.CTRL_PASSWORD}' | base64 -d; else openssl rand -base64 24; fi"
+          #TODO: check for is upgrade and check that existing secret exists/is not empty. if empty, generate new value
             mute: true
             setVariables:
               - name: NEUVECTOR_METRICS_PASSWORD

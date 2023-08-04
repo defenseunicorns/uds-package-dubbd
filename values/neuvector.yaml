@@ -3,6 +3,9 @@ neuvector:
   ingress:
     gateway: "admin"
   values:
+    monitor:
+      CTRL_USERNAME: metrics
+      CTRL_PASSWORD: ###ZARF_VAR_NEUVECTOR_METRICS_PASSWORD###
     containerd:
       enabled: true
       path: "###ZARF_VAR_CONTAINER_RUNTIME_SOCKET###"
