@@ -18,7 +18,7 @@ components: # Define paths on the local filesystem or remote paths in git reposi
       path: oscal-component.yaml
     - git: https://repo1.dso.mil/big-bang/product/packages/monitoring.git@47.1.0-bb.1
       path: oscal-component.yaml
-    - git: https://repo1.dso.mil/big-bang/product/packages/neuvector.git@2.4.5-bb.1
+    - git: https://repo1.dso.mil/big-bang/product/packages/neuvector.git@2.4.5-bb.2
       path: oscal-component.yaml
     - git: https://repo1.dso.mil/big-bang/product/packages/promtail.git@6.11.3-bb.0
       path: oscal-component.yaml
