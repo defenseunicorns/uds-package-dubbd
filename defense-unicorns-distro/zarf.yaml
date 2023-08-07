@@ -3,7 +3,7 @@ metadata:
   name: dubbd
   description: "Defense Unicorns Big Bang Distro"
   # x-release-please-start-version
-  version: "0.6.0"
+  version: "0.6.1"
   # x-release-please-end
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/Big_Bang_Color_Logo_White_text.b10a1bae.webp
@@ -231,6 +231,7 @@ components:
               ./zarf tools kubectl delete helmrelease -n bigbang istio --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang istio-operator --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang monitoring --ignore-not-found --timeout=20m
+              ./zarf tools kubectl delete helmrelease -n bigbang grafana --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete providers grafana -n monitoring --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete alerts grafana -n monitoring --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang promtail --ignore-not-found --timeout=20m

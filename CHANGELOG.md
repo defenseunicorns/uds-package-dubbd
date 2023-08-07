@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.6.0...v0.6.1) (2023-08-04)
+
+
+### Bug Fixes
+
+* delete grafana onRemove ([#476](https://github.com/defenseunicorns/uds-package-dubbd/issues/476)) ([24d47fa](https://github.com/defenseunicorns/uds-package-dubbd/commit/24d47faf84a8e2e5300c658ebefdf4414dff1192))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.316 ([#470](https://github.com/defenseunicorns/uds-package-dubbd/issues/470)) ([6271438](https://github.com/defenseunicorns/uds-package-dubbd/commit/6271438e32eca94b124757026de721b65a1dbaf9))
+
+
+### Miscellaneous
+
+* **deps:** update actions/checkout action to v3 ([#475](https://github.com/defenseunicorns/uds-package-dubbd/issues/475)) ([c4a8433](https://github.com/defenseunicorns/uds-package-dubbd/commit/c4a843360fb9b1b84313ef0829a5009289a79dbb))
+
 ## [0.6.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.5.2...v0.6.0) (2023-08-03)
 
 
