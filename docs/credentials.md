@@ -3,11 +3,11 @@ There are several components in DUBBD that offer a web interface. Those services
 
 See the instructions below for querying the passwords for each component. 
 
-## Grafana 
+## Grafana
 ```bash
-kubectl get secret -n zarf dubbd-admin-interface-credentials -ojsonpath='{.data.grafana-password}' | base64 -d
+kubectl get secret -n zarf dubbd-admin-interface-credentials -o go-template='{{index .data "grafana-password" | base64decode}}'
 ```
 ## NeuVector
 ```bash
-kubectl get secret -n zarf dubbd-admin-interface-credentials -ojsonpath='{.data.neuvector-password}' | base64 -d
+kubectl get secret -n zarf dubbd-admin-interface-credentials -o go-template='{{index .data "neuvector-password" | base64decode}}'
 ```
