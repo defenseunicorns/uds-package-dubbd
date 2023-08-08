@@ -1,0 +1,64 @@
+name: Test DUBBD RKE2 Package
+
+on:
+  workflow_call:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  test-clean-install:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_COMMERCIAL_ROLE_TO_ASSUME }}
+          role-session-name: ${{ github.job || github.event.client_payload.pull_request.head.sha || github.sha }}
+          aws-region: us-west-2
+          role-duration-seconds: 21600
+
+      - uses: ./.github/actions/create-zarf-package
+        with:
+          username: ${{ secrets.REGISTRY1_USERNAME }}
+          password: ${{ secrets.REGISTRY1_PASSWORD }}
+          working-dir: rke2
+          download-init-package: true
+          timeout-minutes: 60
+
+      - name: Create RKE2 cluster
+        env:
+          SHA: ${{ github.sha }}
+        run: |
+          terraform init -force-copy \
+            -backend-config="bucket=uds-ci-state-bucket" \
+            -backend-config="key=tfstate/ci/install/${SHA:0:7}-rke2.tfstate" \
+            -backend-config="region=us-west-2" \
+            -backend-config="dynamodb_table=uds-ci-state-dynamodb"
+          terraform plan
+          sleep 15 # time to review
+          terraform apply -auto-approve
+        working-directory: rke2
+
+      - name: Zarf init
+        run: zarf init -a amd64 --components=git-server --confirm
+
+      - name: Deploy DUBBD on RKE2 cluster
+        run: zarf package deploy zarf-package-*.tar.zst --confirm
+        working-directory: k3d
+        timeout-minutes: 60
+
+      - name: Remove DUBBD from RKE2 cluster
+        if: always()
+        run: zarf package remove zarf-package-*.tar.zst --confirm
+        working-directory: k3d
+        timeout-minutes: 60
+
+      - name: Teardown RKE2 cluster
+        if: always()
+        run: terraform destroy -auto-approve
