@@ -4,6 +4,7 @@
 **/*.tfstate.backup
 **/*.orig
 **/*.out
+*.tar
 *.tar.gz
 **/*.tar.zst
 ~/
