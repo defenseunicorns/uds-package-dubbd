@@ -8,7 +8,7 @@ terraform {
 }
 
 module "rke2" {
-  source  = "github.com/rancherfederal/rke2-aws-tf?ref=v2.3.3"
+  source  = "github.com/rancherfederal/rke2-aws-tf?ref=v2.4.0"
   cluster_name    = var.name
   vpc_id  = var.vpc_id
   subnets = var.subnets
