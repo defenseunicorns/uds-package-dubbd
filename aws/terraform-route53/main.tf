@@ -2,8 +2,8 @@ provider "aws" {
 }
 
 terraform {
-#  backend "s3" {
-#  }
+  backend "s3" {
+  }
 }
 
 data "aws_eks_cluster" "existing" {
