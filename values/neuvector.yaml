@@ -20,11 +20,11 @@ neuvector:
           userinitcfg.yaml:
             always_reload: true
             users:
-            - username: metrics
-              password: ###ZARF_VAR_NEUVECTOR_METRICS_PASSWORD###
-              role: reader
-              fullname: metrics
-            - username: admin
-              password: ###ZARF_VAR_NEUVECTOR_ADMIN_PASSWORD###
-              role: admin
-              fullname: admin
+              - username: metrics
+                password: ###ZARF_VAR_NEUVECTOR_METRICS_PASSWORD###
+                role: reader
+                fullname: metrics
+              - username: admin
+                password: ###ZARF_VAR_NEUVECTOR_ADMIN_PASSWORD###
+                role: admin
+                fullname: admin
