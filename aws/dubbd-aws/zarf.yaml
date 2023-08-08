@@ -166,7 +166,6 @@ components:
             dir: ../tmp-terraform-loki
             setVariables:
               - name: LOKI_S3_AWS_REGION
-          - cmd: terraform output -raw irsa_role_arn
           - cmd: cd $(find . -name 'main.tf' -printf '%h\n' -quit) && terraform output -raw irsa_role_arn
             dir: ../tmp-terraform-loki
             setVariables:
