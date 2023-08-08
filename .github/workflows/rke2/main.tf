@@ -8,7 +8,7 @@ terraform {
 }
 
 module "rke2" {
-  source  = "git::https://github.com/rancherfederal/rke2-aws-tf.git?ref=v2.3.3"
+  source  = "github.com/rancherfederal/rke2-aws-tf?ref=v2.3.3"
   cluster_name    = var.name
   vpc_id  = var.vpc_id
   subnets = var.subnets
@@ -97,10 +97,6 @@ resource "null_resource" "kubeconfig" {
 
   provisioner "local-exec" {
     interpreter = ["bash", "-c"]
-    command     = <<EOT
-aws s3 cp ${module.rke2.kubeconfig_path} ~/.kube/config
-kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.21"
-kubectl apply -f storage-class.yaml
-EOT
+    command     = "aws s3 cp ${module.rke2.kubeconfig_path} ~/.kube/config"
   }
 }

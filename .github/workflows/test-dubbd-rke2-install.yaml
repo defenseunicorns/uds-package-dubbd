@@ -43,6 +43,8 @@ jobs:
           terraform plan
           sleep 15 # time to review
           terraform apply -auto-approve
+          kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.21"
+          kubectl apply -f storage-class.yaml
         working-directory: .github/workflows/rke2
 
       - name: Zarf init
@@ -57,6 +59,11 @@ jobs:
         if: always()
         run: zarf package remove zarf-package-*.tar.zst --confirm
         working-directory: rke2
+        timeout-minutes: 60
+
+      - name: Remove Zarf from RKE2 cluster
+        if: always()
+        run: zarf destroy --confirm
         timeout-minutes: 60
 
       - name: Teardown RKE2 cluster
