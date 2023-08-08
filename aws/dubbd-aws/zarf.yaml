@@ -82,12 +82,8 @@ components:
     actions:
       onDeploy:
         after:
-          - cmd: |
-              rm -f run/loki/terraform || true
-              rm -f run/velero/terraform || true
-            description: Clean up previous install since archiver doesn't overwrite the output
           - cmd: "./extract-terraform.sh ###ZARF_PKG_TMPL_TERRAFORM_VERSION### ###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###"
-          # - cmd: rm -rf tmp
+          - cmd: rm -rf tmp
     files:
       - source: ../extract.sh
         target: extract-terraform.sh
@@ -107,209 +103,198 @@ components:
         target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_linux_amd64.zip
       - source: https://releases.hashicorp.com/terraform-provider-aws/###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
         target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
-  - name: loki-module
+  - name: terraform-loki
     required: true
     actions:
       onCreate:
         before:
-          - cmd: terraform get -update
-            dir: ../loki
+          - cmd: cd $(find . -name 'main.tf' -printf '%h\n' -quit) && terraform get -update
+            dir: ../terraform-loki
+            description: "Running: terraform get -update"
     files:
-      - source: ../loki/.terraform
-        target: run/loki/.terraform
-      - source: ../loki/main.tf
-        target: run/loki/main.tf
-      - source: ../loki/variables.tf
-        target: run/loki/variables.tf
-      - source: ../loki/output.tf
-        target: run/loki/output.tf
-      - source: ../loki/terraform.tfvars
-        target: run/loki/terraform.tfvars
+      - source: ../terraform-loki/
+        target: ../tmp-terraform-loki
   - name: loki-execute-terraform
     required: true
     actions:
       onDeploy:
         before:
           - cmd: echo ${ZARF_VAR_STATE_KEY} | sed 's/\.tfstate/-loki.tfstate/g'
-            dir: run/loki
             setVariables:
               - name: STATE_KEY_LOKI
+          - cmd: test -d ../tmp-terraform-loki && chmod -R ugo+rwx ../tmp-terraform-loki/ || echo $?
+            description: "Setting permissions"
           - cmd: |
-              ../terraform init -force-copy \
+              cd $(find . -name 'main.tf' -printf '%h\n' -quit) && \
+              terraform init -force-copy \
               -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
               -backend-config="key=${ZARF_VAR_STATE_KEY_LOKI}" \
               -backend-config="region=${ZARF_VAR_REGION}" \
               -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
-            dir: run/loki
-          - cmd: ../terraform plan
-            dir: run/loki
+            dir: ../tmp-terraform-loki
+            description: "Running: terraform init"
+          - cmd: cd $(find . -name 'main.tf' -printf '%h\n' -quit) && terraform plan -out=./tf-plan.out
+            dir: ../tmp-terraform-loki
+            description: "Running: terraform plan"
           - cmd: sleep 15 #time to review
-          - cmd: ../terraform apply -auto-approve
-            dir: run/loki
+          - cmd: cd $(find . -name 'main.tf' -printf '%h\n' -quit) && terraform apply -auto-approve
+            dir: ../tmp-terraform-loki
+            description: "Running: terraform apply"
       onRemove:
         before:
           - cmd: |
-              if [ -d "run/loki" ]; then
-                cd run/loki
-                if [ "$(../terraform output force_destroy)" = true ]; then
-                  ../terraform destroy -auto-approve
+              if [ -d "../tmp-terraform-loki" ]; then
+                cd $(find ../tmp-terraform-loki -name 'main.tf' -printf '%h\n' -quit)
+                if [ "$(terraform output force_destroy)" = true ]; then
+                  terraform destroy -auto-approve
                 else
                   echo "Skipping remove, force_destroy is set to false"
                 fi
               else
-                echo "Cannot remove: run/loki directory does not exist"
+                echo "Cannot remove: ../tmp-terraform-loki directory does not exist"
               fi
   - name: loki-outputs
     required: true
     actions:
       onDeploy:
         after:
-          - cmd: ../terraform output -raw s3_bucket
-            dir: run/loki
+          - cmd: cd $(find . -name 'main.tf' -printf '%h\n' -quit) && terraform output -raw s3_bucket
+            dir: ../tmp-terraform-loki
             setVariables:
               - name: LOKI_S3_BUCKET
-          - cmd: ../terraform output -raw aws_region
-            dir: run/loki
+          - cmd: cd $(find . -name 'main.tf' -printf '%h\n' -quit) && terraform output -raw aws_region
+            dir: ../tmp-terraform-loki
             setVariables:
               - name: LOKI_S3_AWS_REGION
-          - cmd: ../terraform output -raw irsa_role_arn
-            dir: run/loki
+          - cmd: terraform output -raw irsa_role_arn
+          - cmd: cd $(find . -name 'main.tf' -printf '%h\n' -quit) && terraform output -raw irsa_role_arn
+            dir: ../tmp-terraform-loki
             setVariables:
               - name: LOKI_S3_ROLE_ARN
-  - name: velero-module
+  - name: terraform-velero
     required: true
     actions:
       onCreate:
         before:
-          - cmd: terraform get -update
-            dir: ../velero
+          - cmd: cd $(find . -name 'main.tf' -printf '%h\n' -quit) && terraform get -update
+            dir: ../terraform-velero
+            description: "Running: terraform get -update"
     files:
-      - source: ../velero/.terraform
-        target: run/velero/.terraform
-      - source: ../velero/main.tf
-        target: run/velero/main.tf
-      - source: ../velero/variables.tf
-        target: run/velero/variables.tf
-      - source: ../velero/output.tf
-        target: run/velero/output.tf
-      - source: ../velero/terraform.tfvars
-        target: run/velero/terraform.tfvars
+      - source: ../terraform-velero/
+        target: ../tmp-terraform-velero
   - name: velero-execute-terraform
     required: true
     actions:
       onDeploy:
         before:
           - cmd: echo ${ZARF_VAR_STATE_KEY} | sed 's/\.tfstate/-velero.tfstate/g'
-            dir: run/velero
             setVariables:
               - name: STATE_KEY_VELERO
-          - cmd: "echo ${ZARF_VAR_STATE_KEY_VELERO}"
+          - cmd: test -d ../tmp-terraform-velero && chmod -R ugo+rwx ../tmp-terraform-velero/ || echo $?
+            description: "Setting permissions"
           - cmd: |
-              ../terraform init -force-copy \
+              cd $(find . -name 'main.tf' -printf '%h\n' -quit) && \
+              terraform init -force-copy \
               -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
               -backend-config="key=${ZARF_VAR_STATE_KEY_VELERO}" \
               -backend-config="region=${ZARF_VAR_REGION}" \
               -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
-            dir: run/velero
-          - cmd: ../terraform plan
-            dir: run/velero
+            dir: ../tmp-terraform-velero
+            description: "Running: terraform init"
+          - cmd: cd $(find . -name 'main.tf' -printf '%h\n' -quit) && terraform plan -out=./tf-plan.out
+            dir: ../tmp-terraform-velero
+            description: "Running: terraform plan"
           - cmd: sleep 15 #time to review
-          - cmd: ../terraform apply -auto-approve
-            dir: run/velero
+          - cmd: cd $(find . -name 'main.tf' -printf '%h\n' -quit) && terraform apply -auto-approve
+            dir: ../tmp-terraform-velero
+            description: "Running: terraform apply"
       onRemove:
         before:
           - cmd: |
-              if [ -d "run/velero" ]; then
-                cd run/velero
-                if [ "$(../terraform output force_destroy)" = true ]; then
-                  ../terraform destroy -auto-approve
+              if [ -d "../tmp-terraform-velero" ]; then
+                cd $(find ../tmp-terraform-velero -name 'main.tf' -printf '%h\n' -quit)
+                if [ "$(terraform output force_destroy)" = true ]; then
+                  terraform destroy -auto-approve
                 else
                   echo "Skipping remove, force_destroy is set to false"
                 fi
               else
-                echo "Cannot remove: run/velero directory does not exist"
+                echo "Cannot remove: ../tmp-terraform-velero directory does not exist"
               fi
   - name: velero-outputs
     required: true
     actions:
       onDeploy:
         after:
-          - cmd: ../terraform output -raw s3_bucket
-            dir: run/velero
+          - cmd: cd $(find . -name 'main.tf' -printf '%h\n' -quit) && terraform output -raw s3_bucket
+            dir: ../tmp-terraform-velero
             setVariables:
               - name: VELERO_S3_BUCKET
-          - cmd: ../terraform output -raw aws_region
-            dir: run/velero
+          - cmd: cd $(find . -name 'main.tf' -printf '%h\n' -quit) && terraform output -raw aws_region
+            dir: ../tmp-terraform-velero
             setVariables:
               - name: VELERO_S3_AWS_REGION
-          - cmd: ../terraform output -raw irsa_role_arn
-            dir: run/velero
+          - cmd: cd $(find . -name 'main.tf' -printf '%h\n' -quit) && terraform output -raw irsa_role_arn
+            dir: ../tmp-terraform-velero
             setVariables:
               - name: VELERO_S3_ROLE_ARN
-  - name: route53-policy-pre
-    required: true
-    actions:
-      onDeploy:
-        before:
-          - cmd: echo "route53-policy"
-            setVariables:
-              - name: STATE_KEY_PREFIX
-          - cmd: echo "${ZARF_VAR_STATE_KEY_PREFIX}-${ZARF_VAR_STATE_KEY}"
-            setVariables:
-              - name: ROUTE53_POLICY_STATE_KEY
-  - name: route53-policy-module
+  - name: terraform-route53
     required: true
     actions:
       onCreate:
         before:
-          - cmd: terraform get -update
-            dir: ../route53-policy
+          - cmd: cd $(find . -name 'main.tf' -printf '%h\n' -quit) && terraform get -update
+            dir: ../terraform-route53
+            description: "Running: terraform get -update"
     files:
-      - source: ../route53-policy/.terraform
-        target: run/route53-policy/.terraform
-      - source: ../route53-policy/main.tf
-        target: run/route53-policy/main.tf
-      - source: ../route53-policy/variables.tf
-        target: run/route53-policy/variables.tf
-      - source: ../route53-policy/output.tf
-        target: run/route53-policy/output.tf
-      - source: ../route53-policy/terraform.tfvars
-        target: run/route53-policy/terraform.tfvars
-  - name: execute-route53-policy-terraform
+      - source: ../terraform-route53/
+        target: ../tmp-terraform-route53
+  - name: route53-execute-terraform
     required: true
     actions:
       onDeploy:
         before:
-          - cmd: "test -d ./route53-policy/ && chmod -R ugo+rwx ./route53-policy/ || echo $?"
-            dir: run
+          - cmd: echo ${ZARF_VAR_STATE_KEY} | sed 's/\.tfstate/-route53.tfstate/g'
+            setVariables:
+              - name: STATE_KEY_ROUTE53
+          - cmd: test -d ../tmp-terraform-route53 && chmod -R ugo+rwx ../tmp-terraform-route53/ || echo $?
+            description: "Setting permissions"
           - cmd: |
-              ../terraform init -force-copy \
+              cd $(find . -name 'main.tf' -printf '%h\n' -quit) && \
+              terraform init -force-copy \
               -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
-              -backend-config="key=${ZARF_VAR_ROUTE53_POLICY_STATE_KEY}" \
+              -backend-config="key=${ZARF_VAR_STATE_KEY_ROUTE53}" \
               -backend-config="region=${ZARF_VAR_REGION}" \
               -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
-            dir: run/route53-policy
-          - cmd: ../terraform plan
-            dir: run/route53-policy
+            dir: ../tmp-terraform-route53
+            description: "Running: terraform init"
+          - cmd: cd $(find . -name 'main.tf' -printf '%h\n' -quit) && terraform plan -out=./tf-plan.out
+            dir: ../tmp-terraform-route53
+            description: "Running: terraform plan"
           - cmd: sleep 15 #time to review
-          - cmd: ../terraform apply -auto-approve
-            dir: run/route53-policy
+          - cmd: cd $(find . -name 'main.tf' -printf '%h\n' -quit) && terraform apply -auto-approve
+            dir: ../tmp-terraform-route53
+            description: "Running: terraform apply"
       onRemove:
         before:
           - cmd: |
-              if [ -d "run/route53-policy" ]; then
-                cd run/route53-policy
-                ../terraform destroy -auto-approve
+              if [ -d "../tmp-terraform-route53" ]; then
+                cd $(find ../tmp-terraform-route53 -name 'main.tf' -printf '%h\n' -quit)
+                if [ "$(terraform output force_destroy)" = true ]; then
+                  terraform destroy -auto-approve
+                else
+                  echo "Skipping remove, force_destroy is set to false"
+                fi
               else
-                echo "Cannot remove: run/route53-policy directory does not exist"
+                echo "Cannot remove: ../tmp-terraform-route53 directory does not exist"
               fi
-  - name: route53-policy-outputs
+  - name: route53-outputs
     required: true
     actions:
       onDeploy:
         after:
-          - cmd: ../terraform output -raw route53_role_arn
-            dir: run/route53-policy
+          - cmd: cd $(find . -name 'main.tf' -printf '%h\n' -quit) && terraform output -raw irsa_role_arn
+            dir: ../tmp-terraform-route53
             setVariables:
               - name: ROUTE53_ROLE_ARN
   - name: load-certs
