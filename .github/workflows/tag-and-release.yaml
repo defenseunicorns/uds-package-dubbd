@@ -28,6 +28,14 @@ jobs:
       working_dir: aws/dubbd-aws
     secrets: inherit
 
+  publish-dubbd-rke2:
+    needs: tag-new-version
+    if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
+    uses: ./.github/workflows/publish.dubbd.package.yaml
+    with:
+      working_dir: rke2
+    secrets: inherit
+
   publish-dubbd-k3d:
     needs: tag-new-version
     if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
@@ -45,6 +53,6 @@ jobs:
     secrets: inherit
 
   notify-public-uds:
-    needs: [tag-new-version, publish-dubbd-core, publish-dubbd-k3d, publish-dubbd-aws]
+    needs: [tag-new-version, publish-dubbd-core, publish-dubbd-k3d, publish-dubbd-rke2, publish-dubbd-aws]
     if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
     uses: ./.github/workflows/slack-notify-on-new-release.yaml
