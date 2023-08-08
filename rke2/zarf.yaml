@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
+kind: ZarfPackageConfig
+metadata:
+  name: dubbd-rke2
+  description: "Defense Unicorns Big Bang Distro for RKE2"
+  # x-release-please-start-version
+  version: "0.6.1"
+  # x-release-please-end
+  url: https://p1.dso.mil/products/big-bang
+  image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
+  # Big Bang / Iron Bank are only amd64
+  architecture: amd64
+  authors: "@mjnagel"
+  source: https://github.com/defenseunicorns/uds-package-dubbd
+  documentation: https://github.com/defenseunicorns/uds-package-dubbd
+  vendor: Defense Unicorns
+
+variables:
+  - name: CONTAINER_RUNTIME_SOCKET
+    default: "/run/k3s/containerd/containerd.sock"
+    description: "Path for container runtime socket"
+    prompt: false
+  - name: EPHEMERAL
+    description: "Set whether the cluster should be considered ephemeral - if true all resources will be force destroyed on removal"
+    default: "false"
+  - name: EXEMPT_NAMESPACES
+    description: "List of namespaces to be exempt from cluster policies (must contain zarf)"
+    default: '[ "zarf" ]'
+
+components:
+  - name: set-ephemeral
+    required: true
+  - name: preflight
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+  - name: load-certs
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+  - name: download-flux
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+  - name: storage-class
+    required: true
+  - name: dubbd-pre-upgrade
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+  - name: bigbang
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+    extensions:
+      bigbang:
+        version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
+  - name: dubbd-post-upgrade
+    required: true
+    import:
+      path: ../defense-unicorns-distro

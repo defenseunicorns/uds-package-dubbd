@@ -15,6 +15,7 @@ on:
       - "aws/cloudtrail/**"
       - "aws/**/test/**"
       - "k3d/**"
+      - "rke2/**"
       # - "oscal-component.y*ml"
       # -  aws/dubbd-aws/oscal-component.y*ml
       # -  aws/uds-core-aws/oscal-component.y*ml

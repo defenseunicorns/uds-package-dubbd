@@ -34,7 +34,7 @@ jobs:
           make build
           cd ..
 
-      - name: Create DUBBD OSCAL-Componenet File
+      - name: Create DUBBD OSCAL-Component File
         run: ./component-generator/bin/component-generator aggregate --input .github/workflows/oscal/config-dubbd-oscal-component.yaml
 
       - name: Create DUBBD AWS OSCAL-Component File
@@ -43,13 +43,16 @@ jobs:
       - name: Create UDS Core AWS OSCAL-Component File
         run: ./component-generator/bin/component-generator aggregate --input .github/workflows/oscal/config-uds-core-aws-oscal-component.yaml
 
+      - name: Create DUBBD RKE2 OSCAL-Component File
+        run: ./component-generator/bin/component-generator aggregate --input .github/workflows/oscal/config-dubbd-rke2-oscal-component.yaml
+
       - name: Clean Up
         run: rm -rf component-generator
 
       - name: Yaml Formatter and Cleanup
         run: |
           npm install --save-dev --save-exact prettier
-          npx prettier oscal-component.yaml aws/dubbd-aws/oscal-component.yaml aws/uds-core-aws/oscal-component.yaml --write
+          npx prettier oscal-component.yaml aws/dubbd-aws/oscal-component.yaml aws/uds-core-aws/oscal-component.yaml rke2/oscal-component.yaml --write
           npm uninstall --save-dev prettier
           rm -rf node_modules/
           rm package.json
