@@ -125,8 +125,8 @@ components:
     actions:
       onDeploy:
         before:
-          - cmd: | 
-              if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then 
+          - cmd: |
+              if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then
                 ./zarf tools kubectl get secret -n zarf dubbd-admin-interface-credentials -o go-template='{{index .data \"grafana-password\" | base64decode}}'
               else
                 openssl rand -base64 24
@@ -135,8 +135,8 @@ components:
             setVariables:
               - name: GRAFANA_ADMIN_PASSWORD
                 sensitive: true
-          - cmd: | 
-              if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then  
+          - cmd: |
+              if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then
                 if ! ./zarf tools kubectl get secret -n neuvector neuvector-prometheus-exporter-pod-secret -o go-template='{{index .data \"CTRL_PASSWORD\" | base64decode}}' 2>/dev/null; then
                   openssl rand -base64 24
                 fi;
@@ -147,8 +147,8 @@ components:
             setVariables:
               - name: NEUVECTOR_METRICS_PASSWORD
                 sensitive: true
-          - cmd: | 
-              if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then 
+          - cmd: |
+              if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then
                 ./zarf tools kubectl get secret -n zarf dubbd-admin-interface-credentials -o go-template='{{index .data \"neuvector-password\" | base64decode}}'
               else
                 openssl rand -base64 24
