@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - "aws/cloudtrail/**"
+      - "aws/terraform-cloudtrail/**"
       - "!**/*.md"
       - ".github/workflows/ci-on-pull-requests-cloudtrail.yaml"
 
@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: aws/cloudtrail/test
+        working-directory: aws/terraform-cloudtrail/test
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -46,7 +46,7 @@ jobs:
       - name: Install Go
         uses: actions/setup-go@v4
         with:
-          go-version-file: 'aws/cloudtrail/test/go.mod'
+          go-version-file: 'aws/terraform-cloudtrail/test/go.mod'
 
       - name: Set up gotestfmt
         uses: gotesttools/gotestfmt-action@v2
@@ -89,7 +89,7 @@ jobs:
   #       with:
   #         username: ${{ secrets.REGISTRY1_USERNAME }}
   #         password: ${{ secrets.REGISTRY1_PASSWORD }}
-  #         working-dir: aws/cloudtrail
+  #         working-dir: aws/terraform-cloudtrail
   #         download-init-package: false
   #         timeout-minutes: 10
 
@@ -103,11 +103,11 @@ jobs:
   #           --set state_key="tfstate/ci/cloudtrail/${SHA:0:7}-zarf.tfstate" \
   #           --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
   #           --confirm
-  #       working-directory: aws/cloudtrail
+  #       working-directory: aws/terraform-cloudtrail
   #       timeout-minutes: 10
 
   #     - name: Remove Cloudtrail
   #       if: always()
   #       run: zarf package remove zarf-package-*.tar.zst --confirm
-  #       working-directory: aws/cloudtrail
+  #       working-directory: aws/terraform-cloudtrail
   #       timeout-minutes: 10
