@@ -157,12 +157,6 @@ components:
             setVariables:
               - name: NEUVECTOR_ADMIN_PASSWORD
                 sensitive: true
-        after:
-          - wait:
-              cluster:
-                kind: secret
-                name: dubbd-admin-interface-credentials
-                namespace: zarf
     manifests:
       - name: admin-interface-creds
         namespace: zarf
