@@ -143,16 +143,13 @@ components:
       onRemove:
         before:
           - cmd: |
-              if [ -d "../tmp-terraform-loki" ]; then
-                cd $(find ../tmp-terraform-loki -name 'main.tf' -printf '%h\n' -quit)
-                if [ "$(terraform output force_destroy)" = true ]; then
-                  terraform destroy -auto-approve
-                else
-                  echo "Skipping remove, force_destroy is set to false"
-                fi
+              cd $(find . -name 'main.tf' -printf '%h\n' -quit)
+              if [ "$(terraform output force_destroy)" = true ]; then
+                terraform destroy -auto-approve
               else
-                echo "Cannot remove: ../tmp-terraform-loki directory does not exist"
+                echo "Skipping remove, force_destroy is set to false"
               fi
+            dir: ../tmp-terraform-loki
   - name: loki-outputs
     required: true
     actions:
@@ -210,16 +207,13 @@ components:
       onRemove:
         before:
           - cmd: |
-              if [ -d "../tmp-terraform-velero" ]; then
-                cd $(find ../tmp-terraform-velero -name 'main.tf' -printf '%h\n' -quit)
-                if [ "$(terraform output force_destroy)" = true ]; then
-                  terraform destroy -auto-approve
-                else
-                  echo "Skipping remove, force_destroy is set to false"
-                fi
+              cd $(find . -name 'main.tf' -printf '%h\n' -quit)
+              if [ "$(terraform output force_destroy)" = true ]; then
+                terraform destroy -auto-approve
               else
-                echo "Cannot remove: ../tmp-terraform-velero directory does not exist"
+                echo "Skipping remove, force_destroy is set to false"
               fi
+            dir: ../tmp-terraform-velero
   - name: velero-outputs
     required: true
     actions:
@@ -277,16 +271,9 @@ components:
       onRemove:
         before:
           - cmd: |
-              if [ -d "../tmp-terraform-route53" ]; then
-                cd $(find ../tmp-terraform-route53 -name 'main.tf' -printf '%h\n' -quit)
-                if [ "$(terraform output force_destroy)" = true ]; then
-                  terraform destroy -auto-approve
-                else
-                  echo "Skipping remove, force_destroy is set to false"
-                fi
-              else
-                echo "Cannot remove: ../tmp-terraform-route53 directory does not exist"
-              fi
+              cd $(find . -name 'main.tf' -printf '%h\n' -quit) && \
+              terraform destroy -auto-approve
+            dir: ../tmp-terraform-route53
   - name: route53-outputs
     required: true
     actions:
