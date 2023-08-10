@@ -128,7 +128,7 @@ components:
           - cmd: |
               if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then
                 if ! ./zarf tools kubectl get secret -n zarf dubbd-admin-interface-credentials -o go-template='{{index .data "grafana-password" | base64decode}}' 2>/dev/null; then
-                  openssl rand -base64 24 
+                  openssl rand -base64 24
                 fi
               else
                 openssl rand -base64 24
@@ -152,7 +152,7 @@ components:
           - cmd: |
               if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then
                 if ! ./zarf tools kubectl get secret -n zarf dubbd-admin-interface-credentials -o go-template='{{index .data "neuvector-password" | base64decode}}' 2>/dev/null; then
-                  openssl rand -base64 24 
+                  openssl rand -base64 24
                 fi
               else
                 openssl rand -base64 24
