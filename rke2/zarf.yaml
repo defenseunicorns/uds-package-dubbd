@@ -41,7 +41,7 @@ components:
   - name: generate-credentials
     required: true
     import:
-      path: ../../defense-unicorns-distro
+      path: ../defense-unicorns-distro
   - name: download-flux
     required: true
     import:
