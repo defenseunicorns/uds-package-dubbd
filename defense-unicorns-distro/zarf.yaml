@@ -139,7 +139,7 @@ components:
               if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then
                 if ! ./zarf tools kubectl get secret -n neuvector neuvector-prometheus-exporter-pod-secret -o go-template='{{index .data "CTRL_PASSWORD" | base64decode}}' 2>/dev/null; then
                   openssl rand -base64 24
-                fi;
+                fi
               else
                 openssl rand -base64 24
               fi
