@@ -3,6 +3,12 @@ neuvector:
   ingress:
     gateway: "admin"
   values:
+    monitor:
+      exporter:
+        CTRL_USERNAME: metrics
+        CTRL_PASSWORD: ###ZARF_VAR_NEUVECTOR_METRICS_PASSWORD###
+        podAnnotations:
+          checksum/metrics-pass: dubbd-override
     containerd:
       enabled: true
       path: "###ZARF_VAR_CONTAINER_RUNTIME_SOCKET###"
@@ -14,3 +20,14 @@ neuvector:
             scan_config:
               auto_scan: true
             no_telemetry_report: true
+          userinitcfg.yaml:
+            always_reload: true
+            users:
+              - username: metrics
+                password: ###ZARF_VAR_NEUVECTOR_METRICS_PASSWORD###
+                role: reader
+                fullname: metrics
+              - username: admin
+                password: ###ZARF_VAR_NEUVECTOR_ADMIN_PASSWORD###
+                role: admin
+                fullname: admin

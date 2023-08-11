@@ -18,11 +18,11 @@ monitoring:
               resources:
                 requests:
                   storage: "###ZARF_VAR_MONITORING_PROMETHEUS_PVC_SIZE###"
-
 grafana:
   ingress:
     gateway: "admin"
   values:
+    adminPassword: "###ZARF_VAR_GRAFANA_ADMIN_PASSWORD###"
     persistence:
       type: pvc
       enabled: true
