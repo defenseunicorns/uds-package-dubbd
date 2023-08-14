@@ -289,6 +289,7 @@ components:
         valuesFiles:
           - ../values/values.yaml
           - ../values/kyverno.yaml
+          - ../values/kyverno-policies.yaml
           - ../values/istio.yaml
           - ../values/loki.yaml
           - ../values/promtail.yaml
