@@ -4,7 +4,7 @@ Date: 2023-08-09
 
 ## Status
 
-Rejected (keeping Kiali Operator per feedback received)
+Rejected (reason: Kiali Operator still needed per feedback received)
 
 ## Context
 
