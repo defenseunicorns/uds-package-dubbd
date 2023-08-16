@@ -4,7 +4,7 @@ Date: 2023-08-09
 
 ## Status
 
-Accepted
+Rejected (keeping Kiali Operator per feedback received)
 
 ## Context
 
