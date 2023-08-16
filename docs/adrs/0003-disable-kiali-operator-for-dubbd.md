@@ -13,7 +13,7 @@ Big Bang core (umbrella) is configured with certain "defaults" such as charts en
 * Simplification
 * Performance optimization
 * Compliance / controls alignment
-* Best practices (from delivery experience)
+* Best practices (from platform experience)
 * Application features
 
 ## Decision
@@ -27,9 +27,9 @@ This change is expected to improve DUBBD in these regards:
 * Simplification - less software to support and maintain
 * Performance optimization - lower cluster compute utilization as the Kiali Operator is resource intensive
 * Compliance / controls alignment - no impact to existing controls being satisfied by DUBBD
-* Best practices (from delivery experience) - anecdotally, the "always-on" Kiali instance was leveraged only occasionally, as opposed to other similar DUBBD tools that were used very regularly
+* Best practices (from platform experience) - anecdotally, the "always-on" Kiali instance was leveraged only occasionally, as opposed to other similar DUBBD tools that were used very regularly
 
 But it will also introduce the following risks:
 
 * Application features - similar functionality will require a different solution or an alternative means to employ Kiali on an as-needed basis
-* Simplification - to compensate for the removal, it may introduce complexity elsewhere in the overall stack and / or the delivery team's means for environment observability
+* Simplification - to compensate for the removal, it may introduce complexity elsewhere in the overall stack and / or the platform team's means for environment observability
