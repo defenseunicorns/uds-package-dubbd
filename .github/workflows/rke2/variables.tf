@@ -18,9 +18,9 @@ variable "subnets" {
 
 variable "ami" {
   type = string
-  description = "AMI to use for deployment"
-  # ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-20230725
-  default = "ami-03fc394d884ee7d48"
+  description = "AMI to use for deployment, must have RKE2 pre-installed"
+  # https://github.com/defenseunicorns/uds-rke2-image-builder
+  default = "ami-0ad84ca8c25bcbd48"
 }
 
 variable "region" {
