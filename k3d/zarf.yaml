@@ -23,6 +23,11 @@ variables:
     default: "/run/k3s/containerd/containerd.sock"
     description: "Path for container runtime socket"
     prompt: false
+  - name: ADD_DUBBD_VALUES
+    default: deploy-add-dubbd-values.yaml
+    prompt: false
+    type: file
+    autoIndent: true
 
 components:
   - name: preflight
@@ -54,6 +59,7 @@ components:
         version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
         valuesFiles:
           - values/local-dev.yaml
+          - values/add-dubbd-values.yaml
   - name: dubbd-post-upgrade
     required: true
     import:

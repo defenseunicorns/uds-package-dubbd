@@ -49,6 +49,13 @@ variables:
     description: "List of namespaces to be exempt from cluster policies (must contain zarf)"
     default: '[ "zarf", "calico-apiserver", "calico-system", "tigera-operator" ]'
 
+  - name: ADD_DUBBD_VALUES
+    default: deploy-add-dubbd-values.yaml
+    prompt: false
+    type: file
+    autoIndent: true
+
+
 components:
   - name: set-ephemeral
     required: true
@@ -366,6 +373,7 @@ components:
           - ../values/aws-loki.yaml
           - ../values/aws-velero.yaml
           - ../values/aws-storage-class.yaml
+          - ../values/add-dubbd-values.yaml
     actions:
       onDeploy:
         before:

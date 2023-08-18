@@ -54,6 +54,11 @@ variables:
   - name: EPHEMERAL
     description: "Set whether the cluster should be considered ephemeral - if true all resources will be force destroyed on removal"
     default: "false"
+  - name: DUBBD_VALUES
+    default: deploy-dubbd-values.yaml
+    prompt: false
+    type: file
+    autoIndent: true
 
 components:
   - name: set-ephemeral
@@ -298,5 +303,6 @@ components:
           - ../values/monitoring-resources.yaml
           - ../values/neuvector.yaml
           - ../values/tempo.yaml
+          - ../values/dubbd-values.yaml
   - name: dubbd-post-upgrade
     required: true
