@@ -11,8 +11,6 @@ metadata:
   architecture: amd64
 
 variables:
-  - name: BIGBANG_VERSION
-  - name: FLUX_VERSION
   - name: DOMAIN
     default: bigbang.dev
     prompt: false
