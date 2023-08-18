@@ -20,7 +20,7 @@ variable "ami" {
   type = string
   description = "AMI to use for deployment, must have RKE2 pre-installed"
   # https://github.com/defenseunicorns/uds-rke2-image-builder
-  default = "ami-0ad84ca8c25bcbd48"
+  default = "ami-0d5808d974253f6b8"
 }
 
 variable "region" {
