@@ -55,6 +55,7 @@ variables:
     description: "Set whether the cluster should be considered ephemeral - if true all resources will be force destroyed on removal"
     default: "false"
   - name: DUBBD_VALUES
+    description: "Path to a local values file that includes configuration to be used at deploy time (does not support enabling or disabling charts)"
     default: deploy-dubbd-values.yaml
     prompt: false
     type: file
