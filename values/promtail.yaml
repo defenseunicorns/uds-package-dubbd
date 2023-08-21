@@ -1,4 +1,3 @@
-
 promtail:
   enabled: true
   values:

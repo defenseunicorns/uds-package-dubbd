@@ -18,7 +18,7 @@ data "aws_caller_identity" "current" {}
 data "aws_partition" "current" {}
 
 module "generate_kms" {
-  source = "github.com/defenseunicorns/terraform-aws-uds-kms?ref=v0.0.1"
+  source = "github.com/defenseunicorns/terraform-aws-uds-kms?ref=v0.0.2"
 
   key_owners                = var.key_owner_arns # A list of IAM ARNs for those who will have full key permissions (`kms:*`)
   kms_key_alias_name_prefix = "${local.name}-cloudtrail-" # Prefix for KMS key alias.

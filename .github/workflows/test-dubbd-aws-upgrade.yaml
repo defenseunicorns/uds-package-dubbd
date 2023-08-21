@@ -10,7 +10,7 @@ permissions:
 jobs:
   test-upgrade:
     runs-on: ubuntu-latest
-  
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -37,9 +37,9 @@ jobs:
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
           working-dir: aws/dubbd-aws
-          download-init-package: true        
+          download-init-package: true
           timeout-minutes: 60
-          
+
       - name: Set eks_cluster_name
         id: get_cluster_name
         env:
@@ -48,7 +48,7 @@ jobs:
           echo "eks_cluster_name=dubbd-aws-upgrade-${SHA:0:7}" >> $GITHUB_OUTPUT
           echo "short_sha=${SHA:0:7}" >> $GITHUB_OUTPUT
 
-      - name: Package EKSCTL 
+      - name: Package EKSCTL
         run: zarf package create --confirm
         working-directory: .github/workflows/eks
 

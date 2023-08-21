@@ -1,0 +1,27 @@
+tempo:
+  values:
+    persistence:
+      storageClassName: ###ZARF_VAR_STORAGE_CLASS_NAME###
+
+monitoring:
+  values:
+    prometheus:
+      prometheusSpec:
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: ###ZARF_VAR_STORAGE_CLASS_NAME###
+
+grafana:
+  values:
+    persistence:
+      storageClassName: ###ZARF_VAR_STORAGE_CLASS_NAME###
+
+loki:
+  values:
+    write:
+      persistence:
+        storageClass: ###ZARF_VAR_STORAGE_CLASS_NAME###
+    backend:
+      persistence:
+        storageClass: ###ZARF_VAR_STORAGE_CLASS_NAME###

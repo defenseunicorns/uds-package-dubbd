@@ -1,5 +1,131 @@
 # Changelog
 
+## [0.6.2](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.6.1...v0.6.2) (2023-08-16)
+
+
+### Features
+
+* add base on-prem package for rke2 ([#455](https://github.com/defenseunicorns/uds-package-dubbd/issues/455)) ([8f42f5b](https://github.com/defenseunicorns/uds-package-dubbd/commit/8f42f5b3e765ddcba4b72eaf01682b88f22013ee))
+* increase kyverno requests/limits ([#499](https://github.com/defenseunicorns/uds-package-dubbd/issues/499)) ([bb70341](https://github.com/defenseunicorns/uds-package-dubbd/commit/bb7034148b37e8793c4a4bbf530d2ffce73ccae5))
+* non default creds for admin interfaces ([#472](https://github.com/defenseunicorns/uds-package-dubbd/issues/472)) ([e22e87c](https://github.com/defenseunicorns/uds-package-dubbd/commit/e22e87c635ba6b5a976a4df2184780d29d49946c))
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.317 ([#477](https://github.com/defenseunicorns/uds-package-dubbd/issues/477)) ([c7958fe](https://github.com/defenseunicorns/uds-package-dubbd/commit/c7958fe1b38793361567bbc5dbcfaaf23a23f60c))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.318 ([#483](https://github.com/defenseunicorns/uds-package-dubbd/issues/483)) ([05fb99e](https://github.com/defenseunicorns/uds-package-dubbd/commit/05fb99ed35837713ee50b59226569a89d9126ab5))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.319 ([#489](https://github.com/defenseunicorns/uds-package-dubbd/issues/489)) ([6fb48cd](https://github.com/defenseunicorns/uds-package-dubbd/commit/6fb48cd01421065835da335d7e314fbc36c23440))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.320 ([#492](https://github.com/defenseunicorns/uds-package-dubbd/issues/492)) ([03c86cd](https://github.com/defenseunicorns/uds-package-dubbd/commit/03c86cd2bf09eeb230e813f0e7f759103b2d6d80))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.321 ([#494](https://github.com/defenseunicorns/uds-package-dubbd/issues/494)) ([adba6db](https://github.com/defenseunicorns/uds-package-dubbd/commit/adba6dbad64f2cf49f36ddbd671a6fb7e183b14d))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.324 ([#498](https://github.com/defenseunicorns/uds-package-dubbd/issues/498)) ([7b8afc9](https://github.com/defenseunicorns/uds-package-dubbd/commit/7b8afc9d6782a3f394ed1d6dc175d58a623cf061))
+* **deps:** update module github.com/gruntwork-io/terratest to v0.43.12 ([#497](https://github.com/defenseunicorns/uds-package-dubbd/issues/497)) ([ad426ee](https://github.com/defenseunicorns/uds-package-dubbd/commit/ad426ee666d92bff0d281928eedc8ca7d9035593))
+
+
+### Miscellaneous
+
+* **deps:** update dependency defenseunicorns/zarf to v0.28.4 ([#474](https://github.com/defenseunicorns/uds-package-dubbd/issues/474)) ([53fdbd5](https://github.com/defenseunicorns/uds-package-dubbd/commit/53fdbd562d783d6f119b9a980df7669892522db8))
+* **deps:** update dependency defenseunicorns/zarf to v0.29.0 ([#501](https://github.com/defenseunicorns/uds-package-dubbd/issues/501)) ([b923ca5](https://github.com/defenseunicorns/uds-package-dubbd/commit/b923ca5621612ae2059ba5083496b31a5f60dd0d))
+* **deps:** update terraform github.com/rancherfederal/rke2-aws-tf to v2.4.0 ([#490](https://github.com/defenseunicorns/uds-package-dubbd/issues/490)) ([a9e2d9f](https://github.com/defenseunicorns/uds-package-dubbd/commit/a9e2d9f954f1b1d076a8104cc573da18d039f138))
+* update bigbang.dev cert ([#503](https://github.com/defenseunicorns/uds-package-dubbd/issues/503)) ([e5b7754](https://github.com/defenseunicorns/uds-package-dubbd/commit/e5b7754c0f70095313637ce7ed458286a669edd7))
+
+## [0.6.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.6.0...v0.6.1) (2023-08-04)
+
+
+### Bug Fixes
+
+* delete grafana onRemove ([#476](https://github.com/defenseunicorns/uds-package-dubbd/issues/476)) ([24d47fa](https://github.com/defenseunicorns/uds-package-dubbd/commit/24d47faf84a8e2e5300c658ebefdf4414dff1192))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.316 ([#470](https://github.com/defenseunicorns/uds-package-dubbd/issues/470)) ([6271438](https://github.com/defenseunicorns/uds-package-dubbd/commit/6271438e32eca94b124757026de721b65a1dbaf9))
+
+
+### Miscellaneous
+
+* **deps:** update actions/checkout action to v3 ([#475](https://github.com/defenseunicorns/uds-package-dubbd/issues/475)) ([c4a8433](https://github.com/defenseunicorns/uds-package-dubbd/commit/c4a843360fb9b1b84313ef0829a5009289a79dbb))
+
+## [0.6.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.5.2...v0.6.0) (2023-08-03)
+
+
+### Features
+
+* improve neuvector config setup across distros ([#442](https://github.com/defenseunicorns/uds-package-dubbd/issues/442)) ([770d1e0](https://github.com/defenseunicorns/uds-package-dubbd/commit/770d1e0a66e1fd7ca6c0401e8b366aa099d61996))
+* initial oscal componenet ([#446](https://github.com/defenseunicorns/uds-package-dubbd/issues/446)) ([7d0dced](https://github.com/defenseunicorns/uds-package-dubbd/commit/7d0dced367d4103b608e5c2c745436d5dcb6e7c0))
+
+
+### Bug Fixes
+
+* add monitoring resources to zarf.yaml ([#462](https://github.com/defenseunicorns/uds-package-dubbd/issues/462)) ([425d343](https://github.com/defenseunicorns/uds-package-dubbd/commit/425d3436009df6843d2ee8ef2a1d537ffed12fc0))
+* avoid conflicts with BB authservice package ([#453](https://github.com/defenseunicorns/uds-package-dubbd/issues/453)) ([6c00497](https://github.com/defenseunicorns/uds-package-dubbd/commit/6c00497870b7bed3ce1b03554705b20dda746c41))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.309 ([#443](https://github.com/defenseunicorns/uds-package-dubbd/issues/443)) ([c71faf7](https://github.com/defenseunicorns/uds-package-dubbd/commit/c71faf789fc771eeb0053618201f284ecee09537))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.313 ([#456](https://github.com/defenseunicorns/uds-package-dubbd/issues/456)) ([cfb5140](https://github.com/defenseunicorns/uds-package-dubbd/commit/cfb5140cb3cf379707287829a30d01609d249908))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.315 ([#464](https://github.com/defenseunicorns/uds-package-dubbd/issues/464)) ([c9c2ea3](https://github.com/defenseunicorns/uds-package-dubbd/commit/c9c2ea3da2994ad30732c83dda8975529b6af151))
+* **deps:** update module github.com/gruntwork-io/terratest to v0.43.11 ([#444](https://github.com/defenseunicorns/uds-package-dubbd/issues/444)) ([8fd6dcf](https://github.com/defenseunicorns/uds-package-dubbd/commit/8fd6dcfd9df678f33483019dce49f8a41a2b748f))
+* updating oscal configs to include neuvector ([#458](https://github.com/defenseunicorns/uds-package-dubbd/issues/458)) ([c0060cc](https://github.com/defenseunicorns/uds-package-dubbd/commit/c0060cc43e26a329a12046170abbe4bc72c8e813))
+
+
+### Miscellaneous
+
+* **deps:** update gitlab tag big-bang/bigbang to v2.7.0 ([#459](https://github.com/defenseunicorns/uds-package-dubbd/issues/459)) ([46c01d9](https://github.com/defenseunicorns/uds-package-dubbd/commit/46c01d9716f3294e337b1ebc54f984efd669f5ef))
+* **deps:** update gitlab tag big-bang/bigbang to v2.7.1 ([#461](https://github.com/defenseunicorns/uds-package-dubbd/issues/461)) ([b3b9fd6](https://github.com/defenseunicorns/uds-package-dubbd/commit/b3b9fd6b9728ac3efd211069cabc1a0eea7714e1))
+* release 0.5.3 ([#468](https://github.com/defenseunicorns/uds-package-dubbd/issues/468)) ([b4c61aa](https://github.com/defenseunicorns/uds-package-dubbd/commit/b4c61aaa74abb114d89a3af3be49744364c60955))
+
+## [0.5.2](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.5.1...v0.5.2) (2023-07-26)
+
+
+### Features
+
+* Adding default backup schedule for monitoring and tempo pvcs ([#440](https://github.com/defenseunicorns/uds-package-dubbd/issues/440)) ([fe1ae19](https://github.com/defenseunicorns/uds-package-dubbd/commit/fe1ae19f290005ffaffce9d41448530014701f8a))
+
+
+### Bug Fixes
+
+* ci for uds core syntax ([#449](https://github.com/defenseunicorns/uds-package-dubbd/issues/449)) ([813ffc2](https://github.com/defenseunicorns/uds-package-dubbd/commit/813ffc2ad6217f7c5fb421c259a9901f700a8e5c))
+* deadend ci-on-pull-request-uds-core-aws job to fire on the never branch so we don't receive github spam ([#448](https://github.com/defenseunicorns/uds-package-dubbd/issues/448)) ([de5d8d4](https://github.com/defenseunicorns/uds-package-dubbd/commit/de5d8d4494cb96d12c76effdc77f3194d4d4217f))
+
+## [0.5.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.5.0...v0.5.1) (2023-07-25)
+
+
+### Features
+
+* add authservice istio extensionProvider ([#424](https://github.com/defenseunicorns/uds-package-dubbd/issues/424)) ([85c494c](https://github.com/defenseunicorns/uds-package-dubbd/commit/85c494cf40ce8bb43c237891fefd46496563062c))
+* add default storage class for DUBBD ([#417](https://github.com/defenseunicorns/uds-package-dubbd/issues/417)) ([7dd37dd](https://github.com/defenseunicorns/uds-package-dubbd/commit/7dd37dd0d68fbca7757268ec6e190b33e990452a))
+* add IAC for Velero deployment ([#420](https://github.com/defenseunicorns/uds-package-dubbd/issues/420)) ([1e460f5](https://github.com/defenseunicorns/uds-package-dubbd/commit/1e460f563066badff73b35defaec73e611d2c901))
+
+
+### Bug Fixes
+
+* Adding kms:GenerateDataKey kms:Decrypt to velero policy ([#428](https://github.com/defenseunicorns/uds-package-dubbd/issues/428)) ([1efe72b](https://github.com/defenseunicorns/uds-package-dubbd/commit/1efe72bf1320d6f76fd1825d8fecc45d8b428999))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.305 ([#416](https://github.com/defenseunicorns/uds-package-dubbd/issues/416)) ([f29519c](https://github.com/defenseunicorns/uds-package-dubbd/commit/f29519c3eff4a15a0cdaf98a2f8264e530ef0cec))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.307 ([#437](https://github.com/defenseunicorns/uds-package-dubbd/issues/437)) ([10902f0](https://github.com/defenseunicorns/uds-package-dubbd/commit/10902f087fc7d62a8462d8f8fd0153503054845a))
+* **deps:** update module github.com/gruntwork-io/terratest to v0.43.8 ([#375](https://github.com/defenseunicorns/uds-package-dubbd/issues/375)) ([5040605](https://github.com/defenseunicorns/uds-package-dubbd/commit/5040605a8606c0470231166e2acc643bfb4a1ba6))
+* **deps:** update module github.com/gruntwork-io/terratest to v0.43.9 ([#438](https://github.com/defenseunicorns/uds-package-dubbd/issues/438)) ([57f7607](https://github.com/defenseunicorns/uds-package-dubbd/commit/57f76076717f53ec7b43eba8f8825b34520283bf))
+
+
+### Miscellaneous
+
+* **deps:** update dependency defenseunicorns/zarf to v0.28.3 ([#421](https://github.com/defenseunicorns/uds-package-dubbd/issues/421)) ([fc32a54](https://github.com/defenseunicorns/uds-package-dubbd/commit/fc32a54e613ede698b3fb934235d96909650ef2f))
+* **deps:** update terraform github.com/defenseunicorns/terraform-aws-uds-kms to v0.0.2 ([#415](https://github.com/defenseunicorns/uds-package-dubbd/issues/415)) ([379b979](https://github.com/defenseunicorns/uds-package-dubbd/commit/379b97952b4ddb9a20bea6440bbfa1c852ff17ac))
+* update packaging standards, add yamllint in CI ([#414](https://github.com/defenseunicorns/uds-package-dubbd/issues/414)) ([f5c7a73](https://github.com/defenseunicorns/uds-package-dubbd/commit/f5c7a7350b5e54e158725547dda0667746e29c78))
+
+## [0.5.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.4.2...v0.5.0) (2023-07-19)
+
+
+### Features
+
+* add dubbd pre-upgrade & update refs ([#411](https://github.com/defenseunicorns/uds-package-dubbd/issues/411)) ([675b79a](https://github.com/defenseunicorns/uds-package-dubbd/commit/675b79a1c9fac491f40bd811305cf496f1cae6a3))
+* add HPA for Loki ([#419](https://github.com/defenseunicorns/uds-package-dubbd/issues/419)) ([f3d788a](https://github.com/defenseunicorns/uds-package-dubbd/commit/f3d788a6897abbffc7b20b7085026d0a897652ad))
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.300 ([#397](https://github.com/defenseunicorns/uds-package-dubbd/issues/397)) ([1d475e8](https://github.com/defenseunicorns/uds-package-dubbd/commit/1d475e8080b66ea18d5cddf25250bd2f22984a60))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.301 ([#405](https://github.com/defenseunicorns/uds-package-dubbd/issues/405)) ([a4b7267](https://github.com/defenseunicorns/uds-package-dubbd/commit/a4b72674b49202287a26a95966e6cbcb5b9484ac))
+* k3d local installation ([#403](https://github.com/defenseunicorns/uds-package-dubbd/issues/403)) ([33cfcff](https://github.com/defenseunicorns/uds-package-dubbd/commit/33cfcff5b5b676d8626e367c19802e0fa7e1f6a6))
+
+
+### Miscellaneous
+
+* **deps:** update actions/upload-artifact action to v3 ([#350](https://github.com/defenseunicorns/uds-package-dubbd/issues/350)) ([2df824e](https://github.com/defenseunicorns/uds-package-dubbd/commit/2df824e8162520ad5a027c5ff1abab4e29f168e6))
+* **deps:** update gitlab tag big-bang/bigbang to v2.6.0 ([#401](https://github.com/defenseunicorns/uds-package-dubbd/issues/401)) ([ae919ef](https://github.com/defenseunicorns/uds-package-dubbd/commit/ae919efab41f4b25ab913cc672e36aaac391603e))
+
 ## [0.4.2](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.4.1...v0.4.2) (2023-07-13)
 
 

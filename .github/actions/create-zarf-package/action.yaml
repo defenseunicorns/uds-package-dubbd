@@ -11,7 +11,7 @@ inputs:
   working-dir:
     description: Zarf package path
     required: true
-  download-init-package: 
+  download-init-package:
     description: Include Zarf init package
     required: false
 
@@ -29,12 +29,12 @@ runs:
         registry: registry1.dso.mil
         username: ${{ inputs.username }}
         password: ${{ inputs.password }}
-        
+
     - name: Install Zarf
       uses: defenseunicorns/setup-zarf@main
       with:
         # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
-        version: v0.28.2
+        version: v0.29.0
         download-init-package: ${{ inputs.download-init-package }}
 
     - name: Create Zarf Package

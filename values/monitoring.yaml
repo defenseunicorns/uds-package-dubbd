@@ -1,4 +1,3 @@
-
 monitoring:
   enabled: true
   ingress:
@@ -9,15 +8,6 @@ monitoring:
         enabled: false
       prometheus:
         enabled: false
-    grafana:
-      persistence:
-        type: pvc
-        enabled: true
-        accessModes:
-          - ReadWriteOnce
-        size: "###ZARF_VAR_MONITORING_GRAFANA_PVC_SIZE###"
-        finalizers:
-          - kubernetes.io/pvc-protection
     prometheus:
       prometheusSpec:
         storageSpec:
@@ -28,3 +18,16 @@ monitoring:
               resources:
                 requests:
                   storage: "###ZARF_VAR_MONITORING_PROMETHEUS_PVC_SIZE###"
+grafana:
+  ingress:
+    gateway: "admin"
+  values:
+    adminPassword: "###ZARF_VAR_GRAFANA_ADMIN_PASSWORD###"
+    persistence:
+      type: pvc
+      enabled: true
+      accessModes:
+        - ReadWriteOnce
+      size: "###ZARF_VAR_MONITORING_GRAFANA_PVC_SIZE###"
+      finalizers:
+        - kubernetes.io/pvc-protection

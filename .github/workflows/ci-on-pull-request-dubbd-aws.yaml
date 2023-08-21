@@ -13,18 +13,39 @@ on:
       - "**/*.svg"
       - "aws/uds-core-aws/**"
       - "aws/cloudtrail/**"
+      - "aws/**/test/**"
       - "k3d/**"
+      - "rke2/**"
+      # - "oscal-component.y*ml"
+      # -  aws/dubbd-aws/oscal-component.y*ml
+      # -  aws/uds-core-aws/oscal-component.y*ml
+      - "**/oscal-component.y*ml"
       - ".github/workflows/*k3d*.y*ml"
       - ".github/workflows/*cloudtrail*.y*ml"
       - ".github/workflows/*uds*.y*ml"
+      - ".github/workflows/*rke2*.y*ml"
+      - ".github/workflows/oscal/*oscal-component.y*ml"
 
   workflow_call:
 
 jobs:
-    test-release:
-        uses: ./.github/workflows/test-dubbd-aws-install.yaml
-        secrets: inherit
+  yaml-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install yamllint
+        run: pip install yamllint
+      - name: Lint YAML files
+        run: yamllint . -c .yamllint --no-warnings
 
-    test-upgrade:
-        uses: ./.github/workflows/test-dubbd-aws-upgrade.yaml
-        secrets: inherit
+  test-release:
+    needs: yaml-lint
+    if: needs.yaml-lint.result == 'success' || needs.yaml-lint.result == 'skipped'
+    uses: ./.github/workflows/test-dubbd-aws-install.yaml
+    secrets: inherit
+
+  test-upgrade:
+    needs: yaml-lint
+    if: needs.yaml-lint.result == 'success' || needs.yaml-lint.result == 'skipped'
+    uses: ./.github/workflows/test-dubbd-aws-upgrade.yaml
+    secrets: inherit

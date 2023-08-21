@@ -6,7 +6,7 @@ metadata:
   region: us-west-2
   version: "1.26"
 
-# May want to look at this for testing 
+# May want to look at this for testing
 # privateCluster:
 #   enabled: true
 

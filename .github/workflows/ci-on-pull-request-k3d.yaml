@@ -12,11 +12,25 @@ on:
       - "**/*.png"
       - "**/*.svg"
       - "aws/**"
+      - "rke2/**"
+      - "oscal-component.y*ml"
       - ".github/workflows/*aws*.y*ml"
       - ".github/workflows/*cloudtrail*.y*ml"
       - ".github/workflows/*uds*.y*ml"
+      - ".github/workflows/*rke2*.y*ml"
+      - "**/*oscal-component.y*aml"
 
 jobs:
+  yaml-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install yamllint
+        run: pip install yamllint
+      - name: Lint YAML files
+        run: yamllint . -c .yamllint --no-warnings
   test-release:
+    needs: yaml-lint
+    if: needs.yaml-lint.result == 'success' || needs.yaml-lint.result == 'skipped'
     uses: ./.github/workflows/test-k3d-package.yaml
     secrets: inherit

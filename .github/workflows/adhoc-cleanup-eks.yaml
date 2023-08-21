@@ -3,9 +3,9 @@ name: Adhoc Cleanup EKS
 on:
   workflow_dispatch:
     inputs:
-     eks_cluster_name:
-       required: true
-       type: string
+      eks_cluster_name:
+        required: true
+        type: string
 
 permissions:
   id-token: write
@@ -14,7 +14,7 @@ permissions:
 jobs:
   delete-eks:
     runs-on: ubuntu-latest
-  
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

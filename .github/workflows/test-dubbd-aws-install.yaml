@@ -10,7 +10,7 @@ permissions:
 jobs:
   test-clean-install:
     runs-on: ubuntu-latest
-  
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -29,7 +29,7 @@ jobs:
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
           working-dir: aws/dubbd-aws
-          download-init-package: true        
+          download-init-package: true
           timeout-minutes: 60
 
       - name: Set eks_cluster_name
@@ -40,7 +40,7 @@ jobs:
           echo "eks_cluster_name=dubbd-aws-${SHA:0:7}" >> $GITHUB_OUTPUT
           echo "short_sha=${SHA:0:7}" >> $GITHUB_OUTPUT
 
-      - name: Package EKSCTL 
+      - name: Package EKSCTL
         run: zarf package create --confirm
         working-directory: .github/workflows/eks
 
@@ -54,8 +54,6 @@ jobs:
         working-directory: .github/workflows/eks #just holds the zarf-config
         id: create-cluster
 
-      ## We need to add functionality to allow the user to bring their own KMS Key Alias
-      
       - name: Show Cluster
         run: |
           kubectl get nodes

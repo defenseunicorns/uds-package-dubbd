@@ -41,7 +41,9 @@ variables:
     description: "Set whether the cluster should be considered ephemeral - if true all resources will be force destroyed on removal"
     default: "false"
   - name: LOKI_FORCE_DESTROY
-    description: "Provide a means to force destroy the Loki storage (S3) bucket even if it contains data, overrides ephemeral setting"
+    description: "If set to true, delete the S3 bucket and corresponding KMS key associated with the Loki bucket. Overrides ephemeral setting."
+  - name: PVC_RECLAIM_POLICY
+    description: "Affects DUBBD's default storage class reclaimPolicy, either `Retain` or `Delete`. No effect if EBS CSI Driver is not installed. Overrides ephemeral setting."
 
   - name: EXEMPT_NAMESPACES
     description: "List of namespaces to be exempt from cluster policies (must contain zarf)"
@@ -69,10 +71,6 @@ components:
     required: true
     import:
       path: ../dubbd-aws
-  - name: preflight
-    required: true
-    import:
-      path: ../../defense-unicorns-distro
   - name: download-terraform
     required: true
     actions:
@@ -113,6 +111,10 @@ components:
     required: true
     import:
       path: ../eks
+  - name: preflight
+    required: true
+    import:
+      path: ../../defense-unicorns-distro
   - name: loki-module
     required: true
     actions:
@@ -186,14 +188,14 @@ components:
   - name: route53-policy-pre
     required: true
     actions:
-     onDeploy:
-      before:
-        - cmd: echo "route53-policy"
-          setVariables:
-            - name: STATE_KEY_PREFIX
-        - cmd: echo "${ZARF_VAR_STATE_KEY_PREFIX}-${ZARF_VAR_STATE_KEY}"
-          setVariables:
-            - name: ROUTE53_POLICY_STATE_KEY
+      onDeploy:
+        before:
+          - cmd: echo "route53-policy"
+            setVariables:
+              - name: STATE_KEY_PREFIX
+          - cmd: echo "${ZARF_VAR_STATE_KEY_PREFIX}-${ZARF_VAR_STATE_KEY}"
+            setVariables:
+              - name: ROUTE53_POLICY_STATE_KEY
   - name: route53-policy-module
     required: true
     actions:
@@ -202,16 +204,16 @@ components:
           - cmd: terraform get -update
             dir: ../route53-policy
     files:
-    - source: ../route53-policy/.terraform
-      target: run/route53-policy/.terraform
-    - source: ../route53-policy/main.tf
-      target: run/route53-policy/main.tf
-    - source: ../route53-policy/variables.tf
-      target: run/route53-policy/variables.tf
-    - source: ../route53-policy/output.tf
-      target: run/route53-policy/output.tf
-    - source: ../route53-policy/terraform.tfvars
-      target: run/route53-policy/terraform.tfvars
+      - source: ../route53-policy/.terraform
+        target: run/route53-policy/.terraform
+      - source: ../route53-policy/main.tf
+        target: run/route53-policy/main.tf
+      - source: ../route53-policy/variables.tf
+        target: run/route53-policy/variables.tf
+      - source: ../route53-policy/output.tf
+        target: run/route53-policy/output.tf
+      - source: ../route53-policy/terraform.tfvars
+        target: run/route53-policy/terraform.tfvars
   - name: execute-route53-policy-terraform
     required: true
     actions:
@@ -249,6 +251,19 @@ components:
             dir: run/route53-policy
             setVariables:
               - name: ROUTE53_ROLE_ARN
+  - name: storage-class
+    required: true
+    import:
+      path: ../dubbd-aws
+    actions:
+      onDeploy:
+        after:
+          - cmd: |
+              pre_default_sc=$(./zarf tools kubectl get storageclass --output=jsonpath='{range .items[?(@.metadata.annotations.storageclass\.kubernetes\.io/is-default-class=="true")]}{.metadata.name}{end}')
+              ./zarf tools kubectl patch storageclass ${pre_default_sc} -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}' || true
+              ./zarf tools kubectl patch storageclass dubbd-default-sc -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}' || true
+            mute: true
+            description: "Update DUBBD storage class to cluster default"
   - name: zarf-init
     required: true
     actions:
@@ -260,7 +275,7 @@ components:
       onDeploy:
         after:
           - cmd: mkdir -p run/zarf-init
-          - cmd: zarf p deploy ./zarf-init-amd64-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst --components git-server --confirm
+          - cmd: ./zarf p deploy ./zarf-init-amd64-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst --components git-server --confirm
             dir: run/zarf-init
     files:
       - source: zarf-init-amd64-###ZARF_PKG_TMPL_ZARF_VERSION###.tar.zst

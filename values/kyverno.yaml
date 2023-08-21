@@ -1,20 +1,17 @@
 kyverno:
   values:
+    extraArgs:
+      - --clientRateLimitQPS=300
+      - --clientRateLimitBurst=300
+      - --enablePolicyException=true
+      - --loggingFormat=text
     updateStrategy:
       rollingUpdate:
         maxUnavailable: 0
-
-kyvernoPolicies:
-  values:
-    exclude:
-      any:
-      - resources:
-          namespaces: ###ZARF_VAR_EXEMPT_NAMESPACES###
-    policies:
-      restrict-image-registries:
-        parameters:
-          allow:
-          - registry1.dso.mil
-          - registry.dso.mil
-          - 127.0.0.1 # zarf registry
-          - "###ZARF_VAR_APPROVED_REGISTRIES###"
+    resources:
+      requests:
+        cpu: "1000m"
+        memory: "1Gi"
+      limits:
+        cpu: "1000m"
+        memory: "1Gi"

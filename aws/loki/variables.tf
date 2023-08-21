@@ -38,3 +38,19 @@ variable "create_kms_key" {
   type        = bool
   default     = true
 }
+
+
+variable "bucket_name" {
+  description = "Name for S3 bucket"
+  type        = string
+}
+
+variable "kubernetes_service_account" {
+  description = "Name of the service account to bind to. Used to generate fully qualified subject for service account."
+  type        = string
+}
+
+variable "kubernetes_namespace" {
+  description = "Name of the namespace that the service account exists in. Used to generate fully qualified subject for the service account."
+  type        = string
+}

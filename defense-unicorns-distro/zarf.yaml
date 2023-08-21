@@ -3,7 +3,7 @@ metadata:
   name: dubbd
   description: "Defense Unicorns Big Bang Distro"
   # x-release-please-start-version
-  version: "0.4.2"
+  version: "0.6.2"
   # x-release-please-end
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/Big_Bang_Color_Logo_White_text.b10a1bae.webp
@@ -11,64 +11,87 @@ metadata:
   architecture: amd64
 
 variables:
-- name: BIGBANG_VERSION
-- name: FLUX_VERSION
-- name: DOMAIN
-  default: bigbang.dev
-  prompt: false
-- name: CERT_FILE
-  default: bigbang.dev.cert
-  description: "This file contains the cert for the ingress gateways"
-  prompt: false
-- name: KEY_FILE
-  default: bigbang.dev.key
-  description: "This file contains the key for the ingress gateways"
-  prompt: false
-- name: EXEMPT_NAMESPACES
-  description: "List of namespaces to be exempt from cluster policies (must contain zarf)"
-  default: '[ "zarf" ]'
-- name: APPROVED_REGISTRIES
-  description: "Regex of approved registries to allow in cluster"
-  default: "127.0.0.1* | registry1.dso.mil"
-- name: MONITORING_PROMETHEUS_PVC_SIZE
-  default: "50Gi"
-  description: Size of PVC for Prometheus
-  prompt: false
-- name: MONITORING_GRAFANA_PVC_SIZE
-  default: "10Gi"
-  description: Size of PVC for Grafana
-  prompt: false
-- name: LOKI_PVC_SIZE
-  default: "40Gi"
-  description: Size of the PVC for Loki when running in dev mode
-- name: SLACK_URL
-  default: https://none.dev
-  description: Slack Webhook URL for alerts
-- name: SLACK_CHANNEL
-  default: "#alerts"
-  description: Slack channel for alerts
+  - name: DOMAIN
+    default: bigbang.dev
+    prompt: false
+  - name: CERT_FILE
+    default: bigbang.dev.cert
+    description: "This file contains the cert for the ingress gateways"
+    prompt: false
+  - name: KEY_FILE
+    default: bigbang.dev.key
+    description: "This file contains the key for the ingress gateways"
+    prompt: false
+  - name: EXEMPT_NAMESPACES
+    description: "List of namespaces to be exempt from cluster policies (must contain zarf)"
+    default: '[ "zarf" ]'
+  - name: APPROVED_REGISTRIES
+    description: "Regex of approved registries to allow in cluster"
+    default: "127.0.0.1* | registry1.dso.mil"
+  - name: MONITORING_PROMETHEUS_PVC_SIZE
+    default: "50Gi"
+    description: Size of PVC for Prometheus
+    prompt: false
+  - name: MONITORING_GRAFANA_PVC_SIZE
+    default: "10Gi"
+    description: Size of PVC for Grafana
+    prompt: false
+  - name: LOKI_PVC_SIZE
+    default: "40Gi"
+    description: Size of the PVC for Loki when running in dev mode
+  - name: CONTAINER_RUNTIME_SOCKET
+    default: "/var/run/containerd/containerd.sock"
+    description: "Path for container runtime socket"
+    prompt: false
+  - name: SLACK_URL
+    default: https://none.dev
+    description: Slack Webhook URL for alerts
+  - name: SLACK_CHANNEL
+    default: "#alerts"
+    description: Slack channel for alerts
+  - name: EPHEMERAL
+    description: "Set whether the cluster should be considered ephemeral - if true all resources will be force destroyed on removal"
+    default: "false"
 
 components:
+  - name: set-ephemeral
+    required: true
+    actions:
+      onDeploy:
+        before:
+          - cmd: |
+              if [ -z "${ZARF_VAR_PVC_RECLAIM_POLICY}" ]; then
+                if [ "${ZARF_VAR_EPHEMERAL}" = "true" ]; then
+                  echo "Delete"
+                else
+                  echo "Retain"
+                fi
+              else
+                echo "${ZARF_VAR_PVC_RECLAIM_POLICY}"
+              fi
+            mute: true
+            setVariables:
+              - name: PVC_RECLAIM_POLICY
   - name: preflight
     required: true
     actions:
       onDeploy:
         before:
-        - cmd: "./zarf tools kubectl version --short || true"
-          setVariables:
-            - name: OUTPUT
-        - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null 2>&1 && echo true || echo false"
-          mute: true
-          description: "Detect if this is an upgrade"
-          setVariables:
-            - name: IS_UPGRADE
+          - cmd: "./zarf tools kubectl version --short || true"
+            setVariables:
+              - name: OUTPUT
+          - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null 2>&1 && echo true || echo false"
+            mute: true
+            description: "Detect if this is an upgrade"
+            setVariables:
+              - name: IS_UPGRADE
         after:
-        - cmd: ./preflight.sh
-        - cmd: rm preflight.sh
+          - cmd: ./preflight.sh
+          - cmd: rm preflight.sh
     files:
-    - source: scripts/preflight.sh
-      target: preflight.sh
-      executable: true
+      - source: scripts/preflight.sh
+        target: preflight.sh
+        executable: true
   - name: load-certs
     required: true
     files:
@@ -76,29 +99,71 @@ components:
         target: bigbang.dev.cert
       - source: bigbang.dev.key
         target: bigbang.dev.key
-      - source: scripts/cat_cert.sh
-        target: cat_certs.sh
-        executable: true
-      - source: scripts/cat_key.sh
-        target: cat_key.sh
-        executable: true
     actions:
       onDeploy:
         after:
-        - cmd: ./cat_certs.sh
-          description: read the cert
-          mute: true
-          setVariables:
-            - name: PUBLIC_CERT
-              sensitive: true
-        - cmd: ./cat_key.sh
-          description: read the cert
-          mute: true
-          setVariables:
-            - name: PUBLIC_KEY
-              sensitive: true
-        - cmd: rm cat_certs.sh
-        - cmd: rm cat_key.sh
+          - cmd: "cat ${ZARF_VAR_CERT_FILE}"
+            description: Read cert file into values
+            mute: true
+            setVariables:
+              - name: PUBLIC_CERT
+                sensitive: true
+                autoIndent: true
+          - cmd: "cat ${ZARF_VAR_KEY_FILE}"
+            description: Read key file into values
+            mute: true
+            setVariables:
+              - name: PUBLIC_KEY
+                sensitive: true
+                autoIndent: true
+          - cmd: rm bigbang.dev.cert
+          - cmd: rm bigbang.dev.key
+  - name: generate-credentials
+    required: true
+    actions:
+      onDeploy:
+        before:
+          - cmd: |
+              if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then
+                if ! ./zarf tools kubectl get secret -n zarf dubbd-admin-interface-credentials -o go-template='{{index .data "grafana-password" | base64decode}}' 2>/dev/null; then
+                  openssl rand -base64 24
+                fi
+              else
+                openssl rand -base64 24
+              fi
+            mute: true
+            setVariables:
+              - name: GRAFANA_ADMIN_PASSWORD
+                sensitive: true
+          - cmd: |
+              if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then
+                if ! ./zarf tools kubectl get secret -n neuvector neuvector-prometheus-exporter-pod-secret -o go-template='{{index .data "CTRL_PASSWORD" | base64decode}}' 2>/dev/null; then
+                  openssl rand -base64 24
+                fi
+              else
+                openssl rand -base64 24
+              fi
+            mute: true
+            setVariables:
+              - name: NEUVECTOR_METRICS_PASSWORD
+                sensitive: true
+          - cmd: |
+              if [ ${ZARF_VAR_IS_UPGRADE} = true ]; then
+                if ! ./zarf tools kubectl get secret -n zarf dubbd-admin-interface-credentials -o go-template='{{index .data "neuvector-password" | base64decode}}' 2>/dev/null; then
+                  openssl rand -base64 24
+                fi
+              else
+                openssl rand -base64 24
+              fi
+            mute: true
+            setVariables:
+              - name: NEUVECTOR_ADMIN_PASSWORD
+                sensitive: true
+    manifests:
+      - name: admin-interface-creds
+        namespace: zarf
+        files:
+          - ./manifests/admin-interface-credentials.yaml
   - name: download-flux
     required: true
     actions:
@@ -126,6 +191,8 @@ components:
         target: tmp/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_windows_amd64.zip
       - source: https://github.com/fluxcd/flux2/releases/download/v###ZARF_PKG_TMPL_FLUX_VERSION###/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_windows_arm64.zip
         target: tmp/flux_###ZARF_PKG_TMPL_FLUX_VERSION###_windows_arm64.zip
+  - name: storage-class
+    required: true
   - name: dubbd-pre-upgrade
     required: true
   - name: bigbang
@@ -173,9 +240,11 @@ components:
         before:
           - cmd: |
               ./zarf tools kubectl patch helmrelease -n bigbang bigbang --type=merge -p '{"spec":{"suspend":true}}'
+              ./zarf tools kubectl delete helmrelease -n bigbang velero --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang istio --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang istio-operator --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang monitoring --ignore-not-found --timeout=20m
+              ./zarf tools kubectl delete helmrelease -n bigbang grafana --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete providers grafana -n monitoring --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete alerts grafana -n monitoring --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang promtail --ignore-not-found --timeout=20m
@@ -192,9 +261,18 @@ components:
               ./zarf tools kubectl delete helmrelease -n bigbang kiali --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete helmrelease -n bigbang metrics-server --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete apiservices.apiregistration.k8s.io -l helm.toolkit.fluxcd.io/namespace=bigbang,helm.toolkit.fluxcd.io/name=metrics-server --ignore-not-found --timeout=20m
-              ./zarf tools kubectl delete gitrepositories -n bigbang -l app.kubernetes.io/part-of=bigbang --timeout=20m
+              ./zarf tools kubectl delete gitrepositories -n bigbang -l app.kubernetes.io/part-of=bigbang --ignore-not-found --timeout=20m
             description: "Cleaning up Big Bang resources"
             maxTotalSeconds: 3600 # 1 hour
+        after:
+          - cmd: |
+              if [ "$(./zarf tools kubectl get storageclass dubbd-default-sc -o jsonpath='{.reclaimPolicy}' 2>/dev/null)" = "Delete" ]; then
+                ./zarf tools kubectl delete pvc -n logging -l app.kubernetes.io/name=logging-loki --ignore-not-found --timeout=2m
+                ./zarf tools kubectl delete pvc -n monitoring -l app.kubernetes.io/name=grafana --ignore-not-found --timeout=2m
+                ./zarf tools kubectl delete pvc -n monitoring -l app.kubernetes.io/name=prometheus --ignore-not-found --timeout=2m
+                ./zarf tools kubectl delete pvc -n tempo -l app.kubernetes.io/name=tempo --ignore-not-found --timeout=2m
+              fi
+            description: "Remove DUBBD ephemeral PVCs if required"
     files:
       - source: scripts/on_failure.sh
         target: on_failure.sh
@@ -207,14 +285,16 @@ components:
       bigbang:
         version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
         valuesFiles:
-        - ../values/values.yaml
-        - ../values/kyverno.yaml
-        - ../values/istio.yaml
-        - ../values/loki.yaml
-        - ../values/promtail.yaml
-        - ../values/kiali.yaml
-        - ../values/monitoring.yaml
-        - ../values/neuvector.yaml
-        - ../values/tempo.yaml
+          - ../values/values.yaml
+          - ../values/kyverno.yaml
+          - ../values/kyverno-policies.yaml
+          - ../values/istio.yaml
+          - ../values/loki.yaml
+          - ../values/promtail.yaml
+          - ../values/kiali.yaml
+          - ../values/monitoring.yaml
+          - ../values/monitoring-resources.yaml
+          - ../values/neuvector.yaml
+          - ../values/tempo.yaml
   - name: dubbd-post-upgrade
     required: true
