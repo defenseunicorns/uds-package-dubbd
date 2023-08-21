@@ -15,7 +15,6 @@ supported_minor_version="26"
 # Check if the Server Version is supported
 if [[ "$server_major_version" == "$supported_major_version" ]] && (( "$server_minor_version" >= "$supported_minor_version" )); then
   echo "Server version is supported"
-  exit 0
 else
   echo "Server version is not supported"
   echo "Please update your cluster to a minimum Kubernetes version of ${supported_major_version}.${supported_minor_version}"
