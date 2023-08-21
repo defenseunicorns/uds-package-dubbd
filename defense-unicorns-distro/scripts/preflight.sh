@@ -2,6 +2,10 @@
 
 # Run your command and get the output
 output="###ZARF_VAR_OUTPUT###"
+has_kubeconfig="###ZARF_VAR_HAS_KUBECONFIG###"
+is_healthy="###ZARF_VAR_IS_HEALTHY###"
+has_init="###ZARF_VAR_HAS_INIT###"
+gitea_running="###ZARF_VAR_GITEA_RUNNING###"
 
 # Extract the Server Version Major and Minor versions using grep and cut
 server_version=$(echo "$output" | grep -o "Server Version:.*" | cut -d" " -f3)
@@ -21,25 +25,25 @@ else
   exit 1
 fi
 # system has a kubecontext set
-if [ $(./zarf tools kubectl config view | egrep ^current-context | awk '{print $2}') == '""' ]; then 
+if [ "$has_kubeconfig" == '""' ]; then 
   echo "No kubecontext has been set. Please ensure that a valid context is configured before proceeding."
   exit 1
 fi
 
 # k8s cluster is healthy per kubectl get --raw='/readyz?verbose'
-if ! [ "$(./zarf tools kubectl get --raw='/readyz' 2> /dev/null )" == 'ok' ]; then
+if ! [ "$is_healthy" == 'ok' ]; then
   ./zarf tools kubectl get --raw='/readyz?verbose'
   echo Kubernetes cluster is not healthy! Aborting...
   exit 1
 fi
 
 # zarf init was completed (with git-server component)
-if [ $(./zarf tools kubectl get secret -n zarf zarf-state >/dev/null 2>&1 || echo false) ]; then
+if [ "$has_init" ]; then
   echo Zarf has not been initialized. Please run zarf init and try again.
   exit 1
 fi
 
-if ! [ $(./zarf tools kubectl get po -n zarf zarf-gitea-0 -ojsonpath='{.status.containerStatuses[*].ready}' 2>/dev/null) ]; then
+if ! [ "$gitea_running" ]; then
   echo Gitea is not running. Please ensure that gitea is configured properly.
   exit 1
 fi  
