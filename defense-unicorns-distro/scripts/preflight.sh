@@ -46,6 +46,6 @@ fi
 if ! [ "$gitea_running" ]; then
   echo Gitea is not running. Please ensure that gitea is configured properly.
   exit 1
-fi  
+fi
 
 # known misconfigurations
