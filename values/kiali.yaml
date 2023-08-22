@@ -9,7 +9,7 @@ kiali:
         memory: "512Mi"
       limits:
         cpu: "500m"
-        memory: "1200Mi"
+        memory: "2Gi"
     cr:
       spec:
         deployment:
