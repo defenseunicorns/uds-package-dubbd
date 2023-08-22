@@ -16,16 +16,8 @@ server_minor_version=$(echo "$server_version" | cut -d"." -f2)
 supported_major_version="v1"
 supported_minor_version="26"
 
-# Check if the Server Version is supported
-if [[ "$server_major_version" == "$supported_major_version" ]] && (( "$server_minor_version" >= "$supported_minor_version" )); then
-  echo "Server version is supported"
-else
-  echo "Server version is not supported"
-  echo "Please update your cluster to a minimum Kubernetes version of ${supported_major_version}.${supported_minor_version}"
-  exit 1
-fi
 # system has a kubecontext set
-if [ "$has_kubeconfig" == '""' ]; then 
+if ! [ "$has_kubeconfig" ]; then 
   echo "No kubecontext has been set. Please ensure that a valid context is configured before proceeding."
   exit 1
 fi
@@ -37,13 +29,22 @@ if ! [ "$is_healthy" == 'ok' ]; then
   exit 1
 fi
 
+# Check if the Server Version is supported
+if [[ "$server_major_version" == "$supported_major_version" ]] && (( "$server_minor_version" >= "$supported_minor_version" )); then
+  echo "Server version is supported"
+else
+  echo "Server version is not supported"
+  echo "Please update your cluster to a minimum Kubernetes version of ${supported_major_version}.${supported_minor_version}"
+  exit 1
+fi
+
 # zarf init was completed (with git-server component)
 if [ "$has_init" ]; then
   echo Zarf has not been initialized. Please run zarf init and try again.
   exit 1
 fi
 
-if ! [ "$gitea_running" ]; then
+if ! [ "$gitea_running" -gt 0 ]; then
   echo Gitea is not running. Please ensure that gitea is configured properly.
   exit 1
 fi

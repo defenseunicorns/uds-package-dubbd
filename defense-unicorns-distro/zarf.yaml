@@ -83,19 +83,23 @@ components:
     actions:
       onDeploy:
         before:
-          - cmd: "./zarf tools kubectl version --short 2>/dev/null || true"
-            setVariables:
-              - name: OUTPUT
-          - cmd: "./zarf tools kubectl config view | egrep ^current-context | awk '{print $2}'"
+          - cmd: "./zarf tools kubectl config current-context 2>/dev/null || echo false"
+            mute: true
             setVariables:
               - name: HAS_KUBECONFIG
           - cmd: "./zarf tools kubectl get --raw='/readyz' 2> /dev/null"
+            mute: true
             setVariables:
-              - name: IS_HEALTHY
+              - name: IS_HEALTHY              
+          - cmd: "./zarf tools kubectl version --short 2>/dev/null || true"
+            setVariables:
+              - name: OUTPUT
           - cmd: "./zarf tools kubectl get secret -n zarf zarf-state >/dev/null 2>&1 || echo false"
+            mute: true
             setVariables:
               - name: HAS_INIT
-          - cmd: "./zarf tools kubectl get po -n zarf zarf-gitea-0 -ojsonpath='{.status.containerStatuses[*].ready}' 2>/dev/null"
+          - cmd: "./zarf tools kubectl get sts -n zarf zarf-gitea -ojsonpath='{.status.readyReplicas}' 2>/dev/null"
+            mute: true
             setVariables:
               - name: GITEA_RUNNING
           - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null 2>&1 && echo true || echo false"
