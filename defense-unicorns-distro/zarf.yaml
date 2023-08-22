@@ -92,12 +92,12 @@ components:
           - cmd: "./zarf tools kubectl get --raw='/readyz' 2> /dev/null"
             setVariables:
               - name: IS_HEALTHY
-          - cmd: "./zarf tools kubectl get secret -n zarf zarf-state >/dev/null 2>&1 || echo false"    
+          - cmd: "./zarf tools kubectl get secret -n zarf zarf-state >/dev/null 2>&1 || echo false"
             setVariables:
               - name: HAS_INIT
           - cmd: "./zarf tools kubectl get po -n zarf zarf-gitea-0 -ojsonpath='{.status.containerStatuses[*].ready}' 2>/dev/null"
             setVariables:
-              - name: GITEA_RUNNING 
+              - name: GITEA_RUNNING
           - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null 2>&1 && echo true || echo false"
             mute: true
             description: "Detect if this is an upgrade"
