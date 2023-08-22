@@ -90,7 +90,7 @@ components:
           - cmd: "./zarf tools kubectl get --raw='/readyz' 2> /dev/null"
             mute: true
             setVariables:
-              - name: IS_HEALTHY              
+              - name: IS_HEALTHY
           - cmd: "./zarf tools kubectl version --short 2>/dev/null || true"
             setVariables:
               - name: OUTPUT
