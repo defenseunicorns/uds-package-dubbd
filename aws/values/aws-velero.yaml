@@ -6,19 +6,16 @@ addons:
     values:
       configuration:
         backupStorageLocation:
+        - name: default
+          provider: aws
           bucket: "###ZARF_VAR_VELERO_S3_BUCKET###"
           config:
             region: "###ZARF_VAR_VELERO_S3_AWS_REGION###"
-          provider: aws
-        provider: aws
         volumeSnapshotLocation:
+        - name: default
+          provider: aws
           config:
             region: "###ZARF_VAR_VELERO_S3_AWS_REGION###"
-          provider: aws
-      serviceAccount:
-        server:
-          annotations:
-            eks.amazonaws.com/role-arn: "###ZARF_VAR_VELERO_S3_ROLE_ARN###"
       schedules:
         udsbackup:
           disabled: false
@@ -30,3 +27,9 @@ addons:
               - monitoring
               - tempo
             ttl: "240h"
+      serviceAccount:
+        server:
+          create: true
+          annotations:
+            eks.amazonaws.com/role-arn: "###ZARF_VAR_VELERO_S3_ROLE_ARN###"
+
