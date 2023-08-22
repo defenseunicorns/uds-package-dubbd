@@ -6,16 +6,16 @@ addons:
     values:
       configuration:
         backupStorageLocation:
-        - name: default
-          provider: aws
-          bucket: "###ZARF_VAR_VELERO_S3_BUCKET###"
-          config:
-            region: "###ZARF_VAR_VELERO_S3_AWS_REGION###"
+          - name: default
+            provider: aws
+            bucket: "###ZARF_VAR_VELERO_S3_BUCKET###"
+            config:
+              region: "###ZARF_VAR_VELERO_S3_AWS_REGION###"
         volumeSnapshotLocation:
-        - name: default
-          provider: aws
-          config:
-            region: "###ZARF_VAR_VELERO_S3_AWS_REGION###"
+          - name: default
+            provider: aws
+            config:
+              region: "###ZARF_VAR_VELERO_S3_AWS_REGION###"
       schedules:
         udsbackup:
           disabled: false
@@ -32,4 +32,3 @@ addons:
           create: true
           annotations:
             eks.amazonaws.com/role-arn: "###ZARF_VAR_VELERO_S3_ROLE_ARN###"
-
