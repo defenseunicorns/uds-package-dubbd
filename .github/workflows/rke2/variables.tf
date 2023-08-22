@@ -1,48 +1,54 @@
 variable "name" {
   description = "Name for cluster"
   type        = string
-  default = "dubbd-rke2-ci"
+  default     = "dubbd-rke2-ci"
 }
 
 variable "vpc_id" {
   type        = string
   description = "VPC ID to deploy into"
-  default = "vpc-0a069641d8ea3aba6"
+  default     = "vpc-0a069641d8ea3aba6"
 }
 
-variable "subnets" {
-  type = list(string)
+variable "public_subnets" {
+  type        = list(string)
   description = "List of subnets to deploy into"
-  default     = ["subnet-0d0da65a31bcaa9dc","subnet-0f9c052423f4ca602","subnet-0bf47e35d4b60f338"]
+  default     = ["subnet-0d0da65a31bcaa9dc", "subnet-0f9c052423f4ca602", "subnet-0bf47e35d4b60f338"]
+}
+
+variable "private_subnets" {
+  type        = list(string)
+  description = "List of subnets to deploy into"
+  default     = ["subnet-03bfe6a57d4778e9c", "subnet-0012c1d0524924400", "subnet-0b3c32b61de124f01"]
 }
 
 variable "ami" {
-  type = string
-  description = "AMI to use for deployment"
-  # ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-20230725
-  default = "ami-03fc394d884ee7d48"
+  type        = string
+  description = "AMI to use for deployment, must have RKE2 pre-installed"
+  # https://github.com/defenseunicorns/uds-rke2-image-builder
+  default = "ami-04953108dd85f6e49"
 }
 
 variable "region" {
-  type = string
+  type        = string
   description = "Region to use for deployment"
-  default = "us-west-2"
+  default     = "us-west-2"
 }
 
 variable "controlplane_internal" {
-  type = bool
+  type        = bool
   description = "Make controlplane internal"
-  default = false # Default public for CI
+  default     = false # Default public for CI
 }
 
 variable "associate_public_ip_address" {
-  type = bool
+  type        = bool
   description = "Add public IPs for nodes"
-  default = true # Default public for CI
+  default     = true # Default public for CI
 }
 
 variable "iam_permissions_boundary" {
-  type = string
+  type        = string
   description = "Permissions boundary for IAM Role"
-  default = "arn:aws:iam::248783118822:policy/unicorn-base-policy"
+  default     = "arn:aws:iam::248783118822:policy/unicorn-base-policy"
 }

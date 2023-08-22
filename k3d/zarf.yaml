@@ -23,6 +23,12 @@ variables:
     default: "/run/k3s/containerd/containerd.sock"
     description: "Path for container runtime socket"
     prompt: false
+  - name: DUBBD_VALUES
+    description: "Path to a local values file that includes configuration to be used at deploy time (does not support enabling or disabling charts)"
+    default: deploy-dubbd-values.yaml
+    prompt: false
+    type: file
+    autoIndent: true
 
 components:
   - name: preflight
@@ -54,6 +60,7 @@ components:
         version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
         valuesFiles:
           - values/local-dev.yaml
+          - values/add-dubbd-values.yaml
   - name: dubbd-post-upgrade
     required: true
     import:
