@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.7.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.6.2...v0.7.0) (2023-08-23)
+
+
+### Features
+
+* add more preflight checks ([#517](https://github.com/defenseunicorns/uds-package-dubbd/issues/517)) ([2745eb4](https://github.com/defenseunicorns/uds-package-dubbd/commit/2745eb4d2b1b278a2f12afd23f7f4c53146e3e3f))
+* additional dubbd helm values via zarf var ([#511](https://github.com/defenseunicorns/uds-package-dubbd/issues/511)) ([6beb477](https://github.com/defenseunicorns/uds-package-dubbd/commit/6beb47735a753120c2559783d07ecd0e4e674741))
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.325 ([#506](https://github.com/defenseunicorns/uds-package-dubbd/issues/506)) ([36d60b8](https://github.com/defenseunicorns/uds-package-dubbd/commit/36d60b8fc4517b9136bba19337012fdb57738de9))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.326 ([#509](https://github.com/defenseunicorns/uds-package-dubbd/issues/509)) ([eda11d1](https://github.com/defenseunicorns/uds-package-dubbd/commit/eda11d118b3aee688dbadb995c3cb6b2508f3ef4))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.327 ([#512](https://github.com/defenseunicorns/uds-package-dubbd/issues/512)) ([e6077d3](https://github.com/defenseunicorns/uds-package-dubbd/commit/e6077d36198249eac22238033273d4afec1aed6d))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.328 ([#515](https://github.com/defenseunicorns/uds-package-dubbd/issues/515)) ([f6831f3](https://github.com/defenseunicorns/uds-package-dubbd/commit/f6831f314c7974f65eaff8d10adc1eac2a338afd))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.329 ([#520](https://github.com/defenseunicorns/uds-package-dubbd/issues/520)) ([9159a42](https://github.com/defenseunicorns/uds-package-dubbd/commit/9159a42a42d69b94dd9f1907b427b56b7ab9ea2c))
+* kiali operator memory bump to fix OOM kill ([#513](https://github.com/defenseunicorns/uds-package-dubbd/issues/513)) ([7fa28df](https://github.com/defenseunicorns/uds-package-dubbd/commit/7fa28df65b6cc536ddbd6ca23d090c51cd562ea4))
+* Propagate region variable from Zarf to Terraform. ([#522](https://github.com/defenseunicorns/uds-package-dubbd/issues/522)) ([92d531d](https://github.com/defenseunicorns/uds-package-dubbd/commit/92d531d5a56b5388297ed3e1e03e088da825e71f))
+
+
+### Miscellaneous
+
+* **deps:** update gitlab tag big-bang/bigbang to v2.8.0 ([#521](https://github.com/defenseunicorns/uds-package-dubbd/issues/521)) ([1ee1b98](https://github.com/defenseunicorns/uds-package-dubbd/commit/1ee1b98f33b7caee924c7b764454dc5a8eaa39cb))
+* **deps:** update terraform github.com/defenseunicorns/terraform-aws-uds-s3 to v0.0.6 ([#516](https://github.com/defenseunicorns/uds-package-dubbd/issues/516)) ([1b960a1](https://github.com/defenseunicorns/uds-package-dubbd/commit/1b960a194992e9c5c7a447f74084366b297ed132))
+* remove dead variables from DUBBD ([#510](https://github.com/defenseunicorns/uds-package-dubbd/issues/510)) ([cc127d7](https://github.com/defenseunicorns/uds-package-dubbd/commit/cc127d7d389bfa9035b7ae593fc5889624b1d903))
+* switch rke2 CI to uds-ami ([#508](https://github.com/defenseunicorns/uds-package-dubbd/issues/508)) ([6a48b77](https://github.com/defenseunicorns/uds-package-dubbd/commit/6a48b77cbbdceb246445dfbbeb5a25f44c02ec92))
+* update versions for oscal ([#523](https://github.com/defenseunicorns/uds-package-dubbd/issues/523)) ([ebd254b](https://github.com/defenseunicorns/uds-package-dubbd/commit/ebd254baaf38bf5ea699865473d5834a1c17c7f7))
+
 ## [0.6.2](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.6.1...v0.6.2) (2023-08-16)
 
 
