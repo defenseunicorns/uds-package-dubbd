@@ -99,7 +99,7 @@ components:
               - name: CLUSTER_VERSION
           - cmd: "./zarf tools kubectl get secret -n zarf zarf-state >/dev/null 2>&1 && echo true || echo false"
             mute: true
-            description: Checking if zarf has been initlialized...
+            description: Checking if zarf has been initialized...
             setVariables:
               - name: HAS_INIT
           - cmd: "./zarf tools kubectl get sts -n zarf zarf-gitea -ojsonpath='{.status.readyReplicas}' 2>/dev/null || echo 0"
