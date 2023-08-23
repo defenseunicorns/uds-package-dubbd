@@ -83,12 +83,33 @@ components:
     actions:
       onDeploy:
         before:
-          - cmd: "./zarf tools kubectl version --short || true"
+          - cmd: "./zarf tools kubectl config current-context  >/dev/null 2>&1 && echo true || echo false"
+            mute: true
+            description: Checking for kubecontext...
             setVariables:
-              - name: OUTPUT
+              - name: HAS_KUBECONFIG
+          - cmd: "./zarf tools kubectl get --raw='/readyz' >/dev/null 2>&1 && echo true || echo false"
+            mute: true
+            description: Checking if cluster is healthy...
+            setVariables:
+              - name: IS_HEALTHY
+          - cmd: "./zarf tools kubectl version --short 2>/dev/null || true"
+            description: Checking cluster version...
+            setVariables:
+              - name: CLUSTER_VERSION
+          - cmd: "./zarf tools kubectl get secret -n zarf zarf-state >/dev/null 2>&1 && echo true || echo false"
+            mute: true
+            description: Checking if zarf has been initialized...
+            setVariables:
+              - name: HAS_INIT
+          - cmd: "./zarf tools kubectl get sts -n zarf zarf-gitea -ojsonpath='{.status.readyReplicas}' 2>/dev/null || echo 0"
+            mute: true
+            description: Checking if Gitea is runnning...
+            setVariables:
+              - name: GITEA_RUNNING
           - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null 2>&1 && echo true || echo false"
             mute: true
-            description: "Detect if this is an upgrade"
+            description: "Checking if this is an upgrade..."
             setVariables:
               - name: IS_UPGRADE
         after:
