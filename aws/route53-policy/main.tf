@@ -1,8 +1,9 @@
 provider "aws" {
+  region = var.region
 }
 
 terraform {
-  backend "s3" { }
+  backend "s3" {}
 }
 
 data "aws_eks_cluster" "existing" {
@@ -18,7 +19,7 @@ module "irsa" {
   name = "external-dns-role-${var.name}"
 
   policy_arns = [
-   length(aws_iam_policy.external_dns) >= 1 ? aws_iam_policy.external_dns.arn : ""
+    length(aws_iam_policy.external_dns) >= 1 ? aws_iam_policy.external_dns.arn : ""
   ]
 
   provider_url = substr(data.aws_eks_cluster.existing.identity[0].oidc[0].issuer, 8, -1)
@@ -33,29 +34,29 @@ resource "aws_iam_policy" "external_dns" {
 
   # Terraform expression result to valid JSON syntax.
   policy = jsonencode(
-{
-  Version = "2012-10-17",
-  Statement = [
     {
-      Effect = "Allow",
-      Action = [
-        "route53:ChangeResourceRecordSets"
+      Version = "2012-10-17",
+      Statement = [
+        {
+          Effect = "Allow",
+          Action = [
+            "route53:ChangeResourceRecordSets"
+          ]
+          Resource = [
+            "arn:${data.aws_partition.current.partition}:route53:::hostedzone/*"
+          ]
+        },
+        {
+          Effect = "Allow"
+          Action = [
+            "route53:ListHostedZones",
+            "route53:ListResourceRecordSets",
+            "route53:ListTagsForResource"
+          ]
+          Resource = [
+            "*" # TODO: A tiny bit more specific on resources
+          ]
+        }
       ]
-      Resource = [
-        "arn:${data.aws_partition.current.partition}:route53:::hostedzone/*"
-      ]
-    },
-    {
-      Effect = "Allow"
-      Action = [
-        "route53:ListHostedZones",
-        "route53:ListResourceRecordSets",
-        "route53:ListTagsForResource"
-      ]
-      Resource = [
-        "*" # TODO: A tiny bit more specific on resources
-      ]
-    }
-  ]
-})
+  })
 }
