@@ -104,12 +104,12 @@ components:
               - name: HAS_INIT
           - cmd: "./zarf tools kubectl get sts -n zarf zarf-gitea -ojsonpath='{.status.readyReplicas}' 2>/dev/null || echo 0"
             mute: true
-            description: Checking that Gitea is runnning..
+            description: Checking that Gitea is runnning...
             setVariables:
               - name: GITEA_RUNNING
           - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null 2>&1 && echo true || echo false"
             mute: true
-            description: "Checking if this is an upgrade"
+            description: "Checking if this is an upgrade..."
             setVariables:
               - name: IS_UPGRADE
         after:
