@@ -96,7 +96,7 @@ components:
           - cmd: "./zarf tools kubectl version --short 2>/dev/null || true"
             description: Checking cluster version...
             setVariables:
-              - name: CLUSTER_VERSION 
+              - name: CLUSTER_VERSION
           - cmd: "./zarf tools kubectl get secret -n zarf zarf-state >/dev/null 2>&1 && echo true || echo false"
             mute: true
             description: Checking if zarf has been initlialized...
