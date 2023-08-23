@@ -32,7 +32,7 @@ components: # Define paths on the local filesystem or remote paths in git reposi
     #   path: oscal-component.yaml
     # - git: https://repo1.dso.mil/big-bang/product/packages/kyverno-reporter.git@2.16.0-bb.1
     #   path: oscal-component.yaml
-    - git: https://github.com/defenseunicorns/terraform-aws-uds-s3@v0.0.5
+    - git: https://github.com/defenseunicorns/terraform-aws-uds-s3@v0.0.6
       path: oscal-component.yaml
     - git: https://github.com/defenseunicorns/terraform-aws-uds-kms@v0.0.2
       path: oscal-component.yaml

@@ -1,5 +1,5 @@
 component-definition:
-  uuid: 7771fe29-cbe4-4239-ac72-8af9d9fd99e8
+  uuid: 00a48066-589a-4e94-84e7-3178bcd2f1ab
   metadata:
     version: 0.0.1
     parties:
@@ -9,7 +9,7 @@ component-definition:
         links:
           - rel: website
             href: https://defenseunicorns.com
-    last-modified: "2023-07-31T21:32:55Z"
+    last-modified: "2023-08-23T18:08:02Z"
     oscal-version: 1.0.4
     title: DUBBD
   components:
@@ -1054,183 +1054,6 @@ component-definition:
         - role-id: provider
           party-uuids:
             - 72134592-08C2-4A77-ABAD-C880F109367A
-    - control-implementations:
-        - source: https://raw.githubusercontent.com/usnistgov/oscal-content/master/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json
-          description: NIST 800-53 Controls implemented.
-          implemented-requirements:
-            - uuid: 09728965-89ad-49fd-92b0-f7f280e04203
-              control-id: ac-5
-              description: Access to S3 Bucket is controlled by RBAC AWS IAM Roles. https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
-            - uuid: 63616ec6-40ee-41ee-bf97-7b98ef5994d2
-              control-id: ac-6
-              description: Access to S3 Bucket is controlled by RBAC AWS IAM Roles. https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
-            - uuid: 43e913a6-4550-48a0-9852-7293d5c2b310
-              control-id: ac-6.1
-              description: Access to S3 Bucket is controlled by RBAC AWS IAM Roles. https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
-            - uuid: ae6e027b-c38c-40c3-985c-da107fe0c397
-              control-id: ac-6.3
-              description: Access to S3 Bucket is controlled by RBAC AWS IAM Roles. https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
-            - uuid: e9d0185f-9184-4d62-9426-98a5dcc9f
-              control-id: ac-6.5
-              description: Access to S3 Bucket is controlled by RBAC AWS IAM Roles. https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
-            - uuid: f2bc7371-14ae-4e32-97e0-e76de5ec1227
-              control-id: ac-6.9
-              description: Logging is enabled on the S3 Bucket.
-            - uuid: 6966bd82-6cc6-4447-a382-03754adfee64
-              control-id: ac-6.10
-              description: Access to S3 Bucket is controlled by RBAC AWS IAM Roles. https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
-            - uuid: 1ad95fca-bac6-49aa-8e34-2e72900ed796
-              control-id: au-2
-              description: Event logging is enabled on the S3 Bucket. https://docs.aws.amazon.com/AmazonS3/latest/userguide/logging-with-S3.html
-            - uuid: e9d56fa6-6f02-4327-847e-117941d89867
-              control-id: au-3
-              description:
-                Logging is enabled on the S3 Bucket to enable audit record review,
-                reporting, and for analysis. https://docs.aws.amazon.com/AmazonS3/latest/userguide/logging-with-S3.html
-            - uuid: 68ee5409-01aa-41cb-ac45-2e6727c23222
-              control-id: au-3.1
-              description:
-                Logging is enabled on the S3 Bucket to enable audit record review,
-                reporting, and for analysis. https://docs.aws.amazon.com/AmazonS3/latest/userguide/logging-with-S3.html
-            - uuid: 69e91737-781c-4596-bf9b-e4bb0123bbf8
-              control-id: au-8
-              description: Logging is enabled on the S3 Bucket with timestamps. https://docs.aws.amazon.com/AmazonS3/latest/userguide/logging-with-S3.html
-            - uuid: 6b18896c-ee7f-4e64-aec3-76d3c979f57c
-              control-id: cm-2
-              description:
-                Terraform is used to create the baseline configuration and stores
-                the configuration in a state file. https://developer.hashicorp.com/terraform/language/state
-            - uuid: d8a776b0-45e3-4615-9441-d11d2cf859ad
-              control-id: cm-2.2
-              description:
-                Terraform is used to create the baseline configuration and stores
-                the configuration in a state file. https://developer.hashicorp.com/terraform/language/state
-            - uuid: b0a41ae2-32fe-41b1-adc5-20e9ab58e588
-              control-id: cm-2.3
-              description:
-                S3 versioning is enabled on the S3 Bucket where Teraform state
-                is stored. This provides versionsing for rollbacks by restoring the previous
-                versions of the state file. https://developer.hashicorp.com/terraform/language/state
-                https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html
-            - uuid: 2b3bb578-ef73-4957-8feb-b49782785d9f
-              control-id: ia-5
-              description:
-                Access to the S3 bucket is controled by RBAC AWS IAM Roles. For
-                other AWS services to access the S3 Bucket such as EKS, the service will
-                need access to the IAM Roles. https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
-            - uuid: 54944372-1287-4de6-85e1-7230e350e457
-              control-id: ia-9
-              description:
-                Access to the S3 bucket is controled by RBAC AWS IAM Roles. For
-                other AWS services to access the S3 Bucket such as EKS, the service will
-                need access to the IAM Roles. https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
-            - uuid: 7c9e507f-6155-4eb0-a1b1-cbf6002906a3
-              control-id: mp-2
-              description: Access to S3 Bucket is controlled by RBAC AWS IAM Roles. https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
-            - uuid: 20e3383d-d419-4f27-b07f-afbed62d491d
-              control-id: sa-10
-              description:
-                Terraform is used to create the baseline configuration and stores
-                the configuration in a state file. https://developer.hashicorp.com/terraform/language/state
-            - uuid: 8b96dd15-6848-4bae-918f-089c563ec9bd
-              control-id: sc-28
-              description:
-                Encryption is enabled and uses AWS KMS to create and manage the
-                cryptographic key. https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html
-            - uuid: 25eb4932-8299-4020-8740-f7dd71fd7e21
-              control-id: sc-28.1
-              description:
-                Encryption is enabled and uses AWS KMS to create and manage the
-                cryptographic key. https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html
-          uuid: b57c8887-02e0-416e-bc42-bdff6fc9bd2a
-      uuid: 90fec05f-1303-4de4-8b9b-edd5fbe08b27
-      title: Terraform AWS S3 UDS
-      description: |
-        Deployment of S3 Bucket using Terraform
-      type: software
-      purpose: Provides a secure S3 bucket
-      responsible-roles:
-        - role-id: provider
-          party-uuids:
-            - f3cf70f8-ba44-4e55-9ea3-389ef24847d3
-    - control-implementations:
-        - source: https://raw.githubusercontent.com/usnistgov/oscal-content/master/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json
-          description: NIST 800-53 Controls implemented.
-          implemented-requirements:
-            - uuid: 9bf597c9-a32b-4efa-b567-d5c901a6701c
-              control-id: ac-3
-              description: Access to KMS Key is managed through KMS Key Policies. https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html
-            - uuid: ade5e4f2-d329-471a-bf0e-5626a0777bdf
-              control-id: cm-2
-              description:
-                Terraform is used to create the baseline configuration and stores
-                the configuration in a state file. https://developer.hashicorp.com/terraform/language/state
-            - uuid: e00a900f-0795-487e-afab-ebe5da68799a
-              control-id: cm-2.2
-              description:
-                Terraform is used to create the baseline configuration and stores
-                the configuration in a state file. https://developer.hashicorp.com/terraform/language/state
-            - uuid: 99499eeb-78d4-42ce-ac83-f935f59e6dba
-              control-id: cm-2.3
-              description:
-                S3 versioning is enabled on the S3 Bucket where Teraform state
-                is stored. This provides versionsing for rollbacks by restoring the previous
-                versions of the state file. https://developer.hashicorp.com/terraform/language/state
-                https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html
-            - uuid: 05d46028-e84b-449e-bb13-59a56d0c3d40
-              control-id: ia-9
-              description: Access to the KMS Key controled by KMS Key Policies. https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html
-            - uuid: ed08ee56-8aa7-4725-850c-84328d467051
-              control-id: mp-2
-              description: Access to the KMS Key controled by KMS Key Policies. https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html
-            - uuid: e0cb8165-1e0c-4ac2-a099-34a9485efbad
-              control-id: sa-10
-              description:
-                Terraform is used to create the baseline configuration and stores
-                the configuration in a state file. https://developer.hashicorp.com/terraform/language/state
-            - uuid: dc0c132b-fe38-41dc-b503-b2c1a06f9f26
-              control-id: sc-12
-              description:
-                Encryption is enabled and uses AWS KMS to create and manage cryptographic
-                keys. https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html
-            - uuid: 70f51994-5957-4465-9457-d5e39cd4e6ca
-              control-id: sc-12.1
-              description:
-                AWS KMS Keys utilzie envlope encryption which prevents the cryptographic
-                key from being exposed outside of the AWS KMS Key service, preventing any
-                loss of Keys. https://docs.aws.amazon.com/crypto/latest/userguide/awscryp-service-kms.html
-            - uuid: 6fd9609-16f3-4da7-8f17-f5baff867f51
-              control-id: sc-12.2
-              description:
-                AWS KMS Customer Master Keys (CMKs) are protected by FIPS-140-2
-                validated cryptographic modules. https://docs.aws.amazon.com/crypto/latest/userguide/awscryp-service-kms.html
-            - uuid: db4a423b-5bb7-4f26-ad47-87eca1f5455f
-              control-id: sc-13
-              description:
-                AWS KMS Customer Master Keys (CMKs) are protected by FIPS-140-2
-                validated cryptographic modules. https://docs.aws.amazon.com/crypto/latest/userguide/awscryp-service-kms.html
-            - uuid: cf149ca2-bbd3-4834-bd4f-7607b67314f7
-              control-id: sc-28
-              description:
-                AWS KMS Customer Master Keys (CMKs) are protected by FIPS-140-2
-                validated cryptographic modules. AWS KMS Key are used for encryption of
-                various AWS services to ensure encryption at rest. https://docs.aws.amazon.com/crypto/latest/userguide/awscryp-service-kms.html
-            - uuid: cf149ca2-bbd3-4834-bd4f-7607b67314f7
-              control-id: sc-28.1
-              description:
-                AWS KMS Customer Master Keys (CMKs) are protected by FIPS-140-2
-                validated cryptographic modules. https://docs.aws.amazon.com/crypto/latest/userguide/awscryp-service-kms.html
-          uuid: e393278c-e52d-4671-939e-da8f0c0713a0
-      uuid: d7b12668-fdb0-4ce0-85f7-fcf7ad97d583
-      title: Terraform AWS UDS KMS Module
-      description: |
-        Deployment of KMS Key using Terraform
-      type: software
-      purpose: Provides a secure KMS Key used for cryptography within the system.
-      responsible-roles:
-        - role-id: provider
-          party-uuids:
-            - f3cf70f8-ba44-4e55-9ea3-389ef24847d3
   back-matter:
     resources:
       - uuid: BFF74303-1E06-469E-ADCF-338E6DDB8876
@@ -1262,7 +1085,7 @@ component-definition:
         rlinks:
           - href: https://open-docs.neuvector.com/
       - uuid: b4988bfa-d4a7-4095-8523-2e298cc45473
-        title: Big Bang Prisma Cloud package
+        title: Big Bang NeuVector package
         rlinks:
           - href: https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/neuvector
       - uuid: D552C935-E40C-4A03-B5CC-4605EBD95B6D
@@ -1297,11 +1120,3 @@ component-definition:
         title: Big Bang Kyverno package
         rlinks:
           - href: https://repo1.dso.mil/platform-one/big-bang/apps/sandbox/kyverno
-      - uuid: 661fe0e1-3a84-4e38-b302-ea0fac8d2403
-        title: Terraform AWS S3 UDS
-        rlinks:
-          - href: https://github.com/defenseunicorns/terraform-aws-uds-s3
-      - uuid: 5da52343-0601-4f49-b47e-a033a56b06d8
-        title: Terraform AWS UDS KMS Module
-        rlinks:
-          - href: https://github.com/defenseunicorns/terraform-aws-uds-kms
