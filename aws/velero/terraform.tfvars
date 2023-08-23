@@ -1,3 +1,4 @@
+region        = "###ZARF_VAR_REGION###"
 name          = "###ZARF_VAR_NAME###"
 bucket_name   = "###ZARF_VAR_NAME###-velero"
 force_destroy = "###ZARF_VAR_VELERO_FORCE_DESTROY###"

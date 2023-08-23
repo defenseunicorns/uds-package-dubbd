@@ -1,4 +1,5 @@
 provider "aws" {
+  region = var.region
 }
 
 terraform {
@@ -83,14 +84,14 @@ module "generate_kms" {
 }
 
 module "irsa" {
-  source                        = "github.com/defenseunicorns/terraform-aws-uds-irsa?ref=v0.0.2"
-  name                       = "${local.name}"
+  source                     = "github.com/defenseunicorns/terraform-aws-uds-irsa?ref=v0.0.2"
+  name                       = local.name
   kubernetes_service_account = var.kubernetes_service_account
   kubernetes_namespace       = var.kubernetes_namespace
   oidc_provider_arn          = local.oidc_arn
 
   role_policy_arns = tomap({
-    "velero"       = aws_iam_policy.velero_policy.arn
+    "velero" = aws_iam_policy.velero_policy.arn
   })
 
 }
