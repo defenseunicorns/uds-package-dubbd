@@ -323,10 +323,8 @@ components:
           - ../values/monitoring-resources.yaml
           - ../values/neuvector.yaml
           - ../values/tempo.yaml
-          - ../values/dubbd-values.yaml
           - ../values/idam-values.yaml
-  - name: dubbd-post-upgrade
-    required: true
+          - ../values/dubbd-values.yaml
   - name: keycloak-ingressgateway-addon
     required: true
     import:
@@ -343,3 +341,5 @@ components:
     required: true
     import:
       path: ./idam
+  - name: dubbd-post-upgrade
+    required: true
