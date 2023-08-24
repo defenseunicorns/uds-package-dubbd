@@ -1,0 +1,17 @@
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  name: keycloak-ingressgateway
+  namespace: istio-system
+spec:
+  hub: registry1.dso.mil/ironbank/tetrate/istio
+  tag: 1.18.2-tetratefips-v0
+  profile: empty
+  components:
+    ingressGateways:
+    - name: keycloak-ingressgateway
+      namespace: istio-system
+      enabled: true
+      label:
+        app: keycloak-ingressgateway
+        istio: ingressgateway

@@ -1,0 +1,179 @@
+fullnameOverride: keycloak
+args:
+- start
+- --import-realm
+command:
+- /opt/keycloak/bin/kc.sh
+domain: bigbang.dev
+extraEnv: |-
+  - name: CUSTOM_REGISTRATION_CONFIG
+    value: /opt/jboss/keycloak/customreg.yaml
+  - name: KC_HTTPS_CERTIFICATE_FILE
+    value: /opt/keycloak/conf/tls.crt
+  - name: KC_HTTPS_CERTIFICATE_KEY_FILE
+    value: /opt/keycloak/conf/tls.key
+  - name: KC_HTTPS_TRUST_STORE_FILE
+    value: /opt/keycloak/conf/truststore.jks
+  - name: KC_HTTPS_TRUST_STORE_PASSWORD
+    value: password
+  - name: KC_HTTPS_CLIENT_AUTH
+    value: request
+  - name: KC_PROXY
+    value: passthrough
+  - name: KC_HTTP_ENABLED
+    value: "true"
+  - name: KC_HTTP_RELATIVE_PATH
+    value: /auth
+  - name: KC_HOSTNAME
+    value: keycloak.###ZARF_VAR_DOMAIN###
+  - name: KC_HOSTNAME_STRICT
+    value: "true"
+  - name: KC_HOSTNAME_STRICT_HTTPS
+    value: "true"
+  - name: KC_LOG_LEVEL
+    value: "org.keycloak.events:DEBUG,org.infinispan:INFO,org.jgroups:INFO"
+  - name: KC_CACHE
+    value: ispn
+  - name: KC_CACHE_STACK
+    value: kubernetes
+extraInitContainers: |-
+  - name: plugin
+    image: registry1.dso.mil/ironbank/big-bang/p1-keycloak-plugin:3.2.1
+    imagePullPolicy: Always
+    command:
+    - sh
+    - -c
+    - |
+      cp /app/p1-keycloak-plugin.jar /init
+      ls -l /init
+    volumeMounts:
+    - name: plugin
+      mountPath: "/init"
+extraVolumeMounts: |-
+  - name: certauthority
+    mountPath: /etc/x509/https/cas.pem
+    subPath: cas.pem
+    readOnly: true
+  - name: customreg
+    mountPath: /opt/jboss/keycloak/customreg.yaml
+    subPath: customreg.yaml
+    readOnly: true
+  - name: plugin
+    mountPath: /opt/keycloak/providers/p1-keycloak-plugin.jar
+    subPath: p1-keycloak-plugin.jar
+  - name: quarkusproperties
+    mountPath: /opt/keycloak/conf/quarkus.properties
+    subPath: quarkus.properties
+  - name: realm
+    mountPath: /opt/keycloak/data/import/realm.json
+    subPath: realm.json
+  - name: truststore
+    mountPath: /opt/keycloak/conf/truststore.jks
+    subPath: truststore.jks
+extraVolumeMountsBigBang:
+- mountPath: /etc/x509/https/tls.crt
+  name: tlscert
+  readOnly: true
+  subPath: tls.crt
+- mountPath: /etc/x509/https/tls.key
+  name: tlskey
+  readOnly: true
+  subPath: tls.key
+- mountPath: /opt/keycloak/conf/tls.crt
+  name: tlscert
+  readOnly: true
+  subPath: tls.crt
+- mountPath: /opt/keycloak/conf/tls.key
+  name: tlskey
+  readOnly: true
+  subPath: tls.key
+extraVolumes: |-
+  - name: certauthority
+    secret:
+      secretName: {{ include "keycloak.fullname" . }}-certauthority
+  - name: plugin
+    emptyDir: {}
+  - name: quarkusproperties
+    secret:
+      secretName: {{ include "keycloak.fullname" . }}-quarkusproperties
+      defaultMode: 0777
+  - name: realm
+    secret:
+      secretName: {{ include "keycloak.fullname" . }}-realm
+  - name: customreg
+    secret:
+      secretName: {{ include "keycloak.fullname" . }}-customreg
+  - name: truststore
+    secret:
+      secretName: {{ include "keycloak.fullname" . }}-truststore
+extraVolumesBigBang:
+- name: tlscert
+  secret:
+    secretName: keycloak-tlscert
+- name: tlskey
+  secret:
+    secretName: keycloak-tlskey
+hostname: bigbang.dev
+istio:
+  enabled: true
+  injection: enabled
+  keycloak:
+    enabled: true
+    gateways:
+    - istio-system/passthrough
+    hosts:
+    - keycloak.###ZARF_VAR_DOMAIN###
+
+monitoring:
+  enabled: false
+networkPolicies:
+  controlPlaneCidr: 0.0.0.0/0
+  enabled: true
+  ingressLabels:
+    app: passthrough-ingressgateway
+    istio: null
+postgresql:
+  fullnameOverride: keycloak-postgresql
+replicas: 1
+secrets:
+  certauthority:
+    stringData:
+      cas.pem: '{{ .Files.Get "resources/dev/dod_cas.pem" }}'
+  env:
+    stringData:
+      X509_CA_BUNDLE: /etc/x509/https/cas.pem
+      KEYCLOAK_ADMIN: ###ZARF_VAR_KC_ADM_USER###
+      KEYCLOAK_ADMIN_PASSWORD: ###ZARF_VAR_KC_ADM_PASSWORD###
+  quarkusproperties:
+    stringData:
+      quarkus.properties: |-
+        quarkus.http.non-application-root-path=/
+        # custom redirects
+        quarkus.kc-routing.path-redirect./=/auth/realms/###ZARF_VAR_REALM###/account
+        quarkus.kc-routing.path-redirect./auth=/auth/realms/###ZARF_VAR_REALM###/account
+        quarkus.kc-routing.path-redirect./register=/auth/realms/###ZARF_VAR_REALM###/protocol/openid-connect/registrations?client_id=account&response_type=code
+        quarkus.kc-routing.path-prefix./oauth/authorize=/auth/realms/###ZARF_VAR_REALM###/protocol/openid-connect/auth
+        quarkus.kc-routing.path-filter./api/v4/user=/auth/realms/###ZARF_VAR_REALM###/protocol/openid-connect/userinfo
+        quarkus.kc-routing.path-filter./oauth/token=/auth/realms/###ZARF_VAR_REALM###/protocol/openid-connect/token
+        # block metrics and health enpoints from being exposed through the istio ingress
+        quarkus.kc-routing.path-recursive-block./metrics=8443
+        quarkus.kc-routing.path-recursive-block./health=8443
+  realm:
+    stringData:
+      realm.json: |
+        ###ZARF_VAR_REALM_IMPORT_FILE###
+  tlscert:
+    stringData:
+      tls.crt: |
+        ###ZARF_VAR_KEYCLOAK_CERT_FILE###
+  tlskey:
+    stringData: 
+      tls.key: |
+        ###ZARF_VAR_KEYCLOAK_KEY_FILE###
+  customreg:
+    stringData:
+      customreg.yaml: |
+        ###ZARF_VAR_REALM_CUSTOM_REG_FILE###
+  truststore:
+    data: 
+      truststore.jks: ###ZARF_VAR_REALM_TRUSTSTORE_FILE###

@@ -1,0 +1,109 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
+kind: ZarfPackageConfig
+metadata:
+  name: uds-idam
+  description: "UDS Keycloak deployed via flux"
+  # x-release-please-start-version
+  version: "0.1.8"
+  # x-release-please-end
+  architecture: amd64 
+
+variables:
+  - name: REALM
+    default: baby-yoda
+    prompt: false
+  - name: DOMAIN
+    default: bigbang.dev
+    prompt: false  
+  - name: KC_ADM_USER
+    default: admin
+    prompt: false
+  - name: KC_ADM_PASSWORD
+    default: sup3r-secret-p@ssword
+    prompt: false
+  - name: KEYCLOAK_KEY_FILE
+    default: bigbang.dev.key
+    prompt: false
+    type: file
+    autoIndent: true
+  - name: KEYCLOAK_CERT_FILE
+    default: bigbang.dev.cert
+    prompt: false
+    type: file
+    autoIndent: true
+  - name: REALM_IMPORT_FILE
+    default: realm.json
+    prompt: false
+    type: file
+    autoIndent: true
+  - name: REALM_TRUSTSTORE_FILE
+    default: truststore.jks.b64
+    prompt: false
+    type: file
+    autoIndent: true
+  - name: REALM_CUSTOM_REG_FILE
+    default: customreg.yaml
+    prompt: false
+    type: file
+    autoIndent: true
+  - name: KEYCLOAK_VALUES
+    default: values-keycloak.yaml
+    prompt: false
+    type: file
+    autoIndent: true
+  - name: KEYCLOAK_DEPENDS_ON
+    default: "[]"
+  - name: KEYCLOAK_CREATE_NAMESPACE
+    default: "true"
+
+components:
+  - name: keycloak-ingressgateway-addon
+    required: true
+    manifests:
+      - name: keycloak-ingressgateway-addon
+        kustomizations:
+          - ./keycloak-ingress
+    images:
+      - registry1.dso.mil/ironbank/tetrate/istio/proxyv2:1.18.2-tetratefips-v0
+  - name: realm-config-default-files
+    required: true
+    files:
+      - source: certs/bigbang.dev.cert
+        target: bigbang.dev.cert
+      - source: certs/bigbang.dev.key
+        target: bigbang.dev.key
+      - source: realm/default-realm.json
+        target: realm.json
+      - source: realm/baby-yoda.yaml
+        target: customreg.yaml
+      - source: realm/truststore.jks.b64
+        target: truststore.jks.b64
+  - name: keycloak-values
+    required: true
+    files:
+      - source: values-keycloak.yaml
+        target: values-keycloak.yaml
+  - name: keycloak
+    required: true
+    description: "Deploy keycloak via flux"
+    charts:
+    # renovate: datasource=helm
+      - name: flux-app
+        url: https://defenseunicorns.github.io/uds-support-charts/
+        version: 1.0.5
+        releaseName: keycloak-flux
+        namespace: bigbang
+        valuesFiles:
+          - keycloak-flux-values.yaml
+    repos:
+      - https://repo1.dso.mil/big-bang/product/packages/keycloak.git
+    images:
+      - registry1.dso.mil/ironbank/opensource/keycloak/keycloak:21.1.1
+      - registry1.dso.mil/ironbank/opensource/postgres/postgresql12:12.15
+      - registry1.dso.mil/ironbank/big-bang/p1-keycloak-plugin:3.2.1
+    actions:
+      onDeploy:
+        after:
+          - cmd: ./zarf tools wait-for HelmRelease keycloak ready -n bigbang
+            maxRetries: 3
+            maxTotalSeconds: 300

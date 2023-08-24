@@ -1,0 +1,11 @@
+/bigbang.dev.cert
+/bigbang.dev.key
+/baby-yoda.json
+/baby-yoda.yaml
+/zarf-sbom
+/customreg.yaml
+/truststore.jks
+/truststore.jks.b64
+/zarf-package-*
+/realm.json
+/dst-values-keycloak.yaml

@@ -324,5 +324,22 @@ components:
           - ../values/neuvector.yaml
           - ../values/tempo.yaml
           - ../values/dubbd-values.yaml
+          - ../values/idam-values.yaml
   - name: dubbd-post-upgrade
     required: true
+  - name: keycloak-ingressgateway-addon
+    required: true
+    import:
+      path: ./idam
+  - name: realm-config-default-files
+    required: true
+    import:
+      path: ./idam
+  - name: keycloak-values
+    required: true
+    import:
+      path: ./idam
+  - name: keycloak
+    required: true
+    import:
+      path: ./idam
