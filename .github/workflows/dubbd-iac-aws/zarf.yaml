@@ -317,4 +317,3 @@ components:
               "ROUTE53_ROLE_ARN": "${ZARF_VAR_ROUTE53_ROLE_ARN}" \
               }'
               EOF
-
