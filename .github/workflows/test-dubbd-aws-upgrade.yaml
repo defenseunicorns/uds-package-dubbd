@@ -71,17 +71,33 @@ jobs:
         run: |
           zarf init -a amd64 --components=git-server --confirm
 
-      - name: Deploy latest package version
+      - name: Deploy latest DUBBD-IAC-AWS package version
         env:
           SHA: ${{ github.sha }}
         run: |
+          echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+
+          # deploys the IAC needed for dubbd-aws
           zarf package deploy \
-            oci://ghcr.io/defenseunicorns/packages/dubbd-aws:${{ steps.latest-package-version.outputs.latest-package-version }} \
+            oci://ghcr.io/defenseunicorns/packages/dubbd-iac-aws:${{ steps.latest-package-version.outputs.latest-package-version }} \
             --set ephemeral=true \
             --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
             --set state_bucket_name="uds-ci-state-bucket" \
             --set state_key="tfstate/ci/upgrade/${SHA:0:7}-dubbd-aws" \
             --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
+            --confirm
+
+            # adds ZARF_PACKAGE_DEPLOY_SET env var for use in zarf package deploy
+            awk '{$1= ""; print $0}' setenv-dubbd-package.sh >> $GITHUB_OUTPUT
+        working-directory: .github/workflows/dubbd-iac-aws
+        timeout-minutes: 60
+
+      - name: Deploy latest DUBBD-AWS package version
+        env:
+          SHA: ${{ github.sha }}
+        run: |
+          zarf package deploy \
+            oci://ghcr.io/defenseunicorns/packages/dubbd-aws:${{ steps.latest-package-version.outputs.latest-package-version }} \
             --confirm
         working-directory: aws/dubbd-aws
         timeout-minutes: 60
@@ -90,14 +106,7 @@ jobs:
         env:
           SHA: ${{ github.sha }}
         run: |
-          echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
-          zarf package deploy zarf-package-*.tar.zst \
-            --set ephemeral=true \
-            --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
-            --set state_bucket_name="uds-ci-state-bucket" \
-            --set state_key="tfstate/ci/upgrade/${SHA:0:7}-dubbd-aws" \
-            --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
-            --confirm
+          zarf package deploy zarf-package-*.tar.zst --confirm
         working-directory: aws/dubbd-aws
         timeout-minutes: 60
 
@@ -105,6 +114,13 @@ jobs:
         if: always()
         run: zarf package remove zarf-package-*.tar.zst --confirm
         working-directory: aws/dubbd-aws
+        timeout-minutes: 60
+        continue-on-error: true
+
+      - name: Remove DUBBD-IAC-AWS
+        if: always()
+        run: zarf package remove zarf-package-*.tar.zst --confirm
+        working-directory: .github/workflows/dubbd-iac-aws
         timeout-minutes: 60
         continue-on-error: true
 
