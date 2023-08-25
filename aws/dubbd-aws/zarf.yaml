@@ -183,6 +183,10 @@ components:
     required: true
     import:
       path: ../external-dns
+  - name: keycloak
+    required: true
+    import:
+      path: ../../defense-unicorns-distro
   - name: dubbd-post-upgrade
     required: true
     actions:

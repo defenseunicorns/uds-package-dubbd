@@ -67,6 +67,10 @@ components:
         version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
         valuesFiles:
           - values/add-dubbd-values.yaml
+  - name: keycloak
+    required: true
+    import:
+      path: ../defense-unicorns-distro
   - name: dubbd-post-upgrade
     required: true
     import:
