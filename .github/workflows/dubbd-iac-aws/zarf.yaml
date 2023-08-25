@@ -301,11 +301,10 @@ components:
           - cmd: |
               cat <<EOF> setenv-dubbd-package.sh
               export ZARF_PACKAGE_DEPLOY_SET='{ \
-              "EPHEMERAL": "${ZARF_VAR_EPHEMERAL}", \
-              "ROUTE53_ROLE_ARN": "${ZARF_VAR_ROUTE53_ROLE_ARN}", \
               "STATE_BUCKET_NAME": "${ZARF_VAR_STATE_BUCKET_NAME}", \
               "STATE_KEY": "${ZARF_VAR_STATE_KEY}", \
               "STATE_DYNAMODB_TABLE_NAME": "${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}", \
+              "EPHEMERAL": "${ZARF_VAR_EPHEMERAL}", \
               "REGION": "${ZARF_VAR_REGION}", \
               "LOKI_FORCE_DESTROY": "${ZARF_VAR_LOKI_FORCE_DESTROY}", \
               "VELERO_FORCE_DESTROY": "${ZARF_VAR_VELERO_FORCE_DESTROY}", \
