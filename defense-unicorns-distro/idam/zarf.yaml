@@ -6,7 +6,7 @@ metadata:
   # x-release-please-start-version
   version: "0.1.8"
   # x-release-please-end
-  architecture: amd64 
+  architecture: amd64
 
 variables:
   - name: REALM
@@ -14,7 +14,7 @@ variables:
     prompt: false
   - name: DOMAIN
     default: bigbang.dev
-    prompt: false  
+    prompt: false
   - name: KC_ADM_USER
     default: admin
     prompt: false

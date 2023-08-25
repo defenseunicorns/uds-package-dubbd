@@ -1,9 +1,9 @@
 fullnameOverride: keycloak
 args:
-- start
-- --import-realm
+  - start
+  - --import-realm
 command:
-- /opt/keycloak/bin/kc.sh
+  - /opt/keycloak/bin/kc.sh
 domain: bigbang.dev
 extraEnv: |-
   - name: CUSTOM_REGISTRATION_CONFIG
@@ -71,22 +71,22 @@ extraVolumeMounts: |-
     mountPath: /opt/keycloak/conf/truststore.jks
     subPath: truststore.jks
 extraVolumeMountsBigBang:
-- mountPath: /etc/x509/https/tls.crt
-  name: tlscert
-  readOnly: true
-  subPath: tls.crt
-- mountPath: /etc/x509/https/tls.key
-  name: tlskey
-  readOnly: true
-  subPath: tls.key
-- mountPath: /opt/keycloak/conf/tls.crt
-  name: tlscert
-  readOnly: true
-  subPath: tls.crt
-- mountPath: /opt/keycloak/conf/tls.key
-  name: tlskey
-  readOnly: true
-  subPath: tls.key
+  - mountPath: /etc/x509/https/tls.crt
+    name: tlscert
+    readOnly: true
+    subPath: tls.crt
+  - mountPath: /etc/x509/https/tls.key
+    name: tlskey
+    readOnly: true
+    subPath: tls.key
+  - mountPath: /opt/keycloak/conf/tls.crt
+    name: tlscert
+    readOnly: true
+    subPath: tls.crt
+  - mountPath: /opt/keycloak/conf/tls.key
+    name: tlskey
+    readOnly: true
+    subPath: tls.key
 extraVolumes: |-
   - name: certauthority
     secret:
@@ -107,12 +107,12 @@ extraVolumes: |-
     secret:
       secretName: {{ include "keycloak.fullname" . }}-truststore
 extraVolumesBigBang:
-- name: tlscert
-  secret:
-    secretName: keycloak-tlscert
-- name: tlskey
-  secret:
-    secretName: keycloak-tlskey
+  - name: tlscert
+    secret:
+      secretName: keycloak-tlscert
+  - name: tlskey
+    secret:
+      secretName: keycloak-tlskey
 hostname: bigbang.dev
 istio:
   enabled: true
@@ -120,9 +120,9 @@ istio:
   keycloak:
     enabled: true
     gateways:
-    - istio-system/passthrough
+      - istio-system/passthrough
     hosts:
-    - keycloak.###ZARF_VAR_DOMAIN###
+      - keycloak.###ZARF_VAR_DOMAIN###
 
 monitoring:
   enabled: false
@@ -167,7 +167,7 @@ secrets:
       tls.crt: |
         ###ZARF_VAR_KEYCLOAK_CERT_FILE###
   tlskey:
-    stringData: 
+    stringData:
       tls.key: |
         ###ZARF_VAR_KEYCLOAK_KEY_FILE###
   customreg:
@@ -175,5 +175,5 @@ secrets:
       customreg.yaml: |
         ###ZARF_VAR_REALM_CUSTOM_REG_FILE###
   truststore:
-    data: 
+    data:
       truststore.jks: ###ZARF_VAR_REALM_TRUSTSTORE_FILE###
