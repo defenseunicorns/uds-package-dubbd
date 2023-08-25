@@ -32,7 +32,16 @@ jobs:
           role-duration-seconds: 21600
 
       - uses: ./.github/actions/create-zarf-package
-        name: Create Zarf package
+        name: Create DUBBD-IAC-AWS Zarf package
+        with:
+          username: ${{ secrets.REGISTRY1_USERNAME }}
+          password: ${{ secrets.REGISTRY1_PASSWORD }}
+          working-dir: .github/workflows/dubbd-iac-aws
+          download-init-package: true
+          timeout-minutes: 60
+
+      - uses: ./.github/actions/create-zarf-package
+        name: Create DUBBD-AWS Zarf package
         with:
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
