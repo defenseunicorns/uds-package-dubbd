@@ -99,7 +99,14 @@ jobs:
         run: |
           ${{ steps.deploy-dubbd-iac-aws.outputs.zarf_pkg_env_vars }}
           env | grep ZARF_PACKAGE_DEPLOY_SET
-          zarf package deploy zarf-package-*.tar.zst --confirm
+
+          zarf package deploy zarf-package-*.tar.zst \
+            --set domain=bigbang.dev \
+            --set key_file=bigbang.dev.key \
+            --set cert_file=bigbang.dev.cert \
+            --set private_admin_lb=true \
+            --set private_tenant_lb=true \
+            --confirm
         working-directory: aws/dubbd-aws
         timeout-minutes: 60
 

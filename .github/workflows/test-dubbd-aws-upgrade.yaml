@@ -80,8 +80,8 @@ jobs:
         run: |
           zarf init -a amd64 --components=git-server --confirm
 
-      - name: Deploy latest DUBBD-IAC-AWS package version
-        id: deploy-dubbd-iac-aws
+      - name: Deploy latest DUBBD-IAC-AWS OCI package version
+        id: deploy-dubbd-iac-aws-oci
         env:
           SHA: ${{ github.sha }}
         run: |
@@ -98,21 +98,47 @@ jobs:
             --confirm
 
             # adds ZARF_PACKAGE_DEPLOY_SET env var for use in zarf package deploy
-            echo "zarf_pkg_env_vars=$(cat setenv-dubbd-package.sh)" >> $GITHUB_OUTPUT
+            echo "zarf_oci_pkg_env_vars=$(cat setenv-dubbd-package.sh)" >> $GITHUB_OUTPUT
         working-directory: .github/workflows/dubbd-iac-aws
         timeout-minutes: 60
 
-      - name: Deploy latest DUBBD-AWS package version
+      - name: Deploy latest DUBBD-AWS OCI package version
         env:
           SHA: ${{ github.sha }}
         run: |
-          ${{ steps.deploy-dubbd-iac-aws.outputs.zarf_pkg_env_vars }}
+          ${{ steps.deploy-dubbd-iac-aws-oci.outputs.zarf_oci_pkg_env_vars }}
           env | grep ZARF_PACKAGE_DEPLOY_SET
 
           zarf package deploy \
             oci://ghcr.io/defenseunicorns/packages/dubbd-aws:${{ steps.latest-package-version.outputs.latest-package-version }} \
+            --set domain=bigbang.dev \
+            --set key_file=bigbang.dev.key \
+            --set cert_file=bigbang.dev.cert \
+            --set private_admin_lb=true \
+            --set private_tenant_lb=true \
             --confirm
         working-directory: aws/dubbd-aws
+        timeout-minutes: 60
+
+      - name: Deploy DUBBD-IAC-AWS
+        id: deploy-dubbd-iac-aws
+        env:
+          SHA: ${{ github.sha }}
+        run: |
+          echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+
+          # deploys the IAC needed for dubbd-aws
+          zarf package deploy zarf-package-*.tar.zst \
+            --set ephemeral=true \
+            --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
+            --set state_bucket_name="uds-ci-state-bucket" \
+            --set state_key="tfstate/ci/install/${SHA:0:7}-dubbd-aws.tfstate" \
+            --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
+            --confirm
+
+            # adds ZARF_PACKAGE_DEPLOY_SET env var for use in zarf package deploy
+            echo "zarf_pkg_env_vars=$(cat setenv-dubbd-package.sh)" >> $GITHUB_OUTPUT
+        working-directory: .github/workflows/dubbd-iac-aws
         timeout-minutes: 60
 
       - name: Deploy DUBBD-AWS
@@ -122,7 +148,13 @@ jobs:
           ${{ steps.deploy-dubbd-iac-aws.outputs.zarf_pkg_env_vars }}
           env | grep ZARF_PACKAGE_DEPLOY_SET
 
-          zarf package deploy zarf-package-*.tar.zst --confirm
+          zarf package deploy zarf-package-*.tar.zst \
+            --set domain=bigbang.dev \
+            --set key_file=bigbang.dev.key \
+            --set cert_file=bigbang.dev.cert \
+            --set private_admin_lb=true \
+            --set private_tenant_lb=true \
+            --confirm
         working-directory: aws/dubbd-aws
         timeout-minutes: 60
 
