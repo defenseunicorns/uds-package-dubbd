@@ -34,6 +34,18 @@ kiali:
             disable_rbac: true
             issuer_uri: https://keycloak.###ZARF_VAR_DOMAIN###/auth/realms/###ZARF_VAR_REALM###
             scopes:
-            - openid
-            - email
+              - openid
+              - email
             username_claim: email
+
+istio:
+  ingressGateways:
+    keycloak-ingressgateway:
+      type: "LoadBalancer"
+  gateways:
+    passthrough:
+      ingressGateway: "keycloak-ingressgateway"
+      hosts:
+        - keycloak.###ZARF_VAR_DOMAIN###
+      tls:
+        mode: "PASSTHROUGH"

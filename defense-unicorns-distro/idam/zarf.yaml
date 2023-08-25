@@ -57,16 +57,9 @@ variables:
     default: "true"
 
 components:
-  - name: keycloak-ingressgateway-addon
+  - name: keycloak
     required: true
-    manifests:
-      - name: keycloak-ingressgateway-addon
-        kustomizations:
-          - ./keycloak-ingress
-    images:
-      - registry1.dso.mil/ironbank/tetrate/istio/proxyv2:1.18.2-tetratefips-v0
-  - name: realm-config-default-files
-    required: true
+    description: "Deploy keycloak via flux"
     files:
       - source: certs/bigbang.dev.cert
         target: bigbang.dev.cert
@@ -78,14 +71,8 @@ components:
         target: customreg.yaml
       - source: realm/truststore.jks.b64
         target: truststore.jks.b64
-  - name: keycloak-values
-    required: true
-    files:
       - source: values-keycloak.yaml
         target: values-keycloak.yaml
-  - name: keycloak
-    required: true
-    description: "Deploy keycloak via flux"
     charts:
     # renovate: datasource=helm
       - name: flux-app

@@ -325,18 +325,6 @@ components:
           - ../values/tempo.yaml
           - ../values/idam-values.yaml
           - ../values/dubbd-values.yaml
-  - name: keycloak-ingressgateway-addon
-    required: true
-    import:
-      path: ./idam
-  - name: realm-config-default-files
-    required: true
-    import:
-      path: ./idam
-  - name: keycloak-values
-    required: true
-    import:
-      path: ./idam
   - name: keycloak
     required: true
     import:

@@ -61,23 +61,11 @@ components:
         valuesFiles:
           - values/local-dev.yaml
           - values/add-dubbd-values.yaml
-  - name: dubbd-post-upgrade
-    required: true
-    import:
-      path: ../defense-unicorns-distro
-  - name: keycloak-ingressgateway-addon
-    required: true
-    import:
-      path: ../defense-unicorns-distro
-  - name: realm-config-default-files
-    required: true
-    import:
-      path: ../defense-unicorns-distro
-  - name: keycloak-values
-    required: true
-    import:
-      path: ../defense-unicorns-distro
   - name: keycloak
+    required: true
+    import:
+      path: ../defense-unicorns-distro
+  - name: dubbd-post-upgrade
     required: true
     import:
       path: ../defense-unicorns-distro
