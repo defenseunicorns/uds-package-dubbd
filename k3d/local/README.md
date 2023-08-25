@@ -17,4 +17,4 @@ zarf package create --confirm
 zarf package deploy --confirm zarf-package-k3d-local-<ARCH>-<ZARF_VERSION>.tar.zst 
 ```
 
-e.g. `zarf package deploy --confirm zarf-package-k3d-local-amd64-v0.27.0.tar.zst`
+e.g. `zarf package deploy --confirm zarf-package-k3d-local-amd64-v0.29.0.tar.zst`

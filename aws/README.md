@@ -2,15 +2,18 @@
 
 ## Prerequisites
 
-- Zarf CLI installed locally. Minimum version of `v0.27.1`
+- Zarf CLI installed locally. Minimum version of `v0.29.0`
 - AWS EKS cluster -- K8s v1.26+
 - AWS EKS cluster has Zarf init package deployed (with `git-server` component)
 - Local K8s context is pointing to the above cluster
 - Existing AWS S3 bucket with a Terraform state file present and AWS DynamoDB table for state locking
-- AWS Route53 hosted DNS zone (matching the `domain` that will be used in the DUBBD-AWS configuration)
+- Existing AWS S3 bucket with KMS key and IRSA for Loki logs
+- Existing AWS S3 bucket with KMS key and IRSA for Velero backups
+- AWS Route53 IRSA and hosted DNS zone (matching the `domain` that will be used in the DUBBD-AWS configuration)
 - A `~/.docker/config.json` file. Zarf [currently requires this](https://github.com/defenseunicorns/zarf/issues/1795) to deploy from an OCI registry
 
 ## Build the package (optional)
+
 This section describes how to build a DUBBD-AWS package locally. If you just want to deploy DUBBD-AWS skip this step!
 
 ```bash
@@ -28,6 +31,7 @@ zarf package create --architecture amd64 --confirm
 ```
 
 ## Configure DUBBD-AWS
+
 The recommended way to configure DUBBD-AWS is via a `zarf-config.yaml` file located in the same directory that you will be performing the deploy. The available `zarf-config.yaml` configurations are shown below. 
 > Note the keys that are not commented out are **required** to deploy DUBBD-AWS. 
 
@@ -64,16 +68,18 @@ package:
 ## Deploy the package
 
 Once all of the prereqs are met and the `zarf-config.yaml` has been configured:
+
 ```bash
 # To deploy from OCI (recommended)
 zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-aws:<VERSION>-amd64 \
   --oci-concurrency=15 \
   --confirm
 ```
+
 Note that package versions can be found in the [Defense Unicorns GHCR repo](https://github.com/defenseunicorns/uds-package-dubbd/pkgs/container/packages%2Fdubbd-aws).
 
-
 If developing locally:
+
 ```bash
 zarf package deploy --confirm zarf-package-dubbd-aws-*.tar.zst
 ```
@@ -106,16 +112,10 @@ It is important to take a few steps before the upgrade to confirm you are on a s
 
 Zarf does not expose the current version of your DUBBD deployment, but this may be an option in the future (see [this issue](https://github.com/defenseunicorns/zarf/issues/1797) to track the progress of that functionality). 
 
-- Get the DUBBD version deployed with `kubectl`+`jq`
+- Get the DUBBD version deployed
 
 ```console
-zarf tools kubectl get secret -n zarf zarf-package-dubbd-aws -o go-template="{{ .data.data | base64decode }}" | jq -r '.data.metadata.version'
-```
-
-- If you don't have access to `jq` run this alternative command and review the output to find the `data.metadata.version` value manually
-
-```console
-zarf tools kubectl get secret -n zarf zarf-package-dubbd-aws -o go-template="{{ .data.data | base64decode }}"
+zarf package list
 ```
 
 - Get the corresponding Big Bang version that is deployed
@@ -138,6 +138,7 @@ If you are not on a supported upgrade path, you will need to review the release 
 #### Verify DUBBD health
 
 Prior to upgrading you should confirm that your current deployment is healthy. A few basic checks are included below:
+
 - Confirm that all helmreleases have reconciled
 
 ```console
@@ -162,66 +163,97 @@ zarf tools kubectl get pod -A
 - Verify AWS resources exist (S3 bucket for Loki, Load Balancers for Istio): This can be confirmed via your AWS console or CLI access
 
 ### Upgrade Steps
+
 Follow the same steps as used for initial deployment from the [configure DUBBD](#configure-dubbd-aws) and [deploy the package](#deploy-the-package) sections.
 
 ### Post upgrade validation
+
 After the upgrade is complete, here are some recommended validation activities:
+
 - Confirm the deployed DUBBD version is correct
+
 ```console
 # zarf tools kubectl get secret -n zarf zarf-package-dubbd-aws -o go-template="{{ .data.data | base64decode }}" | jq -r '.data.metadata.version'
 ```
+
 - Perform the same steps outlined in [Verify DUBBD health](#verify-dubbd-health)
 - Test BigBang functionality works (ex: Grafana, Kiali, Neuvector, Tempo, etc)
+
 ### (Optional) Rollback
+
 If a rollback is deemed necessary, these are the various options:
+
 #### OPTION 1: Deploy a previous working version of the DUBBD package
+
 - Grab the version of the deployed DUBBD package
+
 ```console
 zarf tools kubectl get secret -n zarf zarf-package-dubbd-aws -o go-template="{{ .data.data | base64decode }}" | jq -r '.data.metadata.version'
 ```
+
 - Prep the zarf-config.yaml for use with the previous DUBBD version
 - Deploy previous version of DUBBD
+
 ```console
 zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-aws:(PREVIOUS-VERSION)-amd64
 ```
+
 #### OPTION 2: Remove DUBBD package and re-deploy a previous working version
+
 - Grab the version of the deployed DUBBD package
+
 ```console
 zarf tools kubectl get secret -n zarf zarf-package-dubbd-aws -o go-template="{{ .data.data | base64decode }}" | jq -r '.data.metadata.version'
 ```
 
 - Remove the DUBBD package (execute command from same directory used to deploy)
+
 ```console
 zarf package remove dubbd-aws --confirm
 ```
+
 - Prep the zarf-config.yaml for use with the previous DUBBD version
 - Deploy previous version of DUBBD
+
 ```console
+
 zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-aws:(PREVIOUS-VERSION)-amd64
 ```
+
 #### OPTION 3: Helm rollback of the DUBBD helm releases (Terraform needs to be handled separately)
+
 - Get the DUBBD managed umbrella helm chart name
+
 ```sh
 export DUBBD_HELM_RELEASE=$(helm ls -n bigbang -f 'zarf-[\w\[\]]+' --no-headers --short)
 export DUBBD_FLUX_HELM_RELEASE=$(helm ls -n flux-system -f 'zarf-[\w\[\]]+' --no-headers --short)
 ```
+
 - View the helm history of the helm releases
+
 ```sh
 helm history -n bigbang ${DUBBD_HELM_RELEASE}
 helm history -n flux-system ${DUBBD_FLUX_HELM_RELEASE}
 ```
+
 - Roll back to previous helm chart version
+
 ```sh
 helm rollback -n bigbang ${DUBBD_HELM_RELEASE}
 helm rollback -n flux-system ${DUBBD_FLUX_HELM_RELEASE}
 ```
+
 - Check the updated helm history of the DUBBD managed umbrella helm release name
+
 ```sh
 helm history -n bigbang ${DUBBD_HELM_RELEASE}
 helm history -n flux-system ${DUBBD_FLUX_HELM_RELEASE}
 ```
+
 ## Troubleshooting issues
+
 - If the DUBBD deploy fails with errors the output should have run commands like these
+
 ```console
 zarf tools kubectl describe helmrelease -n bigbang $hr
 zarf tools kubectl get nodes -o wide
@@ -232,28 +264,38 @@ ERROR:  Failed to deploy package: unable to deploy all components in this Zarf P
         component success action: command "Big Bang Helm Release `Failed-Helm-Release-Name` to be 
         ready" failed after 0 retries
 ```
+
 - Confirm `zarf init` was performed and components are in-place / healthy
+
 ```console
 zarf tools kubectl get mutatingwebhookconfigurations zarf
 zarf tools kubectl get all -n zarf
 ```
+
 - Confirm sufficient capacity on the cluster
+
 ```console
 ## Look for events and info under "Allocated resources:"
 zarf tools kubectl describe node
 zarf tools kubectl top node
 ```
+
 - Confirm storage is being allocated as desired
+
 ```console
 zarf tools kubectl get pv,pvc -A
 ```
+
 - Check helm releases
+
 ```console
 helm ls -A
 helm history -n bigbang <helm-release-name>
 helm get all -n bigbang <helm-release-name>
 ```
+
 - Check Istio is properly configured and logs for errors
+
 ```console
 zarf tools kubectl get svc -n istio-system
 zarf tools kubectl logs -n istio-system deploy/admin-ingressgateway --all-containers=true -f
