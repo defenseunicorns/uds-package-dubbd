@@ -132,11 +132,7 @@ components:
           - cmd: |
               if [ -d "run/loki" ]; then
                 cd run/loki
-                if [ "$(../terraform output force_destroy)" = true ]; then
-                  ../terraform destroy -auto-approve
-                else
-                  echo "Skipping remove, force_destroy is set to false"
-                fi
+                ../terraform destroy -auto-approve
               else
                 echo "Cannot remove: run/loki directory does not exist"
               fi
@@ -202,11 +198,7 @@ components:
           - cmd: |
               if [ -d "run/velero" ]; then
                 cd run/velero
-                if [ "$(../terraform output force_destroy)" = true ]; then
-                  ../terraform destroy -auto-approve
-                else
-                  echo "Skipping remove, force_destroy is set to false"
-                fi
+                ../terraform destroy -auto-approve
               else
                 echo "Cannot remove: run/velero directory does not exist"
               fi
