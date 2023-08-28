@@ -1,5 +1,5 @@
 component-definition:
-  uuid: 6c081741-0252-4b3d-985a-3db4caa1423e
+  uuid: 9bd80c4b-4eee-40cd-856f-e283388af306
   metadata:
     version: 0.0.1
     parties:
@@ -9,10 +9,51 @@ component-definition:
         links:
           - rel: website
             href: https://defenseunicorns.com
-    last-modified: "2023-07-28T16:26:26Z"
+    last-modified: "2023-08-28T14:20:18Z"
     oscal-version: 1.0.4
     title: DUBBD AWS
   components:
+    - control-implementations:
+        - source: https://raw.githubusercontent.com/usnistgov/oscal-content/master/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json
+          description: NIST 800-53 Controls implemented.
+          implemented-requirements:
+            - uuid: 033096a8-6366-41d1-8ac0-5211dd0f9531
+              control-id: ac-6
+              description: Access to S3 Bucket is controlled by RBAC AWS IAM Roles. https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
+            - uuid: fd26b29c-7760-4f72-8773-f6a8efce2cb4
+              control-id: cp-6
+              description:
+                AWS S3 is a global service storing data in multiple data centers
+                to create 99.999999999% durability. https://aws.amazon.com/s3/faqs/
+            - uuid: dad68d3c-a0b2-4bc3-b90f-9fe79dbd3127
+              control-id: cp-6.1
+              description:
+                AWS S3 is a global service storing data in multiple data centers
+                to create 99.999999999% durability. https://aws.amazon.com/s3/faqs/
+            - uuid: 377b30c6-56f0-4615-8359-05e45375e9ea
+              control-id: cp-9
+              description:
+                Velero creates backups of Kubernetes and stores them securely
+                in a KMS encrypted S3 bucket. https://velero.io/docs/v1.12/
+            - uuid: 6515cb65-01e7-4e7c-b723-9ad060b4c18f
+              control-id: cp-9.8
+              description:
+                Velero creates backups of Kubernetes and stores them securely
+                in a KMS encrypted S3 bucket. https://velero.io/docs/v1.12/
+            - uuid: 7b613ab2-8b6f-4248-9820-7e37351f28c4
+              control-id: mp-2
+              description: Access to S3 Bucket is controlled by RBAC AWS IAM Roles. https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
+          uuid: de208fb0-2ad8-4b19-adce-27189284b078
+      uuid: 5ca47f91-fba8-42e0-b30c-cb1d495843b9
+      title: Velero
+      description: |
+        Deployment of Velero and supporting resources
+      type: software
+      purpose: Provides Velero as a backup solution
+      responsible-roles:
+        - role-id: provider
+          party-uuids:
+            - f3cf70f8-ba44-4e55-9ea3-389ef24847d3
     - control-implementations:
         - source: https://raw.githubusercontent.com/usnistgov/oscal-content/master/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json
           description: Controls implemented by authservice for inheritance by applications
@@ -1233,6 +1274,10 @@ component-definition:
             - f3cf70f8-ba44-4e55-9ea3-389ef24847d3
   back-matter:
     resources:
+      - uuid: 62739a25-e3e8-40f8-ae0a-74f746118fa6
+        title: Velero
+        rlinks:
+          - href: https://github.com/defenseunicorns/uds-package-dubbd/tree/main/aws/velero
       - uuid: BFF74303-1E06-469E-ADCF-338E6DDB8876
         title: Github Repo - Kiali
         rlinks:
@@ -1262,7 +1307,7 @@ component-definition:
         rlinks:
           - href: https://open-docs.neuvector.com/
       - uuid: b4988bfa-d4a7-4095-8523-2e298cc45473
-        title: Big Bang Prisma Cloud package
+        title: Big Bang NeuVector package
         rlinks:
           - href: https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/neuvector
       - uuid: D552C935-E40C-4A03-B5CC-4605EBD95B6D
