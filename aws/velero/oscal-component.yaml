@@ -1,0 +1,63 @@
+component-definition:
+  uuid: 58cb5f42-8d09-4b90-994b-b8317b0e077f
+  metadata:
+    title: Velero
+    last-modified:
+      "2023-08-24T19:19:59Z"
+    # x-release-please-start-version
+    version: "0.7.0"
+    # x-release-please-end
+    oscal-version: 1.0.4
+    parties:
+      - uuid: f3cf70f8-ba44-4e55-9ea3-389ef24847d3
+        type: organization
+        name: Defense Unicorns
+        links:
+          - href: https://defenseunicorns.com
+            rel: website
+  components:
+    - uuid: 5ca47f91-fba8-42e0-b30c-cb1d495843b9
+      type: software
+      title: Velero
+      description: |
+        Deployment of Velero and supporting resources
+      purpose: Provides Velero as a backup solution
+      responsible-roles:
+        - role-id: provider
+          party-uuids:
+            - f3cf70f8-ba44-4e55-9ea3-389ef24847d3
+      control-implementations:
+        - uuid: de208fb0-2ad8-4b19-adce-27189284b078
+          source: https://raw.githubusercontent.com/usnistgov/oscal-content/master/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json
+          description: NIST 800-53 Controls implemented.
+          implemented-requirements:
+            - uuid: 033096a8-6366-41d1-8ac0-5211dd0f9531
+              control-id: ac-6
+              description: >-
+                Access to S3 Bucket is controlled by RBAC AWS IAM Roles. https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
+            - uuid: fd26b29c-7760-4f72-8773-f6a8efce2cb4
+              control-id: cp-6
+              description: >-
+                AWS S3 is a global service storing data in multiple data centers to create 99.999999999% durability. https://aws.amazon.com/s3/faqs/
+            - uuid: dad68d3c-a0b2-4bc3-b90f-9fe79dbd3127
+              control-id: cp-6.1
+              description: >-
+                AWS S3 is a global service storing data in multiple data centers to create 99.999999999% durability. https://aws.amazon.com/s3/faqs/
+            - uuid: 377b30c6-56f0-4615-8359-05e45375e9ea
+              control-id: cp-9
+              description: >-
+                Velero creates backups of Kubernetes and stores them securely in a KMS encrypted S3 bucket. https://velero.io/docs/v1.12/
+            - uuid: 6515cb65-01e7-4e7c-b723-9ad060b4c18f
+              control-id: cp-9.8
+              description: >-
+                Velero creates backups of Kubernetes and stores them securely in a KMS encrypted S3 bucket. https://velero.io/docs/v1.12/
+            - uuid: 7b613ab2-8b6f-4248-9820-7e37351f28c4
+              control-id: mp-2
+              description: >-
+                Access to S3 Bucket is controlled by RBAC AWS IAM Roles. https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
+  back-matter:
+    resources:
+      - uuid: 62739a25-e3e8-40f8-ae0a-74f746118fa6
+        title: Velero
+        rlinks:
+          - href: https://github.com/defenseunicorns/uds-package-dubbd/tree/main/aws/velero

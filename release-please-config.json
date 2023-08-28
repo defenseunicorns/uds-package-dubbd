@@ -15,7 +15,8 @@
         "aws/external-dns/zarf.yaml",
         "rke2/zarf.yaml",
         "defense-unicorns-distro/zarf.yaml",
-        "k3d/zarf.yaml"
+        "k3d/zarf.yaml",
+        "aws/velero/oscal-component.yaml"
       ]
     }
   }
