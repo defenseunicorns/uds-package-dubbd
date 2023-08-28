@@ -16,7 +16,6 @@ metadata:
 
 variables:
   - name: TERRAFORM_VERSION
-  - name: TERRAFORM_PROVIDER_AWS_VERSION
 
   - name: STATE_BUCKET_NAME
     description: "Name of the pre-existing Terraform state S3 bucket"
@@ -67,8 +66,9 @@ components:
           - cmd: |
               rm -f run/loki/terraform || true
               rm -f run/velero/terraform || true
+              rm -f run/route53-policy || true
             description: Clean up previous install since archiver doesn't overwrite the output
-          - cmd: "./extract-terraform.sh ###ZARF_PKG_TMPL_TERRAFORM_VERSION### ###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###"
+          - cmd: "./extract-terraform.sh ###ZARF_PKG_TMPL_TERRAFORM_VERSION###"
     files:
       - source: extract.sh
         target: extract-terraform.sh
@@ -80,14 +80,6 @@ components:
         target: tmp/terraform_###ZARF_PKG_TMPL_TERRAFORM_VERSION###_darwin_amd64.zip
       - source: https://releases.hashicorp.com/terraform/###ZARF_PKG_TMPL_TERRAFORM_VERSION###/terraform_###ZARF_PKG_TMPL_TERRAFORM_VERSION###_linux_amd64.zip
         target: tmp/terraform_###ZARF_PKG_TMPL_TERRAFORM_VERSION###_linux_amd64.zip
-      - source: https://releases.hashicorp.com/terraform-provider-aws/###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_darwin_arm64.zip
-        target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_darwin_arm64.zip
-      - source: https://releases.hashicorp.com/terraform-provider-aws/###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_darwin_amd64.zip
-        target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_darwin_amd64.zip
-      - source: https://releases.hashicorp.com/terraform-provider-aws/###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_linux_amd64.zip
-        target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_linux_amd64.zip
-      - source: https://releases.hashicorp.com/terraform-provider-aws/###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
-        target: tmp/terraform-provider-aws_###ZARF_PKG_TMPL_TERRAFORM_PROVIDER_AWS_VERSION###_windows_amd64.zip
   - name: loki-module
     required: true
     actions:
@@ -96,16 +88,8 @@ components:
           - cmd: terraform get -update
             dir: loki
     files:
-      - source: loki/.terraform
-        target: run/loki/.terraform
-      - source: loki/main.tf
-        target: run/loki/main.tf
-      - source: loki/variables.tf
-        target: run/loki/variables.tf
-      - source: loki/output.tf
-        target: run/loki/output.tf
-      - source: loki/terraform.tfvars
-        target: run/loki/terraform.tfvars
+      - source: loki
+        target: run/loki
   - name: loki-execute-terraform
     required: true
     actions:
@@ -161,16 +145,8 @@ components:
           - cmd: terraform get -update
             dir: velero
     files:
-      - source: velero/.terraform
-        target: run/velero/.terraform
-      - source: velero/main.tf
-        target: run/velero/main.tf
-      - source: velero/variables.tf
-        target: run/velero/variables.tf
-      - source: velero/output.tf
-        target: run/velero/output.tf
-      - source: velero/terraform.tfvars
-        target: run/velero/terraform.tfvars
+      - source: velero
+        target: run/velero
   - name: velero-execute-terraform
     required: true
     actions:
@@ -238,16 +214,8 @@ components:
           - cmd: terraform get -update
             dir: route53-policy
     files:
-      - source: route53-policy/.terraform
-        target: run/route53-policy/.terraform
-      - source: route53-policy/main.tf
-        target: run/route53-policy/main.tf
-      - source: route53-policy/variables.tf
-        target: run/route53-policy/variables.tf
-      - source: route53-policy/output.tf
-        target: run/route53-policy/output.tf
-      - source: route53-policy/terraform.tfvars
-        target: run/route53-policy/terraform.tfvars
+      - source: route53-policy
+        target: run/route53-policy
   - name: execute-route53-policy-terraform
     required: true
     actions:
