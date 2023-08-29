@@ -36,7 +36,7 @@ jobs:
         run: zarf init -a amd64 --components=git-server --confirm
 
       - name: Deploy DUBBD on k3d cluster
-        run: zarf package deploy zarf-package-*.tar.zst --confirm
+        run: zarf package deploy zarf-package-*.tar.zst --confirm --components=keycloak
         working-directory: k3d
         timeout-minutes: 60
 

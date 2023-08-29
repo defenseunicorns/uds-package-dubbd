@@ -51,7 +51,7 @@ jobs:
         run: zarf init -a amd64 --components=git-server --confirm
 
       - name: Deploy DUBBD on RKE2 cluster
-        run: zarf package deploy zarf-package-*.tar.zst --confirm
+        run: zarf package deploy zarf-package-*.tar.zst --confirm --components=keycloak
         working-directory: rke2
         timeout-minutes: 60
 

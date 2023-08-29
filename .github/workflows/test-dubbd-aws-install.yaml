@@ -97,6 +97,7 @@ jobs:
             --set state_bucket_name="uds-ci-state-bucket" \
             --set state_key="tfstate/ci/install/${SHA:0:7}-dubbd-aws.tfstate" \
             --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
+            --components=keycloak \
             --confirm
 
             # adds ZARF_PACKAGE_DEPLOY_SET env var for use in zarf package deploy

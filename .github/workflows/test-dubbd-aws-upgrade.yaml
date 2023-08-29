@@ -168,6 +168,7 @@ jobs:
             --set cert_file="bigbang.dev.cert" \
             --set private_admin_lb="true" \
             --set private_tenant_lb="true" \
+            --components=keycloak \
             --confirm
         working-directory: aws/dubbd-aws
         timeout-minutes: 60

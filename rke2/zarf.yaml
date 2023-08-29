@@ -32,6 +32,12 @@ variables:
     prompt: false
     type: file
     autoIndent: true
+  - name: DUBBD_IDAM_VALUES
+    description: "Path to a local values file that includes IDAM configuration for DUBBD applications"
+    default: deploy-idam-values.yaml
+    prompt: false
+    type: file
+    autoIndent: true
 
 components:
   - name: set-ephemeral
