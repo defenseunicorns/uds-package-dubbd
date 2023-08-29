@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Free GH runner build space
+      - name: Free GH runner space
         run: |
           df -h
           sudo rm -rf /usr/share/dotnet
@@ -34,11 +34,11 @@ jobs:
           role-duration-seconds: 21600
 
       - uses: ./.github/actions/create-zarf-package
-        name: Create DUBBD-IAC-AWS Zarf package
+        name: Create CI-DUBBD-IAC-AWS Zarf package
         with:
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
-          working-dir: .github/workflows/dubbd-iac-aws
+          working-dir: .github/workflows/ci-dubbd-iac-aws
           download-init-package: true
           timeout-minutes: 60
 
@@ -82,8 +82,8 @@ jobs:
         run: |
           zarf init -a amd64 --components=git-server --confirm
 
-      - name: Deploy DUBBD-IAC-AWS
-        id: deploy-dubbd-iac-aws
+      - name: Deploy CI-DUBBD-IAC-AWS
+        id: deploy-ci-dubbd-iac-aws
         env:
           SHA: ${{ github.sha }}
         run: |
@@ -100,14 +100,14 @@ jobs:
 
             # adds ZARF_PACKAGE_DEPLOY_SET env var for use in zarf package deploy
             echo "zarf_pkg_env_vars=$(cat setenv-dubbd-package.sh)" >> $GITHUB_OUTPUT
-        working-directory: .github/workflows/dubbd-iac-aws
+        working-directory: .github/workflows/ci-dubbd-iac-aws
         timeout-minutes: 60
 
       - name: Deploy DUBBD-AWS
         env:
           SHA: ${{ github.sha }}
         run: |
-          ${{ steps.deploy-dubbd-iac-aws.outputs.zarf_pkg_env_vars }}
+          ${{ steps.deploy-ci-dubbd-iac-aws.outputs.zarf_pkg_env_vars }}
           env | grep ZARF_PACKAGE_DEPLOY_SET
 
           zarf package deploy zarf-package-*.tar.zst \
@@ -127,10 +127,10 @@ jobs:
         timeout-minutes: 60
         continue-on-error: true
 
-      - name: Remove DUBBD-IAC-AWS
+      - name: Remove CI-DUBBD-IAC-AWS
         if: always()
         run: zarf package remove zarf-package-*.tar.zst --confirm
-        working-directory: .github/workflows/dubbd-iac-aws
+        working-directory: .github/workflows/ci-dubbd-iac-aws
         timeout-minutes: 60
         continue-on-error: true
 
