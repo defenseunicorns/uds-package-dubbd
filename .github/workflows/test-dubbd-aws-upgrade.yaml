@@ -136,6 +136,8 @@ jobs:
           SHA: ${{ github.sha }}
         run: |
           echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
+          ${{ steps.deploy-dubbd-iac-aws-oci.outputs.zarf_oci_pkg_env_vars }}
+          env | grep ZARF_PACKAGE_DEPLOY_SET
 
           # deploys the IAC needed for dubbd-aws
           zarf package deploy zarf-package-*.tar.zst \

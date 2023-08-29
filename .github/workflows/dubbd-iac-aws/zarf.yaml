@@ -106,9 +106,6 @@ components:
               -backend-config="region=${ZARF_VAR_REGION}" \
               -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
             dir: run/loki
-          - cmd: ../terraform plan
-            dir: run/loki
-          - cmd: sleep 15 #time to review
           - cmd: ../terraform apply -auto-approve
             dir: run/loki
       onRemove:
@@ -164,9 +161,6 @@ components:
               -backend-config="region=${ZARF_VAR_REGION}" \
               -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
             dir: run/velero
-          - cmd: ../terraform plan
-            dir: run/velero
-          - cmd: sleep 15 #time to review
           - cmd: ../terraform apply -auto-approve
             dir: run/velero
       onRemove:
@@ -230,9 +224,6 @@ components:
               -backend-config="region=${ZARF_VAR_REGION}" \
               -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
             dir: run/route53-policy
-          - cmd: ../terraform plan
-            dir: run/route53-policy
-          - cmd: sleep 15 #time to review
           - cmd: ../terraform apply -auto-approve
             dir: run/route53-policy
       onRemove:
