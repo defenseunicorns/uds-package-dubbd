@@ -68,7 +68,7 @@ components:
         valuesFiles:
           - values/add-dubbd-values.yaml
   - name: keycloak
-    required: true
+    required: false
     import:
       path: ../defense-unicorns-distro
   - name: dubbd-post-upgrade

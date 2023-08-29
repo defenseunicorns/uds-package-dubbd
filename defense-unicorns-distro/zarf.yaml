@@ -326,7 +326,7 @@ components:
           - ../values/idam-values.yaml
           - ../values/dubbd-values.yaml
   - name: keycloak
-    required: true
+    required: false
     import:
       path: ./idam
   - name: dubbd-post-upgrade
