@@ -97,4 +97,3 @@ components:
           - cmd: ./zarf tools kubectl scale deployment/neuvector-controller-pod --replicas 4 -n neuvector
           - cmd: ./zarf tools wait-for deployment neuvector-controller-pod available -n neuvector
           - cmd: ./zarf tools kubectl scale deployment/neuvector-controller-pod --replicas 3 -n neuvector
-
