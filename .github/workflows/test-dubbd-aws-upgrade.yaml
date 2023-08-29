@@ -99,7 +99,7 @@ jobs:
 
           # deploys the IAC needed for dubbd-aws
           zarf package deploy \
-            oci://ghcr.io/defenseunicorns/packages/dubbd-iac-aws:${{ steps.latest-package-version.outputs.latest-package-version }} \
+            oci://ghcr.io/defenseunicorns/packages/ci-dubbd-iac-aws:${{ steps.latest-package-version.outputs.latest-package-version }} \
             --set ephemeral=true \
             --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
             --set state_bucket_name="uds-ci-state-bucket" \
