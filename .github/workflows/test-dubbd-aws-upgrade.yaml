@@ -103,7 +103,7 @@ jobs:
             --set ephemeral=true \
             --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
             --set state_bucket_name="uds-ci-state-bucket" \
-            --set state_key="tfstate/ci/upgrade/${SHA:0:7}-dubbd-aws" \
+            --set state_key="tfstate/ci/upgrade/${SHA:0:7}-dubbd-aws.tfstate" \
             --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
             --confirm
 
@@ -144,7 +144,7 @@ jobs:
             --set ephemeral=true \
             --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
             --set state_bucket_name="uds-ci-state-bucket" \
-            --set state_key="tfstate/ci/install/${SHA:0:7}-dubbd-aws.tfstate" \
+            --set state_key="tfstate/ci/upgrade/${SHA:0:7}-dubbd-aws.tfstate" \
             --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
             --confirm
 
