@@ -11,6 +11,7 @@
       ],
       "versioning": "always-bump-patch",
       "extra-files": [
+        ".github/workflows/dubbd-iac-aws/zarf.yaml",
         "aws/dubbd-aws/zarf.yaml",
         "aws/external-dns/zarf.yaml",
         "rke2/zarf.yaml",

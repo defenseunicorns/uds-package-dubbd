@@ -9,7 +9,7 @@ This package is designed to deploy DUBBD to environments leveraging RKE2 as the 
 
 ## Prerequisites
 
-- Zarf CLI installed locally. Minimum version of `v0.27.1`
+- Zarf CLI installed locally. Minimum version of `v0.29.0`
 - RKE2 cluster -- K8s v1.26+
 - RKE2 cluster has Zarf init package deployed (with `git-server` component)
 - Local K8s context is pointing to the above cluster

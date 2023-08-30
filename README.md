@@ -4,7 +4,7 @@ Pre-built Zarf Package of [DoD-Platform-One/big-bang](https://github.com/DoD-Pla
 
 ## Prerequisites
 
-- Zarf is installed locally with a minimum version of [v0.27.1](https://github.com/defenseunicorns/zarf/releases/tag/v0.27.1)
+- Zarf is installed locally with a minimum version of [v0.29.0](https://github.com/defenseunicorns/zarf/releases/tag/v0.29.0)
 - Optional: A working Kubernetes cluster on v1.26+ -- e.g k3d, k3s, KinD, etc (Zarf can be used to deploy a built-in k3s distribution)
 - Working kube context (`kubectl get nodes` <-- this command works)
 
@@ -44,7 +44,7 @@ Following semantic versioning for releases, a new release version is created upo
 
 ### Creating releases
 
-The pipeline uses [release-please-action](https://github.com/google-github-actions/release-please-action) for versioning and releasing OCI packages. This will automatically update `metadata.version` field in zarf.yaml to the same version number that is used for the release tag. To make this work, the `version` field must be surrounded by Release Please's annotations,
+The pipeline uses [release-please-action](https://github.com/google-github-actions/release-please-action) for versioning and releasing OCI packages. This will automatically update `metadata.version` field in zarf.yaml to the same version number that is used for the release tag. To make this work, the `version` field must be surrounded by Release Please's annotations, like this:
 
 ```yaml
   # x-release-please-start-version
@@ -70,4 +70,4 @@ When the change is merged to the trunk, Release Please will calculate what chang
 
 ### Modifying the Monorepo
 
-Use the [release-please-config.json](release-please-config.json) file to add or remove packages for publishing.
+Use the [release-please-config.json](release-please-config.json) file to add or remove packages for publishing (along with updating CI).

@@ -12,6 +12,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Free GH runner space
+        run: |
+          df -h
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo docker image prune --all --force
+          df -h
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -24,7 +34,16 @@ jobs:
           role-duration-seconds: 21600
 
       - uses: ./.github/actions/create-zarf-package
-        name: Create Zarf package
+        name: Create CI-DUBBD-IAC-AWS Zarf package
+        with:
+          username: ${{ secrets.REGISTRY1_USERNAME }}
+          password: ${{ secrets.REGISTRY1_PASSWORD }}
+          working-dir: .github/workflows/ci-dubbd-iac-aws
+          download-init-package: true
+          timeout-minutes: 60
+
+      - uses: ./.github/actions/create-zarf-package
+        name: Create DUBBD-AWS Zarf package
         with:
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
@@ -63,18 +82,40 @@ jobs:
         run: |
           zarf init -a amd64 --components=git-server --confirm
 
-      - name: Deploy DUBBD-AWS
+      - name: Deploy CI-DUBBD-IAC-AWS
+        id: deploy-ci-dubbd-iac-aws
         env:
           SHA: ${{ github.sha }}
         run: |
           echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
 
+          # deploys the IAC needed for dubbd-aws
           zarf package deploy zarf-package-*.tar.zst \
             --set ephemeral=true \
             --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
             --set state_bucket_name="uds-ci-state-bucket" \
             --set state_key="tfstate/ci/install/${SHA:0:7}-dubbd-aws.tfstate" \
             --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
+            --confirm
+
+            # adds ZARF_PACKAGE_DEPLOY_SET env var for use in zarf package deploy
+            echo "zarf_pkg_env_vars=$(cat setenv-dubbd-package.sh)" >> $GITHUB_OUTPUT
+        working-directory: .github/workflows/ci-dubbd-iac-aws
+        timeout-minutes: 60
+
+      - name: Deploy DUBBD-AWS
+        env:
+          SHA: ${{ github.sha }}
+        run: |
+          ${{ steps.deploy-ci-dubbd-iac-aws.outputs.zarf_pkg_env_vars }}
+          env | grep ZARF_PACKAGE_DEPLOY_SET
+
+          zarf package deploy zarf-package-*.tar.zst \
+            --set domain=bigbang.dev \
+            --set key_file=bigbang.dev.key \
+            --set cert_file=bigbang.dev.cert \
+            --set private_admin_lb=true \
+            --set private_tenant_lb=true \
             --confirm
         working-directory: aws/dubbd-aws
         timeout-minutes: 60
@@ -84,6 +125,14 @@ jobs:
         run: zarf package remove zarf-package-*.tar.zst --confirm
         working-directory: aws/dubbd-aws
         timeout-minutes: 60
+        continue-on-error: true
+
+      - name: Remove CI-DUBBD-IAC-AWS
+        if: always()
+        run: zarf package remove zarf-package-*.tar.zst --confirm
+        working-directory: .github/workflows/ci-dubbd-iac-aws
+        timeout-minutes: 60
+        continue-on-error: true
 
       - name: Teardown EKS cluster
         if: always()
@@ -91,3 +140,5 @@ jobs:
         run: |
           ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
         working-directory: .github/workflows/eks
+        timeout-minutes: 60
+        continue-on-error: true
