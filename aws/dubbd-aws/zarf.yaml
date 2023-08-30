@@ -38,6 +38,8 @@ variables:
 components:
   - name: set-ephemeral
     required: true
+    import:
+      path: ../../defense-unicorns-distro
     actions:
       onDeploy:
         before:
