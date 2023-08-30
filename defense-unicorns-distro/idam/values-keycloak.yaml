@@ -113,7 +113,6 @@ extraVolumesBigBang:
   - name: tlskey
     secret:
       secretName: keycloak-tlskey
-hostname: bigbang.dev
 istio:
   enabled: true
   injection: enabled
