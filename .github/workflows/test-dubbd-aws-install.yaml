@@ -97,7 +97,6 @@ jobs:
             --set state_bucket_name="uds-ci-state-bucket" \
             --set state_key="tfstate/ci/install/${SHA:0:7}-dubbd-aws.tfstate" \
             --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
-            --components=keycloak \
             --confirm
 
             # adds ZARF_PACKAGE_DEPLOY_SET env var for use in zarf package deploy
@@ -118,6 +117,7 @@ jobs:
             --set cert_file="bigbang.dev.cert" \
             --set private_admin_lb="true" \
             --set private_tenant_lb="true" \
+            --components=keycloak \
             --confirm
         working-directory: aws/dubbd-aws
         timeout-minutes: 60
