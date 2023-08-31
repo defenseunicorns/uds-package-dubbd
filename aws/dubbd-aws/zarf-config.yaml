@@ -9,16 +9,30 @@ package:
   deploy:
     set:
       # -- Domain name for the EKS cluster
-      domain: bigbang.dev
+      domain: "bigbang.dev"
       # -- TLS key
-      key_file: bigbang.dev.key
+      key_file: "bigbang.dev.key"
       # -- TLS cert
-      cert_file: bigbang.dev.cert
+      cert_file: "bigbang.dev.cert"
       # -- Name of the EKS cluster
       name: "big-bang-aws"
       # -- Provision a private/internal load balancer for the admin ingress gateway, if false a public load balancer will be provisioned
-      private_admin_lb: true
+      private_admin_lb: "true"
       # -- Provision a private/internal load balancer for the tenant ingress gateway, if false a public load balancer will be provisioned
-      private_tenant_lb: true
+      private_tenant_lb: "true"
       # -- If set to true, delete PVs on removal
-      ephemeral: false
+      ephemeral: "false"
+      # -- AWS S3 bucket for use with Loki
+      loki_s3_bucket: "big-bang-aws-loki-s3"
+      # -- Region of the AWS S3 bucket for use with Loki
+      loki_s3_aws_region: "us-west-2"
+      # -- Role ARN of the AWS S3 bucket for use with Loki
+      loki_s3_role_arn: "arn:aws:kms:us-west-2:000000000000:key/mrk-0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a"
+      # -- AWS S3 bucket for use with Velero
+      velero_s3_bucket: "big-bang-aws-velero-s3"
+      # -- Region of the AWS S3 bucket for use with Velero
+      velero_s3_aws_region: "us-west-2" 
+      # -- Role ARN of the AWS S3 bucket for use with Velero
+      velero_s3_role_arn: "arn:aws:kms:us-west-2:000000000000:key/mrk-0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a"
+      # -- Role ARN of the AWS S3 bucket for use with Route53 - external-dns
+      route53_role_arn: "arn:aws:kms:us-west-2:000000000000:key/mrk-0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a"
