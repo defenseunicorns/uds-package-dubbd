@@ -27,12 +27,12 @@ package:
       # -- Region of the AWS S3 bucket for use with Loki
       loki_s3_aws_region: "us-west-2"
       # -- Role ARN of the AWS S3 bucket for use with Loki
-      loki_s3_role_arn: "arn:aws:kms:us-west-2:000000000000:key/mrk-0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a"
+      loki_s3_role_arn: "arn:aws:iam::000000000000:role/big-bang-aws-0a0a0a0-loki-logging-loki-irsa"
       # -- AWS S3 bucket for use with Velero
       velero_s3_bucket: "big-bang-aws-velero-s3"
       # -- Region of the AWS S3 bucket for use with Velero
       velero_s3_aws_region: "us-west-2"
       # -- Role ARN of the AWS S3 bucket for use with Velero
-      velero_s3_role_arn: "arn:aws:kms:us-west-2:000000000000:key/mrk-0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a"
+      velero_s3_role_arn: "arn:aws:iam::000000000000:role/big-bang-aws-0a0a0a0-velero-velero-velero-server-irsa"
       # -- Role ARN of the AWS S3 bucket for use with Route53 - external-dns
-      route53_role_arn: "arn:aws:kms:us-west-2:000000000000:key/mrk-0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a"
+      route53_role_arn: "arn:aws:iam::000000000000:role/external-dns-role-big-bang-aws-0a0a0a0-0a0a0a0a"
