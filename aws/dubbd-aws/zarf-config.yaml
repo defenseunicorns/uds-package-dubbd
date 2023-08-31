@@ -31,7 +31,7 @@ package:
       # -- AWS S3 bucket for use with Velero
       velero_s3_bucket: "big-bang-aws-velero-s3"
       # -- Region of the AWS S3 bucket for use with Velero
-      velero_s3_aws_region: "us-west-2" 
+      velero_s3_aws_region: "us-west-2"
       # -- Role ARN of the AWS S3 bucket for use with Velero
       velero_s3_role_arn: "arn:aws:kms:us-west-2:000000000000:key/mrk-0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a0a"
       # -- Role ARN of the AWS S3 bucket for use with Route53 - external-dns
