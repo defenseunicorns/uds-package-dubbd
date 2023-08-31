@@ -20,5 +20,5 @@ package:
       private_admin_lb: true
       # -- Provision a private/internal load balancer for the tenant ingress gateway, if false a public load balancer will be provisioned
       private_tenant_lb: true
-      # -- If set to true, force delete all resources on removal (i.e. loki S3 bucket, PVCs, etc)
+      # -- If set to true, delete PVs on removal
       ephemeral: false

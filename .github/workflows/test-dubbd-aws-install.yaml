@@ -68,7 +68,7 @@ jobs:
           echo ${{ steps.get_cluster_name.outputs.eks_cluster_name }}
 
           zarf package deploy zarf-package-distro-eks-multi.tar.zst \
-            --set cluster_name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
+            --set cluster_name="${{ steps.get_cluster_name.outputs.eks_cluster_name }}" \
             --confirm
         working-directory: .github/workflows/eks #just holds the zarf-config
         id: create-cluster
@@ -91,8 +91,9 @@ jobs:
 
           # deploys the IAC needed for dubbd-aws
           zarf package deploy zarf-package-*.tar.zst \
-            --set ephemeral=true \
-            --set name=${{ steps.get_cluster_name.outputs.eks_cluster_name }} \
+            --set ephemeral="true" \
+            --set name="${{ steps.get_cluster_name.outputs.eks_cluster_name }}" \
+            --set region="us-west-2" \
             --set state_bucket_name="uds-ci-state-bucket" \
             --set state_key="tfstate/ci/install/${SHA:0:7}-dubbd-aws.tfstate" \
             --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
@@ -111,11 +112,11 @@ jobs:
           env | grep ZARF_PACKAGE_DEPLOY_SET
 
           zarf package deploy zarf-package-*.tar.zst \
-            --set domain=bigbang.dev \
-            --set key_file=bigbang.dev.key \
-            --set cert_file=bigbang.dev.cert \
-            --set private_admin_lb=true \
-            --set private_tenant_lb=true \
+            --set domain="bigbang.dev" \
+            --set key_file="bigbang.dev.key" \
+            --set cert_file="bigbang.dev.cert" \
+            --set private_admin_lb="true" \
+            --set private_tenant_lb="true" \
             --confirm
         working-directory: aws/dubbd-aws
         timeout-minutes: 60
