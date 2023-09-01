@@ -1,4 +1,4 @@
-name: oscal-component.yaml # Name of the generated file
+name: ./defense-unicorns-distro/oscal-component.yaml # Name of the generated file
 metadata: # OSCAL-compliant metadata
   title: DUBBD
   version: 0.0.1
