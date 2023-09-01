@@ -1,7 +1,7 @@
 name: ./defense-unicorns-distro/oscal-component.yaml # Name of the generated file
 metadata: # OSCAL-compliant metadata
   title: DUBBD
-  version: 0.0.1
+  version: 0.0.1 # x-release-please-version
   oscal-version: 1.0.4
   parties:
     - uuid: f3cf70f8-ba44-4e55-9ea3-389ef24847d3
@@ -16,19 +16,21 @@ components: # Define paths on the local filesystem or remote paths in git reposi
       path: oscal-component.yaml
     - git: https://repo1.dso.mil/big-bang/product/packages/tempo.git@1.2.0-bb.2
       path: oscal-component.yaml
-    - git: https://repo1.dso.mil/big-bang/product/packages/monitoring.git@47.1.0-bb.2
+    - git: https://repo1.dso.mil/big-bang/product/packages/monitoring.git@48.3.1-bb.0
       path: oscal-component.yaml
-    - git: https://repo1.dso.mil/big-bang/product/packages/neuvector.git@2.4.5-bb.2
+    - git: https://repo1.dso.mil/big-bang/product/packages/neuvector.git@2.4.5-bb.3
       path: oscal-component.yaml
     - git: https://repo1.dso.mil/big-bang/product/packages/promtail.git@6.13.1-bb.0
       path: oscal-component.yaml
     - git: https://repo1.dso.mil/big-bang/product/packages/loki.git@5.9.2-bb.0
       path: oscal-component.yaml
-    - git: https://repo1.dso.mil/big-bang/product/packages/istio-controlplane.git@1.18.2-bb.0
+    - git: https://repo1.dso.mil/big-bang/product/packages/istio-controlplane.git@1.18.2-bb.1
       path: oscal-component.yaml
     - git: https://repo1.dso.mil/big-bang/product/packages/kyverno.git@2.7.2-bb.0
       path: oscal-component.yaml
     # - git: https://repo1.dso.mil/big-bang/product/packages/kyverno-policies.git@1.1.0-bb.9
     #   path: oscal-component.yaml
     # - git: https://repo1.dso.mil/big-bang/product/packages/kyverno-reporter.git@2.16.0-bb.1
+    #   path: oscal-component.yaml
+    # - git: https://repo1.dso.mil/big-bang/product/packages/grafana.git@6.57.4-bb.0
     #   path: oscal-component.yaml
