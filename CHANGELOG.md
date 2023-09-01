@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.8.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.7.0...v0.8.0) (2023-09-01)
+
+
+### ci
+
+* update oscal for bb 2.9.0 ([#544](https://github.com/defenseunicorns/uds-package-dubbd/issues/544)) ([8fcfb08](https://github.com/defenseunicorns/uds-package-dubbd/commit/8fcfb085e905845005b10fddf4f462664b0f8562))
+
+
+### Features
+
+* create separate dubbd-iac-aws pkg ([#531](https://github.com/defenseunicorns/uds-package-dubbd/issues/531)) ([3fc0bc0](https://github.com/defenseunicorns/uds-package-dubbd/commit/3fc0bc07795b91a4b660f893c625f5c2109c457f))
+
+
+### Bug Fixes
+
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.331 ([#524](https://github.com/defenseunicorns/uds-package-dubbd/issues/524)) ([5485372](https://github.com/defenseunicorns/uds-package-dubbd/commit/548537262eaf03d9e2d81387b283b7cb7d88d9ed))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.332 ([#535](https://github.com/defenseunicorns/uds-package-dubbd/issues/535)) ([f5f2d5c](https://github.com/defenseunicorns/uds-package-dubbd/commit/f5f2d5c10edb7b20931041c7bbdd26f0e6192983))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.333 ([#538](https://github.com/defenseunicorns/uds-package-dubbd/issues/538)) ([b7e9e5f](https://github.com/defenseunicorns/uds-package-dubbd/commit/b7e9e5f49467a3e451e4d3d5365d3126fedb98cd))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.44.334 ([#540](https://github.com/defenseunicorns/uds-package-dubbd/issues/540)) ([2e97274](https://github.com/defenseunicorns/uds-package-dubbd/commit/2e97274176f25be6b29996771af03d4d47c08399))
+* **deps:** update module github.com/aws/aws-sdk-go to v1.45.0 ([#542](https://github.com/defenseunicorns/uds-package-dubbd/issues/542)) ([d9115e8](https://github.com/defenseunicorns/uds-package-dubbd/commit/d9115e82ba13a4c33849553156f80947e7711e49))
+* **deps:** update module github.com/gruntwork-io/terratest to v0.43.13 ([#536](https://github.com/defenseunicorns/uds-package-dubbd/issues/536)) ([be2a30b](https://github.com/defenseunicorns/uds-package-dubbd/commit/be2a30b8cc5635fb02b1fd1ab99b337cadea037f))
+
+
+### Miscellaneous
+
+* **deps:** update aws-actions/configure-aws-credentials action to v3 ([#525](https://github.com/defenseunicorns/uds-package-dubbd/issues/525)) ([9257db2](https://github.com/defenseunicorns/uds-package-dubbd/commit/9257db2b19902a76290ea5ba7d2e90a24700e19b))
+* **deps:** update gitlab tag big-bang/bigbang to v2.9.0 ([#495](https://github.com/defenseunicorns/uds-package-dubbd/issues/495)) ([cdc4066](https://github.com/defenseunicorns/uds-package-dubbd/commit/cdc40665ff46f11b0e5062e0f4b06fa7ac20dce9))
+
 ## [0.7.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.6.2...v0.7.0) (2023-08-23)
 
 
