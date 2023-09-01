@@ -3,11 +3,6 @@
 ## [0.8.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.7.0...v0.8.0) (2023-09-01)
 
 
-### ci
-
-* update oscal for bb 2.9.0 ([#544](https://github.com/defenseunicorns/uds-package-dubbd/issues/544)) ([8fcfb08](https://github.com/defenseunicorns/uds-package-dubbd/commit/8fcfb085e905845005b10fddf4f462664b0f8562))
-
-
 ### Features
 
 * create separate dubbd-iac-aws pkg ([#531](https://github.com/defenseunicorns/uds-package-dubbd/issues/531)) ([3fc0bc0](https://github.com/defenseunicorns/uds-package-dubbd/commit/3fc0bc07795b91a4b660f893c625f5c2109c457f))
