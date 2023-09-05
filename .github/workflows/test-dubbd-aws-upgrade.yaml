@@ -46,7 +46,7 @@ jobs:
         with:
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
-          working-dir: .github/test-iac/ci-dubbd-iac-aws
+          working-dir: .github/test-infra/ci-dubbd-iac-aws
           download-init-package: true
           timeout-minutes: 60
 
@@ -110,7 +110,7 @@ jobs:
 
             # adds ZARF_PACKAGE_DEPLOY_SET env var for use in zarf package deploy
             echo "zarf_oci_pkg_env_vars=$(cat setenv-dubbd-package.sh)" >> $GITHUB_OUTPUT
-        working-directory: .github/test-iac/ci-dubbd-iac-aws
+        working-directory: .github/test-infra/ci-dubbd-iac-aws
         timeout-minutes: 60
 
       - name: Deploy latest DUBBD-AWS OCI package version
@@ -152,7 +152,7 @@ jobs:
 
             # adds ZARF_PACKAGE_DEPLOY_SET env var for use in zarf package deploy
             echo "zarf_pkg_env_vars=$(cat setenv-dubbd-package.sh)" >> $GITHUB_OUTPUT
-        working-directory: .github/test-iac/ci-dubbd-iac-aws
+        working-directory: .github/test-infra/ci-dubbd-iac-aws
         timeout-minutes: 60
 
       - name: Deploy DUBBD-AWS
@@ -182,7 +182,7 @@ jobs:
       - name: Remove CI-DUBBD-IAC-AWS
         if: always()
         run: zarf package remove zarf-package-*.tar.zst --confirm
-        working-directory: .github/test-iac/ci-dubbd-iac-aws
+        working-directory: .github/test-infra/ci-dubbd-iac-aws
         timeout-minutes: 60
         continue-on-error: true
 
