@@ -46,7 +46,7 @@ jobs:
         with:
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
-          working-dir: .github/workflows/ci-dubbd-iac-aws
+          working-dir: .github/test-iac/ci-dubbd-iac-aws
           download-init-package: true
           timeout-minutes: 60
 
@@ -69,7 +69,7 @@ jobs:
 
       - name: Package EKSCTL
         run: zarf package create --confirm
-        working-directory: .github/workflows/eks
+        working-directory: .github/test-infra/eks
 
       - name: Create EKS cluster
         run: |
@@ -78,7 +78,7 @@ jobs:
           zarf package deploy zarf-package-distro-eks-multi.tar.zst \
             --set cluster_name="${{ steps.get_cluster_name.outputs.eks_cluster_name }}" \
             --confirm
-        working-directory: .github/workflows/eks #just holds the zarf-config
+        working-directory: .github/test-infra/eks #just holds the zarf-config
         id: create-cluster
 
       - name: Show Cluster
@@ -110,7 +110,7 @@ jobs:
 
             # adds ZARF_PACKAGE_DEPLOY_SET env var for use in zarf package deploy
             echo "zarf_oci_pkg_env_vars=$(cat setenv-dubbd-package.sh)" >> $GITHUB_OUTPUT
-        working-directory: .github/workflows/ci-dubbd-iac-aws
+        working-directory: .github/test-iac/ci-dubbd-iac-aws
         timeout-minutes: 60
 
       - name: Deploy latest DUBBD-AWS OCI package version
@@ -152,7 +152,7 @@ jobs:
 
             # adds ZARF_PACKAGE_DEPLOY_SET env var for use in zarf package deploy
             echo "zarf_pkg_env_vars=$(cat setenv-dubbd-package.sh)" >> $GITHUB_OUTPUT
-        working-directory: .github/workflows/ci-dubbd-iac-aws
+        working-directory: .github/test-iac/ci-dubbd-iac-aws
         timeout-minutes: 60
 
       - name: Deploy DUBBD-AWS
@@ -182,7 +182,7 @@ jobs:
       - name: Remove CI-DUBBD-IAC-AWS
         if: always()
         run: zarf package remove zarf-package-*.tar.zst --confirm
-        working-directory: .github/workflows/ci-dubbd-iac-aws
+        working-directory: .github/test-iac/ci-dubbd-iac-aws
         timeout-minutes: 60
         continue-on-error: true
 
@@ -191,6 +191,6 @@ jobs:
         # can't do a zarf package remove since there's no kubernetes cluster.
         run: |
           ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
-        working-directory: .github/workflows/eks
+        working-directory: .github/test-infra/eks
         timeout-minutes: 60
         continue-on-error: true

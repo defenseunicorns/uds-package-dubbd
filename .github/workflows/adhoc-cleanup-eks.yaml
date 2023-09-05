@@ -39,7 +39,7 @@ jobs:
           tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
           sudo mv /tmp/eksctl .
           ./eksctl utils write-kubeconfig -c ${{inputs.eks_cluster_name}}
-        working-directory: .github/workflows/eks
+        working-directory: .github/test-infra/eks
 
       - name: Show Cluster & Delete Cluster Components
         run: |
@@ -59,6 +59,6 @@ jobs:
         # can't do a zarf package remove since there's no kubernetes cluster.
         run: |
           cat config.yaml | sed "s/###ZARF_VAR_CLUSTER_NAME###/${{inputs.eks_cluster_name}}/g" | ./eksctl delete cluster -f - --disable-nodegroup-eviction --wait
-        working-directory: .github/workflows/eks
+        working-directory: .github/test-infra/eks
         timeout-minutes: 60
         continue-on-error: true

@@ -16,8 +16,6 @@ on:
       - "oscal-component.y*ml"
       - ".github/workflows/*aws*.y*ml"
       - ".github/workflows/*k3d*.y*ml"
-      - ".github/workflows/*cloudtrail*.y*ml"
-      - ".github/workflows/*uds*.y*ml"
       - "**/*oscal-component.y*aml"
 
 jobs:
