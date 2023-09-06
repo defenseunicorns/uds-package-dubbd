@@ -45,7 +45,7 @@ Create an EKS cluster:
 
 ```console
 # change to the CI eksctl dir
-cd .github/workflows/eks
+cd .github/test-infra/eks
 
 # if needed, modify the AWS region in the eksctl config
 vi config.yaml
@@ -76,7 +76,7 @@ Deploy remaining AWS resources needed for DUBBD-AWS:
 
 ```console
 # change to the CI-DUBBD-IAC-AWS dir
-cd .github/workflow/ci-dubbd-iac-aws
+cd .github/test-infra/ci-dubbd-iac-aws
 
 # run zarf package create
 zarf package create . --confirm
@@ -151,7 +151,7 @@ Tear down AWS resources created for DUBBD-AWS:
 
 ```console
 # change to the CI DUBBD IAC AWS dir
-cd .github/workflow/ci-dubbd-iac-aws
+cd .github/test-infra/ci-dubbd-iac-aws
 
 # run zarf package remove
 zarf package remove zarf-package-*.tar.zst --confirm
@@ -161,7 +161,7 @@ Tear down EKS cluster:
 
 ```console
 # change to the CI eksctl dir
-cd .github/workflows/eks
+cd .github/test-infra/eks
 
 # run zarf package remove
 zarf package remove zarf-package-*.tar.zst --confirm
@@ -171,7 +171,7 @@ zarf package remove zarf-package-*.tar.zst --confirm
 
 To be provided...
 
-### Defense Unicorns Big Bang Distro for RKE2 (DUBBD-AWS)
+### Defense Unicorns Big Bang Distro for RKE2 (DUBBD-RKE2)
 
 To be provided...
 

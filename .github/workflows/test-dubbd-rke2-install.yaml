@@ -45,7 +45,7 @@ jobs:
           terraform apply -auto-approve
           kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.21"
           kubectl apply -f storage-class.yaml
-        working-directory: .github/workflows/rke2
+        working-directory: .github/test-infra/rke2
 
       - name: Zarf init
         run: zarf init -a amd64 --components=git-server --confirm
@@ -69,4 +69,4 @@ jobs:
       - name: Teardown RKE2 cluster
         if: always()
         run: terraform destroy -auto-approve
-        working-directory: .github/workflows/rke2
+        working-directory: .github/test-infra/rke2
