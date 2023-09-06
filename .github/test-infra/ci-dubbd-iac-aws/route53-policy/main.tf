@@ -14,7 +14,7 @@ data "aws_partition" "current" {}
 
 # using du irsa module
 module "irsa" {
-  source = "github.com/defenseunicorns/terraform-aws-uds-irsa?ref=v0.0.1"
+  source = "github.com/defenseunicorns/terraform-aws-uds-irsa?ref=v0.0.2"
 
   name = "external-dns-role-${var.name}"
 
