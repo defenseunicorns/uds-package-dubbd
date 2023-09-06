@@ -23,7 +23,7 @@ jobs:
           df -h
 
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Run this step first so we can fail fast in case an invalid package name is provided
       - name: Get latest package version to upgrade from
