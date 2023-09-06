@@ -308,6 +308,9 @@ components:
       - name: slack-alerts
         files:
           - manifests/alerts/flux-alerts.yaml
+      - name: kiali-grafana-temp-fix-credentials
+        files:
+          - manifests/kiali-grafana-temp-fix-credentials.yaml
     extensions:
       bigbang:
         version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
