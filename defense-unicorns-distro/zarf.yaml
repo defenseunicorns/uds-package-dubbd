@@ -326,3 +326,19 @@ components:
           - ../values/dubbd-values.yaml
   - name: dubbd-post-upgrade
     required: true
+    actions:
+      onDeploy:
+        after:
+          - cmd: |
+              ./zarf tools kubectl apply -f kiali-grafana-temp-fix-credentials.yaml
+              ./zarf tools kubectl -n kiali delete pods -l app.kubernetes.io/name=kiali --ignore-not-found --timeout=2m
+            dir: run/manifests
+            description: "Create credentials for integration with Grafana & cycle Kiali pod(s)"
+      onRemove:
+        after:
+          - cmd: |
+              ./zarf tools kubectl delete -n kiali secret kiali-grafana-temp-fix-credentials
+            description: "Remove Kiali credentials for integration with Grafana"
+    files:
+      - source: manifests/kiali-grafana-temp-fix-credentials.yaml
+        target: run/manifests/kiali-grafana-temp-fix-credentials.yaml
