@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.8.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.8.0...v0.8.1) (2023-09-07)
+
+
+### Bug Fixes
+
+* temp fix to secret used by kiali for grafana ([#554](https://github.com/defenseunicorns/uds-package-dubbd/issues/554)) ([45cc935](https://github.com/defenseunicorns/uds-package-dubbd/commit/45cc935923b0ace254b1bfd625119910147c1b3f))
+
+
+### Miscellaneous
+
+* **deps:** update actions/checkout action to v4 ([#545](https://github.com/defenseunicorns/uds-package-dubbd/issues/545)) ([bbd205a](https://github.com/defenseunicorns/uds-package-dubbd/commit/bbd205a435b848920b285eb5f9ebd1ffd40c084a))
+* **deps:** update dependency defenseunicorns/zarf to v0.29.1 ([#539](https://github.com/defenseunicorns/uds-package-dubbd/issues/539)) ([10000d2](https://github.com/defenseunicorns/uds-package-dubbd/commit/10000d2cb77fbd0a7c05e1b6ef3c0f3e7e7eda0b))
+
 ## [0.8.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.7.0...v0.8.0) (2023-09-01)
 
 
