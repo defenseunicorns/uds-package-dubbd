@@ -337,10 +337,8 @@ components:
       onRemove:
         after:
           - cmd: |
-              ./zarf tools kubectl delete -f kiali-grafana-temp-fix-credentials.yaml
-            dir: run/manifests
+              ./zarf tools kubectl delete -n kiali secret kiali-grafana-temp-fix-credentials
             description: "Remove Kiali credentials for integration with Grafana"
     files:
       - source: manifests/kiali-grafana-temp-fix-credentials.yaml
         target: run/manifests/kiali-grafana-temp-fix-credentials.yaml
-        executable: true
