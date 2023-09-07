@@ -25,7 +25,7 @@ jobs:
     if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
     uses: ./.github/workflows/publish.dubbd.package.yaml
     with:
-      working_dir: .github/workflows/ci-dubbd-iac-aws
+      working_dir: .github/test-infra/ci-dubbd-iac-aws
     secrets: inherit
 
   publish-dubbd-aws:
