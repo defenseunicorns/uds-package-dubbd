@@ -21,11 +21,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: latest
-     
+
       - name: Setup Environment
         run: |
-         npm install jsdom
-         npm install js-yaml
+          npm install jsdom
+          npm install js-yaml
 
       - name: Download Javascript Image generator
         run: |
