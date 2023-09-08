@@ -33,7 +33,7 @@ jobs:
           git clone https://github.com/defenseunicorns/compliance-md-generator.git
           cd compliance-md-generator/
           node generatePieChartSvg.js
-          mv compliance-images/ ..
+          cp -R compliance-images/* ..
           cd ..
 
       - name: Clean Up
