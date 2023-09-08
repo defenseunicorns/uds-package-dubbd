@@ -1,0 +1,20 @@
+name: CI DUBBD COMPLIANCE MD
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - ".gitignore"
+      - "LICENSE"
+      - "**/*.json"
+      - "**/*.png"
+      - "k3d/**"
+      - ".github/workflows/*k3d*.y*ml"
+
+  workflow_call:
+
+jobs:
+  test-release-oscal:
+    uses: ./.github/workflows/create-compliance-md-images.yaml
+    secrets: inherit
