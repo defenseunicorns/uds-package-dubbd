@@ -32,10 +32,15 @@ jobs:
           git clone https://github.com/defenseunicorns/compliance-md-generator.git
           cd compliance-md-generator/
           node generatePieChartSvg.js
+          mv compliance-images/ ..
           cd ..
 
       - name: Clean Up
-        run: rm -rf compliance-md-generator
+        run: |
+          rm -rf compliance-md-generator
+          rm -rf node_modules
+          rm package-lock.json
+          rm package.json
 
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v4
