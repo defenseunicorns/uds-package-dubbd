@@ -1,0 +1,43 @@
+name: Create Compliance MD Images
+
+on:
+  workflow_call:
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  create-and-update-dubbd-oscal:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Node and NPM
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+     
+      - name: Setup Environment
+        run: |
+         npm install jsdom
+         npm install js-yaml
+
+      - name: Download Javascript Image generator
+        run: |
+          git clone https://github.com/defenseunicorns/compliance-md-generator.git
+          cd compliance-md-generator/
+          node generatePieChartSvg.js
+          cd ..
+
+      - name: Clean Up
+        run: rm -rf compliance-md-generator
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          skip_checkout: true
