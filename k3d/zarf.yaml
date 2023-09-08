@@ -47,6 +47,10 @@ components:
     required: true
     import:
       path: ../defense-unicorns-distro
+  - name: cert-manager-chart
+    required: true
+    import:
+      path: ../defense-unicorns-distro
   - name: dubbd-pre-upgrade
     required: true
     import:

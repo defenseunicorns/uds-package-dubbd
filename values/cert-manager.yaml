@@ -1,0 +1,20 @@
+image:
+  repository: registry1.dso.mil/ironbank/jetstack/cert-manager-controller
+  tag: "v1.12.4"
+
+cainjector:
+  image:
+    repository: registry1.dso.mil/ironbank/jetstack/cert-manager-cainjector
+    tag: "v1.12.4"
+
+webhook:
+  image:
+    repository: registry1.dso.mil/ironbank/jetstack/cert-manager-webhook
+    tag: "v1.12.4"
+
+startupapicheck:
+  image:
+    repository: registry1.dso.mil/ironbank/jetstack/cert-manager-ctl
+    tag: "v1.12.4"
+
+installCRDs: true
