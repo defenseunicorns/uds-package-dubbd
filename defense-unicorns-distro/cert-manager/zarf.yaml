@@ -20,7 +20,7 @@ components:
           namespace: cert-manager
           releaseName: cert-manager
           valuesFiles: 
-            - ../values/cert-manager.yaml
+            - ../../values/cert-manager.yaml
     images:
         - "registry1.dso.mil/ironbank/jetstack/cert-manager-cainjector:v1.12.4"
         - "registry1.dso.mil/ironbank/jetstack/cert-manager-webhook:v1.12.4"
