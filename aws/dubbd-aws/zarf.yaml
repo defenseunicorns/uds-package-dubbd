@@ -185,6 +185,8 @@ components:
       path: ../external-dns
   - name: dubbd-post-upgrade
     required: true
+    import:
+      path: ../../defense-unicorns-distro
     actions:
       onDeploy:
         after:
