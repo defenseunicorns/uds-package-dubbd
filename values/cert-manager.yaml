@@ -18,3 +18,11 @@ startupapicheck:
     tag: "v1.12.4"
 
 installCRDs: true
+
+# delete secret when certificate is deleted
+extraArgs:
+- --enable-certificate-owner-ref=true
+
+prometheus:
+  servicemonitor:
+    enabled: true
