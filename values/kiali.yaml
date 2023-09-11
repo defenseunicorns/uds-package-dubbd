@@ -20,10 +20,6 @@ kiali:
             limits:
               cpu: "500m"
               memory: "512Mi"
-        external_services:
-          grafana:
-            auth:
-              password: "secret:kiali-grafana-temp-fix-credentials:grafana-password"
           hpa:
             spec:
               minReplicas: 1
