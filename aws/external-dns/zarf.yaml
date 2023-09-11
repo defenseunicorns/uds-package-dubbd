@@ -31,7 +31,7 @@ components:
       # renovate: datasource=helm
       - name: external-dns
         url: https://kubernetes-sigs.github.io/external-dns
-        version: 1.13.0
+        version: 1.13.1
         namespace: external-dns
         releaseName: external-dns
         valuesFiles:
