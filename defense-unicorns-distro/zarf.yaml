@@ -58,6 +58,12 @@ variables:
     prompt: false
     type: file
     autoIndent: true
+  - name: CERT_RESOURCES
+    description: "Path to a local manifest file for deploying custom cert-manager Issuers and Certificates"
+    default: deploy-cert-resources.yaml
+    prompt: false
+    type: file
+    autoIndent: true
 
 components:
   - name: set-ephemeral
@@ -226,6 +232,16 @@ components:
     required: true
     import:
       path: ./cert-manager
+  - name: cert-manager-custom-resources
+    required: true
+    actions:
+      onDeploy:
+        after:
+          - cmd: ./zarf tools kubectl apply -f cert-manager-resources.yaml
+    files:
+      - source: ../values/cert-manager-resources.yaml
+        target: cert-manager-resources.yaml
+
   - name: bigbang
     required: true
     actions:
@@ -346,3 +362,14 @@ components:
     files:
       - source: manifests/kiali-grafana-temp-fix-credentials.yaml
         target: run/manifests/kiali-grafana-temp-fix-credentials.yaml
+  - name: cert-manager-service-monitor
+    required: true
+    actions:
+      onDeploy:
+        after:
+          - cmd: ./zarf tools kubectl apply -f cert-manager-service-monitor.yaml
+            dir: run/manifests
+            description: "Create service monitor object for cert manager after prometheus has been deployed"
+    files:
+      - source: manifests/cert-manager-service-monitor.yaml
+        target: run/manifests/cert-manager-service-monitor.yaml
