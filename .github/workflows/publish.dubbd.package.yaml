@@ -27,7 +27,7 @@ jobs:
           working-dir: ${{ inputs.working_dir }}
 
       - name: Login to GHCR
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: dummy
