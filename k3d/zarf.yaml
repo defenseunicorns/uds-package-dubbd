@@ -51,6 +51,10 @@ components:
     required: true
     import:
       path: ../defense-unicorns-distro
+  - name: cert-manager-custom-resources
+    required: true
+    import:
+      path: ../defense-unicorns-distro
   - name: dubbd-pre-upgrade
     required: true
     import:
@@ -65,6 +69,10 @@ components:
         valuesFiles:
           - values/local-dev.yaml
           - values/add-dubbd-values.yaml
+  - name: cert-manager-service-monitor
+    required: true
+    import:
+      path: ../defense-unicorns-distro
   - name: dubbd-post-upgrade
     required: true
     import:
