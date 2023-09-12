@@ -19,10 +19,13 @@ startupapicheck:
 
 installCRDs: true
 
-# delete secret when certificate is deleted
 extraArgs:
-- --enable-certificate-owner-ref=true
+  - --enable-certificate-owner-ref=true
 
-prometheus:
-  servicemonitor:
-    enabled: true
+securityContext:
+  runAsNonRoot: true
+
+  # prometheus.serviceMonitor must remain disabled for install
+  # due to dependency issues.
+  # A ServiceMonitor resource will be deployed separately after
+  # DUBBD has fully deployed and the ServiceMonitor CRD definition exists.
