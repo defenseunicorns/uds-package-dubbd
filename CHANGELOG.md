@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.9.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.8.1...v0.9.0) (2023-09-12)
+
+
+### Features
+
+* Add COMPLIANCE.md ([#557](https://github.com/defenseunicorns/uds-package-dubbd/issues/557)) ([aff9bab](https://github.com/defenseunicorns/uds-package-dubbd/commit/aff9babea1c7f2e1369bfab0fa1e636e2b4aced0))
+
+
+### Bug Fixes
+
+* revert Kiali fix now present in BB v2.10.0 ([#563](https://github.com/defenseunicorns/uds-package-dubbd/issues/563)) ([7d8a3e1](https://github.com/defenseunicorns/uds-package-dubbd/commit/7d8a3e160c45709f5f5cb58925190dfd0e6e0541))
+
+
+### Miscellaneous
+
+* **deps:** update dependency defenseunicorns/zarf to v0.29.2 ([#560](https://github.com/defenseunicorns/uds-package-dubbd/issues/560)) ([404d769](https://github.com/defenseunicorns/uds-package-dubbd/commit/404d76907604ec961c5e3c6fe491a842e1d300fa))
+* **deps:** update gitlab tag big-bang/bigbang to v2.10.0 ([#559](https://github.com/defenseunicorns/uds-package-dubbd/issues/559)) ([03df8e5](https://github.com/defenseunicorns/uds-package-dubbd/commit/03df8e501f217af8cb8b835707c11a8014405453))
+* **deps:** update helm chart external-dns to v1.13.1 ([#556](https://github.com/defenseunicorns/uds-package-dubbd/issues/556)) ([8ef35ab](https://github.com/defenseunicorns/uds-package-dubbd/commit/8ef35abe27f207a283f42ff39d641d26e2600c4d))
+
 ## [0.8.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.8.0...v0.8.1) (2023-09-07)
 
 
