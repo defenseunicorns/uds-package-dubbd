@@ -238,9 +238,10 @@ components:
       onDeploy:
         after:
           - cmd: ./zarf tools kubectl apply -f cert-manager-resources.yaml
+            dir: run/manifests
     files:
       - source: ../values/cert-manager-resources.yaml
-        target: cert-manager-resources.yaml
+        target: run/manifests/cert-manager-resources.yaml
 
   - name: bigbang
     required: true
