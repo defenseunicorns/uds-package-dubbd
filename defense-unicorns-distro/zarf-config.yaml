@@ -14,5 +14,3 @@ package:
       key_file: bigbang.dev.key
       # -- TLS cert
       cert_file: bigbang.dev.cert
-      # -- TLS secret name
-      tls_secret_name: istio-gateway-tls
