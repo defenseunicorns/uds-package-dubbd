@@ -29,8 +29,9 @@ components:
               if [ -z "${ZARF_VAR_ADMIN_DOMAIN}" ]; then
                 echo "\"${ZARF_VAR_DOMAIN}\""
               else
-                echo "\"${ZARF_VAR_DOMAIN}\", \"${ZARF_VAR_ADMIN_DOMAIN}\""
+                echo "${ZARF_VAR_DOMAIN}\", \"${ZARF_VAR_ADMIN_DOMAIN}"
               fi
+            description: "Set external-dns domain list Zarf variable"
             mute: true
             setVariables:
               - name: DOMAIN_LIST

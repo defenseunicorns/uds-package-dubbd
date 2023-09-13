@@ -30,7 +30,7 @@ jobs:
 
       - name: Download Javascript Image generator
         run: |
-          git clone https://github.com/defenseunicorns/compliance-md-generator.git
+          git clone -b "0.0.1" --single-branch https://github.com/defenseunicorns/compliance-md-generator.git
           cd compliance-md-generator/
           node generatePieChartSvg.js
           cp -R compliance-images/* ../compliance-images/
