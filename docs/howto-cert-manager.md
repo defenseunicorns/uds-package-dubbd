@@ -1,0 +1,29 @@
+## [Cert Manager](https://cert-manager.io/)
+
+"cert-manager is a powerful and extensible X.509 certificate controller for Kubernetes and OpenShift workloads. It will obtain certificates from a variety of Issuers, both popular public Issuers as well as private Issuers, and ensure the certificates are valid and up-to-date, and will attempt to renew certificates at a configured time before expiry." -- cert-manager.io
+
+### Install
+
+UDS installs cert-manager (controller, webhook, and cainjector) as a helm release, using images from Ironbank.
+
+### Controlling Values
+
+You can set different cert-manager values via `cert-manager.yaml` under the [values/ dir](../values/). It's important to keep `installCRDs: true`, unless you want to manually install them yourself via `kubectl` after the fact.
+
+You can find a list of configurable values at [artifcathub.io](https://artifacthub.io/packages/helm/cert-manager/cert-manager).
+
+### How to Create Custom Issuers and Certificates
+
+Once the `cert-manager-chart` component is deployed and cert-manager is installed, the next component that needs to run is `cert-manager-custom-resources`, which will apply your manifest for your Issuer/ClustIssuer and any Certificates. This component looks for a manifest file passed to `###ZARF_VAR_CERT_RESOURCES###`. The default file it looks for in the **current directory** is `deploy-cert-resources.yaml`. You can change this by passing a different name to `cert_resources` in your `zarf-config.yaml`. Zarf will take this file and dump it's contents into the `cert-manager-resources.yaml` in [values/](../values/cert-manager-resources.yaml). It will then run `zarf tools kubectl apply` on this file and deploy your cert-manager resources.
+
+_Of course, you could manually create these resources, unless you want them to be used for securing Istio gateways. In that case, the certificate secrets need to exist before Big Bang deploys._
+
+### Securing Istio Gateways
+
+There are two ways now to secure istio gateways in DUBBD:
+
+1. Pass a key and cert to zarf as cert_key and cert_file ([distro config](../defense-unicorns-distro/zarf-config.yaml)). The `load-certs` component in [Distro Zarf Yaml](../defense-unicorns-distro/zarf.yaml) will take these files and set them as the values for `###ZARF_VAR_PUBLIC_KEY###` and `###ZARF_VAR_PUBLIC_CERT`. Those variables are then used in [Istio Values](../values/istio.yaml) under the `gateways` tls section. Under the hood, Big Bang takes the key and cert and creates secrets for each gateway as `<gatewayname>-cert`, which get passed to Istio as the `gateways.tls.credentialName` values.
+
+2. Use cert-manager to create certificates, which get stored as secrets, and pass them to Istio. To do this you will need to:
+   1. Create your cert-manager Issuer and 2 certificates (see section on creating custom cert-manager resources). **One certificate secret needs to be named `admin-cert` and the other `tenant-cert`. This is a hack right now for getting around the fact that Big Bang does not directly expose `gateways.tls.credentialName`.** (i.e. [k3d custom resources](../k3d/deploy-cert-resources.yaml))
+   2. Remove `load-certs` from your `zarf.yaml`. If you notice in the [k3d zarf.yaml](../k3d/zarf.yaml), the `load-certs` component is not imported since we are not passing cert and key files.
