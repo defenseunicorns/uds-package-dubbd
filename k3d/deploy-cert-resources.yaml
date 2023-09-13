@@ -35,7 +35,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: admin-cert
-  namespace: cert-manager
+  namespace: istio-system
 spec:
   isCA: true
   commonName: bigbang-istio-gateway
@@ -52,7 +52,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: tenant-cert
-  namespace: cert-manager
+  namespace: istio-system
 spec:
   isCA: true
   commonName: bigbang-istio-gateway
