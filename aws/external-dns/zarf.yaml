@@ -12,12 +12,28 @@ metadata:
 
 variables:
   - name: DOMAIN
-    description: "Name of domain to use for the DNS zone"
+    description: "Name of domain to use for either the tenant only or tenant + admin DNS zone(s)"
     default: "bigbang.dev"
+  - name: ADMIN_DOMAIN
+    description: "Name of domain to use for the admin DNS zone"
   - name: ROUTE53_ROLE_ARN
     description: "ROUTE53_ROLE_ARN"
 
 components:
+  - name: set-external-dns-domain
+    required: true
+    actions:
+      onDeploy:
+        before:
+          - cmd: |
+              if [ -z "${ZARF_VAR_ADMIN_DOMAIN}" ]; then
+                echo "\"${ZARF_VAR_DOMAIN}\""
+              else
+                echo "\"${ZARF_VAR_DOMAIN}\", \"${ZARF_VAR_ADMIN_DOMAIN}\""
+              fi
+            mute: true
+            setVariables:
+              - name: DOMAIN_LIST
   - name: external-dns-k8s-manifests
     required: true
     manifests:

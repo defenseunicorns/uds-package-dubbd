@@ -65,7 +65,7 @@ variables:
 
 
 components:
-  - name: set-ephemeral
+  - name: set-zarf-vars
     required: true
     import:
       path: ../../defense-unicorns-distro
