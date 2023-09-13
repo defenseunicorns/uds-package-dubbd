@@ -13,6 +13,31 @@ istio:
     meshConfig:
       meshMTLS:
         minProtocolVersion: TLSV1_3
+    gateways:
+      admin:
+        servers:
+          - hosts:
+              - "*.{{ .Values.domain }}"
+            port:
+              name: https
+              number: 8443
+              protocol: HTTPS
+            tls:
+              credentialName: ###ZARF_VAR_TLS_SECRET_NAME###
+              mode: "SIMPLE"
+              minProtocolVersion: "TLSV1_3"
+      tenant:
+        servers:
+          - hosts:
+              - "*.{{ .Values.domain }}"
+            port:
+              name: https
+              number: 8443
+              protocol: HTTPS
+            tls:
+              credentialName: ###ZARF_VAR_TLS_SECRET_NAME###
+              mode: "SIMPLE"
+              minProtocolVersion: "TLSV1_3"
     istiod:
       resources:
         requests:
@@ -43,25 +68,10 @@ istio:
   gateways:
     admin:
       ingressGateway: admin-ingressgateway
-      hosts:
-        - "*.{{ .Values.domain }}"
-      tls:
-        key: |
-          ###ZARF_VAR_PUBLIC_KEY###
-        cert: |
-          ###ZARF_VAR_PUBLIC_CERT###
-        minProtocolVersion: "TLSV1_3"
     public: null
     tenant:
       ingressGateway: tenant-ingressgateway
-      hosts:
-        - "*.{{ .Values.domain }}"
-      tls:
-        key: |
-          ###ZARF_VAR_PUBLIC_KEY###
-        cert: |
-          ###ZARF_VAR_PUBLIC_CERT###
-        minProtocolVersion: "TLSV1_3"
+
 istioOperator:
   enabled: true
   values:
