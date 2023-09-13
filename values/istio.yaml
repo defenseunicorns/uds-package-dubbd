@@ -55,7 +55,7 @@ istio:
     tenant:
       ingressGateway: tenant-ingressgateway
       hosts:
-        - "*.{{ .Values.domain }}"
+        - "*.###ZARF_VAR_DOMAIN###"
       tls:
         key: |
           ###ZARF_VAR_TENANT_KEY###
