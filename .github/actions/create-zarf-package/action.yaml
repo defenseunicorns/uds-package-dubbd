@@ -24,7 +24,7 @@ runs:
   using: composite
   steps:
     - name: Login to Registry1
-      uses: docker/login-action@v2
+      uses: docker/login-action@v3
       with:
         registry: registry1.dso.mil
         username: ${{ inputs.username }}
@@ -34,7 +34,7 @@ runs:
       uses: defenseunicorns/setup-zarf@main
       with:
         # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
-        version: v0.29.1
+        version: v0.29.2
         download-init-package: ${{ inputs.download-init-package }}
 
     - name: Create Zarf Package

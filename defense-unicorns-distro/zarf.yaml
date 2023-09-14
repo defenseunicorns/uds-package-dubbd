@@ -3,7 +3,7 @@ metadata:
   name: dubbd
   description: "Defense Unicorns Big Bang Distro"
   # x-release-please-start-version
-  version: "0.8.1"
+  version: "0.9.0"
   # x-release-please-end
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/Big_Bang_Color_Logo_White_text.b10a1bae.webp
@@ -351,18 +351,8 @@ components:
       onDeploy:
         after:
           - cmd: |
-              ./zarf tools kubectl apply -f kiali-grafana-temp-fix-credentials.yaml
-              ./zarf tools kubectl -n kiali delete pods -l app.kubernetes.io/name=kiali --ignore-not-found --timeout=2m
-            dir: run/manifests
-            description: "Create credentials for integration with Grafana & cycle Kiali pod(s)"
-      onRemove:
-        after:
-          - cmd: |
-              ./zarf tools kubectl delete -n kiali secret kiali-grafana-temp-fix-credentials
-            description: "Remove Kiali credentials for integration with Grafana"
-    files:
-      - source: manifests/kiali-grafana-temp-fix-credentials.yaml
-        target: run/manifests/kiali-grafana-temp-fix-credentials.yaml
+              ./zarf tools kubectl delete -n kiali secret kiali-grafana-temp-fix-credentials --ignore-not-found --timeout=2m
+            description: "Remove temporary fix secret for Kiali, if present"
   - name: cert-manager-service-monitor
     required: true
     actions:

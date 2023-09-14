@@ -4,7 +4,7 @@ metadata:
   name: dubbd-k3d
   description: "Defense Unicorns Big Bang Distro K3D Environment"
   # x-release-please-start-version
-  version: "0.8.1"
+  version: "0.9.0"
   # x-release-please-end
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
@@ -35,7 +35,7 @@ components:
     required: true
     import:
       path: ../defense-unicorns-distro
-  - name: load-certs
+  - name: generate-credentials
     required: true
     import:
       path: ../defense-unicorns-distro
