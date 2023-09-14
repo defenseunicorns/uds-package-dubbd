@@ -13,25 +13,24 @@ metadata:
 variables:
   - name: DOMAIN
     default: bigbang.dev
+    description: "This is the domain to use for the tenant ingress gateway"
     prompt: false
   - name: CERT_FILE
     default: bigbang.dev.cert
-    description: "This file contains the cert for the ingress gateways"
+    description: "This file contains the cert for the tenant ingress gateway"
     prompt: false
   - name: KEY_FILE
     default: bigbang.dev.key
-    description: "This file contains the key for the ingress gateways"
+    description: "This file contains the key for the tenant ingress gateway"
     prompt: false
   - name: ADMIN_DOMAIN
+    description: "This is the domain to use for the admin ingress gateway"
     prompt: false
-    description: "This file contains the key for the ingress gateways"
   - name: ADMIN_CERT_FILE
-    default: bigbang.dev.cert
-    description: "This file contains the cert for the ingress gateways"
+    description: "This file contains the cert for the admin ingress gateway"
     prompt: false
   - name: ADMIN_KEY_FILE
-    default: bigbang.dev.key
-    description: "This file contains the key for the ingress gateways"
+    description: "This file contains the key for the admin ingress gateways"
     prompt: false
   - name: EXEMPT_NAMESPACES
     description: "List of namespaces to be exempt from cluster policies (must contain zarf)"
@@ -165,14 +164,24 @@ components:
               - name: TENANT_KEY
                 sensitive: true
                 autoIndent: true
-          - cmd: "cat ${ZARF_VAR_ADMIN_CERT_FILE}"
+          - cmd: |
+              if [ -z "${ZARF_VAR_ADMIN_CERT_FILE}" ]; then
+                cat ${ZARF_VAR_CERT_FILE}"
+              else
+                cat ${ZARF_VAR_ADMIN_CERT_FILE}
+              fi
             description: "Read admin cert file into values"
             mute: true
             setVariables:
               - name: ADMIN_CERT
                 sensitive: true
                 autoIndent: true
-          - cmd: "cat ${ZARF_VAR_ADMIN_KEY_FILE}"
+          - cmd: |
+              if [ -z "${ZARF_VAR_ADMIN_KEY_FILE}" ]; then
+                cat ${ZARF_VAR_KEY_FILE}"
+              else
+                cat ${ZARF_VAR_ADMIN_KEY_FILE}
+              fi
             description: "Read admin key file into values"
             mute: true
             setVariables:
