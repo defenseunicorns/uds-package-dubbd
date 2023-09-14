@@ -166,7 +166,7 @@ components:
                 autoIndent: true
           - cmd: |
               if [ -z "${ZARF_VAR_ADMIN_CERT_FILE}" ]; then
-                cat ${ZARF_VAR_CERT_FILE}"
+                cat ${ZARF_VAR_CERT_FILE}
               else
                 cat ${ZARF_VAR_ADMIN_CERT_FILE}
               fi
@@ -178,7 +178,7 @@ components:
                 autoIndent: true
           - cmd: |
               if [ -z "${ZARF_VAR_ADMIN_KEY_FILE}" ]; then
-                cat ${ZARF_VAR_KEY_FILE}"
+                cat ${ZARF_VAR_KEY_FILE}
               else
                 cat ${ZARF_VAR_ADMIN_KEY_FILE}
               fi
