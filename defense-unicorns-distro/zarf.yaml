@@ -13,15 +13,15 @@ metadata:
 variables:
   - name: DOMAIN
     default: bigbang.dev
-    description: "This is the domain to use for the tenant ingress gateway"
+    description: "This is the domain to use for the tenant ingress gateway (and also used for ADMIN_DOMAIN, if not provided)"
     prompt: false
   - name: CERT_FILE
     default: bigbang.dev.cert
-    description: "This file contains the cert for the tenant ingress gateway"
+    description: "This file contains the cert for the tenant ingress gateway (and also used for ADMIN_CERT_FILE, if not provided)"
     prompt: false
   - name: KEY_FILE
     default: bigbang.dev.key
-    description: "This file contains the key for the tenant ingress gateway"
+    description: "This file contains the key for the tenant ingress gateway (and also used for ADMIN_KEY_FILE, if not provided)"
     prompt: false
   - name: ADMIN_DOMAIN
     description: "This is the domain to use for the admin ingress gateway"
