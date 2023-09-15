@@ -1,0 +1,73 @@
+name: update-release-info-from-tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag-name:
+        description: 'GitHub tag name'
+        required: true
+      release-body-top:
+        description: 'Content to add to the top of the release body'
+        required: true
+        # this is a github comment followed by "\\n"
+        default: '\[\/\/\]: # \(MODIFIED BY WORKFLOW\)\\n'
+        # example of adding a warning followed by "\\n"
+        #default: '>\[!WARNING\]\n>PLEASE USE A NEWER VERSION \(there are known issues with this release\)\\n'
+      release-body-bottom:
+        description: 'Content to add to the bottom of the release body'
+        required: true
+        # this is a github comment prefixed by "\\\n"
+        default: '\\\n\[\/\/\]: # \(MODIFIED BY WORKFLOW\)'
+        # example of adding how to deploy notes prefixed by "\\\n"
+        #default: '\\\n---\n#### HOW TO DEPLOY\n\`\`\`console\nzarf package deploy oci://ghcr.io/something\n\`\`\`\n\`\`\`console\nzarf package deploy oci://ghcr.io/something-else\n\`\`\`'
+      mark-release-broken:
+        description: 'Set to "true" if there is an issue with the release'
+        required: true
+        default: 'false'
+
+  workflow_call:
+    inputs:
+      tag-name:
+        required: true
+        type: string
+      release-body-top:
+        type: string
+      release-body-bottom:
+        type: string
+
+jobs:
+  update-release-body:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Modify Release Body
+        id: modify-release-body
+        run: |
+          # set inputs to vars
+          TAG_NAME="v${{ inputs.tag-name }}"
+          ADD_TO_TOP="${{ inputs.release-body-top }}"
+          ADD_TO_BOTTOM="${{ inputs.release-body-bottom }}"
+
+          # if release is broken, set default warning message for top of the body
+          if [[ "${{ inputs.mark-release-broken }}" == "true" ]]; then
+             ADD_TO_TOP=">\[!WARNING\]\n>PLEASE USE A NEWER VERSION \(there are known issues with this release\)\\n"
+          fi
+
+          # set sed arguments to var
+          REGEX_CMD_ARGS="-e '1 i\\${ADD_TO_TOP}' -e '\$a ${ADD_TO_BOTTOM}'"
+
+          # get body for release and output to file
+          gh release view "${TAG_NAME}" -R ${{ github.repository }} --json body --jq '.body' > "${TAG_NAME}-release-notes.txt" && \
+
+          # update file with inputs
+          cat ${TAG_NAME}-release-notes.txt | eval "sed ${REGEX_CMD_ARGS}" > "NEW-${TAG_NAME}-release-notes.txt" && \
+
+          # replace release notes with contents of the file
+          gh release edit "${TAG_NAME}" -R ${{ github.repository }} --notes-file "NEW-${TAG_NAME}-release-notes.txt"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
