@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.9.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.9.0...v0.9.1) (2023-09-15)
+
+
+### Features
+
+* allow specifying istio admin domain & certs ([#567](https://github.com/defenseunicorns/uds-package-dubbd/issues/567)) ([bc883fd](https://github.com/defenseunicorns/uds-package-dubbd/commit/bc883fd2c41f25144441b55cfd243d37acf0e4de))
+
+
+### Miscellaneous
+
+* **deps:** update aws-actions/configure-aws-credentials action to v4 ([#564](https://github.com/defenseunicorns/uds-package-dubbd/issues/564)) ([2af60f6](https://github.com/defenseunicorns/uds-package-dubbd/commit/2af60f6778afc5dac92ab319158be3f2eb921582))
+* **deps:** update docker/login-action action to v3 ([#565](https://github.com/defenseunicorns/uds-package-dubbd/issues/565)) ([fc07a42](https://github.com/defenseunicorns/uds-package-dubbd/commit/fc07a42aad27dc15b9ac2f57bebf68cab366cc72))
+
 ## [0.9.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.8.1...v0.9.0) (2023-09-12)
 
 
