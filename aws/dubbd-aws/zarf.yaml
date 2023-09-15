@@ -65,7 +65,7 @@ variables:
 
 
 components:
-  - name: set-ephemeral
+  - name: set-zarf-vars
     required: true
     import:
       path: ../../defense-unicorns-distro
@@ -175,6 +175,10 @@ components:
             mute: true
             setVariables:
               - name: TENANT_INGRESS_UPDATE
+  - name: set-external-dns-domain
+    required: true
+    import:
+      path: ../external-dns
   - name: external-dns-k8s-manifests
     required: true
     import:

@@ -31,6 +31,10 @@ variables:
     autoIndent: true
 
 components:
+  - name: set-zarf-vars
+    required: true
+    import:
+      path: ../defense-unicorns-distro
   - name: preflight
     required: true
     import:
@@ -45,6 +49,9 @@ components:
       path: ../defense-unicorns-distro
   - name: download-flux
     required: true
+    import:
+      path: ../defense-unicorns-distro
+  - name: storage-class
     import:
       path: ../defense-unicorns-distro
   - name: dubbd-pre-upgrade

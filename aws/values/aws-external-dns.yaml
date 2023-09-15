@@ -11,7 +11,7 @@ registry: txt
 txtOwnerId: "###ZARF_VAR_NAME###"
 txtPrefix: "external-dns.###ZARF_VAR_NAME###."
 
-domainFilters: ["###ZARF_VAR_DOMAIN###"]
+domainFilters: ["###ZARF_VAR_DOMAIN_LIST###"]
 
 provider: aws
 
