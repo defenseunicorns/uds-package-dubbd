@@ -9,7 +9,22 @@ metadata:
   # Big Bang / Iron Bank are only amd64
   architecture: amd64
 
+variables:
+  - name: CERT_RESOURCES
+    description: "Path to a local manifest file for deploying custom cert-manager Issuers and Certificates"
+    default: custom-cert-resources.yaml
+    prompt: false
+    type: file
+    autoIndent: true
+
 components:
+  - name: cert-manager-namespace-istio-injection
+    required: true
+    manifests:
+      - name: cert-manager-namespace
+        files:
+          - ../manifests/cert-manager-namespace.yaml
+
   - name: cert-manager-chart
     required: true
     charts: 
@@ -26,3 +41,29 @@ components:
         - "registry1.dso.mil/ironbank/jetstack/cert-manager-webhook:v1.12.4"
         - "registry1.dso.mil/ironbank/jetstack/cert-manager-controller:v1.12.4"
         - "registry1.dso.mil/ironbank/jetstack/cert-manager-ctl:v1.12.4"
+
+  - name: cert-manager-custom-resources
+    required: true
+    manifests:
+      - name: cert-manager-custom-resources
+        files:
+          - ../../values/cert-manager-resources.yaml
+    actions:
+      onDeploy:
+        after:
+          - cmd: ./zarf tools kubectl get ns istio-system >/dev/null 2>&1 && echo true || echo false
+            mute: true
+            description: "Check if custom resources initiated creation of istio-system namespace"
+            setVariables:
+              - name: HAS_ISTIO_NS
+          - cmd: |
+              if [ "${ZARF_VAR_HAS_ISTIO_NS}" = "true" ]; then
+                ./zarf tools kubectl label ns istio-system --overwrite=true app.kubernetes.io/managed-by=Helm 
+                ./zarf tools kubectl annotate ns istio-system meta.helm.sh/release-name=bigbang meta.helm.sh/release-namespace=bigbang
+                ./zarf tools kubectl label secret private-registry -n istio-system --overwrite=true app.kubernetes.io/managed-by=Helm
+                ./zarf tools kubectl annotate secret private-registry -n istio-system meta.helm.sh/release-name=bigbang meta.helm.sh/release-namespace=bigbang
+              else
+                 echo "No istio-system namespace yet"
+              fi
+            mute: true
+            description: "Add helm labels and annotations to istio-system for big bang helm release" 

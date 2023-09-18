@@ -228,20 +228,18 @@ components:
     required: true
   - name: dubbd-pre-upgrade
     required: true
+  - name: cert-manager-namespace-istio-injection
+    required: true
+    import:
+      path: ./cert-manager
   - name: cert-manager-chart
     required: true
     import:
       path: ./cert-manager
   - name: cert-manager-custom-resources
     required: true
-    actions:
-      onDeploy:
-        after:
-          - cmd: ./zarf tools kubectl apply -f cert-manager-resources.yaml
-            dir: run/manifests
-    files:
-      - source: ../values/cert-manager-resources.yaml
-        target: run/manifests/cert-manager-resources.yaml
+    import:
+      path: ./cert-manager
 
   - name: bigbang
     required: true
