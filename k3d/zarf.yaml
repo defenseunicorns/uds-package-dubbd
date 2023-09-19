@@ -35,6 +35,10 @@ components:
     required: true
     import:
       path: ../defense-unicorns-distro
+  - name: load-certs
+    required: true
+    import:
+      path: ../defense-unicorns-distro
   - name: generate-credentials
     required: true
     import:
