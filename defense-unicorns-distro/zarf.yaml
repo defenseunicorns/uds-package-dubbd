@@ -3,7 +3,7 @@ metadata:
   name: dubbd
   description: "Defense Unicorns Big Bang Distro"
   # x-release-please-start-version
-  version: "0.9.0"
+  version: "0.9.1"
   # x-release-please-end
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/Big_Bang_Color_Logo_White_text.b10a1bae.webp
@@ -13,14 +13,24 @@ metadata:
 variables:
   - name: DOMAIN
     default: bigbang.dev
+    description: "This is the domain to use for the tenant ingress gateway (and also used for ADMIN_DOMAIN, if not provided)"
     prompt: false
   - name: CERT_FILE
     default: bigbang.dev.cert
-    description: "This file contains the cert for the ingress gateways"
+    description: "This file contains the cert for the tenant ingress gateway (and also used for ADMIN_CERT_FILE, if not provided)"
     prompt: false
   - name: KEY_FILE
     default: bigbang.dev.key
-    description: "This file contains the key for the ingress gateways"
+    description: "This file contains the key for the tenant ingress gateway (and also used for ADMIN_KEY_FILE, if not provided)"
+    prompt: false
+  - name: ADMIN_DOMAIN
+    description: "This is the domain to use for the admin ingress gateway"
+    prompt: false
+  - name: ADMIN_CERT_FILE
+    description: "This file contains the cert for the admin ingress gateway"
+    prompt: false
+  - name: ADMIN_KEY_FILE
+    description: "This file contains the key for the admin ingress gateways"
     prompt: false
   - name: EXEMPT_NAMESPACES
     description: "List of namespaces to be exempt from cluster policies (must contain zarf)"
@@ -30,25 +40,25 @@ variables:
     default: "127.0.0.1* | registry1.dso.mil"
   - name: MONITORING_PROMETHEUS_PVC_SIZE
     default: "50Gi"
-    description: Size of PVC for Prometheus
+    description: "Size of PVC for Prometheus"
     prompt: false
   - name: MONITORING_GRAFANA_PVC_SIZE
     default: "10Gi"
-    description: Size of PVC for Grafana
+    description: "Size of PVC for Grafana"
     prompt: false
   - name: LOKI_PVC_SIZE
     default: "40Gi"
-    description: Size of the PVC for Loki when running in dev mode
+    description: "Size of the PVC for Loki when running in dev mode"
   - name: CONTAINER_RUNTIME_SOCKET
     default: "/var/run/containerd/containerd.sock"
     description: "Path for container runtime socket"
     prompt: false
   - name: SLACK_URL
     default: https://none.dev
-    description: Slack Webhook URL for alerts
+    description: "Slack Webhook URL for alerts"
   - name: SLACK_CHANNEL
     default: "#alerts"
-    description: Slack channel for alerts
+    description: "Slack channel for alerts"
   - name: EPHEMERAL
     description: "Set whether the cluster should be considered ephemeral - if true all resources will be force destroyed on removal"
     default: "false"
@@ -66,7 +76,7 @@ variables:
     autoIndent: true
 
 components:
-  - name: set-ephemeral
+  - name: set-zarf-vars
     required: true
     actions:
       onDeploy:
@@ -81,9 +91,20 @@ components:
               else
                 echo "${ZARF_VAR_PVC_RECLAIM_POLICY}"
               fi
+            description: "Set pvc reclaim policy Zarf variable"
             mute: true
             setVariables:
               - name: PVC_RECLAIM_POLICY
+          - cmd: |
+              if [ -z "${ZARF_VAR_ADMIN_DOMAIN}" ]; then
+                echo "${ZARF_VAR_DOMAIN}"
+              else
+                echo "${ZARF_VAR_ADMIN_DOMAIN}"
+              fi
+            description: "Set admin domain Zarf variable"
+            mute: true
+            setVariables:
+              - name: ADMIN_DOMAIN
   - name: preflight
     required: true
     actions:
@@ -91,26 +112,26 @@ components:
         before:
           - cmd: "./zarf tools kubectl config current-context  >/dev/null 2>&1 && echo true || echo false"
             mute: true
-            description: Checking for kubecontext...
+            description: "Checking for kubecontext..."
             setVariables:
               - name: HAS_KUBECONFIG
           - cmd: "./zarf tools kubectl get --raw='/readyz' >/dev/null 2>&1 && echo true || echo false"
             mute: true
-            description: Checking if cluster is healthy...
+            description: "Checking if cluster is healthy..."
             setVariables:
               - name: IS_HEALTHY
           - cmd: "./zarf tools kubectl version --short 2>/dev/null || true"
-            description: Checking cluster version...
+            description: "Checking cluster version..."
             setVariables:
               - name: CLUSTER_VERSION
           - cmd: "./zarf tools kubectl get secret -n zarf zarf-state >/dev/null 2>&1 && echo true || echo false"
             mute: true
-            description: Checking if zarf has been initialized...
+            description: "Checking if zarf has been initialized..."
             setVariables:
               - name: HAS_INIT
           - cmd: "./zarf tools kubectl get sts -n zarf zarf-gitea -ojsonpath='{.status.readyReplicas}' 2>/dev/null || echo 0"
             mute: true
-            description: Checking if Gitea is runnning...
+            description: "Checking if Gitea is runnning..."
             setVariables:
               - name: GITEA_RUNNING
           - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null 2>&1 && echo true || echo false"
@@ -136,17 +157,41 @@ components:
       onDeploy:
         after:
           - cmd: "cat ${ZARF_VAR_CERT_FILE}"
-            description: Read cert file into values
+            description: "Read cert file into values"
             mute: true
             setVariables:
-              - name: PUBLIC_CERT
+              - name: TENANT_CERT
                 sensitive: true
                 autoIndent: true
           - cmd: "cat ${ZARF_VAR_KEY_FILE}"
-            description: Read key file into values
+            description: "Read key file into values"
             mute: true
             setVariables:
-              - name: PUBLIC_KEY
+              - name: TENANT_KEY
+                sensitive: true
+                autoIndent: true
+          - cmd: |
+              if [ -z "${ZARF_VAR_ADMIN_CERT_FILE}" ]; then
+                cat ${ZARF_VAR_CERT_FILE}
+              else
+                cat ${ZARF_VAR_ADMIN_CERT_FILE}
+              fi
+            description: "Read admin cert file into values"
+            mute: true
+            setVariables:
+              - name: ADMIN_CERT
+                sensitive: true
+                autoIndent: true
+          - cmd: |
+              if [ -z "${ZARF_VAR_ADMIN_KEY_FILE}" ]; then
+                cat ${ZARF_VAR_KEY_FILE}
+              else
+                cat ${ZARF_VAR_ADMIN_KEY_FILE}
+              fi
+            description: "Read admin key file into values"
+            mute: true
+            setVariables:
+              - name: ADMIN_KEY
                 sensitive: true
                 autoIndent: true
           - cmd: rm bigbang.dev.cert
@@ -203,11 +248,11 @@ components:
       onDeploy:
         after:
           - cmd: rm -f run/flux/flux || true
-            description: Clean up previous flux install
+            description: "Clean up previous flux install"
           - cmd: "./extract_flux.sh ###ZARF_PKG_TMPL_FLUX_VERSION###"
-            description: Extract flux binary
+            description: "Extract flux binary"
           - cmd: "rm extract_flux.sh && rm -f tmp/flux*"
-            description: Clean up extra flux artifacts
+            description: "Clean up extra flux artifacts"
     files:
       - source: scripts/extract_flux.sh
         target: extract_flux.sh

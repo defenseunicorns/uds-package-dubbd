@@ -4,7 +4,7 @@ metadata:
   name: dubbd-rke2
   description: "Defense Unicorns Big Bang Distro for RKE2"
   # x-release-please-start-version
-  version: "0.9.0"
+  version: "0.9.1"
   # x-release-please-end
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
@@ -34,7 +34,7 @@ variables:
     autoIndent: true
 
 components:
-  - name: set-ephemeral
+  - name: set-zarf-vars
     required: true
   - name: preflight
     required: true
