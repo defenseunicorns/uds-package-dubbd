@@ -1,4 +1,4 @@
-name: update-release-info-from-tag
+name: Update Release Info From Tag
 
 on:
   workflow_dispatch:
