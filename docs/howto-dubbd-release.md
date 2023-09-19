@@ -73,8 +73,8 @@ Below is the set of steps typically followed for updating DUBBD to use a new rel
     - Incorporate the same changes Renovate proposed in the Big Bang upgrade PR
     - Make any additional changes necessary to the branch to get tests passing
     - Create a new PR using the same top-portion of the PR description (namely the section that contains the table with the "Package" and changes)
-    - If all workflows pass, squash and merge the PR while bumping the minor version using the **extended commit message** method [here](#how-can-i-influence-the-version number-for-a-release)
-  - If all workflows pass, use the Renovate PR as is, squash and merge the PR while bumping the minor version using the **extended commit message** method [here](#how-can-i-influence-the-version number-for-a-release)
+    - If all workflows pass, squash and merge the PR while bumping the minor version using the **extended commit message** method [here](#how-can-i-influence-the-version-number-for-a-release)
+  - If all workflows pass, use the Renovate PR as is, squash and merge the PR while bumping the minor version using the **extended commit message** method [here](#how-can-i-influence-the-version-number-for-a-release)
 - [ ] In a follow up PR (new branch), update any [OSCAL references](.github/workflows/oscal) in the components sections of the OSCAL templates
   - These should match the [Big Bang references](https://repo1.dso.mil/big-bang/bigbang/-/releases) in the new release
   - After updating and pushing these changes to the branch, the OSCAL CI job will likely generate updated OSCAL files from these templates and commit to the branch
@@ -128,4 +128,3 @@ release-please debug-config --dry-run --trace --repo-url https://github.com/defe
 - The GitHub CI Release Please workflow should be configured using `command: manifest` and **all** configuration defined in the [release-please-config.json](release-please-config.json) file (none should be provided in the CI yaml)
 
 - Check [Github Issues for Release Please](https://github.com/googleapis/release-please/issues)
-
