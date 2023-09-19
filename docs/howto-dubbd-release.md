@@ -113,7 +113,7 @@ The CHANGELOG is not required to be updated, only the release notes must be upda
 
 - CI automated approach: In the GitHub UI under `Actions` >  `Update Release Info from Tag` > `Run workflow` dropdown
   - Provide the `GitHub tag name`
-  - In the field that says `Set to "true" if there is an issue with the release`, update the value to `true`
+  - Check the box for the field `Select this option if there is an issue with the release`
   - Don't modify any other fields
   - Click `Run workflow` button
 

@@ -35,13 +35,13 @@ jobs:
         id: header-info
         run: |
           # set header to markdown comment
-          HEADER_INFO='\[\/\/\]: # \(MODIFIED BY WORKFLOW\)\\n'
+          HEADER_INFO='[//]: # (MODIFIED BY WORKFLOW)'
           # set GH output
           echo "header_info=${HEADER_INFO}" >> $GITHUB_OUTPUT
       - name: Build Deploy Info
         id: deploy-info
         run: |
-          PREFIX='\\\n---\n#### HOW TO DEPLOY\n'
+          PREFIX='---\n#### HOW TO DEPLOY\n'
           # set list of all zarf pkgs
           PKGS="dubbd \
                 dubbd-aws \
@@ -49,7 +49,7 @@ jobs:
                 dubbd-k3d
           # loop thru all the zarf pkgs and build regex
           for pkg in ${PKGS}; do
-            DEPLOY_INFO="${DEPLOY_INFO}\\\`\\\`\\\`console\nzarf package deploy oci://ghcr.io/defenseunicorns/packages/$pkg:\${{ needs.tag-new-version.outputs.release_tag }}-amd\n\\\`\\\`\\\`\n"
+            DEPLOY_INFO="${DEPLOY_INFO}\`\`\`console\nzarf package deploy oci://ghcr.io/mxnxpx/packages/$pkg:${{ needs.tag-new-version.outputs.release_tag }}-amd\n\`\`\`\n"
           done
           # add the prefix
           DEPLOY_INFO="${PREFIX}${DEPLOY_INFO}"
