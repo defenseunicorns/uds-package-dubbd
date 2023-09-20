@@ -47,7 +47,7 @@ jobs:
 
           # if release is broken, set default warning message for top of the body
           if [[ "${{ inputs.mark-release-broken }}" == "true" ]]; then
-             ADD_TO_TOP=">[!WARNING]\n>PLEASE USE A NEWER VERSION (there are known issues with this release)"
+             ADD_TO_TOP=">[!WARNING]\n>PLEASE USE A DIFFERENT VERSION (there are known issues with this release)"
           fi
 
           # get body for release and output to file

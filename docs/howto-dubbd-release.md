@@ -69,10 +69,10 @@ Below is the set of steps typically followed for updating DUBBD to use a new rel
 
 - [ ] [Renovate](https://github.com/renovatebot/renovate#renovate) should detect the new Big Bang version and create a corresponding PR
 - [ ] All CI workflows must pass and validate functionality works
-  - If any CI workflow fails, after confirming there are now CI-specific issues (like cloud infrastructure problems), branch off of the `main` branch
+  - If any CI workflow fails, after confirming there are no CI-specific issues (like cloud infrastructure problems), branch off of the `main` branch
     - Incorporate the same changes Renovate proposed in the Big Bang upgrade PR
     - Make any additional changes necessary to the branch to get tests passing
-    - Create a new PR using the same top-portion of the PR description (namely the section that contains the table with the "Package" and changes)
+    - Create a new PR using the same name (example: `chore(deps) update gitlab tag big-bang/bigbang to v2.10.0`) and top-portion of the PR description (specifically the section that contains the table with the "Package" and changes)
     - If all workflows pass, squash and merge the PR while bumping the minor version using the **extended commit message** method [here](#how-can-i-influence-the-version-number-for-a-release)
   - If all workflows pass, use the Renovate PR as is, squash and merge the PR while bumping the minor version using the **extended commit message** method [here](#how-can-i-influence-the-version-number-for-a-release)
 - [ ] In a follow up PR (new branch), update any [OSCAL references](.github/workflows/oscal) in the components sections of the OSCAL templates
@@ -96,7 +96,7 @@ If a CHANGELOG section (and the associated Release Notes) for a specific release
 - The CHANGELOG file is influenced by the configuration in the [release-please-config.json](release-please-config.json) file, and if a desired section is missing, confirm that it is properly included in the configuration
 - If the [release-please-config.json](release-please-config.json) file, looks correct and there is a typo or some undesired content
   - Update the already merged PR's extended commit message with an [override](https://github.com/googleapis/release-please/tree/main#how-can-i-fix-release-notes), which will replace the CHANGELOG for that release, after the CI run of Release Please
-  - Manually modify the GitHub release to match the newly updated CHANGELOG section for the release 
+  - Manually modify the GitHub release to match the newly updated CHANGELOG section for the release
 
 #### A release is "broken" and should not be used
 
@@ -113,8 +113,8 @@ The CHANGELOG is not required to be updated, only the release notes must be upda
 
 - CI automated approach: In the GitHub UI under `Actions` >  `Update Release Info from Tag` > `Run workflow` dropdown
   - Provide the `GitHub tag name`
-  - Check the box for the field `Select this option if there is an issue with the release`
-  - Don't modify any other fields
+  - Check the box for the field `Select this option if there is an issue with the release` (this adds a warning message header on the release)
+  - Optionally add some content in field for the bottom of the release with more details like so: `---\n### Known Issues\n\n*provide-details-here*`
   - Click `Run workflow` button
 
 #### Other issues and helpful tips
