@@ -27,20 +27,20 @@ components:
 
   - name: cert-manager-chart
     required: true
-    charts: 
+    charts:
       - name: cert-manager
         url: https://charts.jetstack.io
         gitPath: jetstack/cert-manager
         version: "v1.12.4"
         namespace: cert-manager
         releaseName: cert-manager
-        valuesFiles: 
+        valuesFiles:
           - ../../values/cert-manager.yaml
     images:
-        - "registry1.dso.mil/ironbank/jetstack/cert-manager-cainjector:v1.12.4"
-        - "registry1.dso.mil/ironbank/jetstack/cert-manager-webhook:v1.12.4"
-        - "registry1.dso.mil/ironbank/jetstack/cert-manager-controller:v1.12.4"
-        - "registry1.dso.mil/ironbank/jetstack/cert-manager-ctl:v1.12.4"
+      - "registry1.dso.mil/ironbank/jetstack/cert-manager-cainjector:v1.12.4"
+      - "registry1.dso.mil/ironbank/jetstack/cert-manager-webhook:v1.12.4"
+      - "registry1.dso.mil/ironbank/jetstack/cert-manager-controller:v1.12.4"
+      - "registry1.dso.mil/ironbank/jetstack/cert-manager-ctl:v1.12.4"
 
   - name: cert-manager-custom-resources
     required: true
@@ -58,7 +58,7 @@ components:
               - name: HAS_ISTIO_NS
           - cmd: |
               if [ "${ZARF_VAR_HAS_ISTIO_NS}" = "true" ]; then
-                ./zarf tools kubectl label ns istio-system --overwrite=true app.kubernetes.io/managed-by=Helm 
+                ./zarf tools kubectl label ns istio-system --overwrite=true app.kubernetes.io/managed-by=Helm
                 ./zarf tools kubectl annotate ns istio-system meta.helm.sh/release-name=bigbang meta.helm.sh/release-namespace=bigbang
                 ./zarf tools kubectl label secret private-registry -n istio-system --overwrite=true app.kubernetes.io/managed-by=Helm
                 ./zarf tools kubectl annotate secret private-registry -n istio-system meta.helm.sh/release-name=bigbang meta.helm.sh/release-namespace=bigbang
@@ -66,4 +66,4 @@ components:
                  echo "No istio-system namespace yet"
               fi
             mute: true
-            description: "Add helm labels and annotations to istio-system for big bang helm release" 
+            description: "Add helm labels and annotations to istio-system for big bang helm release"

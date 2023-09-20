@@ -17,11 +17,11 @@ metadata:
   namespace: cert-manager
 spec:
   endpoints:
-  - honorLabels: false
-    interval: 60s
-    path: /metrics
-    scrapeTimeout: 30s
-    targetPort: 9402
+    - honorLabels: false
+      interval: 60s
+      path: /metrics
+      scrapeTimeout: 30s
+      targetPort: 9402
   jobLabel: cert-manager
   selector:
     matchLabels:
