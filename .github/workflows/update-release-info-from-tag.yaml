@@ -42,17 +42,17 @@ jobs:
         run: |
           # set inputs to vars
           TAG_NAME="v${{ inputs.tag-name }}"
-          ADD_TO_TOP="$(echo '${{ inputs.release-body-top }}')"
-          ADD_TO_BOTTOM="$(echo '${{ inputs.release-body-bottom }}')"
-  
+          ADD_TO_TOP='${{ inputs.release-body-top }}'
+          ADD_TO_BOTTOM='${{ inputs.release-body-bottom }}'
+
           # if release is broken, set default warning message for top of the body
           if [[ "${{ inputs.mark-release-broken }}" == "true" ]]; then
              ADD_TO_TOP=">[!WARNING]\n>PLEASE USE A NEWER VERSION (there are known issues with this release)"
           fi
-  
+
           # get body for release and output to file
           gh release view "${TAG_NAME}" -R ${{ github.repository }} --json body --jq '.body' > "${TAG_NAME}-release-notes.txt" && \
-   
+ 
           # update file with inputs 
           cat <(echo -e "${ADD_TO_TOP}") <(echo) "${TAG_NAME}-release-notes.txt" <(echo) <(echo -e "${ADD_TO_BOTTOM}") > "NEW-${TAG_NAME}-release-notes.txt" && \
 
