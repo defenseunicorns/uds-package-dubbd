@@ -12,7 +12,7 @@ metadata:
 variables:
   - name: CERT_RESOURCES
     description: "Path to a local manifest file for deploying custom cert-manager Issuers and Certificates"
-    default: custom-cert-resources.yaml
+    default: deploy-cert-resources.yaml
     prompt: false
     type: file
     autoIndent: true

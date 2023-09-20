@@ -68,12 +68,6 @@ variables:
     prompt: false
     type: file
     autoIndent: true
-  - name: CERT_RESOURCES
-    description: "Path to a local manifest file for deploying custom cert-manager Issuers and Certificates"
-    default: deploy-cert-resources.yaml
-    prompt: false
-    type: file
-    autoIndent: true
 
 components:
   - name: set-zarf-vars
