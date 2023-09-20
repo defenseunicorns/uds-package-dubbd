@@ -61,7 +61,10 @@ components:
       path: ../defense-unicorns-distro
   - name: cert-manager-custom-resources
     required: true
+    import:
+      path: ../defense-unicorns-distro
   - name: storage-class
+    required: true
     import:
       path: ../defense-unicorns-distro
   - name: dubbd-pre-upgrade

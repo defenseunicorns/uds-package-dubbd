@@ -398,12 +398,7 @@ components:
             description: "Remove temporary fix secret for Kiali, if present"
   - name: cert-manager-service-monitor
     required: true
-    actions:
-      onDeploy:
-        after:
-          - cmd: ./zarf tools kubectl apply -f cert-manager-service-monitor.yaml
-            dir: run/manifests
-            description: "Create service monitor object for cert manager after prometheus has been deployed"
-    files:
-      - source: manifests/cert-manager-service-monitor.yaml
-        target: run/manifests/cert-manager-service-monitor.yaml
+    manifests:
+      - name: service-monitor
+        files:
+          - manifests/cert-manager-service-monitor.yaml
