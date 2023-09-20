@@ -398,7 +398,12 @@ components:
             description: "Remove temporary fix secret for Kiali, if present"
   - name: cert-manager-service-monitor
     required: true
-    manifests:
-      - name: service-monitor
-        files:
-          - manifests/cert-manager-service-monitor.yaml
+    actions:
+      onDeploy:
+        after:
+          - cmd: ./zarf tools kubectl apply -f cert-manager-service-monitor.yaml
+            dir: run/manifests
+            description: "create service monitor for cert-manager after DUBBD has deployed"
+    files:
+      - source: manifests/cert-manager-service-monitor.yaml
+        target: run/manifests/cert-manager-service-monitor.yaml
