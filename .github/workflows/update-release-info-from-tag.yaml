@@ -52,8 +52,8 @@ jobs:
 
           # get body for release and output to file
           gh release view "${TAG_NAME}" -R ${{ github.repository }} --json body --jq '.body' > "${TAG_NAME}-release-notes.txt" && \
- 
-          # update file with inputs 
+
+          # update file with inputs
           cat <(echo -e "${ADD_TO_TOP}") <(echo) "${TAG_NAME}-release-notes.txt" <(echo) <(echo -e "${ADD_TO_BOTTOM}") > "NEW-${TAG_NAME}-release-notes.txt" && \
 
           # replace release notes with contents of the file
