@@ -382,6 +382,12 @@ components:
           - ../values/neuvector.yaml
           - ../values/tempo.yaml
           - ../values/dubbd-values.yaml
+  - name: cert-manager-service-monitor
+    required: true
+    manifests:
+      - name: cert-manager-smon
+        files:
+          - manifests/cert-manager-service-monitor.yaml
   - name: dubbd-post-upgrade
     required: true
     actions:
@@ -390,9 +396,3 @@ components:
           - cmd: |
               ./zarf tools kubectl delete -n kiali secret kiali-grafana-temp-fix-credentials --ignore-not-found --timeout=2m
             description: "Remove temporary fix secret for Kiali, if present"
-  - name: cert-manager-service-monitor
-    required: true
-    manifests:
-      - name: cert-manager-smon
-        files:
-          - manifests/cert-manager-service-monitor.yaml
