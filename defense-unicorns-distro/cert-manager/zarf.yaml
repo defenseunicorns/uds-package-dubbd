@@ -3,7 +3,7 @@ metadata:
   name: cert-manager
   description: "Certificate manager for DUBBD"
   # x-release-please-start-version
-  version: "1.12.4"
+  version: "0.9.1"
   # x-release-please-end
   url: https://github.com/cert-manager/cert-manager
   # Big Bang / Iron Bank are only amd64

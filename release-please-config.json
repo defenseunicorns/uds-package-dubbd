@@ -16,6 +16,7 @@
         "aws/external-dns/zarf.yaml",
         "rke2/zarf.yaml",
         "defense-unicorns-distro/zarf.yaml",
+        "defense-unicorns-distro/cert-manager/zarf.yaml",
         "k3d/zarf.yaml"
       ]
     }
