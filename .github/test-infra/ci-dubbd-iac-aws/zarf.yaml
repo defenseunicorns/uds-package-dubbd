@@ -100,7 +100,7 @@ components:
             setVariables:
               - name: STATE_KEY_LOKI
           - cmd: |
-              ../terraform init -force-copy \
+              ../terraform init -force-copy -upgrade \
               -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
               -backend-config="key=${ZARF_VAR_STATE_KEY_LOKI}" \
               -backend-config="region=${ZARF_VAR_REGION}" \
@@ -155,7 +155,7 @@ components:
               - name: STATE_KEY_VELERO
           - cmd: "echo ${ZARF_VAR_STATE_KEY_VELERO}"
           - cmd: |
-              ../terraform init -force-copy \
+              ../terraform init -force-copy -upgrade \
               -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
               -backend-config="key=${ZARF_VAR_STATE_KEY_VELERO}" \
               -backend-config="region=${ZARF_VAR_REGION}" \
@@ -218,7 +218,7 @@ components:
           - cmd: "test -d ./route53-policy/ && chmod -R ugo+rwx ./route53-policy/ || echo $?"
             dir: run
           - cmd: |
-              ../terraform init -force-copy \
+              ../terraform init -force-copy -upgrade \
               -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
               -backend-config="key=${ZARF_VAR_ROUTE53_POLICY_STATE_KEY}" \
               -backend-config="region=${ZARF_VAR_REGION}" \
