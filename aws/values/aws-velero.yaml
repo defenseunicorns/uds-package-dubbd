@@ -16,7 +16,6 @@ addons:
             provider: aws
             config:
               region: "###ZARF_VAR_VELERO_S3_AWS_REGION###"
-      helmHookAnnotations: true
       schedules:
         udsbackup:
           disabled: false
