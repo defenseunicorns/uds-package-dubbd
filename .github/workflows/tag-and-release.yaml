@@ -46,7 +46,7 @@ jobs:
           PKGS="dubbd \
                 dubbd-aws \
                 dubbd-rke2 \
-                dubbd-k3d
+                dubbd-k3d"
           # loop thru all the zarf pkgs and build regex
           for pkg in ${PKGS}; do
             DEPLOY_INFO="${DEPLOY_INFO}\`\`\`console\nzarf package deploy oci://ghcr.io/defenseunicorns/packages/$pkg:${{ needs.tag-new-version.outputs.release_tag }}-amd64\n\`\`\`\n"
