@@ -375,5 +375,8 @@ components:
       onDeploy:
         after:
           - cmd: |
-              ./zarf tools kubectl delete -n kiali secret kiali-grafana-temp-fix-credentials --ignore-not-found --timeout=2m
-            description: "Remove temporary fix secret for Kiali, if present"
+              ./flux suspend helmrelease -n bigbang kyverno-policies --verbose --timeout 15m
+              ./zarf tools kubectl delete clusterpolicies --all --ignore-not-found --timeout=2m
+              ./flux resume helmrelease -n bigbang kyverno-policies --verbose --timeout 15m
+            dir: run/flux
+            description: "Delete & Re-add Kyverno cluster policies (any policies managed outside of DUBBD must be reapplied)"
