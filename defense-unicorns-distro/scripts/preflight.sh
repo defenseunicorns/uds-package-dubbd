@@ -7,10 +7,9 @@ is_healthy="###ZARF_VAR_IS_HEALTHY###"
 has_init="###ZARF_VAR_HAS_INIT###"
 gitea_running="###ZARF_VAR_GITEA_RUNNING###"
 
-# Extract the Server Version Major and Minor versions using grep and cut
-server_version=$(echo "$cluster_version" | grep -o "Server Version:.*" | cut -d" " -f3)
-server_major_version=$(echo "$server_version" | cut -d"." -f1)
-server_minor_version=$(echo "$server_version" | cut -d"." -f2)
+# Extract the Server Major and Minor versions using cut
+server_major_version=$(echo "$cluster_version" | cut -d"." -f1)
+server_minor_version=$(echo "$cluster_version" | cut -d"." -f2)
 
 # Define a supported version
 supported_major_version="v1"
