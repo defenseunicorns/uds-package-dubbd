@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.10.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.9.1...v0.10.0) (2023-09-27)
+
+
+### Features
+
+* add automation & docs to support releases ([#569](https://github.com/defenseunicorns/uds-package-dubbd/issues/569)) ([89d9afd](https://github.com/defenseunicorns/uds-package-dubbd/commit/89d9afdfb9fdb8cb1c4bd19e8518b4f259da374b))
+
+
+### Bug Fixes
+
+* imports for rke2 ([#575](https://github.com/defenseunicorns/uds-package-dubbd/issues/575)) ([89a8ea2](https://github.com/defenseunicorns/uds-package-dubbd/commit/89a8ea216ffe3f14526ac67f83e95396ae3e7aa9))
+* update preflight to remove deprecated arg ([#577](https://github.com/defenseunicorns/uds-package-dubbd/issues/577)) ([dadfbb8](https://github.com/defenseunicorns/uds-package-dubbd/commit/dadfbb87ba9c1bf1b7a4355f56585cbb150b9769))
+
+
+### Miscellaneous
+
+* **deps:** update actions/checkout action to v4 ([#571](https://github.com/defenseunicorns/uds-package-dubbd/issues/571)) ([5ed2b18](https://github.com/defenseunicorns/uds-package-dubbd/commit/5ed2b18ebb9f679f3fbb662137bf204f4f5911d4))
+* **deps:** update gitlab tag big-bang/bigbang to v2.11.1 ([#576](https://github.com/defenseunicorns/uds-package-dubbd/issues/576)) ([32f5e58](https://github.com/defenseunicorns/uds-package-dubbd/commit/32f5e588bfb3ad73008fd4a89a9c0a4f572dca80))
+
 ## [0.9.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.9.0...v0.9.1) (2023-09-15)
 
 
