@@ -114,7 +114,8 @@ components:
             description: "Checking if cluster is healthy..."
             setVariables:
               - name: IS_HEALTHY
-          - cmd: "./zarf tools kubectl version --short 2>/dev/null || true"
+          - cmd: |
+              ./zarf tools kubectl get --raw /version 2>/dev/null | grep '"gitVersion":' | cut -d'"' -f4 || true
             description: "Checking cluster version..."
             setVariables:
               - name: CLUSTER_VERSION
