@@ -37,5 +37,5 @@ echo "ARCH_PROC: ${ARCH_PROC}"
 # todo: actually use the terraform binary we download
 mkdir -p run/loki && chmod -R ugo+rwx run/loki
 mkdir -p run/velero && chmod -R ugo+rwx run/velero
-#mkdir -p run/eks
+mkdir -p run/route53-policy && chmod -R ugo+rwx run/route53-policy
 unzip -o -q tmp/terraform_${1}_${ARCH_NAME}_${ARCH_PROC}.zip -d run
