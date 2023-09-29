@@ -1,0 +1,32 @@
+name: Validate OSCAL Schema
+
+on:
+  workflow_call:
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  validate-dubbd-oscal:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Stepup Java
+        uses: actions/setup-java@c3ac5dd0ed8db40fedb61c32fbe677e6b355e94c
+        with:
+          distribution: adopt
+          java-version: 11
+        id: setup_java
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run oscal-cli for version check (debugging on)
+        uses: oscal-club/oscal-cli-action@v1.0.1
+        with:
+          args: component-definition validate /defense-unicorns-distro/oscal-component.yaml

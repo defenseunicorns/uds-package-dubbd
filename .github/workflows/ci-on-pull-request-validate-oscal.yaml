@@ -1,0 +1,22 @@
+name: CI VALIDATE DUBBD OSCAL
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - ".gitignore"
+      - "LICENSE"
+      - "**/*.md"
+      - "**/*.json"
+      - "**/*.png"
+      - "**/*.svg"
+      - "k3d/**"
+      - ".github/workflows/*k3d*.y*ml"
+
+  workflow_call:
+
+jobs:
+  test-release-oscal:
+    uses: ./.github/workflows/validate-oscal.yaml
+    secrets: inherit
