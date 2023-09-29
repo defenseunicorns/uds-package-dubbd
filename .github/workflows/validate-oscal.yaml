@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  validate-dubbd-oscal:
+  validate-oscal:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,11 +22,11 @@ jobs:
 
       - name: Checkout Code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run oscal-cli for version check (debugging on)
         uses: oscal-club/oscal-cli-action@v1.0.1
         with:
-          args: component-definition validate /defense-unicorns-distro/oscal-component.yaml
+          args: |
+            component-definition validate defense-unicorns-distro/oscal-component.yaml
+            component-definition validate rke2/oscal-component.yaml
+            component-definition validate aws/dubbd-aws/oscal-component.yaml

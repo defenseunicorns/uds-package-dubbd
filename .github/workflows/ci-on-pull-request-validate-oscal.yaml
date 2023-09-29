@@ -4,19 +4,10 @@ on:
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - ".gitignore"
-      - "LICENSE"
-      - "**/*.md"
-      - "**/*.json"
-      - "**/*.png"
-      - "**/*.svg"
-      - "k3d/**"
-      - ".github/workflows/*k3d*.y*ml"
-
-  workflow_call:
+    paths:
+      - "**/*oscal-component.y*ml"
 
 jobs:
-  test-release-oscal:
+  trigger-validate-oscal:
     uses: ./.github/workflows/validate-oscal.yaml
     secrets: inherit
