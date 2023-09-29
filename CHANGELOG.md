@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.10.0...v0.10.1) (2023-09-29)
+
+
+### Bug Fixes
+
+* kyverno args fixes ([#579](https://github.com/defenseunicorns/uds-package-dubbd/issues/579)) ([fd1cf63](https://github.com/defenseunicorns/uds-package-dubbd/commit/fd1cf63aeceff70f03a8d622dcdc3cb0ffe56308))
+
 ## [0.10.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.9.1...v0.10.0) (2023-09-27)
 
 
