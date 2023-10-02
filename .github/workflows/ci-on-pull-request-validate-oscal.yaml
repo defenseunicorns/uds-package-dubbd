@@ -2,6 +2,7 @@ name: CI VALIDATE DUBBD OSCAL
 
 on:
   pull_request:
+    types: synchronize
     branches:
       - main
     paths:
