@@ -1,5 +1,5 @@
 component-definition:
-  uuid: 00a48066-589a-4e94-84e7-3178bcd2f1ab
+  uuid: 04d39286-a7c4-438f-8e11-5b142c1b8777
   metadata:
     version: 0.0.1
     parties:
@@ -9,7 +9,13 @@ component-definition:
         links:
           - rel: website
             href: https://defenseunicorns.com
-    last-modified: "2023-08-23T18:08:02Z"
+      - type: organization
+        name: Platform one
+        uuid: 72134592-08C2-4A77-ABAD-C880F109367A
+        links:
+          - rel: website
+            href: https://p1.dso.mil
+    last-modified: "2023-10-02T16:31:24Z"
     oscal-version: 1.0.4
     title: DUBBD
   components:
