@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Stepup Java
         uses: actions/setup-java@c3ac5dd0ed8db40fedb61c32fbe677e6b355e94c
         with:
@@ -27,6 +26,6 @@ jobs:
         uses: oscal-club/oscal-cli-action@v1.0.1
         with:
           args: |
-            component-definition validate defense-unicorns-distro/oscal-component.yaml
-            component-definition validate rke2/oscal-component.yaml
-            component-definition validate aws/dubbd-aws/oscal-component.yaml
+            oscal-cli component-definition validate defense-unicorns-distro/oscal-component.yaml
+            oscal-cli component-definition validate rke2/oscal-component.yaml
+            oscal-cli component-definition validate aws/dubbd-aws/oscal-component.yaml
