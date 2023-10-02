@@ -10,6 +10,12 @@ metadata: # OSCAL-compliant metadata
         - href: https://defenseunicorns.com
           rel: website
       type: organization
+    - uuid: 72134592-08C2-4A77-ABAD-C880F109367A
+      name: Platform one
+      links:
+        - href: https://p1.dso.mil
+          rel: website
+      type: organization
 components: # Define paths on the local filesystem or remote paths in git repositories to OSCAL component definition files
   remote:
     - git: https://repo1.dso.mil/big-bang/product/packages/kiali.git@1.71.0-bb.1
