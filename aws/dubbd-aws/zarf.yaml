@@ -48,9 +48,6 @@ variables:
   - name: VELERO_S3_ROLE_ARN
     description: "Role ARN of the AWS S3 bucket for use with Velero"
     #default: "Intentionally no default value is configured"
-  - name: ROUTE53_ROLE_ARN
-    description: "Role ARN of the AWS S3 bucket for use with Route53 - external-dns"
-    #default: "Intentionally no default value is configured"
 
   - name: EXEMPT_NAMESPACES
     description: "List of namespaces to be exempt from cluster policies (must contain zarf)"
@@ -181,18 +178,6 @@ components:
                 ./zarf tools kubectl annotate -n velero schedule velero-velero-udsbackup meta.helm.sh/release-name=velero-velero ) || true
             description: "Annotate Velero Schedule"
             mute: true
-  - name: set-external-dns-domain
-    required: true
-    import:
-      path: ../external-dns
-  - name: external-dns-k8s-manifests
-    required: true
-    import:
-      path: ../external-dns
-  - name: external-dns-chart
-    required: true
-    import:
-      path: ../external-dns
   - name: dubbd-post-upgrade
     required: true
     import:

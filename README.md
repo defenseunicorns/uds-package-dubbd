@@ -12,7 +12,6 @@ Pre-built Zarf Package of [DoD-Platform-One/big-bang](https://github.com/DoD-Pla
 
 - [aws](./aws/) - _DUBBD for aws (EKS)_
   - [dubbd-aws](./aws/dubbd-aws) - _DUBBD package for aws (imports DUBBD base)_
-  - external-dns - _external-dns package_
   - k8s-manifests - _k8s manifest files for aws_
   - values - _values file overrides for aws_
 - [defense-unicorns-distro](./defense-unicorns-distro/) - _base DUBBD package definition_

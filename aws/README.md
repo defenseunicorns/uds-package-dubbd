@@ -9,7 +9,6 @@
 - Existing AWS S3 bucket with a Terraform state file present and AWS DynamoDB table for state locking
 - Existing AWS S3 bucket with KMS key and IRSA for Loki logs
 - Existing AWS S3 bucket with KMS key and IRSA for Velero backups
-- AWS Route53 IRSA and hosted DNS zone (matching the `domain` that will be used in the DUBBD-AWS configuration)
 - A `~/.docker/config.json` file. Zarf [currently requires this](https://github.com/defenseunicorns/zarf/issues/1795) to deploy from an OCI registry
 
 ## Build the package (optional)
