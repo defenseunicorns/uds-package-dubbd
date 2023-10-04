@@ -66,7 +66,6 @@ components:
           - cmd: |
               rm -f run/loki/terraform || true
               rm -f run/velero/terraform || true
-              rm -f run/route53-policy || true
             description: Clean up previous install since archiver doesn't overwrite the output
           - cmd: "./extract-terraform.sh ###ZARF_PKG_TMPL_TERRAFORM_VERSION###"
     files:
@@ -189,61 +188,6 @@ components:
             dir: run/velero
             setVariables:
               - name: VELERO_S3_ROLE_ARN
-  - name: route53-policy-pre
-    required: true
-    actions:
-      onDeploy:
-        before:
-          - cmd: echo "route53-policy"
-            setVariables:
-              - name: STATE_KEY_PREFIX
-          - cmd: echo "${ZARF_VAR_STATE_KEY_PREFIX}-${ZARF_VAR_STATE_KEY}"
-            setVariables:
-              - name: ROUTE53_POLICY_STATE_KEY
-  - name: route53-policy-module
-    required: true
-    actions:
-      onCreate:
-        before:
-          - cmd: terraform get -update
-            dir: route53-policy
-    files:
-      - source: route53-policy
-        target: run/route53-policy
-  - name: execute-route53-policy-terraform
-    required: true
-    actions:
-      onDeploy:
-        before:
-          - cmd: "test -d ./route53-policy/ && chmod -R ugo+rwx ./route53-policy/ || echo $?"
-            dir: run
-          - cmd: |
-              ../terraform init -force-copy \
-              -backend-config="bucket=${ZARF_VAR_STATE_BUCKET_NAME}" \
-              -backend-config="key=${ZARF_VAR_ROUTE53_POLICY_STATE_KEY}" \
-              -backend-config="region=${ZARF_VAR_REGION}" \
-              -backend-config="dynamodb_table=${ZARF_VAR_STATE_DYNAMODB_TABLE_NAME}"
-            dir: run/route53-policy
-          - cmd: ../terraform apply -auto-approve
-            dir: run/route53-policy
-      onRemove:
-        before:
-          - cmd: |
-              if [ -d "run/route53-policy" ]; then
-                cd run/route53-policy
-                ../terraform destroy -auto-approve
-              else
-                echo "Cannot remove: run/route53-policy directory does not exist"
-              fi
-  - name: route53-policy-outputs
-    required: true
-    actions:
-      onDeploy:
-        after:
-          - cmd: ../terraform output -raw route53_role_arn
-            dir: run/route53-policy
-            setVariables:
-              - name: ROUTE53_ROLE_ARN
   - name: export-outputs
     required: true
     actions:
@@ -265,7 +209,6 @@ components:
               "LOKI_S3_ROLE_ARN": "${ZARF_VAR_LOKI_S3_ROLE_ARN}", \
               "VELERO_S3_BUCKET": "${ZARF_VAR_VELERO_S3_BUCKET}", \
               "VELERO_S3_AWS_REGION": "${ZARF_VAR_VELERO_S3_AWS_REGION}", \
-              "VELERO_S3_ROLE_ARN": "${ZARF_VAR_VELERO_S3_ROLE_ARN}", \
-              "ROUTE53_ROLE_ARN": "${ZARF_VAR_ROUTE53_ROLE_ARN}" \
+              "VELERO_S3_ROLE_ARN": "${ZARF_VAR_VELERO_S3_ROLE_ARN}" \
               }'
               EOF
