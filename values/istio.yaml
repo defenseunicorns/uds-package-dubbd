@@ -64,12 +64,3 @@ istio:
         minProtocolVersion: "TLSV1_3"
 istioOperator:
   enabled: true
-  values:
-    operator:
-      resources:
-        limits:
-          cpu: "500m"
-          memory: "256Mi"
-        requests:
-          cpu: "500m"
-          memory: "256Mi"
