@@ -9,25 +9,42 @@ loki:
     write:
       autoscaling:
         enabled: true
-        minReplicas: 1
-        maxReplicas: 3
+        minReplicas: 2
+        maxReplicas: 6
         targetCPUUtilizationPercentage: 80
+        targetMemoryUtilizationPercentage: 80
+      resources:
+        limits:
+          cpu: 200m
+          memory: 1Gi
+        requests:
+          cpu: 200m
+          memory: 1Gi
     read:
       autoscaling:
         enabled: true
-        minReplicas: 1
-        maxReplicas: 3
+        minReplicas: 2
+        maxReplicas: 6
         targetCPUUtilizationPercentage: 80
+        targetMemoryUtilizationPercentage: 80
+      resources:
+        limits:
+          cpu: 200m
+          memory: 1Gi
+        requests:
+          cpu: 200m
+          memory: 1Gi
     backend:
+      autoscaling:
+        enabled: true
+        minReplicas: 2
+        maxReplicas: 6
+        targetCPUUtilizationPercentage: 80
+        targetMemoryUtilizationPercentage: 80
       resources:
         limits:
           cpu: 200m
           memory: 512Mi
         requests:
-          cpu: 100m
-          memory: 256Mi
-      autoscaling:
-        enabled: true
-        minReplicas: 1
-        maxReplicas: 3
-        targetCPUUtilizationPercentage: 80
+          cpu: 200m
+          memory: 512Mi
