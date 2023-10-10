@@ -16,7 +16,7 @@ component-definition:
           - rel: website
             href: https://p1.dso.mil
     last-modified: "2023-10-02T16:31:21Z"
-    oscal-version: 1.0.4
+    oscal-version: 1.1.1
     title: DUBBD
   components:
     - control-implementations:
