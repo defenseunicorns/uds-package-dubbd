@@ -2,7 +2,7 @@ name: ./aws/dubbd-aws/oscal-component.yaml # Name of the generated file
 metadata: # OSCAL-compliant metadata
   title: DUBBD AWS
   version: 0.0.1 # x-release-please-version
-  oscal-version: 1.0.4
+  oscal-version: 1.1.1
   parties:
     - uuid: f3cf70f8-ba44-4e55-9ea3-389ef24847d3
       name: Defense Unicorns
@@ -11,6 +11,8 @@ metadata: # OSCAL-compliant metadata
           rel: website
       type: organization
 components: # Define paths on the local filesystem or remote paths in git repositories to OSCAL component definition files
+  local:
+    - name: aws/dubbd-aws/velero-oscal-component.yaml
   remote:
     - git: https://repo1.dso.mil/big-bang/product/packages/kiali.git@1.72.0-bb.1
       path: oscal-component.yaml

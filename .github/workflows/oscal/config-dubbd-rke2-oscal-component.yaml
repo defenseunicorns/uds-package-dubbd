@@ -2,7 +2,7 @@ name: ./rke2/oscal-component.yaml # Name of the generated file
 metadata: # OSCAL-compliant metadata
   title: DUBBD
   version: 0.0.1 # x-release-please-version
-  oscal-version: 1.0.4
+  oscal-version: 1.1.1
   parties:
     - uuid: f3cf70f8-ba44-4e55-9ea3-389ef24847d3
       name: Defense Unicorns
