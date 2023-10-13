@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  create-and-update-dubbd-oscal:
+  create-and-update-compliance-images:
     runs-on: ubuntu-latest
 
     steps:

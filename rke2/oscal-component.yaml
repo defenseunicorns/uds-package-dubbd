@@ -1,5 +1,5 @@
 component-definition:
-  uuid: 00a48066-589a-4e94-84e7-3178bcd2f1ab
+  uuid: e2651740-56a2-4c9c-89a6-db469b3dfd9f
   metadata:
     version: 0.0.1
     parties:
@@ -9,8 +9,8 @@ component-definition:
         links:
           - rel: website
             href: https://defenseunicorns.com
-    last-modified: "2023-08-23T18:08:02Z"
-    oscal-version: 1.0.4
+    last-modified: "2023-10-12T00:09:16Z"
+    oscal-version: 1.1.1
     title: DUBBD
   components:
     - control-implementations:

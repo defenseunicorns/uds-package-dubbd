@@ -1,5 +1,5 @@
 component-definition:
-  uuid: 8b8921b1-c63d-4039-8297-f11b9338e425
+  uuid: 3654c8ff-4580-40cd-b21e-0ab93aea4c87
   metadata:
     version: 0.0.1
     parties:
@@ -9,8 +9,8 @@ component-definition:
         links:
           - rel: website
             href: https://defenseunicorns.com
-    last-modified: "2023-07-28T16:26:25Z"
-    oscal-version: 1.0.4
+    last-modified: "2023-10-12T00:09:12Z"
+    oscal-version: 1.1.1
     title: DUBBD
   components:
     - control-implementations:
@@ -1085,7 +1085,7 @@ component-definition:
         rlinks:
           - href: https://open-docs.neuvector.com/
       - uuid: b4988bfa-d4a7-4095-8523-2e298cc45473
-        title: Big Bang Prisma Cloud package
+        title: Big Bang NeuVector package
         rlinks:
           - href: https://repo1.dso.mil/platform-one/big-bang/apps/security-tools/neuvector
       - uuid: D552C935-E40C-4A03-B5CC-4605EBD95B6D
