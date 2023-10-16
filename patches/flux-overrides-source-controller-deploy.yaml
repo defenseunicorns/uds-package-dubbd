@@ -10,8 +10,8 @@ spec:
         - name: manager
           resources:
             limits:
-              cpu: 300m
-              memory: 768Mi
+              cpu: 600m
+              memory: 1Gi
             requests:
-              cpu: 300m
-              memory: 768Mi
+              cpu: 600m
+              memory: 1Gi
