@@ -56,6 +56,6 @@ jobs:
           rm package-lock.json
 
       - name: Commit and push changes
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           skip_checkout: true

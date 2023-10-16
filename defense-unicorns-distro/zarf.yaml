@@ -3,7 +3,7 @@ metadata:
   name: dubbd
   description: "Defense Unicorns Big Bang Distro"
   # x-release-please-start-version
-  version: "0.10.1"
+  version: "0.11.0"
   # x-release-please-end
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/Big_Bang_Color_Logo_White_text.b10a1bae.webp
@@ -375,12 +375,3 @@ components:
           - ../values/dubbd-values.yaml
   - name: dubbd-post-upgrade
     required: true
-    actions:
-      onDeploy:
-        after:
-          - cmd: |
-              ./flux suspend helmrelease -n bigbang kyverno-policies --verbose --timeout 15m
-              ./zarf tools kubectl delete clusterpolicies --all --ignore-not-found --timeout=2m
-              ./flux resume helmrelease -n bigbang kyverno-policies --verbose --timeout 15m
-            dir: run/flux
-            description: "Delete & Re-add Kyverno cluster policies (any policies managed outside of DUBBD must be reapplied)"

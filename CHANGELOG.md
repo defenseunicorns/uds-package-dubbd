@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.11.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.10.1...v0.11.0) (2023-10-10)
+
+
+### Features
+
+* rm external-dns from zarf pkg ([#587](https://github.com/defenseunicorns/uds-package-dubbd/issues/587)) ([ccca626](https://github.com/defenseunicorns/uds-package-dubbd/commit/ccca626e1c9141d9a78436714ae3b8b15c34f9d8))
+
+
+### Miscellaneous
+
+* **deps:** update gitlab tag big-bang/bigbang to v2.12.0 ([#591](https://github.com/defenseunicorns/uds-package-dubbd/issues/591)) ([7a6e08e](https://github.com/defenseunicorns/uds-package-dubbd/commit/7a6e08ec25becf5531333d52a47b1455f8582aac))
+
 ## [0.10.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.10.0...v0.10.1) (2023-09-29)
 
 

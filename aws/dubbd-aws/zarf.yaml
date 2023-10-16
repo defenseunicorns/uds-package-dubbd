@@ -4,7 +4,7 @@ metadata:
   name: dubbd-aws
   description: "Defense Unicorns Big Bang Distro"
   # x-release-please-start-version
-  version: "0.10.1"
+  version: "0.11.0"
   # x-release-please-end
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
@@ -47,9 +47,6 @@ variables:
     #default: "Intentionally no default value is configured"
   - name: VELERO_S3_ROLE_ARN
     description: "Role ARN of the AWS S3 bucket for use with Velero"
-    #default: "Intentionally no default value is configured"
-  - name: ROUTE53_ROLE_ARN
-    description: "Role ARN of the AWS S3 bucket for use with Route53 - external-dns"
     #default: "Intentionally no default value is configured"
 
   - name: EXEMPT_NAMESPACES
@@ -181,18 +178,6 @@ components:
                 ./zarf tools kubectl annotate -n velero schedule velero-velero-udsbackup meta.helm.sh/release-name=velero-velero ) || true
             description: "Annotate Velero Schedule"
             mute: true
-  - name: set-external-dns-domain
-    required: true
-    import:
-      path: ../external-dns
-  - name: external-dns-k8s-manifests
-    required: true
-    import:
-      path: ../external-dns
-  - name: external-dns-chart
-    required: true
-    import:
-      path: ../external-dns
   - name: dubbd-post-upgrade
     required: true
     import:
