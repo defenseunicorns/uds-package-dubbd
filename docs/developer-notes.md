@@ -20,7 +20,7 @@ The steps below mimic what is performed as part of the DUBBD CI process.
 
 ##### Prerequisites
 
-- Zarf CLI installed locally (Minimum version of `v0.29.0`)
+- Zarf CLI installed locally (Minimum version of `v0.30.1`)
 - Terraform CLI installed locally
 - AWS Account
 - Existing AWS S3 bucket with a Terraform state file present and AWS DynamoDB table for state locking
