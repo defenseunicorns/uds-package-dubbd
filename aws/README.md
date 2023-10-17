@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Zarf CLI installed locally. Minimum version of `v0.29.0`
+- Zarf CLI installed locally. Minimum version of `v0.30.1`
 - AWS EKS cluster -- K8s v1.26+
 - AWS EKS cluster has Zarf init package deployed (with `git-server` component)
 - Local K8s context is pointing to the above cluster

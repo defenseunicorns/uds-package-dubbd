@@ -357,6 +357,9 @@ components:
     extensions:
       bigbang:
         version: "###ZARF_PKG_TMPL_BIGBANG_VERSION###"
+        fluxPatchFiles:
+          - ../patches/flux-overrides-source-controller-deploy.yaml
+          - ../patches/flux-overrides-helm-controller-deploy.yaml
         valuesFiles:
           - ../values/values.yaml
           - ../values/kyverno.yaml
