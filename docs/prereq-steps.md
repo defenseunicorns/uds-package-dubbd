@@ -4,9 +4,27 @@
 
 You need Zarf installed locally with a minimum version of [v0.30.1](https://github.com/defenseunicorns/zarf/releases/tag/v0.30.1)
 
+[Install zarf](https://docs.zarf.dev/docs/getting-started/#installing-zarf)
+
+## Docker
+
+[Install docker](https://docs.docker.com/install/https://docs.docker.com/install/)
+
+## Kubectl (Optional)
+
+This is not necessary because `zarf` builds the latest stable release tag of the [upstream k8s.io cli and cmd sources](https://github.com/defenseunicorns/zarf/blob/ee4da6a938811e3da1801dac284dd2b2e8ee665f/src/cmd/tools/kubectl.go#L11), which can then be used as `zarf tools kubectl`
+
+But if you prefer the standalone kubectl: [Install kubectl](https://kubernetes.io/docs/tasks/tools/#kubectlhttps://kubernetes.io/docs/tasks/tools/#kubectl)
+
 ## Kubernetes Cluster (Optional)
 
-DUBBD is designed to run on a kubernetes cluster (v1.26+), which means you will either need a local cluster (e.g k3d, k3s, KinD, minikube ([Zarf can be used to deploy a built-in k3s distribution](https://docs.zarf.dev/docs/deploy-a-zarf-package/deployment-ui#deploy-a-k3s-cluster-with-the-init-package)) or an external one to which Zarf can connect.
+DUBBD is designed to run on a kubernetes cluster (v1.26+), which means you will either need a local cluster (e.g k3d, k3s, KinD, minikube etc...) or an external one (e.g eks) to which Zarf can connect.
+
+- [Install k3d](https://k3d.io/v5.5.1/#installation)
+- [Install k3s](https://docs.k3s.io/installation)
+  - [Zarf can be used to deploy a built-in k3s distribution](https://docs.zarf.dev/docs/deploy-a-zarf-package/deployment-ui#deploy-a-k3s-cluster-with-the-init-package)
+- [Install KinD](https://kind.sigs.k8s.io/docs/user/quick-start/#installation)
+- [Install Minikube](https://minikube.sigs.k8s.io/docs/start/)
 
 ## Working Kube Context
 

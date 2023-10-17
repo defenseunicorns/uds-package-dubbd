@@ -1,6 +1,6 @@
 # Build Package Steps
 
-**Make sure you've gone through the prereq steps**
+[**Make sure you've gone through the prereq steps**](prereq-steps.md)
 
 ## Setup Credentials
 
@@ -13,7 +13,9 @@
    1. Login to [Harbor (https://registry1.dso.mil)](https://registry1.dso.mil) (SSO Option) with same creds (accepting user agreements).
    1. In upper right corner, click _<your username>_ --> _User Profile_, then click the _Copy_ icon next to _CLI secret_, and store in a secure and accessible location.
 1. Validate AuthN to Container Registries
+
    1. On your machine, run:
+
    ```bash
    set +o history  # don't let these secrets end up in plain text shell history
    export GITHUB_USER=<github username>
@@ -24,6 +26,11 @@
    echo $IRONBANK_PASS | zarf tools registry login registry1.dso.mil --username $IRONBANK_USER --password-stdin
    set -o history
    ```
+
+   _(Optional)_ Secure Container Registry Secrets with Local Credential Store
+
+   1. [Install and configure a credential store for docker login](https://docs.docker.com/engine/reference/commandline/login/#credentials-store)
+   1. Re-validate docker/zarf authN using the credential store configured in `~/.docker/config.json`
 
 ## Clone Repo
 
@@ -49,5 +56,8 @@ There are several flavors of DUBBD you can create. Each version comes from a zar
   - `cd k3d/local`
   - `cd k3d`
   - `cd rke2`
+
+> **Note**
+> Some package directories might have specific directions in their README.md for creating the package.
 
 3. Run `zarf package create --confirm`
