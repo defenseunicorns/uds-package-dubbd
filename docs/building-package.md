@@ -1,6 +1,6 @@
 # Build Package Steps
 
-[**Make sure you've gone through the prereq steps**](prereq-steps.md)
+[**Prereq steps**](prereq-steps.md)
 
 ## Setup Credentials
 

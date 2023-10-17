@@ -18,14 +18,6 @@ This section outlines the development cycle to build, deploy, and test DUBBD-AWS
 
 The steps below mimic what is performed as part of the DUBBD CI process.
 
-##### Prerequisites
-
-- Zarf CLI installed locally (Minimum version of `v0.30.1`)
-- Terraform CLI installed locally
-- AWS Account
-- Existing AWS S3 bucket with a Terraform state file present and AWS DynamoDB table for state locking
-- A `~/.docker/config.json` file
-
 ##### Stand up AWS resources
 
 First authenticate to AWS (verify the right region is set), and create the following pre-requisite resources:
@@ -92,7 +84,7 @@ zarf package deploy zarf-package-*.tar.zst \
   --confirm
 
 # source the setenv output from the IAC deploy
-. ./setenv-dubbd-package.sh 
+. ./setenv-dubbd-package.sh
 
 # verify the env var from setenv looks correct
 env | grep ZARF_PACKAGE_DEPLOY_SET
@@ -102,32 +94,21 @@ env | grep ZARF_PACKAGE_DEPLOY_SET
 
 Once all the AWS infrastructure is in place, follow these steps to build & deploy DUBBD-AWS:
 
-```console
-# change to the DUBBD-AWS dir
-cd .github/aws/dubbd-aws
-
-# login to the registry
-set +o history
-export REGISTRY1_USERNAME="YOUR-USERNAME-HERE"
-export REGISTRY1_PASSWORD="YOUR-PASSWORD-HERE"
-echo $REGISTRY1_PASSWORD | zarf tools registry login registry1.dso.mil --username $REGISTRY1_USERNAME --password-stdin
-set -o history
-
-# run zarf package create
-zarf package create . --confirm
-
 # verify the env var from setenv looks correct
+
 env | grep ZARF_PACKAGE_DEPLOY_SET
 
 # deploy the package with the appropriate zarf variable values
-zarf package deploy zarf-package-*.tar.zst \
-  --set domain="bigbang.dev" \
-  --set key_file="bigbang.dev.key" \
-  --set cert_file="bigbang.dev.cert" \
-  --set private_admin_lb="true" \
-  --set private_tenant_lb="true" \
-  --confirm
-```
+
+zarf package deploy zarf-package-\*.tar.zst \
+ --set domain="bigbang.dev" \
+ --set key_file="bigbang.dev.key" \
+ --set cert_file="bigbang.dev.cert" \
+ --set private_admin_lb="true" \
+ --set private_tenant_lb="true" \
+ --confirm
+
+````
 
 #### Uninstall DUBBD-AWS & AWS resources
 
@@ -145,7 +126,7 @@ zarf package remove zarf-package-*.tar.zst --confirm
 
 # confirm DUBBD-AWS was removed
 zarf package list
-```
+````
 
 Tear down AWS resources created for DUBBD-AWS:
 
