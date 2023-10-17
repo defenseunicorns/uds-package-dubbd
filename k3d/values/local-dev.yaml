@@ -4,7 +4,6 @@ kyvernoPolicies:
       disallow-host-namespaces:
         exclude:
           any:
-            # Istio does not inject itself
             - resources:
                 namespaces:
                   - metallb-system
@@ -20,17 +19,31 @@ kyvernoPolicies:
         parameters:
           allow:
             - "###ZARF_VAR_HOST_PATH###"
-      restrict-image-registries:
-        exclude:
-          any:
-            # Istio does not inject itself
-            - resources:
-                namespaces:
-                  - metallb-system
       restrict-host-ports:
         exclude:
           any:
-            # Istio does not inject itself
             - resources:
                 namespaces:
                   - metallb-system
+
+    additionalPolicies:
+      restrict-image-registries:
+        spec:
+          rules:
+            - name: validate-registries
+              exclude:
+                any:
+                  - resources:
+                      namespaces:
+                        - metallb-system
+              match:
+                any:
+                  - resources:
+                      kinds:
+                        - Pod
+              validate:
+                foreach:
+                  - list: request.object.spec.template.spec.[ephemeralContainers, initContainers, containers][]
+                    pattern:
+                      image: registry1.dso.mil* | registry.dso.mil* | 127.0.0.1* | ###ZARF_VAR_APPROVED_REGISTRIES###
+                    message: "Image registry is not in the approved list"

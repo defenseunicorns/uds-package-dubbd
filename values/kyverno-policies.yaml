@@ -4,11 +4,41 @@ kyvernoPolicies:
       any:
         - resources:
             namespaces: ###ZARF_VAR_EXEMPT_NAMESPACES###
+
     policies:
       restrict-image-registries:
-        parameters:
-          allow:
-            - registry1.dso.mil
-            - registry.dso.mil
-            - 127.0.0.1 # zarf registry
-            - "###ZARF_VAR_APPROVED_REGISTRIES###"
+        enabled: false
+
+    additionalPolicies:
+      restrict-image-registries:
+        enabled: true
+        kind: ClusterPolicy
+        annotations:
+          pod-policies.kyverno.io/autogen-controllers: none
+          policies.kyverno.io/title: Restrict Image Registries
+          policies.kyverno.io/category: Best Practices (Security)
+          policies.kyverno.io/description: >-
+            Images from unknown, public registries can be
+            of dubious quality and may not be scanned and secured, representing a high degree
+            of risk. Requiring use of known, approved registries helps reduce threat exposure
+            by ensuring image pulls only come from them. This policy validates that all
+            images originate from a registry in the approved list.
+          policies.kyverno.io/severity: high
+          policies.kyverno.io/subject: Pod
+        spec:
+          rules:
+            - name: validate-registries
+              match:
+                any:
+                  - resources:
+                    kinds:
+                      - Pod
+              validate:
+                foreach:
+                  - list: request.object.spec.template.spec.[ephemeralContainers, initContainers, containers][]
+                    pattern:
+                      image: registry1.dso.mil* | registry.dso.mil* | 127.0.0.1* | ###ZARF_VAR_APPROVED_REGISTRIES###
+                    message: "Image registry is not in the approved list"
+          validationFailureAction: enforce
+          background: true
+          webhookTimeoutSeconds: 30
