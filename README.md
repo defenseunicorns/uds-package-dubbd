@@ -8,6 +8,11 @@ Pre-built Zarf Package of [DoD-Platform-One/big-bang](https://github.com/DoD-Pla
 - Optional: A working Kubernetes cluster on v1.26+ -- e.g k3d, k3s, KinD, etc (Zarf can be used to deploy a built-in k3s distribution)
 - Working kube context (`kubectl get nodes` <-- this command works)
 
+## Quickstart Deploy
+
+- `zarf init` _(select which optional components you want)_
+- `zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd:<desired-tag>` _([search tags here](https://github.com/defenseunicorns/uds-package-dubbd/pkgs/container/packages%2Fdubbd))_
+
 ## DUBBD repo details
 
 - [aws](./aws/) - _DUBBD for aws (EKS)_
