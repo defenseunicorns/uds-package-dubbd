@@ -1,8 +1,8 @@
-# Build Package Steps
+# How to Build and Deploy Packages
 
 ## [**Prereq steps**](prereq-steps.md)
 
-## Setup Credentials
+## Setup Auth
 
 1. Gain Access to GitHub Container Registry (`ghcr.io`)
    1. Login to your GitHub Account.
@@ -64,7 +64,23 @@ i.e.
    # cd rke2
 ```
 
-3. Run `zarf package create --confirm`
+3. Create Package
+
+```bash
+zarf package create --confirm
+```
 
 > **Note**
 > Some packages might have more specific directions in their README.md for building.
+
+If the create succeeds you should see a .zst file in the same directory.
+
+e.g `k3d/zarf-package-dubbd-k3d-amd64-0.9.1.tar.zst`
+
+## Deploy Package
+
+You can then deploy that package to your cluster.
+
+```bash
+zarf package deploy --confirm zarf-package-*.tar.zst
+```

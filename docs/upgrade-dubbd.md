@@ -60,7 +60,7 @@ zarf tools kubectl get pod -A
 
 ### Upgrade Steps
 
-Follow the same steps as used for initial deployment from the [configure DUBBD](#configure-dubbd-aws) and [deploy the package](#deploy-the-package) sections.
+Follow the same steps as used for initial deployment.
 
 ### Post upgrade validation
 
@@ -69,7 +69,7 @@ After the upgrade is complete, here are some recommended validation activities:
 - Confirm the deployed DUBBD version is correct
 
 ```console
-# zarf tools kubectl get secret -n zarf zarf-package-dubbd-aws -o go-template="{{ .data.data | base64decode }}" | jq -r '.data.metadata.version'
+# zarf tools kubectl get secret -n zarf zarf-package-* -o go-template="{{ .data.data | base64decode }}" | jq -r '.data.metadata.version'
 ```
 
 - Perform the same steps outlined in [Verify DUBBD health](#verify-dubbd-health)
@@ -84,11 +84,13 @@ If a rollback is deemed necessary, these are the various options:
 - Grab the version of the deployed DUBBD package
 
 ```console
-zarf tools kubectl get secret -n zarf zarf-package-dubbd-aws -o go-template="{{ .data.data | base64decode }}" | jq -r '.data.metadata.version'
+zarf tools kubectl get secret -n zarf zarf-package-* -o go-template="{{ .data.data | base64decode }}" | jq -r '.data.metadata.version'
 ```
 
 - Prep the zarf-config.yaml for use with the previous DUBBD version
 - Deploy previous version of DUBBD
+
+e.g.
 
 ```console
 zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-aws:(PREVIOUS-VERSION)-amd64
@@ -99,7 +101,7 @@ zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-aws:(PREVIOUS-V
 - Grab the version of the deployed DUBBD package
 
 ```console
-zarf tools kubectl get secret -n zarf zarf-package-dubbd-aws -o go-template="{{ .data.data | base64decode }}" | jq -r '.data.metadata.version'
+zarf tools kubectl get secret -n zarf zarf-package-* -o go-template="{{ .data.data | base64decode }}" | jq -r '.data.metadata.version'
 ```
 
 - Remove the DUBBD package (execute command from same directory used to deploy)
@@ -112,7 +114,6 @@ zarf package remove dubbd-aws --confirm
 - Deploy previous version of DUBBD
 
 ```console
-
 zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-aws:(PREVIOUS-VERSION)-amd64
 ```
 

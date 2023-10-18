@@ -1,14 +1,6 @@
 # Developer Notes
 
-This document provides guidance on how to develop, deploy, and test code changes to DUBBD.
-
-A useful reference for inclusion with the contributors guide, once it is made available for this repo.
-
-## How to build & deploy DUBBD versions
-
-### Defense Unicorns Big Bang Distro (DUBBD)
-
-To be provided...
+This document provides more granular guidance on how to develop, deploy, and test code changes to DUBBD.
 
 ### Defense Unicorns Big Bang Distro for AWS (DUBBD-AWS)
 
@@ -90,16 +82,16 @@ zarf package deploy zarf-package-*.tar.zst \
 env | grep ZARF_PACKAGE_DEPLOY_SET
 ```
 
-##### Build & deploy DUBBD-AWS
+##### Build and Deploy
 
-Once all the AWS infrastructure is in place, follow these steps to build & deploy DUBBD-AWS:
+```
+# change to the DUBBD-AWS dir
+cd aws/dubbd-aws
 
 # verify the env var from setenv looks correct
-
 env | grep ZARF_PACKAGE_DEPLOY_SET
 
 # deploy the package with the appropriate zarf variable values
-
 zarf package deploy zarf-package-\*.tar.zst \
  --set domain="bigbang.dev" \
  --set key_file="bigbang.dev.key" \
@@ -108,7 +100,7 @@ zarf package deploy zarf-package-\*.tar.zst \
  --set private_tenant_lb="true" \
  --confirm
 
-````
+```
 
 #### Uninstall DUBBD-AWS & AWS resources
 
@@ -126,7 +118,7 @@ zarf package remove zarf-package-*.tar.zst --confirm
 
 # confirm DUBBD-AWS was removed
 zarf package list
-````
+```
 
 Tear down AWS resources created for DUBBD-AWS:
 
@@ -147,19 +139,3 @@ cd .github/test-infra/eks
 # run zarf package remove
 zarf package remove zarf-package-*.tar.zst --confirm
 ```
-
-### Defense Unicorns Big Bang Distro for K3D (DUBBD-K3D)
-
-To be provided...
-
-### Defense Unicorns Big Bang Distro for RKE2 (DUBBD-RKE2)
-
-To be provided...
-
-## Verify DUBBD health
-
-To be provided...
-
-## Troubleshooting DUBBD issues
-
-To be provided...

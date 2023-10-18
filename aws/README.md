@@ -88,6 +88,6 @@ When running Big Bang on AWS, Loki is configured to use S3 for storage for bette
 
 In order for this configuration to work cleanly, DUBBD-AWS also provisions an S3 bucket from our [IaC Repo](https://github.com/defenseunicorns/terraform-aws-uds-s3) that provides encryption at rest and a role to access the S3 bucket that gets used by Loki via [IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html).
 
-## Upgrading DUBBD
+## Local Development
 
-[See the upgrading DUBBD docs](../docs/upgrade-dubbd.md)
+If you're working on development of the dubbd-aws package, you can follow the [developer-notes.md](../docs/developer-notes.md) for a more specific guide on creating the AWS resources needed for successfully testing your package.

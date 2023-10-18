@@ -3,11 +3,15 @@
 ## Get Your Machine Ready
 
 > **Warning**
-> machine requiremens ...knowledge needed
+> machine requirements ...knowledge needed
 
-[Prequisite Tools Needed](./docs//prereq-steps.md)
+[Prequisite Installs Needed](./docs//prereq-steps.md)
 
-[How to authenticate and build a package.](./docs/building-package.md)
+## How to build & deploy DUBBD versions
+
+When working on DUBBD, follow [these steps](./docs/building-package.md) for getting registry authentication setup and building / deploying packages.
+
+You can also checkout the [developer-notes.md](./docs//developer-notes.md) for more specifc help on working with certain packages.
 
 ## Contribution Flow
 
