@@ -43,7 +43,7 @@ kyvernoPolicies:
                         - Pod
               validate:
                 foreach:
-                  - list: request.object.spec.template.spec.[ephemeralContainers, initContainers, containers][]
+                  - list: request.object.spec.[ephemeralContainers, initContainers, containers][]
                     pattern:
-                      image: 127.0.0.1/* | ###ZARF_VAR_APPROVED_REGISTRIES###
+                      image: 127.0.0.1:31999/* | ###ZARF_VAR_APPROVED_REGISTRIES###
                     message: "Image registry is not in the approved list"
