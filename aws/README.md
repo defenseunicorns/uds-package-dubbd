@@ -64,7 +64,7 @@ zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-aws:<VERSION>-a
 
 Note that package versions can be found in the [Defense Unicorns GHCR repo](https://github.com/defenseunicorns/uds-package-dubbd/pkgs/container/packages%2Fdubbd-aws).
 
-If developing locally:
+If you created the package locally:
 
 ```bash
 zarf package deploy --confirm zarf-package-dubbd-aws-*.tar.zst
