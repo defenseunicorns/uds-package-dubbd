@@ -4,7 +4,6 @@ kyvernoPolicies:
       disallow-host-namespaces:
         exclude:
           any:
-            # Istio does not inject itself
             - resources:
                 namespaces:
                   - metallb-system
@@ -20,17 +19,9 @@ kyvernoPolicies:
         parameters:
           allow:
             - "###ZARF_VAR_HOST_PATH###"
-      restrict-image-registries:
-        exclude:
-          any:
-            # Istio does not inject itself
-            - resources:
-                namespaces:
-                  - metallb-system
       restrict-host-ports:
         exclude:
           any:
-            # Istio does not inject itself
             - resources:
                 namespaces:
                   - metallb-system

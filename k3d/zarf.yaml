@@ -23,6 +23,9 @@ variables:
     default: "/run/k3s/containerd/containerd.sock"
     description: "Path for container runtime socket"
     prompt: false
+  - name: APPROVED_REGISTRIES
+    description: "Regex of approved registries to allow in cluster (example: '127.0.0.1:31999/* | registry1.dso.mil/ironbank/*')"
+    default: "127.0.0.1:31999/* | quay.io/metallb/*"
   - name: DUBBD_VALUES
     description: "Path to a local values file that includes configuration to be used at deploy time (does not support enabling or disabling charts)"
     default: deploy-dubbd-values.yaml
