@@ -30,7 +30,7 @@ kyvernoPolicies:
       restrict-image-registries:
         spec:
           rules:
-            - name: validate-pod-registries
+            - name: validate-registries
               exclude:
                 any:
                   - resources:
