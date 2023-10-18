@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.11.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.11.0...v0.11.1) (2023-10-18)
+
+
+### Bug Fixes
+
+* bump flux resources requests & limits via patch ([#586](https://github.com/defenseunicorns/uds-package-dubbd/issues/586)) ([b69c5d7](https://github.com/defenseunicorns/uds-package-dubbd/commit/b69c5d780efffeb3570c4e1131d9fe6650d12891))
+* update kyverno image reg policy for pods only ([#599](https://github.com/defenseunicorns/uds-package-dubbd/issues/599)) ([2397137](https://github.com/defenseunicorns/uds-package-dubbd/commit/2397137cdaca2253cd0f3681541a3a39927b2626))
+* update OSCAL version ([#593](https://github.com/defenseunicorns/uds-package-dubbd/issues/593)) ([d4f1026](https://github.com/defenseunicorns/uds-package-dubbd/commit/d4f102612602f0e42e83ec0876df7384facc658d))
+
+
+### Miscellaneous
+
+* **deps:** update dependency defenseunicorns/zarf to v0.30.1 ([#589](https://github.com/defenseunicorns/uds-package-dubbd/issues/589)) ([b7f7a40](https://github.com/defenseunicorns/uds-package-dubbd/commit/b7f7a40b955ef18f2b7cf3472a5663d044afb8bd))
+* **deps:** update stefanzweifel/git-auto-commit-action action to v5 ([#592](https://github.com/defenseunicorns/uds-package-dubbd/issues/592)) ([92f2b67](https://github.com/defenseunicorns/uds-package-dubbd/commit/92f2b6754bf1e2b23cd25d4a98529cfeac7eda83))
+
 ## [0.11.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.10.1...v0.11.0) (2023-10-10)
 
 
