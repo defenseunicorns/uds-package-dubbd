@@ -10,23 +10,17 @@ This page shows you how to bootstrap a [`k3d`](https://k3d.io) cluster for DUBBD
 >
 > Minimum compute requirements for single node deployment are at LEAST 48 GB RAM and 12 virtual CPU threads (preferrably in a VM)
 
-[Make sure you've setup the prerequisites](../docs/prereq-steps.md)
+[Follow Common Prerequisite Steps](../docs/prereq-steps.md)
 
 ## Create and Bootstrap `k3d` cluster
 
-1. [Follow the common steps for building a package](../docs/building-package.md)
-
-1. The [`k3d/local`](./local) sub-folder defines the `k3d-local` zarf package that, when created and deployed, creates a local k3d cluster and bootstraps it with:
+The [`k3d/local`](./local) sub-folder defines the `k3d-local` zarf package that, when created and deployed, creates a local k3d cluster and bootstraps it with:
 
 1. zarf init package
    1. Components specified by [`init_components` in `k3d/local/zarf-config.yaml`](./local/zarf-config.yaml#L12).
 1. metallb load balancer
 
-```bash
-cd k3d/local
-zarf package create --confirm
-zarf package deploy --confirm zarf-package-k3d-local-<ARCH>-<ZARF_VERSION>.tar.zst
-```
+**To build the k3d-local package follow [these steps](../docs/building-package.md) for building a package.**
 
 > **Note**
 > The `k3d-local` package itself may only be _deployed_ to `amd64`, a limitation inherited from DUBBD via IronBank.
@@ -44,24 +38,17 @@ zarf package deploy --confirm zarf-package-k3d-local-<ARCH>-<ZARF_VERSION>.tar.z
 
 ### Validate kubectl context
 
-Deploying the `k3d-local` zarf package runs [`k3d.sh`](./local/scripts/k3d.sh), which merges the new k3d cluster's kubeconfig into your kubeconfig file and sets it as the current kubectl context.
-
 At this point you should be able to validate that you can access the k3d cluster and that it has been bootstrapped as expected with e.g. `zarf tools kubectl get pods -A` and `zarf tools k9s`.
-
-See below references for more info on managing kubeconfigs: - https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters - https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig - https://github.com/ahmetb/kubectx
 
 ## Build and Deploy the DUBBD-k3d zarf package
 
 ### Create the zarf package
 
+From the parent k3d directory, now build the dubbd-k3d package.
+
 ```bash
+cd ../ # if you're currently in k3d/local
 zarf package create --confirm
-```
-
-### (Optionally) Publish package to the OCI registry
-
-```bash
-zarf package publish --oci-concurrency=15
 ```
 
 ### Deploy the package
