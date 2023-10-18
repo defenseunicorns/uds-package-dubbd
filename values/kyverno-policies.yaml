@@ -10,7 +10,7 @@ kyvernoPolicies:
         enabled: false
 
     additionalPolicies:
-      restrict-pod-image-registries:
+      restrict-image-registries:
         enabled: true
         kind: ClusterPolicy
         annotations:
@@ -31,13 +31,13 @@ kyvernoPolicies:
               match:
                 any:
                   - resources:
-                    kinds:
-                      - Pod
+                      kinds:
+                        - Pod
               validate:
                 foreach:
                   - list: request.object.spec.template.spec.[ephemeralContainers, initContainers, containers][]
                     pattern:
-                      image: registry1.dso.mil* | registry.dso.mil* | 127.0.0.1* | ###ZARF_VAR_APPROVED_REGISTRIES###
+                      image: 127.0.0.1/* | ###ZARF_VAR_APPROVED_REGISTRIES###
                     message: "Image registry is not in the approved list"
           validationFailureAction: enforce
           background: true

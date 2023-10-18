@@ -27,7 +27,7 @@ kyvernoPolicies:
                   - metallb-system
 
     additionalPolicies:
-      restrict-pod-image-registries:
+      restrict-image-registries:
         spec:
           rules:
             - name: validate-registries
@@ -45,5 +45,5 @@ kyvernoPolicies:
                 foreach:
                   - list: request.object.spec.template.spec.[ephemeralContainers, initContainers, containers][]
                     pattern:
-                      image: registry1.dso.mil* | registry.dso.mil* | 127.0.0.1* | ###ZARF_VAR_APPROVED_REGISTRIES###
+                      image: 127.0.0.1/* | ###ZARF_VAR_APPROVED_REGISTRIES###
                     message: "Image registry is not in the approved list"

@@ -36,8 +36,8 @@ variables:
     description: "List of namespaces to be exempt from cluster policies (must contain zarf)"
     default: '[ "zarf" ]'
   - name: APPROVED_REGISTRIES
-    description: "Regex of approved registries to allow in cluster"
-    default: "127.0.0.1* | registry1.dso.mil"
+    description: "Regex of approved registries to allow in cluster (example: '127.0.0.1/* | registry1.dso.mil/ironbank/*')"
+    default: "127.0.0.1/*"
   - name: MONITORING_PROMETHEUS_PVC_SIZE
     default: "50Gi"
     description: "Size of PVC for Prometheus"
