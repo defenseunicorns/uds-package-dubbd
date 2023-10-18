@@ -1,6 +1,6 @@
 # Build Package Steps
 
-[**Prereq steps**](prereq-steps.md)
+## [**Prereq steps**](prereq-steps.md)
 
 ## Setup Credentials
 
@@ -42,22 +42,29 @@ git clone https://github.com/defenseunicorns/uds-package-dubbd.git
 
 ## Create From Package DIR
 
-There are several flavors of DUBBD you can create. Each version comes from a zarf.yaml found in a package sub-directory. You need to run the `zarf package create` from within one of those package directories.
+There are several flavors of DUBBD you can create (i.e dubbd, dubbd-aws, dubbd-k3d). Each version is derived from a zarf.yaml found in a package sub-directory. To create one of these packages:
 
 1. CD into the DUBBD directory (where you cloned it on your machine)
 
-   - i.e `cd /repos/uds-package-dubbd`
+   i.e
+
+   ```bash
+   cd /repos/uds-package-dubbd
+   ```
 
 2. CD into a specific package sub-directory
 
-- i.e.
-  - `cd aws/dubbd-aws`
-  - `cd defense-unicorns-distro`
-  - `cd k3d/local`
-  - `cd k3d`
-  - `cd rke2`
+i.e.
 
-> **Note**
-> Some package directories might have specific directions in their README.md for creating the package.
+```bash
+   # cd aws/dubbd-aws
+   # cd defense-unicorns-distro
+   # cd k3d/local
+   # cd k3d
+   # cd rke2
+```
 
 3. Run `zarf package create --confirm`
+
+> **Note**
+> Some packages might have more specific directions in their README.md for building.

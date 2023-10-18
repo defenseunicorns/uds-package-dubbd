@@ -8,11 +8,15 @@ You need Zarf installed locally with a minimum version of [v0.30.1](https://gith
 
 ## Docker
 
+Docker is required by a couple of the other pre-requisites -- mainly zarf and a local k8s cluster.
+
+(Does Zarf work with Podman?)
+
 [Install docker](https://docs.docker.com/install/https://docs.docker.com/install/)
 
 ## Kubectl (Optional)
 
-This is not necessary because `zarf` builds the latest stable release tag of the [upstream k8s.io cli and cmd sources](https://github.com/defenseunicorns/zarf/blob/ee4da6a938811e3da1801dac284dd2b2e8ee665f/src/cmd/tools/kubectl.go#L11), which can then be used as `zarf tools kubectl`
+You don't have to have kubectl installed locally because `zarf` builds the latest stable release tag of the [upstream k8s.io cli and cmd sources](https://github.com/defenseunicorns/zarf/blob/ee4da6a938811e3da1801dac284dd2b2e8ee665f/src/cmd/tools/kubectl.go#L11), which can then be used as `zarf tools kubectl`.
 
 But if you prefer the standalone kubectl: [Install kubectl](https://kubernetes.io/docs/tasks/tools/#kubectlhttps://kubernetes.io/docs/tasks/tools/#kubectl)
 
@@ -28,4 +32,4 @@ DUBBD is designed to run on a kubernetes cluster (v1.26+), which means you will 
 
 ## Working Kube Context
 
-After you've created a cluster, make sure it's accessible via the current kube context i.e. (`zarf tools kubectl get nodes` <-- this command works)
+Whether your cluster is local or external, make sure the kube context is set correctly and access to the cluster is working via e.g `zarf tools kubectl get nodes`.
