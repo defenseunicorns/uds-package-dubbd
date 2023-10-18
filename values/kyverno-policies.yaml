@@ -10,7 +10,7 @@ kyvernoPolicies:
         enabled: false
 
     additionalPolicies:
-      restrict-image-registries:
+      restrict-pod-image-registries:
         enabled: true
         kind: ClusterPolicy
         annotations:

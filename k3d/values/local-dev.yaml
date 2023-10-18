@@ -27,7 +27,7 @@ kyvernoPolicies:
                   - metallb-system
 
     additionalPolicies:
-      restrict-image-registries:
+      restrict-pod-image-registries:
         spec:
           rules:
             - name: validate-registries
