@@ -15,19 +15,19 @@ kyvernoPolicies:
         kind: ClusterPolicy
         annotations:
           pod-policies.kyverno.io/autogen-controllers: none
-          policies.kyverno.io/title: Restrict Image Registries
+          policies.kyverno.io/title: Restrict Pod Image Registries
           policies.kyverno.io/category: Best Practices (Security)
           policies.kyverno.io/description: >-
             Images from unknown, public registries can be
             of dubious quality and may not be scanned and secured, representing a high degree
             of risk. Requiring use of known, approved registries helps reduce threat exposure
             by ensuring image pulls only come from them. This policy validates that all
-            images originate from a registry in the approved list.
+            images in Pods originate from a registry in the approved list.
           policies.kyverno.io/severity: high
           policies.kyverno.io/subject: Pod
         spec:
           rules:
-            - name: validate-registries
+            - name: validate-pod-registries
               match:
                 any:
                   - resources:
