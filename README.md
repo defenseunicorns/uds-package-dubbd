@@ -10,8 +10,10 @@ Pre-built Zarf Package of [DoD-Platform-One/big-bang](https://github.com/DoD-Pla
 
 ## Quickstart Deploy
 
-- `zarf init` _(select which optional components you want)_
-- `zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd:<desired-tag>` _([search tags here](https://github.com/defenseunicorns/uds-package-dubbd/pkgs/container/packages%2Fdubbd))_
+```bash
+zarf init
+zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd:<desired-tag> # search tags at https://github.com/defenseunicorns/uds-package-dubbd/pkgs/container/packages%2Fdubbd
+```
 
 ## DUBBD repo details
 
