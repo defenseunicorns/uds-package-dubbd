@@ -8,7 +8,9 @@ This page shows you how to bootstrap a [`k3d`](https://k3d.io) cluster for DUBBD
 
 [Follow Common Prerequisite Steps](../docs/prereq-steps.md)
 
-## Create and Bootstrap `k3d` cluster
+## Create and Bootstrap `k3d` cluster (Optional)
+
+**_If you don't want to use the k3d-local package, just ensure you have a k3d cluster running and your kube context is pointed to it and move on to [Build and Deploy the DUBBD-k3d zarf package](#build-and-deploy-the-dubbd-k3d-zarf-package)_**.
 
 The [`k3d/local`](./local) sub-folder defines the `k3d-local` zarf package that, when created and deployed, creates a local k3d cluster and bootstraps it with:
 
@@ -19,18 +21,13 @@ The [`k3d/local`](./local) sub-folder defines the `k3d-local` zarf package that,
 **To build the k3d-local package follow [these steps](../docs/building-package.md).**
 
 > **Note**
+>
 > The `k3d-local` package itself may only be _deployed_ to `amd64`, a limitation inherited from DUBBD via IronBank.
-> This `architecture:` constraint is declaratively hard-coded in [`zarf-config.yaml`](./zarf-config.yaml).
+> This `architecture:` constraint is declaratively hard-coded in the k3d [`zarf-config.yaml`](./zarf-config.yaml).
 
 > **Note**
-> Package _creation_ may be performed on any system/arch, regardless of the package arch (analogous to [cross-compilation](https://en.wikipedia.org/wiki/Cross_compiler)).
-
-> **Warning**
-> The `k3d-local` package can only be _created_ on amd64 systems, because:
 >
-> - The `k3d-local` package downloads the `zarf init` package using `zarf tools download-init`
-> - [This zarf bug](https://github.com/defenseunicorns/zarf/issues/1837) means `zarf tools download-init` always uses the architecture of the host system.
->   This could be worked around with biz logic in our `cmd:` action, but we decided to postpone this in favor of waiting for the bugfix.
+> Package _creation_ may be performed on any system/arch, regardless of the package arch (analogous to [cross-compilation](https://en.wikipedia.org/wiki/Cross_compiler)).
 
 ### Validate kubectl context
 
@@ -39,6 +36,8 @@ At this point you should be able to validate that you can access the k3d cluster
 ## Build and Deploy the DUBBD-k3d zarf package
 
 ### Create the zarf package
+
+**If you just want to deploy an already built package skip this.**
 
 From the parent k3d directory, now build the dubbd-k3d package.
 
