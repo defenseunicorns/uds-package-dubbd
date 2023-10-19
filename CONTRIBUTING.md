@@ -62,5 +62,3 @@ Once your PR is ready, you can request a review.
 ### Post Merge Releases
 
 Please read through [How to DUBBD Release](./docs/howto-dubbd-release.md) for detailed information on how your merged changes will get incorporated into official releases. Specifically note the `How should I write my commits?` and `How do I add or remove a package to be released?` sections.
-
-## CI and Helpful Hints

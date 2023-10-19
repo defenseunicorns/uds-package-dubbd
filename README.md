@@ -12,10 +12,30 @@ _For additional information see [here](./docs/prereq-steps.md)._
 
 ## Quickstart Deploy
 
+### k3d
+
+Assumes you've followed the prerequisites and have a k3d cluster running.
+
 ```bash
-zarf init
-zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd:<desired-tag> # search tags at https://github.com/defenseunicorns/uds-package-dubbd/pkgs/container/packages%2Fdubbd
+zarf init --components=git-server --confirm
+zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-k3d:0.11.1-amd64 # search tags at https://github.com/defenseunicorns/uds-package-dubbd/pkgs/container/packages%2Fdubbd-k3d
 ```
+
+> **Note**
+>
+> You might need create the k3d cluster and run the zarf commands above as the root user.
+
+#### Confirm Deployment
+
+```bash
+zarf tools kubectl get pods -A
+```
+
+For deploying other flavors of DUBBD:
+
+- [DUBBD AWS](./aws/README.md)
+- [DUBBD RKE2](./rke2/README.md)
+- [DUBBD K3D with Metallb](./k3d/README.md)
 
 ## DUBBD repo details
 
@@ -33,12 +53,6 @@ zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd:<desired-tag> #
   - values - _values file overrides for rke2_
 - [values](./values/) - _shared values files_
 
-## Example DUBBD Deployment
-
-For AWS follow steps [here](./aws/README.md#deploy-the-package)
-
-For K3d follow steps [here](./k3d/README.md#deploy-the-package)
-
 ## Releases
 
 ### When to expect new releases
@@ -50,3 +64,7 @@ Following semantic versioning for releases, a new release version is created upo
 ### Creating releases
 
 See [DUBBD Releases](./docs/howto-dubbd-release.md) for more information.
+
+## Contributing
+
+Please see the [CONTRIBUTING.md](./CONTRIBUTING.md).
