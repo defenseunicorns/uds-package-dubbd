@@ -6,8 +6,6 @@ It is important to take a few steps before the upgrade to confirm you are on a s
 
 #### Get current deployed version
 
-Zarf does not expose the current version of your DUBBD deployment, but this may be an option in the future (see [this issue](https://github.com/defenseunicorns/zarf/issues/1797) to track the progress of that functionality).
-
 - Get the DUBBD version deployed
 
 ```console
@@ -22,12 +20,13 @@ zarf tools kubectl get helmrelease -n bigbang bigbang -o jsonpath='{.status.last
 
 #### Determine target upgrade version
 
-It's best to stay up to date with the latest DUBBD version to ensure you have the latest security patches for applications as well as the latest features and fixes from DUBBD. Typically your upgrade should target the latest patch version for a given minor version, e.g. `0.2.4` and not `0.2.3`. Supported (and recommended) upgrade paths can be reviewed in the matrix below - in general you can jump multiple patch versions but only a single major/minor patch version.
+It's best to stay up to date with the latest DUBBD version to ensure you have the latest security patches for applications as well as the latest features and fixes from DUBBD. Typically your upgrade should target the latest patch version for a given minor version, e.g. `0.2.4` and not `0.2.3`. In general you can jump multiple patch versions but only a single major/minor patch version.
 
+Example Upgrade Matrix:
 | Current Version | Supported Upgrade Version(s) | Recommended Upgrade Version |
 | --------------- | ---------------------------- | --------------------------- |
-| 0.2.\*          | 0.2.\*                       | Latest 0.2.x patch version  |
-| 0.1.\*          | 0.1.\*, 0.2.\*               | Latest 0.2.x patch version  |
+| 0.2.\* | 0.2.\* | Latest 0.2.x patch version |
+| 0.1.\* | 0.1.\*, 0.2.\* | Latest 0.2.x patch version |
 
 If you are not on a supported upgrade path, you will need to review the release notes and test the intended upgrade path on your own. If you have fallen behind several versions we recommend doing consecutive upgrades of the intermediate versions (ex: `0.1.0` -> `0.2.0` -> `0.3.0`) or at minimum testing the upgrade jump in a staging environment.
 
@@ -56,7 +55,7 @@ zarf tools kubectl get pod -n flux-system
 zarf tools kubectl get pod -A
 ```
 
-- Verify AWS resources exist (S3 bucket for Loki, Load Balancers for Istio): This can be confirmed via your AWS console or CLI access
+- (DUBBD AWS Specific) Verify AWS resources exist (S3 bucket for Loki, Load Balancers for Istio): This can be confirmed via your AWS console or CLI access
 
 ### Upgrade Steps
 
@@ -69,7 +68,7 @@ After the upgrade is complete, here are some recommended validation activities:
 - Confirm the deployed DUBBD version is correct
 
 ```console
-# zarf tools kubectl get secret -n zarf zarf-package-* -o go-template="{{ .data.data | base64decode }}" | jq -r '.data.metadata.version'
+zarf package list
 ```
 
 - Perform the same steps outlined in [Verify DUBBD health](#verify-dubbd-health)
@@ -84,13 +83,13 @@ If a rollback is deemed necessary, these are the various options:
 - Grab the version of the deployed DUBBD package
 
 ```console
-zarf tools kubectl get secret -n zarf zarf-package-* -o go-template="{{ .data.data | base64decode }}" | jq -r '.data.metadata.version'
+zarf package list
 ```
 
 - Prep the zarf-config.yaml for use with the previous DUBBD version
 - Deploy previous version of DUBBD
 
-e.g.
+e.g. for DUBBD AWS
 
 ```console
 zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-aws:(PREVIOUS-VERSION)-amd64
@@ -98,20 +97,22 @@ zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-aws:(PREVIOUS-V
 
 #### OPTION 2: Remove DUBBD package and re-deploy a previous working version
 
-- Grab the version of the deployed DUBBD package
+- Grab the name and version of the deployed DUBBD package
 
 ```console
-zarf tools kubectl get secret -n zarf zarf-package-* -o go-template="{{ .data.data | base64decode }}" | jq -r '.data.metadata.version'
+zarf package list'
 ```
 
 - Remove the DUBBD package (execute command from same directory used to deploy)
 
 ```console
-zarf package remove dubbd-aws --confirm
+zarf package remove <name of deployed DUBBD> --confirm
 ```
 
 - Prep the zarf-config.yaml for use with the previous DUBBD version
 - Deploy previous version of DUBBD
+
+e.g. for DUBBD AWS
 
 ```console
 zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-aws:(PREVIOUS-VERSION)-amd64

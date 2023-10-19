@@ -36,11 +36,11 @@ If you're not a Defense Unicorns DUBBD maintainer, **please fork the DUBBD repo 
 
 We recommend creating a draft PR on first commit to your working branch. Understandably there might not be much to show right away, but it allows for the team to better track and see WIP.
 
-- **PR Name** - There are no strict rules regarding PR names. Preferrably they're short and descriptive and follow the conventional commit message specification. See https://www.conventionalcommits.org/en/v1.0.0/#specification.
+- **PR Name** - The PR name (title) should be in the format of a short conventional commit as all commits in a PR branch will be squashed and merged, which defaults the combined commit to the PR name. More details can be provided in the PR through the use of the extended description or comments. See https://www.conventionalcommits.org/en/v1.0.0/#specification for how to do conventional commits.
 
-- **Link PR to Issue** - Either in the name or in a comment, please link your PR to the issue. See https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue for supported keywords.
+- **Link PR to Issue** -In the description of your PR, please link your PR to the issue. See https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue for supported keywords.
 
-- **Commit Message** - Please follow the conventional commit message specification (link above) for at least your first commit, if not for all commits. Commits will be squashed on merge, which is why it's important at least the first commit follows the specification.
+- **Commit Message** - Please follow the conventional commit message specification (link above) for at least your first commit, if not for all commits. Again, commits will be squashed on merge, which is why it's important at least the first commit follows the specification.
 
 ### Resolve Conflicts
 
