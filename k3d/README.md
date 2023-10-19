@@ -6,10 +6,6 @@ This page shows you how to bootstrap a [`k3d`](https://k3d.io) cluster for DUBBD
 
 ## Prerequisites
 
-> **Warning**
->
-> Minimum compute requirements for single node deployment are at LEAST 48 GB RAM and 12 virtual CPU threads (preferrably in a VM)
-
 [Follow Common Prerequisite Steps](../docs/prereq-steps.md)
 
 ## Create and Bootstrap `k3d` cluster
