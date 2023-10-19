@@ -2,14 +2,16 @@
 
 ## Prerequisites
 
-- Zarf CLI installed locally. Minimum version of `v0.30.1`
+- [Common Prerequisites](../docs/prereq-steps.md)
 - AWS EKS cluster -- K8s v1.26+
-- AWS EKS cluster has Zarf init package deployed (with `git-server` component)
 - Local K8s context is pointing to the above cluster
+- AWS EKS cluster has Zarf init package deployed (with `git-server` component)
+  ```bash
+  zarf init --components=git-server --confirm
+  ```
 - Existing AWS S3 bucket with a Terraform state file present and AWS DynamoDB table for state locking
 - Existing AWS S3 bucket with KMS key and IRSA for Loki logs
 - Existing AWS S3 bucket with KMS key and IRSA for Velero backups
-- A `~/.docker/config.json` file. Zarf [currently requires this](https://github.com/defenseunicorns/zarf/issues/1795) to deploy from an OCI registry
 
 ## Build the package (optional)
 
