@@ -40,26 +40,25 @@ From the desired directory on your machine, run:
 git clone https://github.com/defenseunicorns/uds-package-dubbd.git
 ```
 
-## Create From Package DIR
+## Create From Package Directory
 
 There are several flavors of DUBBD you can create (i.e dubbd, dubbd-aws, dubbd-k3d). Each version is derived from a zarf.yaml found in a package sub-directory. To create one of these packages:
 
-1. CD into the DUBBD directory (where you cloned it on your machine)
+1. Change directory to locally cloned DUBBD repo
 
-   i.e
+   e.g.
 
-   ```bash
-   cd /repos/uds-package-dubbd
-   ```
+```bash
+cd /repos/uds-package-dubbd
+```
 
-2. CD into a specific package sub-directory
+2. Change to desired DUBBD package directory
 
-i.e.
+   e.g.
 
 ```bash
    # cd aws/dubbd-aws
    # cd defense-unicorns-distro
-   # cd k3d/local
    # cd k3d
    # cd rke2
 ```
@@ -71,6 +70,7 @@ zarf package create --confirm
 ```
 
 > **Note**
+>
 > Some packages might have more specific directions in their README.md for building.
 
 If the create succeeds you should see a .zst file in the same directory.

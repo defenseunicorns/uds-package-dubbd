@@ -1,5 +1,9 @@
 # Defense Unicorns Big Bang Distro for AWS (DUBBD-AWS)
 
+## Diagram
+
+![DUBBD AWS](../docs/.images/dubbd-aws-architecture.drawio.png)
+
 ## Prerequisites
 
 - [Common Prerequisites](../docs/prereq-steps.md)

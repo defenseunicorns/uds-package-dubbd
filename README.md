@@ -5,7 +5,7 @@ Pre-built Zarf Package of [DoD-Platform-One/big-bang](https://github.com/DoD-Pla
 ## Prerequisites
 
 - Zarf is installed locally with a minimum version of [v0.30.1](https://github.com/defenseunicorns/zarf/releases/tag/v0.30.1)
-- Optional: A working Kubernetes cluster on v1.26+ -- e.g k3d, k3s, KinD, etc (Zarf can be used to deploy a built-in k3s distribution)
+- Optional: A working Kubernetes cluster on v1.26+ -- e.g k3d, k3s, rk2, etc (Zarf can be used to deploy a built-in k3s distribution)
 - Working kube context (`kubectl get nodes` <-- this command works)
 
 _For additional information see [here](./docs/prereq-steps.md)._
