@@ -40,7 +40,7 @@ We recommend creating a draft PR on first commit to your working branch. Underst
 
 - **Link PR to Issue** -In the description of your PR, please link your PR to the issue. See https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue for supported keywords.
 
-- **Commit Message** - Please follow the conventional commit message specification (link above) for at least your first commit, if not for all commits. Again, commits will be squashed on merge, which is why it's important at least the first commit follows the specification.
+- **Commit Message** - Please follow the conventional commit message specification (link above) for at least your first commit, if not for all commits. Again, commits will be squashed on merge, which is why it's important at least the first commit follows the specification. This also has implications for how automated releases occur (see [Post Merge Releases](#post-merge-releases))
 
 ### Resolve Conflicts
 
@@ -58,5 +58,9 @@ Once your PR is ready, you can request a review.
 > how you can break it out into multiple smaller PRs so code is integrated faster.
 >
 > Remember trunk based development! :smiley:
+
+### Post Merge Releases
+
+Please read through [How to DUBBD Release](./docs/howto-dubbd-release.md) for detailed information on how your merged changes will get incorporated into official releases. Specifically note the `How should I write my commits?` and `How do I add or remove a package to be released?` sections.
 
 ## CI and Helpful Hints

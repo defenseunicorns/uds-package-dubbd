@@ -21,35 +21,42 @@ The recommended way to configure DUBBD-AWS is via a `zarf-config.yaml` file loca
 
 > Note the keys that are not commented out are **required** to deploy DUBBD-AWS.
 
-```yaml
+````yaml
 package:
+  create:
+    max_package_size: "1000000000"
+    set:
+      bigbang_version: "2.12.0"
+      # should line up with the flux version in the BB release, see https://repo1.dso.mil/big-bang/bigbang/-/blob/master/base/flux/gotk-components.yaml#L3
+      flux_version: "2.1.1"
   deploy:
     set:
       # -- Domain name for the EKS cluster
-      domain: bigbang.dev
+      domain: "bigbang.dev"
       # -- TLS key
-      key_file: bigbang.dev.key
+      key_file: "bigbang.dev.key"
       # -- TLS cert
-      cert_file: bigbang.dev.cert
+      cert_file: "bigbang.dev.cert"
       # -- Name of the EKS cluster
       name: "big-bang-aws"
-      # -- Name of existing Terraform state bucket
-      state_bucket_name: uds-dev-state-bucket
-      # -- Key path to Terraform state file within the bucket
-      state_key: tfstate/dev/uds-dev-state-bucket.tfstate
-      # -- Name of DynamoDB table used for Terraform state locking
-      state_dynamodb_table_name: uds-dev-state-dynamodb
-      # -- AWS region
-      region: us-west-2
       # -- Provision a private/internal load balancer for the admin ingress gateway, if false a public load balancer will be provisioned
-      private_admin_lb: true
+      private_admin_lb: "true"
       # -- Provision a private/internal load balancer for the tenant ingress gateway, if false a public load balancer will be provisioned
-      private_tenant_lb: true
-      # -- If set to true, force delete all resources on removal (i.e. loki S3 bucket, PVCs, etc)
-      ephemeral: false
-      # -- If set to true, delete the S3 bucket and corresponding KMS key associated with the Loki bucket. Overrides ephemeral setting.
-      #loki_force_destroy: "true"
-```
+      private_tenant_lb: "true"
+      # -- If set to true, delete PVs on removal
+      ephemeral: "false"
+      # -- AWS S3 bucket for use with Loki
+      loki_s3_bucket: "big-bang-aws-loki-s3"
+      # -- Region of the AWS S3 bucket for use with Loki
+      loki_s3_aws_region: "us-west-2"
+      # -- Role ARN of the AWS S3 bucket for use with Loki
+      loki_s3_role_arn: "arn:aws:iam::000000000000:role/big-bang-aws-0a0a0a0-loki-logging-loki-irsa"
+      # -- AWS S3 bucket for use with Velero
+      velero_s3_bucket: "big-bang-aws-velero-s3"
+      # -- Region of the AWS S3 bucket for use with Velero
+      velero_s3_aws_region: "us-west-2"
+      # -- Role ARN of the AWS S3 bucket for use with Velero
+      velero_s3_role_arn: "arn:aws:iam::000000000000:role/big-bang-aws-0a0a0a0-velero-velero-velero-server-irsa"
 
 ## Deploy the package
 
@@ -60,7 +67,7 @@ Once all of the prereqs are met and the `zarf-config.yaml` has been configured:
 zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-aws:<VERSION>-amd64 \
   --oci-concurrency=15 \
   --confirm
-```
+````
 
 Note that package versions can be found in the [Defense Unicorns GHCR repo](https://github.com/defenseunicorns/uds-package-dubbd/pkgs/container/packages%2Fdubbd-aws).
 

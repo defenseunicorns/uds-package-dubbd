@@ -1,6 +1,6 @@
 # DUBBD Prerequisites
 
-## ZARF
+## Zarf
 
 You need Zarf installed locally with a minimum version of [v0.30.1](https://github.com/defenseunicorns/zarf/releases/tag/v0.30.1)
 
@@ -20,15 +20,16 @@ You don't have to have kubectl installed locally because `zarf` builds the lates
 
 But if you prefer the standalone kubectl: [Install kubectl](https://kubernetes.io/docs/tasks/tools/#kubectlhttps://kubernetes.io/docs/tasks/tools/#kubectl)
 
-## Kubernetes Cluster (Optional)
+## Kubernetes Cluster
 
-DUBBD is designed to run on a kubernetes cluster (v1.26+), which means you will either need a local cluster (e.g k3d, k3s, KinD, minikube etc...) or an external one (e.g eks) to which Zarf can connect.
+DUBBD is designed to run on a kubernetes cluster (v1.26+), which means you will either need a local cluster (e.g k3d, k3s, rke2 etc...) or an external one (e.g eks) to which Zarf can connect.
+
+DUBBD is officially tested against the following clusters. Any other tools (e.g. KinD and minikube) will most likely work with DUBBD but are not guaranteed.
 
 - [Install k3d](https://k3d.io/v5.5.1/#installation)
 - [Install k3s](https://docs.k3s.io/installation)
   - [Zarf can be used to deploy a built-in k3s distribution](https://docs.zarf.dev/docs/deploy-a-zarf-package/deployment-ui#deploy-a-k3s-cluster-with-the-init-package)
-- [Install KinD](https://kind.sigs.k8s.io/docs/user/quick-start/#installation)
-- [Install Minikube](https://minikube.sigs.k8s.io/docs/start/)
+- [Install RKE2](https://docs.rke2.io/install/methods)
 
 ## Working Kube Context
 
