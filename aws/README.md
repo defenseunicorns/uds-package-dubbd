@@ -19,7 +19,7 @@
 
 ## Build the package (optional)
 
-If you just want to deploy DUBBD-AWS skip this step! Otherwise, [follow the steps to build a package](../docs//howoto-packages.md).
+If you just want to deploy DUBBD-AWS skip this step! Otherwise, [follow the steps to build a package](../docs//howto-packages.md).
 
 ## Configure DUBBD-AWS
 
