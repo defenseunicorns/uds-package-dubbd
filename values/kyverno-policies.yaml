@@ -6,6 +6,14 @@ kyvernoPolicies:
             namespaces: ###ZARF_VAR_EXEMPT_NAMESPACES###
 
     policies:
+      restrict-host-path-write:
+        exclude:
+          any:
+            - resources:
+                names:
+                  - neuvector-enforcer-pod*
+                namespaces:
+                  - neuvector
       restrict-image-registries:
         enabled: false
 
