@@ -1,14 +1,6 @@
 # Developer Notes
 
-This document provides guidance on how to develop, deploy, and test code changes to DUBBD.
-
-A useful reference for inclusion with the contributors guide, once it is made available for this repo.
-
-## How to build & deploy DUBBD versions
-
-### Defense Unicorns Big Bang Distro (DUBBD)
-
-To be provided...
+This document provides more granular guidance on how to develop, deploy, and test code changes to DUBBD.
 
 ### Defense Unicorns Big Bang Distro for AWS (DUBBD-AWS)
 
@@ -17,14 +9,6 @@ This section outlines the development cycle to build, deploy, and test DUBBD-AWS
 #### Build & deploy DUBBD-AWS & AWS resources
 
 The steps below mimic what is performed as part of the DUBBD CI process.
-
-##### Prerequisites
-
-- Zarf CLI installed locally (Minimum version of `v0.30.1`)
-- Terraform CLI installed locally
-- AWS Account
-- Existing AWS S3 bucket with a Terraform state file present and AWS DynamoDB table for state locking
-- A `~/.docker/config.json` file
 
 ##### Stand up AWS resources
 
@@ -92,41 +76,30 @@ zarf package deploy zarf-package-*.tar.zst \
   --confirm
 
 # source the setenv output from the IAC deploy
-. ./setenv-dubbd-package.sh 
+. ./setenv-dubbd-package.sh
 
 # verify the env var from setenv looks correct
 env | grep ZARF_PACKAGE_DEPLOY_SET
 ```
 
-##### Build & deploy DUBBD-AWS
-
-Once all the AWS infrastructure is in place, follow these steps to build & deploy DUBBD-AWS:
+##### Build and Deploy
 
 ```console
 # change to the DUBBD-AWS dir
-cd .github/aws/dubbd-aws
-
-# login to the registry
-set +o history
-export REGISTRY1_USERNAME="YOUR-USERNAME-HERE"
-export REGISTRY1_PASSWORD="YOUR-PASSWORD-HERE"
-echo $REGISTRY1_PASSWORD | zarf tools registry login registry1.dso.mil --username $REGISTRY1_USERNAME --password-stdin
-set -o history
-
-# run zarf package create
-zarf package create . --confirm
+cd aws/dubbd-aws
 
 # verify the env var from setenv looks correct
 env | grep ZARF_PACKAGE_DEPLOY_SET
 
 # deploy the package with the appropriate zarf variable values
-zarf package deploy zarf-package-*.tar.zst \
-  --set domain="bigbang.dev" \
-  --set key_file="bigbang.dev.key" \
-  --set cert_file="bigbang.dev.cert" \
-  --set private_admin_lb="true" \
-  --set private_tenant_lb="true" \
-  --confirm
+zarf package deploy zarf-package-\*.tar.zst \
+ --set domain="bigbang.dev" \
+ --set key_file="bigbang.dev.key" \
+ --set cert_file="bigbang.dev.cert" \
+ --set private_admin_lb="true" \
+ --set private_tenant_lb="true" \
+ --confirm
+
 ```
 
 #### Uninstall DUBBD-AWS & AWS resources
@@ -166,19 +139,3 @@ cd .github/test-infra/eks
 # run zarf package remove
 zarf package remove zarf-package-*.tar.zst --confirm
 ```
-
-### Defense Unicorns Big Bang Distro for K3D (DUBBD-K3D)
-
-To be provided...
-
-### Defense Unicorns Big Bang Distro for RKE2 (DUBBD-RKE2)
-
-To be provided...
-
-## Verify DUBBD health
-
-To be provided...
-
-## Troubleshooting DUBBD issues
-
-To be provided...
