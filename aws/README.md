@@ -19,7 +19,7 @@
 
 ## Build the package (optional)
 
-If you just want to deploy DUBBD-AWS skip this step! Otherwise, [follow the steps to build a package](../docs//building-package.md).
+If you just want to deploy DUBBD-AWS skip this step! Otherwise, [follow the steps to build a package](../docs//howoto-packages.md).
 
 ## Configure DUBBD-AWS
 
@@ -27,7 +27,7 @@ The recommended way to configure DUBBD-AWS is via a `zarf-config.yaml` file loca
 
 > Note the keys that are not commented out are **required** to deploy DUBBD-AWS.
 
-````yaml
+```yaml
 package:
   create:
     max_package_size: "1000000000"
@@ -63,6 +63,7 @@ package:
       velero_s3_aws_region: "us-west-2"
       # -- Role ARN of the AWS S3 bucket for use with Velero
       velero_s3_role_arn: "arn:aws:iam::000000000000:role/big-bang-aws-0a0a0a0-velero-velero-velero-server-irsa"
+```
 
 ## Deploy the package
 
@@ -73,7 +74,7 @@ Once all of the prereqs are met and the `zarf-config.yaml` has been configured:
 zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-aws:<VERSION>-amd64 \
   --oci-concurrency=15 \
   --confirm
-````
+```
 
 Note that package versions can be found in the [Defense Unicorns GHCR repo](https://github.com/defenseunicorns/uds-package-dubbd/pkgs/container/packages%2Fdubbd-aws).
 

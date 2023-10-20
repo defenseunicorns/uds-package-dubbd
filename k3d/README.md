@@ -18,7 +18,7 @@ The [`k3d/local`](./local) sub-folder defines the `k3d-local` zarf package that,
    1. Components specified by [`init_components` in `k3d/local/zarf-config.yaml`](./local/zarf-config.yaml#L12).
 1. metallb load balancer
 
-**To build the k3d-local package follow [these steps](../docs/building-package.md).**
+**To build the k3d-local package follow [these steps](../docs/howto-packages.md).**
 
 > **Note**
 >

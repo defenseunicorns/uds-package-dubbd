@@ -84,7 +84,7 @@ env | grep ZARF_PACKAGE_DEPLOY_SET
 
 ##### Build and Deploy
 
-```
+```console
 # change to the DUBBD-AWS dir
 cd aws/dubbd-aws
 
