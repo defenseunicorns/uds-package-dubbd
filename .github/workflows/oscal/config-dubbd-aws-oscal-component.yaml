@@ -14,25 +14,25 @@ components: # Define paths on the local filesystem or remote paths in git reposi
   local:
     - name: aws/dubbd-aws/velero-oscal-component.yaml
   remote:
-    - git: https://repo1.dso.mil/big-bang/product/packages/kiali.git@1.72.0-bb.1
+    - git: https://repo1.dso.mil/big-bang/product/packages/kiali.git@1.74.0-bb.2
       path: oscal-component.yaml
-    - git: https://repo1.dso.mil/big-bang/product/packages/tempo.git@1.6.1-bb.1
+    - git: https://repo1.dso.mil/big-bang/product/packages/tempo.git@1.6.1-bb.3
       path: oscal-component.yaml
-    - git: https://repo1.dso.mil/big-bang/product/packages/monitoring.git@51.1.0-bb.0
+    - git: https://repo1.dso.mil/big-bang/product/packages/monitoring.git@51.1.0-bb.2
       path: oscal-component.yaml
-    - git: https://repo1.dso.mil/big-bang/product/packages/neuvector.git@2.4.5-bb.6
+    - git: https://repo1.dso.mil/big-bang/product/packages/neuvector.git@2.6.3-bb.0
       path: oscal-component.yaml
-    - git: https://repo1.dso.mil/big-bang/product/packages/promtail.git@6.15.0-bb.1
+    - git: https://repo1.dso.mil/big-bang/product/packages/promtail.git@6.15.0-bb.3
       path: oscal-component.yaml
-    - git: https://repo1.dso.mil/big-bang/product/packages/loki.git@5.23.1-bb.0
+    - git: https://repo1.dso.mil/big-bang/product/packages/loki.git@5.23.1-bb.1
       path: oscal-component.yaml
-    - git: https://repo1.dso.mil/big-bang/product/packages/istio-controlplane.git@1.19.0-bb.0
+    - git: https://repo1.dso.mil/big-bang/product/packages/istio-controlplane.git@1.19.0-bb.2
       path: oscal-component.yaml
-    - git: https://repo1.dso.mil/big-bang/product/packages/kyverno.git@3.0.0-bb.4
+    - git: https://repo1.dso.mil/big-bang/product/packages/kyverno.git@3.0.0-bb.5
       path: oscal-component.yaml
-    # - git: https://repo1.dso.mil/big-bang/product/packages/kyverno-policies.git@3.0.4-bb.0
+    # - git: https://repo1.dso.mil/big-bang/product/packages/kyverno-policies.git@3.0.4-bb.1
     #   path: oscal-component.yaml
-    # - git: https://repo1.dso.mil/big-bang/product/packages/kyverno-reporter.git@2.16.0-bb.4
+    # - git: https://repo1.dso.mil/big-bang/product/packages/kyverno-reporter.git@2.16.0-bb.6
     #   path: oscal-component.yaml
     # - git: https://repo1.dso.mil/big-bang/product/packages/grafana.git@6.58.9-bb.4
     #   path: oscal-component.yaml
