@@ -12,7 +12,7 @@ metadata: # OSCAL-compliant metadata
       type: organization
 components: # Define paths on the local filesystem or remote paths in git repositories to OSCAL component definition files
   local:
-    - name: aws/dubbd-aws/velero-oscal-component.yaml
+    - name: ../../../aws/dubbd-aws/velero-oscal-component.yaml
   remote:
     - git: https://repo1.dso.mil/big-bang/product/packages/kiali.git@1.72.0-bb.1
       path: oscal-component.yaml
