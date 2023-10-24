@@ -3,6 +3,7 @@ neuvector:
   ingress:
     gateway: "admin"
   values:
+    autoGenerateCert: false
     monitor:
       exporter:
         CTRL_USERNAME: metrics
