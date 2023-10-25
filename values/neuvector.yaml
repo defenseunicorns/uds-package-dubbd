@@ -3,7 +3,6 @@ neuvector:
   ingress:
     gateway: "admin"
   values:
-    autoGenerateCert: false
     monitor:
       exporter:
         CTRL_USERNAME: metrics
@@ -32,3 +31,8 @@ neuvector:
                 password: ###ZARF_VAR_NEUVECTOR_ADMIN_PASSWORD###
                 role: admin
                 fullname: admin
+      strategy:
+        type: RollingUpdate
+        rollingUpdate:
+          maxSurge: 0
+          maxUnavailable: 1
