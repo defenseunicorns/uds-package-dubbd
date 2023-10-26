@@ -272,6 +272,8 @@ components:
     required: true
     actions:
       onDeploy:
+        defaults:
+          maxTotalSeconds: 1200
         before:
           - cmd: |
               ./zarf tools kubectl label ns -l app.kubernetes.io/managed-by=zarf,kubernetes.io/metadata.name=bigbang zarf.dev/agent-

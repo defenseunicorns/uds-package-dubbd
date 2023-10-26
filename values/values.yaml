@@ -8,12 +8,13 @@ networkPolicies:
 
 # Disable all Flux retry/rollback behavior
 flux:
+  timeout: 20m
+  interval: 1m
   upgrade:
     remediation:
       retries: 0
       remediateLastFailure: false
     cleanupOnFail: false
-  interval: 1m
 
 addons:
   velero:
