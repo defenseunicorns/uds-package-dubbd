@@ -12,6 +12,7 @@ flux:
     remediation:
       retries: 0
       remediateLastFailure: false
+    cleanupOnFail: false
   interval: 1m
 
 addons:
