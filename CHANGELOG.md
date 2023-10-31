@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.12.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.11.1...v0.12.0) (2023-10-31)
+
+
+### Bug Fixes
+
+* kyverno image registry policy exception ([#607](https://github.com/defenseunicorns/uds-package-dubbd/issues/607)) ([1e16ade](https://github.com/defenseunicorns/uds-package-dubbd/commit/1e16ade27d61997ad290437a52a9c573aa874c3f))
+* local component-generator bug ([#605](https://github.com/defenseunicorns/uds-package-dubbd/issues/605)) ([dad8e5c](https://github.com/defenseunicorns/uds-package-dubbd/commit/dad8e5c5049675735831fc7288eae8f67f81b7ff))
+* ostype not recognized ([#610](https://github.com/defenseunicorns/uds-package-dubbd/issues/610)) ([d6177f3](https://github.com/defenseunicorns/uds-package-dubbd/commit/d6177f371ea4d9e9ffff27ea9b16935ba295c221))
+
+
+### Miscellaneous
+
+* **deps:** update gitlab tag big-bang/bigbang to v2.13.1 ([#600](https://github.com/defenseunicorns/uds-package-dubbd/issues/600)) ([e5810c7](https://github.com/defenseunicorns/uds-package-dubbd/commit/e5810c7270d4a4fcbf6b5e8780589e1173df5071))
+* updated docs and readmes ([#598](https://github.com/defenseunicorns/uds-package-dubbd/issues/598)) ([7650cd3](https://github.com/defenseunicorns/uds-package-dubbd/commit/7650cd3d439f6fe3d993acb77183378f60cf4dcd))
+
 ## [0.11.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.11.0...v0.11.1) (2023-10-18)
 
 
