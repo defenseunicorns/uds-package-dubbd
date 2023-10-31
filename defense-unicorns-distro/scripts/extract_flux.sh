@@ -3,7 +3,7 @@
 # Check if the runtime environment is Darwin (Mac OS X), Linux, or Windows
 if [[ "$OSTYPE" == "darwin"* ]]; then
   ARCH_NAME=darwin
-elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+elif [[ "$OSTYPE" == "linux"* ]]; then
   ARCH_NAME=linux
 elif [[ "$OSTYPE" == "msys" ]]; then
   ARCH_NAME=windows
