@@ -124,9 +124,9 @@ components:
             description: "Checking if zarf has been initialized..."
             setVariables:
               - name: HAS_INIT
-          - cmd: "./zarf tools kubectl get sts -n zarf zarf-gitea -ojsonpath='{.status.readyReplicas}' 2>/dev/null || echo 0"
+          - cmd: "./zarf tools kubectl get sts -n zarf zarf-gitea -ojsonpath='{.status.readyReplicas}' 2>/dev/null || ./zarf tools kubectl get deploy -n zarf zarf-gitea -ojsonpath='{.status.availableReplicas}' 2>/dev/null || echo 0"
             mute: true
-            description: "Checking if Gitea is runnning..."
+            description: "Checking if Gitea is runnning based on chart version used in init package..."
             setVariables:
               - name: GITEA_RUNNING
           - cmd: "./zarf tools kubectl get helmrelease bigbang -n bigbang >/dev/null 2>&1 && echo true || echo false"
