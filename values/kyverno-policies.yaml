@@ -28,6 +28,10 @@ kyvernoPolicies:
         spec:
           rules:
             - name: validate-registries
+              exclude:
+                any:
+                  - resources:
+                      namespaces: ###ZARF_VAR_EXEMPT_NAMESPACES###
               match:
                 any:
                   - resources:
