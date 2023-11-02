@@ -3,6 +3,7 @@ kyverno:
     features:
       policyExceptions:
         enabled: true
+        namespace: null
     admissionController:
       replicas: 3
       container:
