@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.12.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.12.0...v0.12.1) (2023-11-03)
+
+
+### Features
+
+* update DUBBD to handle custom zarf init package. ([#611](https://github.com/defenseunicorns/uds-package-dubbd/issues/611)) ([4acec87](https://github.com/defenseunicorns/uds-package-dubbd/commit/4acec8749b9e69ffd925f8824b10e7a1b255bad4))
+
+
+### Bug Fixes
+
+* remove kyverno exception ns boundary ([#614](https://github.com/defenseunicorns/uds-package-dubbd/issues/614)) ([31a659e](https://github.com/defenseunicorns/uds-package-dubbd/commit/31a659e3c6c2d0c60075cf59ac5e6168445411ac))
+
 ## [0.12.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.11.1...v0.12.0) (2023-10-31)
 
 
