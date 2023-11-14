@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.13.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.12.1...v0.13.0) (2023-11-14)
+
+
+### Miscellaneous
+
+* **deps:** update gitlab tag big-bang/bigbang to v2.14.0 ([#616](https://github.com/defenseunicorns/uds-package-dubbd/issues/616)) ([ba5afbf](https://github.com/defenseunicorns/uds-package-dubbd/commit/ba5afbf7119e589588858c0f7b09de600a213d21))
+* update flux version, cert, and oscal ([#618](https://github.com/defenseunicorns/uds-package-dubbd/issues/618)) ([0096e00](https://github.com/defenseunicorns/uds-package-dubbd/commit/0096e00d0f85c5218612eed9db9f1eeffe3b2224))
+
 ## [0.12.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.12.0...v0.12.1) (2023-11-03)
 
 
