@@ -1,45 +1,26 @@
 # Defense Unicorns Big Bang Distro for K3D (DUBBD-k3d)
 
-This page shows you how to bootstrap a [`k3d`](https://k3d.io) cluster for DUBBD deployment and development.
+The DUBBD-k3d package, when deployed, will first create a local k3d cluster with metallb for loadbalancing and then deploy DUBBD on top of that.
 
-[On linux systems, "out of the box" `zarf` supports this use case with `k3s`](https://docs.zarf.dev/docs/zarf-tutorials/creating-a-k8s-cluster-with-zarf). This `k3d` variant was created to provide performance and scalability improvements arising from its container-based implementation vs `k3s`' virtual machine-based implementation.
+> **NOTE**
+>
+> [On linux systems, "out of the box" `zarf` supports this use case with `k3s`](https://docs.zarf.dev/docs/zarf-tutorials/creating-a-k8s-cluster-with-zarf). This `k3d` variant was created to provide performance and scalability improvements arising from its container-based implementation vs `k3s`' virtual machine-based implementation.
+
+> **WARNING**
+>
+> DUBBD-k3d does not work out of the box in an air-gapped environment and is not recommended for production deployments.
 
 ## Prerequisites
 
 [Follow Common Prerequisite Steps](../docs/prereq-steps.md)
 
-## Create and Bootstrap `k3d` cluster (Optional)
-
-**_If you don't want to use the k3d-local package, just ensure you have a k3d cluster running and your kube context is pointed to it and move on to [Build and Deploy the DUBBD-k3d zarf package](#build-and-deploy-the-dubbd-k3d-zarf-package)_**.
-
-The [`k3d/local`](./local) sub-folder defines the `k3d-local` zarf package that, when created and deployed, creates a local k3d cluster and bootstraps it with:
-
-1. zarf init package
-   1. Components specified by [`init_components` in `k3d/local/zarf-config.yaml`](./local/zarf-config.yaml#L12).
-1. metallb load balancer
-
-**To build the k3d-local package follow [these steps](../docs/howto-packages.md).**
-
-> **Note**
->
-> The `k3d-local` package itself may only be _deployed_ to `amd64`, a limitation inherited from DUBBD via IronBank.
-> This `architecture:` constraint is declaratively hard-coded in the k3d [`zarf-config.yaml`](./zarf-config.yaml).
-
-> **Note**
->
-> Package _creation_ may be performed on any system/arch, regardless of the package arch (analogous to [cross-compilation](https://en.wikipedia.org/wiki/Cross_compiler)).
-
-### Validate kubectl context
-
-At this point you should be able to validate that you can access the k3d cluster and that it has been bootstrapped as expected with e.g. `zarf tools kubectl get pods -A` and `zarf tools k9s`.
-
 ## Build and Deploy the DUBBD-k3d zarf package
 
 ### Create the zarf package
 
-**If you just want to deploy an already built package skip this.**
+For more detailed steps on creating packages please read [howto-packages.md](../docs/howto-packages.md)
 
-From the parent k3d directory, now build the dubbd-k3d package.
+**If you just want to deploy an already built package skip this.**
 
 ```bash
 cd ../ # if you're currently in k3d/local

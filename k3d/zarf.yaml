@@ -33,7 +33,42 @@ variables:
     type: file
     autoIndent: true
 
+constants:
+  - name: DL_BASE_URL
+    value: "###ZARF_PKG_TMPL_DL_BASE_URL###"
+  - name: K3D_CLUSTER_NAME
+    value: "###ZARF_PKG_TMPL_K3D_CLUSTER_NAME###"
+  - name: INIT_COMPONENTS
+    value: "###ZARF_PKG_TMPL_INIT_COMPONENTS###"
+
 components:
+  - name: deploy-k3d
+    required: true
+    description: 'Create k3d cluster named ###ZARF_PKG_TMPL_K3D_CLUSTER_NAME###'
+    actions:
+      onDeploy:
+        after:
+          - cmd: ./zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds-k3d:0.1.12-multi --confirm --set CLUSTER_NAME=###ZARF_PKG_TMPL_K3D_CLUSTER_NAME###
+
+  - name: init
+    description: 'Deploy zarf init package with components: (###ZARF_PKG_TMPL_INIT_COMPONENTS###) to k3d cluster ###ZARF_PKG_TMPL_K3D_CLUSTER_NAME###'
+    required: true
+    actions:
+      onCreate:
+        before:
+          - cmd: |
+              F="downloads/zarf-init-###ZARF_PKG_ARCH###-$(zarf version).tar.zst";
+              if [ -f "$F" ]; then
+                echo "Using cached zarf init package: $F..."
+              else
+                (set -x; ./zarf tools download-init -o downloads)
+              fi
+              cp -f "$F" init.tar.zst
+              ls -lath *.zst downloads
+      onDeploy:
+        after:
+          - cmd: "./zarf package deploy init.tar.zst --components '###ZARF_PKG_TMPL_INIT_COMPONENTS###' --confirm -l warn"
+
   - name: set-zarf-vars
     required: true
     import:

@@ -8,6 +8,12 @@ package:
       bigbang_version: "2.13.1"
       # should line up with the flux version in the BB release, see https://repo1.dso.mil/big-bang/bigbang/-/blob/master/base/flux/gotk-components.yaml#L3
       flux_version: "2.1.1"
+      # -- optional components for init
+      init_components: "git-server"
+      # -- url for downloading init
+      dl_base_url: https://github.com/defenseunicorns/zarf/releases/download
+      # -- cluster name
+      k3d_cluster_name: dubbd
   deploy:
     set:
       # -- Domain name for the K3D cluster
@@ -18,3 +24,5 @@ package:
       cert_file: bigbang.dev.cert
       # -- k3d host path
       host_path: "/var/lib/rancher/k3s/storage/*"
+      
+      
