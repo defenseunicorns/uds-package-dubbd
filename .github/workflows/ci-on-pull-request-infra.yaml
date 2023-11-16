@@ -45,9 +45,12 @@ jobs:
   tflint:
     needs: check-paths
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        capability: ${{ fromJSON(needs.check-paths.outputs.capabilities) }}
     defaults:
       run:
-        working-directory: ${{ fromJSON(needs.check-paths.outputs.capabilities) }}
+        working-directory: ${{ matrix.capability }}
     steps:
       - name: Clone repo
         uses: actions/checkout@v3
