@@ -9,39 +9,94 @@ on:
       - testing-infra-lint
     paths:
       - ".github/test-infra/**"
-      # - "!.github/test-infra/eks/**"
       - ".github/workflows/ci-on-pull-request-infra.yaml"
       - ".github/workflows/terraform-lint/**"
 
 run-name: Scanning Terraform in test-infra
 jobs:
-  check-paths:
+  tflint:
     runs-on: ubuntu-latest
-    name: Select Jobs
-    outputs:
-      capabilities: ${{ steps.path-filter.outputs.changes }}
-
     steps:
-      - name: Checkout the code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Clone repo
+        uses: actions/checkout@v3
 
-      # Uses a custom action to filter paths for capabilities.
-      - name: Check capability paths
-        id: path-filter
-        uses: dorny/paths-filter@v2
+      - name: Terraform init
+        run: terraform init
+        working-directory: ${{ inputs.capability }}
+
+      - name: terraform validate
+        run: terraform validate
+        working-directory: ${{ inputs.capability }}
+
+      - name: terraform fmt
+        run: terraform fmt -recursive
+        working-directory: ${{ inputs.capability }}
+
+      - name: Init TFLint
+        run: tflint --init
+        env:
+          # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Run TFLint
+        run: tflint -f compact --recursive
+
+  tfsec-scan:
+    needs: [tflint]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v3
+
+      - name: tfsec
+        uses: aquasecurity/tfsec-action@v1.0.3
         with:
-          filters: .github/workflows/terraform-lint/filters.yaml
+          github_token: ${{ github.token }}
+          soft_fail: true
 
-  run-capability-test:
-    needs: check-paths
-    name: Schedule
-    strategy:
-      matrix:
-        capability: ${{ fromJSON(needs.check-paths.outputs.capabilities) }}
-    uses: ./.github/workflows/terraform-lint/terraform-lint.yaml
-    with:
-      capability: ${{ matrix.capability }}
-    secrets: inherit # Inherits all secrets from the parent workflow.
+  regula:
+    needs: [tflint]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v3
+
+      - name: List Directories
+        run: ls -lsa
+
+      - name: Scan with Regula
+        uses: fugue/regula-action@v3.2.1
+        with:
+          input_path: ${{ inputs.capability }}
+          input_type: tf
+          severity: high
+  # check-paths:
+  #   runs-on: ubuntu-latest
+  #   name: Select Jobs
+  #   outputs:
+  #     capabilities: ${{ steps.path-filter.outputs.changes }}
+
+  #   steps:
+  #     - name: Checkout the code
+  #       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+  #     # Uses a custom action to filter paths for capabilities.
+  #     - name: Check capability paths
+  #       id: path-filter
+  #       uses: dorny/paths-filter@v2
+  #       with:
+  #         filters: .github/workflows/terraform-lint/filters.yaml
+
+  # run-capability-test:
+  #   needs: check-paths
+  #   name: Schedule
+  #   strategy:
+  #     matrix:
+  #       capability: ${{ fromJSON(needs.check-paths.outputs.capabilities) }}
+  #   uses: ./.github/workflows/terraform-lint/terraform-lint.yaml
+  #   with:
+  #     capability: ${{ matrix.capability }}
+  #   secrets: inherit # Inherits all secrets from the parent workflow.
 
 
   
