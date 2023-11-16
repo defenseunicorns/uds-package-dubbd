@@ -39,7 +39,7 @@ jobs:
         path: ${{ fromJSON(needs.check-paths.outputs.paths) }}
     defaults:
       run:
-        working-directory: ${{ matrix.path }}
+        working-directory: .github/test-infra/${{ matrix.path }}
     steps:
       - name: Clone repo
         uses: actions/checkout@v3
