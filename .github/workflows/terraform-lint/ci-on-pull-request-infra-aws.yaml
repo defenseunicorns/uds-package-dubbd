@@ -7,9 +7,9 @@ on:
   push:
     branches:
       - testing-infra-lint
-    paths:
-      - ".github/test-infra/ci-dubbd-iac-aws/**"
-      - ".github/workflows/terraform-lint/**"
+    # paths:
+    #   - ".github/test-infra/ci-dubbd-iac-aws/**"
+    #   - ".github/workflows/terraform-lint/**"
 
   # inputs:
   #     github-token:
