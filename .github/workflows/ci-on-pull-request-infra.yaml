@@ -14,6 +14,34 @@ on:
 
 run-name: Scanning Terraform in test-infra
 jobs:
+  check-paths:
+    runs-on: ubuntu-latest
+    name: Select Jobs
+    outputs:
+      capabilities: ${{ steps.path-filter.outputs.changes }}
+
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      # Uses a custom action to filter paths for capabilities.
+      - name: Check capability paths
+        id: path-filter
+        uses: dorny/paths-filter@v2
+        with:
+          filters: .github/workflows/terraform-lint/filters.yaml
+
+  # run-capability-test:
+  #   needs: check-paths
+  #   name: Schedule
+  #   strategy:
+  #     matrix:
+  #       capability: ${{ fromJSON(needs.check-paths.outputs.capabilities) }}
+  #   uses: ./.github/workflows/terraform-lint/terraform-lint.yaml
+  #   with:
+  #     capability: ${{ matrix.capability }}
+  #   secrets: inherit # Inherits all secrets from the parent workflow.
+
   tflint:
     runs-on: ubuntu-latest
     steps:
@@ -22,15 +50,15 @@ jobs:
 
       - name: Terraform init
         run: terraform init
-        working-directory: ${{ inputs.capability }}
+        working-directory: ${{ fromJSON(needs.check-paths.outputs.capabilities) }}
 
       - name: terraform validate
         run: terraform validate
-        working-directory: ${{ inputs.capability }}
+        working-directory: ${{ fromJSON(needs.check-paths.outputs.capabilities) }}
 
       - name: terraform fmt
         run: terraform fmt -recursive
-        working-directory: ${{ inputs.capability }}
+        working-directory: ${{ fromJSON(needs.check-paths.outputs.capabilities) }}
 
       - name: Init TFLint
         run: tflint --init
@@ -67,36 +95,6 @@ jobs:
       - name: Scan with Regula
         uses: fugue/regula-action@v3.2.1
         with:
-          input_path: ${{ inputs.capability }}
+          input_path: ${{ fromJSON(needs.check-paths.outputs.capabilities) }}
           input_type: tf
           severity: high
-  # check-paths:
-  #   runs-on: ubuntu-latest
-  #   name: Select Jobs
-  #   outputs:
-  #     capabilities: ${{ steps.path-filter.outputs.changes }}
-
-  #   steps:
-  #     - name: Checkout the code
-  #       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-
-  #     # Uses a custom action to filter paths for capabilities.
-  #     - name: Check capability paths
-  #       id: path-filter
-  #       uses: dorny/paths-filter@v2
-  #       with:
-  #         filters: .github/workflows/terraform-lint/filters.yaml
-
-  # run-capability-test:
-  #   needs: check-paths
-  #   name: Schedule
-  #   strategy:
-  #     matrix:
-  #       capability: ${{ fromJSON(needs.check-paths.outputs.capabilities) }}
-  #   uses: ./.github/workflows/terraform-lint/terraform-lint.yaml
-  #   with:
-  #     capability: ${{ matrix.capability }}
-  #   secrets: inherit # Inherits all secrets from the parent workflow.
-
-
-  
