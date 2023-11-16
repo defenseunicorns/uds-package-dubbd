@@ -39,12 +39,15 @@ jobs:
 
       - name: Terraform init
         run: terraform init
+        working-directory: .github/test-infra/
 
       - name: terraform validate
         run: terraform validate
+        working-directory: .github/test-infra/
 
       - name: terraform fmt
         run: terraform fmt -recursive
+        working-directory: .github/test-infra/
 
       - name: Init TFLint
         run: tflint --init
