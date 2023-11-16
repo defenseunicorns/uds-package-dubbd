@@ -1,15 +1,15 @@
 name: terraform-lint-scan
 
 on:
-  pull_request:
-    branches:
-      - main
+  # pull_request:
+  #   branches:
+  #     - main
   push:
     branches:
       - testing-infra-lint
     paths:
       - ".github/test-infra/**"
-      - "!.github/test-infra/eks/**"
+      # - "!.github/test-infra/eks/**"
       - ".github/workflows/ci-on-pull-request-infra.yaml"
       - ".github/workflows/terraform-lint/**"
 
