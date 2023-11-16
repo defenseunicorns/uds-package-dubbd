@@ -45,21 +45,21 @@ jobs:
   tflint:
     needs: check-paths
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ fromJSON(needs.check-paths.outputs.capabilities) }}
     steps:
       - name: Clone repo
         uses: actions/checkout@v3
 
       - name: Terraform init
         run: terraform init
-        working-directory: ${{ fromJSON(needs.check-paths.outputs.capabilities) }}
 
       - name: terraform validate
         run: terraform validate
-        working-directory: ${{ fromJSON(needs.check-paths.outputs.capabilities) }}
 
       - name: terraform fmt
         run: terraform fmt -recursive
-        working-directory: ${{ fromJSON(needs.check-paths.outputs.capabilities) }}
 
       - name: Init TFLint
         run: tflint --init
