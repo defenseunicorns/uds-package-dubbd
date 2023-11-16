@@ -1,35 +1,21 @@
-name: terraform-lint-scan
+name: Lint Terraform
 
 on:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - testing-infra-lint
-    # paths:
-    #   - ".github/test-infra/ci-dubbd-iac-aws/**"
-    #   - ".github/workflows/terraform-lint/**"
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      capability:
+        type: string
+        description: "The name of the capability to test"
+        required: true
+  # Triggered by pull-request-conditionals.yaml
+  workflow_call:
+    inputs:
+      capability:
+        type: string
+        description: "The name of the capability to test"
+        required: true
 
-  # inputs:
-  #     github-token:
-  #       required: true
-  #       description: GitHub token
-  #       type: string
-  #     regula-severity:
-  #       description: Set the minimum threshold Regula needs exit with a non-zero value (failing the pipeline)
-  #       default: high
-  #       type: string
-  #     soft-fail:
-  #       description: 'Tfsec to hard stop the pipeline or not when vulnerabilities are found'
-  #       default: true
-  #       type: boolean
-  #     tf-dirs:
-  #       description: 'Regula variable for terraform directories, either space or new line separated'
-  #       default: '.'
-  #       type: string
-
-run-name: Scanning Terraform in test-infra
 jobs:
   tflint:
     runs-on: ubuntu-latest
@@ -39,15 +25,15 @@ jobs:
 
       - name: Terraform init
         run: terraform init
-        working-directory: ".github/test-infra/ci-dubbd-iac-aws/"
+        working-directory: ${{ inputs.capability }}
 
       - name: terraform validate
         run: terraform validate
-        working-directory: ".github/test-infra/ci-dubbd-iac-aws/"
+        working-directory: ${{ inputs.capability }}
 
       - name: terraform fmt
         run: terraform fmt -recursive
-        working-directory: ".github/test-infra/ci-dubbd-iac-aws/"
+        working-directory: ${{ inputs.capability }}
 
       - name: Init TFLint
         run: tflint --init
@@ -84,6 +70,6 @@ jobs:
       - name: Scan with Regula
         uses: fugue/regula-action@v3.2.1
         with:
-          input_path: .github/test-infra/
+          input_path: ${{ inputs.capability }}
           input_type: tf
           severity: high

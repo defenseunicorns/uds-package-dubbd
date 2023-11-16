@@ -1,0 +1,6 @@
+loki:
+  - ".github/test-infra/ci-dubbd-iac-aws/loki"
+valero:
+  - ".github/test-infra/ci-dubbd-iac-aws/valero"
+rke2:
+  - ".github/test-infra/rke2"
