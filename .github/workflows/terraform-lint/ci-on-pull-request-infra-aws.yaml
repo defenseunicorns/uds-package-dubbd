@@ -8,8 +8,8 @@ on:
     branches:
       - testing-infra-lint
     paths:
-      - ".github/test-infra/**"
-      - ".github/workflows/ci-on-pull-reequest-infra.yaml"
+      - ".github/test-infra/ci-dubbd-iac-aws/**"
+      - ".github/workflows/terraform-lint/**"
 
   # inputs:
   #     github-token:
@@ -39,15 +39,15 @@ jobs:
 
       - name: Terraform init
         run: terraform init
-        working-directory: .github/test-infra/
+        working-directory: ".github/test-infra/ci-dubbd-iac-aws/**"
 
       - name: terraform validate
         run: terraform validate
-        working-directory: .github/test-infra/
+        working-directory: ".github/test-infra/ci-dubbd-iac-aws/**"
 
       - name: terraform fmt
         run: terraform fmt -recursive
-        working-directory: .github/test-infra/
+        working-directory: ".github/test-infra/ci-dubbd-iac-aws/**"
 
       - name: Init TFLint
         run: tflint --init
