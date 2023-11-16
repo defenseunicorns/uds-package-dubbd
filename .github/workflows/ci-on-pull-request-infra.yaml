@@ -1,0 +1,86 @@
+name: terraform-lint-scan
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - testing-infra-lint
+    paths:
+      - ".github/test-infra/**"
+      - ".github/workflows/ci-on-pull-reequest-infra.yaml"
+
+  # inputs:
+  #     github-token:
+  #       required: true
+  #       description: GitHub token
+  #       type: string
+  #     regula-severity:
+  #       description: Set the minimum threshold Regula needs exit with a non-zero value (failing the pipeline)
+  #       default: high
+  #       type: string
+  #     soft-fail:
+  #       description: 'Tfsec to hard stop the pipeline or not when vulnerabilities are found'
+  #       default: true
+  #       type: boolean
+  #     tf-dirs:
+  #       description: 'Regula variable for terraform directories, either space or new line separated'
+  #       default: '.'
+  #       type: string
+
+run-name: Scanning Terraform in test-infra
+jobs:
+  tflint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v3
+
+      - name: Terraform init
+        run: terraform init
+
+      - name: terraform validate
+        run: terraform validate
+
+      - name: terraform fmt
+        run: terraform fmt -recursive
+
+      - name: Init TFLint
+        run: tflint --init
+        env:
+          # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Run TFLint
+        run: tflint -f compact --recursive
+
+  tfsec-scan:
+    needs: [tflint]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v3
+
+      - name: tfsec
+        uses: aquasecurity/tfsec-action@v1.0.3
+        with:
+          github_token: ${{ github.token }}
+          soft_fail: true
+
+  regula:
+    needs: [tflint]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v3
+
+      - name: List Directories
+        run: ls -lsa
+
+      - name: Scan with Regula
+        uses: fugue/regula-action@v3.2.1
+        with:
+          input_path: .github/test-infra/
+          input_type: tf
+          severity: high
