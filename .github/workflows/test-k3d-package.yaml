@@ -9,8 +9,7 @@ permissions:
 
 jobs:
   test-clean-install:
-    runs-on: ubuntu-big-boy-8-core
-
+    runs-on: dubbd-ubuntu-8-core-32-gb
     steps:
       - name: Free GH runner space
         run: |
