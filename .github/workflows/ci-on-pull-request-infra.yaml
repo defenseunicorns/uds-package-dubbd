@@ -43,6 +43,7 @@ jobs:
   #   secrets: inherit # Inherits all secrets from the parent workflow.
 
   tflint:
+    needs: check-paths
     runs-on: ubuntu-latest
     steps:
       - name: Clone repo
@@ -83,7 +84,7 @@ jobs:
           soft_fail: true
 
   regula:
-    needs: [tflint]
+    needs: [tflint, check-paths]
     runs-on: ubuntu-latest
     steps:
       - name: Clone repo
