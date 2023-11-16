@@ -16,6 +16,9 @@ on:
       - "oscal-component.y*ml"
       - ".github/workflows/*aws*.y*ml"
       - ".github/workflows/*k3d*.y*ml"
+      - ".github/workflows/*infra*.y*ml"
+      - ".github/test-infra/ci-dubbd-iac-aws/**"
+      - ".github/test-infra/eks/**"
       - "**/*oscal-component.y*aml"
 
 jobs:
