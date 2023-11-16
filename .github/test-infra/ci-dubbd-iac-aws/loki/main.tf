@@ -1,4 +1,4 @@
-# test tf lint
+# test tf
 provider "aws" {
   region = var.region
 }
