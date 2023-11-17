@@ -37,4 +37,3 @@ jobs:
         run: zarf package remove zarf-package-*.tar.zst --confirm
         working-directory: k3d
         timeout-minutes: 60
-
