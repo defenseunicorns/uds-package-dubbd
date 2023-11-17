@@ -40,7 +40,7 @@ jobs:
     strategy:
       matrix:
         package: ${{ fromJSON(needs.check-paths.outputs.paths) }}
-    uses: .github/workflows/terraform-lint.yaml
+    uses: ./.github/workflows/terraform-lint.yaml
     with:
       package: ${{ matrix.path }}
     secrets: inherit # Inherits all secrets from the parent workflow.
