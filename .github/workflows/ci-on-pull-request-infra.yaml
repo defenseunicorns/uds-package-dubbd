@@ -75,8 +75,11 @@ jobs:
         run: tflint -f compact --recursive
 
   tfsec-scan:
-    needs: [tflint]
+    needs: [tflint, check-paths]
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        path: ${{ fromJSON(needs.check-paths.outputs.paths) }}
     steps:
       - name: Clone repo
         uses: actions/checkout@v3
@@ -86,6 +89,7 @@ jobs:
         with:
           github_token: ${{ github.token }}
           soft_fail: true
+          working-directory: .github/test-infra/${{ matrix.path }}
 
   regula:
     needs: [tflint, check-paths]
