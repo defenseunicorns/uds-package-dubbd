@@ -53,6 +53,14 @@ jobs:
       - name: terraform fmt
         run: terraform fmt -recursive
 
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v3
+        with:
+          tflint_version: v0.46.1
+
+      - name: Show version
+        run: tflint --version
+
       - name: Init TFLint
         run: tflint --init
         env:
