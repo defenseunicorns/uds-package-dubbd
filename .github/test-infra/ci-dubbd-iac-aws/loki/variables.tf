@@ -14,10 +14,12 @@ variable "kms_key_arn" {
   default     = null
 }
 
-variable "key_alias" {
-  description = "alias for KMS Key"
-  default     = "bigbang-loki"
-}
+# said is unused
+# variable "key_alias" {
+#   description = "alias for KMS Key"
+#   type        = string
+#   default     = "bigbang-loki"
+# }
 
 variable "force_destroy" {
   description = "Option to set force destroy"

@@ -14,10 +14,12 @@ variable "kms_key_arn" {
   default     = null
 }
 
-variable "key_alias" {
-  description = "alias for KMS Key"
-  default     = "bigbang-velero"
-}
+# tflint says unused
+# variable "key_alias" {
+#   description = "alias for KMS Key"
+#   type        = string
+#   default     = "bigbang-velero"
+# }
 
 variable "force_destroy" {
   description = "Option to set force destroy"
