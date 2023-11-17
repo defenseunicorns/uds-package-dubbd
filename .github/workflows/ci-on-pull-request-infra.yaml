@@ -103,6 +103,6 @@ jobs:
       - name: Scan with Regula
         uses: fugue/regula-action@v3.2.1
         with:
-          input_path: ${{ matrix.path }}
+          input_path: .github/test-infra/${{ matrix.path }}
           input_type: tf
           severity: high
