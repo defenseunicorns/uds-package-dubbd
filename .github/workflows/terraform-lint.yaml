@@ -1,14 +1,6 @@
 name: Lint Terraform
 
 on:
-  # Manual trigger
-  # workflow_dispatch:
-  #   inputs:
-  #     capability:
-  #       type: string
-  #       description: "The name of the capability to test"
-  #       required: true
-  # Triggered by pull-request-conditionals.yaml
   workflow_call:
     inputs:
       path:
@@ -18,11 +10,7 @@ on:
 
 jobs:
   tflint:
-    # needs: check-paths
     runs-on: ubuntu-latest
-    # strategy:
-    #   matrix:
-    #     path: ${{ fromJSON(needs.check-paths.outputs.paths) }}
     defaults:
       run:
         working-directory: .github/test-infra/${{ inputs.path }}
@@ -63,9 +51,6 @@ jobs:
   tfsec-scan:
     needs: [tflint]
     runs-on: ubuntu-latest
-    # strategy:
-    #   matrix:
-    #     path: ${{ fromJSON(needs.check-paths.outputs.paths) }}
     steps:
       - name: Clone repo
         uses: actions/checkout@v3
@@ -80,9 +65,6 @@ jobs:
   regula:
     needs: [tflint]
     runs-on: ubuntu-latest
-    # strategy:
-    #   matrix:
-    #     path: ${{ fromJSON(needs.check-paths.outputs.paths) }}
     steps:
       - name: Clone repo
         uses: actions/checkout@v3
