@@ -32,7 +32,7 @@ jobs:
           role-session-name: ${{ github.job || github.event.client_payload.pull_request.head.sha || github.sha }}
           aws-region: us-west-2
           role-duration-seconds: 21600
-      
+
       - name: Set Terraform version
         uses: hashicorp/setup-terraform@v2
         with:
