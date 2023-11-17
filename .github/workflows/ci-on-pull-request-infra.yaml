@@ -31,82 +31,13 @@ jobs:
         with:
           filters: .github/workflows/terraform-lint/filters.yml
 
-  tflint:
+  run-package-test:
     needs: check-paths
-    runs-on: ubuntu-latest
+    name: Schedule
     strategy:
       matrix:
-        path: ${{ fromJSON(needs.check-paths.outputs.paths) }}
-    defaults:
-      run:
-        working-directory: .github/test-infra/${{ matrix.path }}
-    steps:
-      - name: Clone repo
-        uses: actions/checkout@v3
-
-      - uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: "1.4.2"
-
-      - name: Terraform init
-        run: terraform init -reconfigure -backend=false
-
-      - name: terraform validate
-        run: terraform validate
-
-      - name: terraform fmt
-        run: terraform fmt -recursive
-
-      - name: Setup TFLint
-        uses: terraform-linters/setup-tflint@v3
-        with:
-          tflint_version: v0.46.1
-
-      - name: Show version
-        run: tflint --version
-
-      - name: Init TFLint
-        run: tflint --init
-        env:
-          # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
-          GITHUB_TOKEN: ${{ github.token }}
-
-      - name: Run TFLint
-        run: tflint -f compact --recursive
-
-  tfsec-scan:
-    needs: [tflint, check-paths]
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        path: ${{ fromJSON(needs.check-paths.outputs.paths) }}
-    steps:
-      - name: Clone repo
-        uses: actions/checkout@v3
-
-      - name: tfsec
-        uses: aquasecurity/tfsec-action@v1.0.3
-        with:
-          github_token: ${{ github.token }}
-          soft_fail: true
-          working-directory: .github/test-infra/${{ matrix.path }}
-
-  regula:
-    needs: [tflint, check-paths]
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        path: ${{ fromJSON(needs.check-paths.outputs.paths) }}
-    steps:
-      - name: Clone repo
-        uses: actions/checkout@v3
-
-      - name: List Directories
-        run: ls -lsa
-
-      - name: Scan with Regula
-        uses: fugue/regula-action@v3.2.1
-        with:
-          input_path: .github/test-infra/${{ matrix.path }}
-          input_type: tf
-          severity: high
+        package: ${{ fromJSON(needs.check-paths.outputs.paths) }}
+    uses: ./.github/workflows/terraform-lint/terraform-lint.yaml
+    with:
+      package: ${{ matrix.path }}
+    secrets: inherit # Inherits all secrets from the parent workflow.

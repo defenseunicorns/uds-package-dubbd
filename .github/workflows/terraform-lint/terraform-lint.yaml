@@ -2,38 +2,54 @@ name: Lint Terraform
 
 on:
   # Manual trigger
-  workflow_dispatch:
-    inputs:
-      capability:
-        type: string
-        description: "The name of the capability to test"
-        required: true
+  # workflow_dispatch:
+  #   inputs:
+  #     capability:
+  #       type: string
+  #       description: "The name of the capability to test"
+  #       required: true
   # Triggered by pull-request-conditionals.yaml
   workflow_call:
     inputs:
-      capability:
+      path:
         type: string
-        description: "The name of the capability to test"
+        description: "The name of the path to test"
         required: true
 
 jobs:
   tflint:
+    needs: check-paths
     runs-on: ubuntu-latest
+    # strategy:
+    #   matrix:
+    #     path: ${{ fromJSON(needs.check-paths.outputs.paths) }}
+    defaults:
+      run:
+        working-directory: .github/test-infra/${{ inputs.path }}
     steps:
       - name: Clone repo
         uses: actions/checkout@v3
 
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: "1.4.2"
+
       - name: Terraform init
-        run: terraform init
-        working-directory: ${{ inputs.capability }}
+        run: terraform init -reconfigure -backend=false
 
       - name: terraform validate
         run: terraform validate
-        working-directory: ${{ inputs.capability }}
 
       - name: terraform fmt
         run: terraform fmt -recursive
-        working-directory: ${{ inputs.capability }}
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v3
+        with:
+          tflint_version: v0.46.1
+
+      - name: Show version
+        run: tflint --version
 
       - name: Init TFLint
         run: tflint --init
@@ -45,8 +61,11 @@ jobs:
         run: tflint -f compact --recursive
 
   tfsec-scan:
-    needs: [tflint]
+    needs: [tflint, check-paths]
     runs-on: ubuntu-latest
+    # strategy:
+    #   matrix:
+    #     path: ${{ fromJSON(needs.check-paths.outputs.paths) }}
     steps:
       - name: Clone repo
         uses: actions/checkout@v3
@@ -56,10 +75,14 @@ jobs:
         with:
           github_token: ${{ github.token }}
           soft_fail: true
+          working-directory: .github/test-infra/${{ inputs.path }}
 
   regula:
-    needs: [tflint]
+    needs: [tflint, check-paths]
     runs-on: ubuntu-latest
+    # strategy:
+    #   matrix:
+    #     path: ${{ fromJSON(needs.check-paths.outputs.paths) }}
     steps:
       - name: Clone repo
         uses: actions/checkout@v3
@@ -70,6 +93,6 @@ jobs:
       - name: Scan with Regula
         uses: fugue/regula-action@v3.2.1
         with:
-          input_path: ${{ inputs.capability }}
+          input_path: .github/test-infra/${{ inputs.path }}
           input_type: tf
           severity: high
