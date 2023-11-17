@@ -31,15 +31,10 @@ jobs:
         working-directory: k3d
         timeout-minutes: 60
 
+      #Is this important to test? ....
       - name: Remove DUBBD from k3d cluster
         if: always()
         run: zarf package remove zarf-package-*.tar.zst --confirm
         working-directory: k3d
         timeout-minutes: 60
 
-      - name: Teardown k3d cluster
-        if: always()
-        # renovate: datasource=github-tags depName=defenseunicorns/uds-aws-ci-k3d versioning=semver
-        uses: defenseunicorns/uds-aws-ci-k3d@v0.0.3
-        with:
-          cluster-action: destroy
