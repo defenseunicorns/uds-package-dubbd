@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   test-clean-install:
-    runs-on: dubbd-ubuntu-8-core-32-gb
+    runs-on: dubbd-ubuntu-16-core-64-gb
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
