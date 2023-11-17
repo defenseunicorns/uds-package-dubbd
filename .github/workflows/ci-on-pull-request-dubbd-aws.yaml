@@ -18,6 +18,8 @@ on:
       - "**/oscal-component.y*ml"
       - ".github/workflows/*k3d*.y*ml"
       - ".github/workflows/*rke2*.y*ml"
+      - ".github/workflows/*infra*.y*ml"
+      - ".github/test-infra/rke2/**"
       - ".github/workflows/oscal/*oscal-component.y*ml"
 
   workflow_call:
