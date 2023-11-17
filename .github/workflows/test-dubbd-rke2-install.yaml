@@ -33,6 +33,11 @@ jobs:
           aws-region: us-west-2
           role-duration-seconds: 21600
 
+      - name: Set Terraform version
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: "1.4.2"
+
       - uses: ./.github/actions/create-zarf-package
         with:
           username: ${{ secrets.REGISTRY1_USERNAME }}
