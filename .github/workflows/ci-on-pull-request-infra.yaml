@@ -44,6 +44,10 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v3
 
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: "1.4.2"
+
       - name: Terraform init
         run: terraform init -reconfigure -backend=false
 
