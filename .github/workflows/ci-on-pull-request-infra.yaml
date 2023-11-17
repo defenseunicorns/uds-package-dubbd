@@ -4,9 +4,13 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - ".github/test-infra/**"
+      - ".github/workflows/ci-on-pull-request-infra.yaml"
+      - ".github/workflows/terraform-lint.yaml"
   push:
     branches:
-      - testing-infra-lint
+      - chore-infra-lint
     paths:
       - ".github/test-infra/**"
       - ".github/workflows/ci-on-pull-request-infra.yaml"
