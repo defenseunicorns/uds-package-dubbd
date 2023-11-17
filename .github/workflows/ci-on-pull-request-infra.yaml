@@ -8,13 +8,13 @@ on:
       - ".github/test-infra/**"
       - ".github/workflows/ci-on-pull-request-infra.yaml"
       - ".github/workflows/terraform-lint.yaml"
-  push:
-    branches:
-      - chore-infra-lint
-    paths:
-      - ".github/test-infra/**"
-      - ".github/workflows/ci-on-pull-request-infra.yaml"
-      - ".github/workflows/terraform-lint.yaml"
+  # push:
+  #   branches:
+  #     - chore-infra-lint
+  #   paths:
+  #     - ".github/test-infra/**"
+  #     - ".github/workflows/ci-on-pull-request-infra.yaml"
+  #     - ".github/workflows/terraform-lint.yaml"
 
 run-name: Scanning Terraform in test-infra
 jobs:
