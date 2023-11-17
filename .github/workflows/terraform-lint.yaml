@@ -18,7 +18,7 @@ on:
 
 jobs:
   tflint:
-    needs: check-paths
+    # needs: check-paths
     runs-on: ubuntu-latest
     # strategy:
     #   matrix:
@@ -61,7 +61,7 @@ jobs:
         run: tflint -f compact --recursive
 
   tfsec-scan:
-    needs: [tflint, check-paths]
+    needs: [tflint]
     runs-on: ubuntu-latest
     # strategy:
     #   matrix:
@@ -78,7 +78,7 @@ jobs:
           working-directory: .github/test-infra/${{ inputs.path }}
 
   regula:
-    needs: [tflint, check-paths]
+    needs: [tflint]
     runs-on: ubuntu-latest
     # strategy:
     #   matrix:
