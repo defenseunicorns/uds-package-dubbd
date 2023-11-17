@@ -10,7 +10,7 @@ on:
     paths:
       - ".github/test-infra/**"
       - ".github/workflows/ci-on-pull-request-infra.yaml"
-      - ".github/workflows/terraform-lint/**"
+      - ".github/workflows/terraform-lint.yaml"
 
 run-name: Scanning Terraform in test-infra
 jobs:
@@ -30,14 +30,13 @@ jobs:
         uses: dorny/paths-filter@v2
         with:
           filters: .github/workflows/filters.yml
-
-  run-package-test:
+  scan-tf:
     needs: check-paths
-    name: Schedule
+    name: scan
     strategy:
       matrix:
         package: ${{ fromJSON(needs.check-paths.outputs.paths) }}
-    uses: ./.github/workflows/terraform-lint.yaml
+    uses: .github/workflows/terraform-lint.yaml
     with:
       package: ${{ matrix.path }}
     secrets: inherit # Inherits all secrets from the parent workflow.
