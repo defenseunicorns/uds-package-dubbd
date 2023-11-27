@@ -16,6 +16,8 @@ addons:
             provider: aws
             config:
               region: "###ZARF_VAR_VELERO_S3_AWS_REGION###"
+      credentials:
+        useSecret: false
       schedules:
         udsbackup:
           disabled: false
