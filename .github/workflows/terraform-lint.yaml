@@ -20,7 +20,7 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: "1.4.2"
+          terraform_version: "1.5.7"
 
       - name: Terraform init
         run: terraform init -reconfigure -backend=false

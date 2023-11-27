@@ -36,7 +36,7 @@ jobs:
       - name: Set Terraform version
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: "1.4.2"
+          terraform_version: "1.5.7"
 
       - uses: ./.github/actions/create-zarf-package
         name: Create CI-DUBBD-IAC-AWS Zarf package

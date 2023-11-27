@@ -1,6 +1,6 @@
 ci-dubbd-iac-aws/loki:
   - ".github/test-infra/ci-dubbd-iac-aws/loki/**"
-ci-dubbd-iac-aws/valero:
-  - ".github/test-infra/ci-dubbd-iac-aws/valero/**"
+ci-dubbd-iac-aws/velero:
+  - ".github/test-infra/ci-dubbd-iac-aws/velero/**"
 rke2:
   - ".github/test-infra/rke2/**"
