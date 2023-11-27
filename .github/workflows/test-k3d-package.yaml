@@ -31,7 +31,6 @@ jobs:
         working-directory: k3d
         timeout-minutes: 60
 
-      #Is this important to test? ....
       - name: Remove DUBBD from k3d cluster
         if: always()
         run: zarf package remove zarf-package-*.tar.zst --confirm
