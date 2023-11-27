@@ -26,6 +26,14 @@ jobs:
         shell: bash
         run: curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=v5.6.0 bash
 
+      - name: Create k3d cluster
+        run: zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds-k3d:0.1.12-multi --confirm
+        timeout-minutes: 60
+
+      - name: Zarf Init
+        run: zarf init --components=git-server --confirm
+        timeout-minutes: 60
+
       - name: Deploy DUBBD on k3d cluster
         run: zarf package deploy zarf-package-*.tar.zst --confirm
         working-directory: k3d

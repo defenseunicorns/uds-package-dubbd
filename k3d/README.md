@@ -1,18 +1,12 @@
 # Defense Unicorns Big Bang Distro for K3D (DUBBD-k3d)
 
-The DUBBD-k3d package, when deployed, will first create a local k3d cluster with metallb for loadbalancing and then deploy DUBBD on top of that.
+## Prerequisites
+
+[Follow Prerequisite Steps](../docs/prereq-steps.md) -- **Use k3d installation**
 
 > **NOTE**
 >
 > [On linux systems, "out of the box" `zarf` supports this use case with `k3s`](https://docs.zarf.dev/docs/zarf-tutorials/creating-a-k8s-cluster-with-zarf). This `k3d` variant was created to provide performance and scalability improvements arising from its container-based implementation vs `k3s`' virtual machine-based implementation.
-
-> **WARNING**
->
-> DUBBD-k3d does not work out of the box in an air-gapped environment and is not recommended for production deployments.
-
-## Prerequisites
-
-[Follow Common Prerequisite Steps](../docs/prereq-steps.md)
 
 ## Build and Deploy the DUBBD-k3d zarf package
 
