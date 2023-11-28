@@ -4,8 +4,8 @@
 DUBBD utilizes OSCAL to map compliance frameworks controls to the tech stack. DUBBD uses an opinionated breakdown of controls that fall into one of three categories:
  - Administrative (These controls can't be met by the tech stack IE creating an Access Policy
  - Technical (These controls are met by the tech stack)
- - Not Applicable (These controls could be met by a tech stack but do not align with our goal with DUBBD IE VOIP/Wireless Controls). 
- 
+ - Not Applicable (These controls could be met by a tech stack but do not align with our goal with DUBBD IE VOIP/Wireless Controls).
+
 The visuals below exclude Administrative and Not Applicable controls and focuses only on the Technical controls.
 
 <br>

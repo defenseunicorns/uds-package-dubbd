@@ -75,7 +75,7 @@
       "datasourceTemplate": "github-tags"
     },
     {
-      "fileMatch": [ 
+      "fileMatch": [
         "^.github/workflow/oscal/.*\\.ya?ml$",
         "^aws/loki/main\\.tf",
         "^aws/cloudtrail/main\\.tf"

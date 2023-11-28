@@ -32,6 +32,10 @@ There are no specific branch naming conventions that we follow.
 
 If you're not a Defense Unicorns DUBBD maintainer, **please fork the DUBBD repo first** and then create a feature branch from that.
 
+### Pre-Commit (Optional)
+
+We have included a [`.pre-commit-config.yaml`](.pre-commit-config.yaml) to make catching common errors easier. To use this feature in development (recommended), follow the [pre-commit](https://pre-commit.com/index.html#install) install guide.
+
 ### Draft PR
 
 We recommend creating a draft PR on first commit to your working branch. Understandably there might not be much to show right away, but it allows for the team to better track and see WIP.

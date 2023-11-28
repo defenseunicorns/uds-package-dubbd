@@ -1,4 +1,4 @@
-# Loki 
+# Loki
 
 Terraform for deploying resources necessary for Loki
 
