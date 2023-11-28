@@ -9,19 +9,8 @@ permissions:
 
 jobs:
   test-clean-install:
-    runs-on: ubuntu-latest
-
+    runs-on: dubbd-ubuntu-16-core-64-gb
     steps:
-      - name: Free GH runner space
-        run: |
-          df -h
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /opt/ghc
-          sudo rm -rf /opt/hostedtoolcache/CodeQL
-          sudo docker image prune --all --force
-          df -h
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -33,17 +22,17 @@ jobs:
           download-init-package: true
           timeout-minutes: 60
 
-      - name: Create k3d cluster
-        id: create-cluster
-        # renovate: datasource=github-tags depName=defenseunicorns/uds-aws-ci-k3d versioning=semver
-        uses: defenseunicorns/uds-aws-ci-k3d@v0.0.3
-        with:
-          cluster-action: create
-          aws-assume-role: ${{ secrets.AWS_COMMERCIAL_ROLE_TO_ASSUME }}
-          aws-region: us-west-2
+      - name: Install k3d
+        shell: bash
+        run: curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=v5.6.0 bash
 
-      - name: Zarf init
-        run: zarf init -a amd64 --components=git-server --confirm
+      - name: Create k3d cluster
+        run: zarf package deploy oci://ghcr.io/defenseunicorns/packages/uds-k3d:0.1.12-multi --confirm
+        timeout-minutes: 60
+
+      - name: Zarf Init
+        run: zarf init --components=git-server --confirm
+        timeout-minutes: 60
 
       - name: Deploy DUBBD on k3d cluster
         run: zarf package deploy zarf-package-*.tar.zst --confirm
@@ -55,10 +44,3 @@ jobs:
         run: zarf package remove zarf-package-*.tar.zst --confirm
         working-directory: k3d
         timeout-minutes: 60
-
-      - name: Teardown k3d cluster
-        if: always()
-        # renovate: datasource=github-tags depName=defenseunicorns/uds-aws-ci-k3d versioning=semver
-        uses: defenseunicorns/uds-aws-ci-k3d@v0.0.3
-        with:
-          cluster-action: destroy
