@@ -16,7 +16,7 @@ jobs:
         working-directory: .github/test-infra/${{ inputs.path }}
     steps:
       - name: Clone repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - uses: hashicorp/setup-terraform@v2
         with:
@@ -53,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: tfsec
         uses: aquasecurity/tfsec-action@v1.0.3
@@ -67,7 +67,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: List Directories
         run: ls -lsa
