@@ -1,13 +1,21 @@
+# test tf
 provider "aws" {
   region = var.region
 }
 
 terraform {
+  required_version = "1.5.7"
   backend "s3" {
   }
   required_providers {
     aws = {
+      source  = "hashicorp/aws"
       version = ">= 4.0, != 5.17.0"
+    }
+
+    random = {
+      source  = "hashicorp/random"
+      version = "3.5.1"
     }
   }
 }
@@ -62,7 +70,7 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
         ]
         Effect = "Allow"
         Principal = {
-          AWS = "${module.irsa.role_arn}"
+          AWS = module.irsa.role_arn
         }
         Resource = [
           module.S3.bucket_arn,
@@ -80,7 +88,7 @@ module "generate_kms" {
   key_owners = var.key_owner_arns
   # A list of IAM ARNs for those who will have full key permissions (`kms:*`)
   kms_key_alias_name_prefix = "${local.name}-" # Prefix for KMS key alias.
-  kms_key_deletion_window   = 7
+  kms_key_deletion_window   = var.kms_key_deletion_window
   # Waiting period for scheduled KMS Key deletion. Can be 7-30 days.
   kms_key_description = "${var.name} DUBBD deployment Loki Key" # Description for the KMS key.
   tags = {
@@ -130,7 +138,7 @@ resource "aws_iam_policy" "loki_policy" {
           "kms:GenerateDataKey",
           "kms:Decrypt"
         ]
-        Resource = ["${local.kms_key_arn}"]
+        Resource = [local.kms_key_arn]
       }
     ]
   })

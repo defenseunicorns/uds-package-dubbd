@@ -41,6 +41,11 @@ jobs:
           aws-region: us-west-2
           role-duration-seconds: 21600
 
+      - name: Set Terraform version
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: "1.5.7"
+
       - uses: ./.github/actions/create-zarf-package
         name: Create CI-DUBBD-IAC-AWS Zarf package
         with:

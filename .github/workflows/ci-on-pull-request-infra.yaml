@@ -1,0 +1,40 @@
+name: terraform-lint-scan
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/test-infra/**"
+      - ".github/workflows/ci-on-pull-request-infra.yaml"
+      - ".github/workflows/terraform-lint.yaml"
+
+run-name: Scanning Terraform in test-infra
+jobs:
+  check-paths:
+    runs-on: ubuntu-latest
+    name: Select Jobs
+    outputs:
+      paths: ${{ steps.path-filter.outputs.changes }}
+
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      # Uses a custom action to filter paths for capabilities.
+      - name: Check paths
+        id: path-filter
+        uses: dorny/paths-filter@v2
+        with:
+          filters: .github/filters.yml
+
+  scan-tf:
+    needs: check-paths
+    name: scan
+    strategy:
+      matrix:
+        path: ${{ fromJSON(needs.check-paths.outputs.paths) }}
+    uses: ./.github/workflows/terraform-lint.yaml
+    with:
+      path: ${{ matrix.path }}
+    secrets: inherit # Inherits all secrets from the parent workflow.

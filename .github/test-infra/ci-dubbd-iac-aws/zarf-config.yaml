@@ -2,7 +2,7 @@ package:
   create:
     max_package_size: "1000000000"
     set:
-      terraform_version: "1.4.2"
+      terraform_version: "1.5.7"
   deploy:
     set:
       # -- Name of the EKS cluster
