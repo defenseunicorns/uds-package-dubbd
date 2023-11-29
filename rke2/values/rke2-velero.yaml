@@ -1,0 +1,40 @@
+addons:
+  velero:
+    enabled: true
+    plugins:
+      - csi
+    values:
+      configuration:
+        backupStorageLocation:
+          - name: default
+            provider: aws
+            bucket: "###ZARF_VAR_VELERO_S3_BUCKET###"
+            config:
+              region: "###ZARF_VAR_VELERO_S3_AWS_REGION###"
+            credential:
+              name: velero-bucket-credentials
+              key: accessKey
+        volumeSnapshotLocation:
+          - name: default
+            provider: aws
+            config:
+              region: "###ZARF_VAR_VELERO_S3_AWS_REGION###"
+            credential:
+              name: velero-bucket-credentials
+              key: accessKey
+      credentials:
+        useSecret: false
+      schedules:
+        udsbackup:
+          disabled: false
+          schedule: "0 3 * * *"
+          useOwnerReferencesInBackup: false
+          template:
+            csiSnapshotTimeout: 0s
+            includeClusterResources: true
+            snapshotVolumes: true
+            excludedNamespaces:
+              - kube-system
+              - flux
+              - velero
+            ttl: "240h"

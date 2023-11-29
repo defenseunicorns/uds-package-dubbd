@@ -17,6 +17,7 @@ This package is designed to deploy DUBBD to environments leveraging RKE2 as the 
   ```bash
   zarf init --components=git-server --confirm
   ```
+- Existing S3 compatible object storage bucket for Velero backups with a credentials secret
 
 ## Configure DUBBD-RKE2
 

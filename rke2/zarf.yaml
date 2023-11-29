@@ -32,6 +32,15 @@ variables:
     prompt: false
     type: file
     autoIndent: true
+  - name: VELERO_ENABLED
+    description: "Toggles velero on and off"
+    default: "true"
+  - name: VELERO_S3_BUCKET
+    description: "AWS S3 bucket for use with Velero"
+    #default: "Intentionally no default value is configured"
+  - name: VELERO_S3_AWS_REGION
+    description: "Region of the AWS S3 bucket for use with Velero"
+    #default: "Intentionally no default value is configured"
 
 components:
   - name: set-zarf-vars
@@ -71,6 +80,7 @@ components:
         version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
         valuesFiles:
           - values/add-dubbd-values.yaml
+          - values/rke2-velero.yaml
   - name: dubbd-post-upgrade
     required: true
     import:
