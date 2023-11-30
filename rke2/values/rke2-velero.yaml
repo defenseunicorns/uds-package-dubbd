@@ -1,6 +1,6 @@
 addons:
   velero:
-    enabled: true
+    enabled: "###ZARF_VAR_VELERO_ENABLED###"
     plugins:
       - csi
     values:
