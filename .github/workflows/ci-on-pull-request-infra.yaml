@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - ".github/test-infra/**"
+      - "!.github/test-infra/eks/*"
       - ".github/workflows/ci-on-pull-request-infra.yaml"
       - ".github/workflows/terraform-lint.yaml"
 
