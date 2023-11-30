@@ -4,7 +4,7 @@ kind: ClusterConfig
 metadata:
   name: "###ZARF_VAR_CLUSTER_NAME###"
   region: us-west-2
-  version: "1.27.7"
+  version: "1.27"
 
 # May want to look at this for testing
 # privateCluster:
