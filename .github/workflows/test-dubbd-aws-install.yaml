@@ -34,7 +34,7 @@ jobs:
           role-duration-seconds: 21600
 
       - name: Set Terraform version
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "1.5.7"
 
