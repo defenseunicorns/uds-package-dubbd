@@ -38,3 +38,50 @@ package:
       # -- If set to true, force delete all resources on removal (i.e. object storage, PVCs, etc)
       ephemeral: false
 ```
+
+## Velero
+Velero is included by default. This requires that the cluster have access to an object storage provider (such as AWS S3, Minio, Nutanix or others). The default configuration, used in CI, assumes access to S3 but the Velero configuration can be overridden at deploy time by adjusting the `deploy-dubbd-values.yaml` (or appropriate filename for your environment).
+
+An example of such an override shown below configures Velero for Nutanix provided object storage:
+> TODO - update this with the tested config
+```
+addons:
+  velero:
+    plugins:
+      - csi
+    values:
+      configuration:
+        backupStorageLocation:
+          - name: default
+            provider: aws
+            bucket: "###ZARF_VAR_VELERO_S3_BUCKET###"
+            config:
+              region: "###ZARF_VAR_VELERO_S3_AWS_REGION###"
+            credential:
+              name: velero-bucket-credentials
+              key: accessKey
+        volumeSnapshotLocation:
+          - name: default
+            provider: aws
+            config:
+              region: "###ZARF_VAR_VELERO_S3_AWS_REGION###"
+            credential:
+              name: velero-bucket-credentials
+              key: accessKey
+      credentials:
+        useSecret: false
+      schedules:
+        udsbackup:
+          disabled: false
+          schedule: "0 3 * * *"
+          useOwnerReferencesInBackup: false
+          template:
+            csiSnapshotTimeout: 0s
+            includeClusterResources: true
+            snapshotVolumes: true
+            excludedNamespaces:
+              - kube-system
+              - flux
+              - velero
+            ttl: "240h"
+```
