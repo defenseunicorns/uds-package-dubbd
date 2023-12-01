@@ -95,7 +95,7 @@ components:
         version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
         valuesFiles:
           - values/add-dubbd-values.yaml
-          - values/rke2-velero.yaml
+          - values/rke2-velero-s3.yaml
   - name: dubbd-post-upgrade
     required: true
     import:
