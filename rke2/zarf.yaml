@@ -42,6 +42,7 @@ variables:
     description: "Key to use when connecting to the Velero bucket"
     #default: "Intentionally no default value is configured"
   - name: VELERO_BUCKET_KEY_SECRET
+    sensitive: true
     description: "Key secret to use when connecting to the Velero bucket"
     #default: "Intentionally no default value is configured"
 
