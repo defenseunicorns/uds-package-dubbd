@@ -156,6 +156,7 @@ resource "aws_s3_bucket_acl" "bucket-acl" {
 resource "aws_iam_user" "bucket-user" {
   name = "ci-velero-s3-user"
   path = "/ci-velero-s3-user/"
+  permissions_boundary = var.iam_permissions_boundary
 }
 
 data "aws_iam_policy_document" "bucket-policy-doc" {
