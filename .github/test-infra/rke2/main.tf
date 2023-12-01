@@ -160,7 +160,7 @@ resource "aws_iam_user" "bucket-user" {
 data "aws_iam_policy_document" "bucket-policy-doc" {
   statement {
     actions   = ["s3:ListBucket"]
-    resources = ["${aws_s3_bucket.bucket.arn}"]
+    resources = [aws_s3_bucket.bucket.arn]
   }
   statement {
     actions   = ["s3:*Object"]
