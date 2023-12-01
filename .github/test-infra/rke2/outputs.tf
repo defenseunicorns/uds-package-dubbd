@@ -1,3 +1,8 @@
+output "velero_bucket_name" {
+  description = "Bucket Name"
+  value       = aws_s3_bucket.bucket.id
+}
+
 output "velero_bucket_access_key" {
   description = "Velero Bucket Access Key ID"
   value       = aws_iam_access_key.bucket-access-key.id

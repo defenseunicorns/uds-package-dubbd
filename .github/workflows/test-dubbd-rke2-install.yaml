@@ -60,6 +60,29 @@ jobs:
           terraform apply -auto-approve
           kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.21"
           kubectl apply -f storage-class.yaml
+
+          # gather the bucket outputs
+          VELERO_BUCKET=$(terraform output -raw velero_bucket_name)
+          VELERO_BUCKET_KEY=$(terraform output -raw velero_bucket_access_key)
+          VELERO_BUCKET_KEY_SECRET=$(terraform output -raw velero_bucket_access_key_secret)
+
+          # inject them into the config
+          rm ../../../rke2/zarf-config.yaml
+          cat << EOF > ../../../rke2/zarf-config.yaml
+          log-level: info
+          architecture: amd64
+          package:
+            deploy:
+              set:
+                domain: bigbang.dev
+                key_file: bigbang.dev.key
+                cert_file: bigbang.dev.cert
+                ephemeral: false
+                VELERO_BUCKET=$VELERO_BUCKET
+                VELERO_BUCKET_REGION=us-west-2
+                VELERO_BUCKET_BUCKET_KEY=$VELERO_BUCKET_KEY
+                VELERO_BUCKET_KEY_SECRET=$VELERO_BUCKET_KEY_SECRET
+          EOF
         working-directory: .github/test-infra/rke2
 
       - name: Zarf init
