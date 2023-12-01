@@ -54,9 +54,9 @@ addons:
         backupStorageLocation:
           - name: default
             provider: aws
-            bucket: "###ZARF_VAR_VELERO_S3_BUCKET###"
+            bucket: "###ZARF_VAR_VELERO_BUCKET###"
             config:
-              region: "###ZARF_VAR_VELERO_S3_AWS_REGION###"
+              region: "###ZARF_VAR_VELERO_BUCKET_REGION###"
             credential:
               name: velero-bucket-credentials
               key: accessKey
@@ -64,7 +64,7 @@ addons:
           - name: default
             provider: aws
             config:
-              region: "###ZARF_VAR_VELERO_S3_AWS_REGION###"
+              region: "###ZARF_VAR_VELERO_BUCKET_REGION###"
             credential:
               name: velero-bucket-credentials
               key: accessKey

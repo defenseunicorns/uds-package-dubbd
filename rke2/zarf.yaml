@@ -32,14 +32,17 @@ variables:
     prompt: false
     type: file
     autoIndent: true
-  - name: VELERO_S3_BUCKET
-    description: "AWS S3 (or compatible) bucket for use with Velero"
+  - name: VELERO_BUCKET
+    description: "S3 compatible object storage bucket for use with Velero"
     #default: "Intentionally no default value is configured"
-  - name: VELERO_S3_AWS_REGION
+  - name: VELERO_BUCKET_REGION
     description: "Region of the bucket for use with Velero"
     #default: "Intentionally no default value is configured"
-  - name: VELERO_S3_AWS_ROLE_ARN
-    description: "Role to use when connecting to the Velero bucket (credentials can alternatively be provided via secret)"
+  - name: VELERO_BUCKET_KEY
+    description: "Key to use when connecting to the Velero bucket"
+    #default: "Intentionally no default value is configured"
+  - name: VELERO_BUCKET_KEY_SECRET
+    description: "Key secret to use when connecting to the Velero bucket"
     #default: "Intentionally no default value is configured"
 
 components:
@@ -55,12 +58,6 @@ components:
     required: true
     actions:
       onDeploy:
-        before:
-          - cmd: "./zarf tools kubectl get secret -n velero velero-bucket-credentials >/dev/null 2>&1 && echo true || echo false"
-            mute: true
-            description: "Checking for expected velero bucket credentials secret..."
-            setVariables:
-              - name: HAS_VELERO_CREDENTIALS
         after:
           - cmd: ./rke2-preflight.sh
           - cmd: rm rke2-preflight.sh
