@@ -40,7 +40,7 @@ package:
 ```
 
 ## Velero
-Velero is included by default. This requires that the cluster have access to an object storage provider (such as AWS S3, Minio, Nutanix or others). The default configuration, used in CI, assumes access to S3 but the Velero configuration can be overridden at deploy time by adjusting the `deploy-dubbd-values.yaml` (or appropriate filename for your environment).
+Velero is included by default. This requires that the cluster have access to an object storage provider (such as AWS S3, Minio, Nutanix or others). The default configuration used in CI deploys an instance of minio but the Velero configuration can be overridden at deploy time by adjusting the `deploy-dubbd-values.yaml` (or appropriate filename for your environment).
 
 An example of such an override shown below configures Velero for Nutanix provided object storage:
 > TODO - update this with the tested config

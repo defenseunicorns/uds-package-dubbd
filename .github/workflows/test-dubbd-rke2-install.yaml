@@ -83,8 +83,8 @@ jobs:
           zarf package deploy zarf-package-*.tar.zst \
           --confirm \
           --set VELERO_BUCKET=minio.minio.svc.cluster.local:9000/velero \
-          --set VELERO_BUCKET_REGION=us-west-2
-          --set VELERO_BUCKET_KEY=admin
+          --set VELERO_BUCKET_REGION=us-west-2 \
+          --set VELERO_BUCKET_KEY=admin \
           --set VELERO_BUCKET_KEY_SECRET=changeme
         working-directory: rke2
         timeout-minutes: 60
