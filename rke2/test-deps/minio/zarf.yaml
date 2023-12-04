@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/defenseunicorns/zarf/main/zarf.schema.json
+
+kind: ZarfPackageConfig
+metadata:
+  name: minio
+  description: "Deploys minio and buckets for CI."
+  architecture: amd64
+  # x-release-please-start-version
+  version: "0.0.1"
+  # x-release-please-end
+
+components:
+  - name: minio
+    required: true
+    description: "Install MinIO for CI tests"
+    images:
+      - "quay.io/minio/operator:v5.0.11"
+      - "quay.io/minio/minio:RELEASE.2023-09-30T07-02-29Z"
+      - "quay.io/minio/mc:RELEASE.2023-09-29T16-41-22Z"
+    charts:
+      - name: minio
+        namespace: minio
+        version: 5.0.14
+        url: https://charts.min.io/
+        valuesFiles:
+          - "minio-values.yaml"

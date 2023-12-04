@@ -1,0 +1,20 @@
+replicas: 1
+mode: standalone
+
+# Some reasonable requests instead of the bonkers defaults
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 150m
+persistence:
+  size: 50Gi
+
+buckets:
+  - name: velero
+
+rootUser: "admin"
+rootPassword: "changeme"
+
+postJob:
+  podAnnotations:
+    sidecar.istio.io/inject: "false"
