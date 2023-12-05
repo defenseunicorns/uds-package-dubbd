@@ -89,6 +89,17 @@ jobs:
         working-directory: rke2
         timeout-minutes: 60
 
+      - name: Test Velero
+        run: |
+          # install velero CLI
+          wget https://github.com/vmware-tanzu/velero/releases/download/v1.12.2/velero-v1.12.2-linux-amd64.tar.gz
+          tar -xvf velero-v1.12.2-linux-amd64.tar.gz
+          mv velero-v1.12.2-linux-amd64/velero .
+          chmod +x velero
+
+          # manually kick off a backup and wait for it to complete
+          velero backup create --wait --from-schedule udsbackup
+
       - name: Remove DUBBD from RKE2 cluster
         if: always()
         run: zarf package remove zarf-package-*.tar.zst --confirm
