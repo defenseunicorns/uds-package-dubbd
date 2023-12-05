@@ -68,8 +68,6 @@ addons:
             credential:
               name: velero-bucket-credentials
               key: accessKey
-      credentials:
-        useSecret: false
       schedules:
         udsbackup:
           disabled: false
