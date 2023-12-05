@@ -82,7 +82,7 @@ jobs:
         run: |
           zarf package deploy zarf-package-*.tar.zst \
           --confirm \
-          --set VELERO_BUCKET=minio.minio.svc.cluster.local:9000/velero \
+          --set VELERO_BUCKET=velero \
           --set VELERO_BUCKET_REGION=us-west-2 \
           --set VELERO_BUCKET_KEY=admin \
           --set VELERO_BUCKET_KEY_SECRET=changeme
@@ -98,10 +98,25 @@ jobs:
           chmod +x velero
 
           # manually kick off a backup and wait for it to complete
-          ./velero backup create --wait --from-schedule udsbackup
+          ./velero backup create --wait --from-schedule velero-velero-udsbackup
 
           # display status for the logs
-          ./velero backup describe
+          STATUS=$(zarf tools kubectl get backups -A -o json | jq -r '(.items | last).status.phase')
+          if [[ ${STATUS} != "Completed" ]]; then
+            echo "Status is '$STATUS'... waiting to see if it changes"
+
+            # local testing indicates the status is "Finalizing" for a few seconds after completion
+            sleep 30
+
+            # check again..
+            STATUS=$(zarf tools kubectl get backups -A -o json | jq -r '(.items | last).status.phase')
+            if [[ ${STATUS} != Completed" ]]; then
+              echo "Status is $STATUS... something isn't right.."
+              zarf tools kubectl get backups -A -o yaml
+              exit 1
+            fi
+            echo "Status is Complete! Great success!"
+          fi
         timeout-minutes: 10
 
       - name: Remove DUBBD from RKE2 cluster

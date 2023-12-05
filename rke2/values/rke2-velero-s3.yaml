@@ -19,17 +19,22 @@ addons:
             bucket: "###ZARF_VAR_VELERO_BUCKET###"
             config:
               region: "###ZARF_VAR_VELERO_BUCKET_REGION###"
+              s3ForcePathStyle: true
+              s3Url: http://minio.minio.svc.cluster.local:9000
             credential:
               name: "velero-bucket-credentials"
               key: "cloud"
-        volumeSnapshotLocation:
-          - name: default
-            provider: aws
-            config:
-              region: "###ZARF_VAR_VELERO_BUCKET_REGION###"
-            credential:
-              name: "velero-bucket-credentials"
-              key: "cloud"
+        # volumeSnapshotLocation:
+        #   - name: default
+        #     provider: aws
+        #     config:
+        #       region: "###ZARF_VAR_VELERO_BUCKET_REGION###"
+        #       s3ForcePathStyle: true
+        #       s3Url: http://minio.minio.svc.cluster.local:9000
+        #     credential:
+        #       name: "velero-bucket-credentials"
+        #       key: "cloud"
+      snapshotsEnabled: false
       schedules:
         udsbackup:
           disabled: false
@@ -38,7 +43,7 @@ addons:
           template:
             csiSnapshotTimeout: 0s
             includeClusterResources: true
-            snapshotVolumes: true
+            snapshotVolumes: false
             excludedNamespaces:
               - kube-system
               - flux
