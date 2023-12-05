@@ -98,10 +98,10 @@ jobs:
           chmod +x velero
 
           # manually kick off a backup and wait for it to complete
-          velero backup create --wait --from-schedule udsbackup
+          ./velero backup create --wait --from-schedule udsbackup
 
           # display status for the logs
-          velero backup describe
+          ./velero backup describe
         timeout-minutes: 10
 
       - name: Remove DUBBD from RKE2 cluster
