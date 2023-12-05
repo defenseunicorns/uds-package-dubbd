@@ -110,13 +110,13 @@ jobs:
 
             # check again..
             STATUS=$(zarf tools kubectl get backups -A -o json | jq -r '(.items | last).status.phase')
-            if [[ ${STATUS} != Completed" ]]; then
+            if [[ ${STATUS} != "Completed" ]]; then
               echo "Status is $STATUS... something isn't right.."
               zarf tools kubectl get backups -A -o yaml
               exit 1
             fi
-            echo "Status is Complete! Great success!"
           fi
+          echo "Status is Complete! Great success!"
         timeout-minutes: 10
 
       - name: Remove DUBBD from RKE2 cluster
