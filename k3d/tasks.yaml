@@ -1,0 +1,27 @@
+includes:
+  - create: ./tasks/create.yaml
+  - setup: ./tasks/setup.yaml
+  - deploy: ./tasks/deploy.yaml
+  - remove: ./tasks/remove.yaml
+  - test: ./tasks/test.yaml
+
+tasks:
+  - name: setup-cluster
+    actions:
+      - task: setup:k3d-test-cluster
+
+  - name: create-k3d-pkg
+    actions:
+      - task: create:dubbd-k3d-pkg
+
+  - name: deploy-k3d-pkg
+    actions:
+      - task: deploy:dubbd-k3d-pkg
+  
+  - name: remove-k3d-pkg
+    actions:
+      - task: remove:dubbd-k3d-pkg
+
+  - name: test-k3d-pkg
+    actions:
+      - task: test:k3d-pkg

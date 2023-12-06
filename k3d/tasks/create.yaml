@@ -1,0 +1,6 @@
+tasks:
+  - name: dubbd-k3d-pkg
+    description: "Create k3d zarf package"
+    actions:
+      - description: "Create the requested Zarf Package"
+        cmd: "zarf package create . --confirm"

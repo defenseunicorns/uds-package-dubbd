@@ -1,0 +1,5 @@
+tasks:
+  - name: dubbd-k3d-pkg
+    description: "Remove dubbd-k3d from the k3d cluster"
+    actions:
+      - cmd: zarf package remove dubbd-k3d --confirm
