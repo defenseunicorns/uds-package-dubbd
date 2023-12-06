@@ -82,6 +82,7 @@ jobs:
         run: |
           zarf package deploy zarf-package-*.tar.zst \
           --confirm \
+          --set VELERO_BUCKET_PROVIDER_URL=http://minio.minio.svc.cluster.local:9000 \
           --set VELERO_BUCKET=velero \
           --set VELERO_BUCKET_REGION=us-west-2 \
           --set VELERO_BUCKET_KEY=admin \

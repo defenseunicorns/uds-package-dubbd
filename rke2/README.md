@@ -40,46 +40,4 @@ package:
 ```
 
 ## Velero
-Velero is included by default. This requires that the cluster have access to an object storage provider (such as AWS S3, Minio, Nutanix or others). The default configuration used in CI deploys an instance of minio but the Velero configuration can be overridden at deploy time by adjusting the `deploy-dubbd-values.yaml` (or appropriate filename for your environment).
-
-An example of such an override shown below configures Velero for Nutanix provided object storage:
-> TODO - update this with the tested config
-```
-addons:
-  velero:
-    plugins:
-      - csi
-    values:
-      configuration:
-        backupStorageLocation:
-          - name: default
-            provider: aws
-            bucket: "###ZARF_VAR_VELERO_BUCKET###"
-            config:
-              region: "###ZARF_VAR_VELERO_BUCKET_REGION###"
-            credential:
-              name: velero-bucket-credentials
-              key: accessKey
-        volumeSnapshotLocation:
-          - name: default
-            provider: aws
-            config:
-              region: "###ZARF_VAR_VELERO_BUCKET_REGION###"
-            credential:
-              name: velero-bucket-credentials
-              key: accessKey
-      schedules:
-        udsbackup:
-          disabled: false
-          schedule: "0 3 * * *"
-          useOwnerReferencesInBackup: false
-          template:
-            csiSnapshotTimeout: 0s
-            includeClusterResources: true
-            snapshotVolumes: true
-            excludedNamespaces:
-              - kube-system
-              - flux
-              - velero
-            ttl: "240h"
-```
+Velero is included by default. This requires that the cluster have access to an object storage provider (such as AWS S3, Minio, Nutanix or others). The default configuration used in CI deploys an instance of minio and uses it to perform a simple cluster backup on a schedule. This default configuration can be adopted by setting the exposed velero bucket values, but in all likelyhood it will make more sense to provide a custom velero config at deploy time that overrides the `udsbackup` schedule.

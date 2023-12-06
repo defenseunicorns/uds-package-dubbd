@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Velero bucket provider URL is configured
+if [ -z "${ZARF_VAR_VELERO_BUCKET_PROVIDER_URL}" ]; then
+  echo "VELERO_BUCKET_PROVIDER_URL must be provided. Aborting..."
+  exit 1
+fi
+
 # Velero bucket is configured
 if [ -z "${ZARF_VAR_VELERO_BUCKET}" ] ; then
   echo "VELERO_BUCKET must be provided. Aborting..."

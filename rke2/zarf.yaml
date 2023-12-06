@@ -32,9 +32,14 @@ variables:
     prompt: false
     type: file
     autoIndent: true
+  - name: VELERO_BUCKET_PROVIDER_URL
+    description: "S3 compatible object storage service for use with Velero"
+    #default: "Intentionally no default value is configured"
+    #example: "http://minio.minio.svc.cluster.local:9000"
   - name: VELERO_BUCKET
     description: "S3 compatible object storage bucket for use with Velero"
     #default: "Intentionally no default value is configured"
+    #example: "velero"
   - name: VELERO_BUCKET_REGION
     description: "Region of the bucket for use with Velero"
     #default: "Intentionally no default value is configured"

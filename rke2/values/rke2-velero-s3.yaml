@@ -20,7 +20,7 @@ addons:
             config:
               region: "###ZARF_VAR_VELERO_BUCKET_REGION###"
               s3ForcePathStyle: true
-              s3Url: http://minio.minio.svc.cluster.local:9000
+              s3Url: "###ZARF_VAR_VELERO_BUCKET_PROVIDER_URL###"
             credential:
               name: "velero-bucket-credentials"
               key: "cloud"
@@ -30,7 +30,7 @@ addons:
         #     config:
         #       region: "###ZARF_VAR_VELERO_BUCKET_REGION###"
         #       s3ForcePathStyle: true
-        #       s3Url: http://minio.minio.svc.cluster.local:9000
+        #       s3Url: "###ZARF_VAR_VELERO_BUCKET_PROVIDER_URL###"
         #     credential:
         #       name: "velero-bucket-credentials"
         #       key: "cloud"
