@@ -92,10 +92,13 @@ jobs:
 
       - name: Test Velero
         run: |
+          # get deployed velero version with bash magic
+          VELERO_VER=$(zarf tools kubectl get pods -n velero -l name=velero -o jsonpath='{.items[0].spec.containers[0].image}' | awk -F':' '{print $3}' | awk -F'-zarf' '{print $1}')
+
           # install velero CLI
-          wget https://github.com/vmware-tanzu/velero/releases/download/v1.12.2/velero-v1.12.2-linux-amd64.tar.gz
-          tar -xvf velero-v1.12.2-linux-amd64.tar.gz
-          mv velero-v1.12.2-linux-amd64/velero .
+          wget "https://github.com/vmware-tanzu/velero/releases/download/$VELERO_VER/velero-$VELERO_VER-linux-amd64.tar.gz"
+          tar -xvf velero-$VELERO_VER-linux-amd64.tar.gz
+          mv velero-$VELERO_VER-linux-amd64/velero .
           chmod +x velero
 
           # manually kick off a backup and wait for it to complete
