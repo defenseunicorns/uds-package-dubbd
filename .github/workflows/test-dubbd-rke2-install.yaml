@@ -82,7 +82,7 @@ jobs:
         run: |
           zarf package deploy zarf-package-*.tar.zst \
           --confirm \
-          --set VELERO_BUCKET_PROVIDER_URL=http://minio.minio.svc.cluster.local:9000 \
+          --set VELERO_BUCKET_PROVIDER_URL="http://minio.minio.svc.cluster.local:9000" \
           --set VELERO_BUCKET=velero \
           --set VELERO_BUCKET_REGION=us-west-2 \
           --set VELERO_BUCKET_KEY=admin \
@@ -102,7 +102,7 @@ jobs:
           chmod +x velero
 
           # manually kick off a backup and wait for it to complete
-          ./velero backup create --wait --from-schedule velero-velero-udsbackup
+          ./velero backup create --wait --from-schedule velero-velero-udsbackup --labels find=me
 
           # display status for the logs
           STATUS=$(zarf tools kubectl get backups -A -o json | jq -r '(.items | last).status.phase')
@@ -116,7 +116,27 @@ jobs:
             STATUS=$(zarf tools kubectl get backups -A -o json | jq -r '(.items | last).status.phase')
             if [[ ${STATUS} != "Completed" ]]; then
               echo "Status is $STATUS... something isn't right.."
+
+              # get backup object
+              echo "::group::kubectl get backups"
               zarf tools kubectl get backups -A -o yaml
+              echo "::endgroup::"
+
+              # get backupstoragelocations
+              echo "::group::kubectl get backupstoragelocation"
+              zarf tools kubectl get backupstoragelocation -A -o yaml
+              echo "::endgroup::"
+
+              # describe backup
+              echo "::group velero describe backups"
+              velero backup describe -l find=me
+              echo "::endgroup::"
+
+              # velero pod logs
+              echo "::kubectl logs"
+              zarf tools kubectl logs -n velero -l name=velero
+
+              # be a quitter
               exit 1
             fi
           fi
