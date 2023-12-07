@@ -129,12 +129,13 @@ jobs:
 
               # describe backup
               echo "::group velero describe backups"
-              velero backup describe -l find=me
+              ./velero backup describe -l find=me
               echo "::endgroup::"
 
               # velero pod logs
               echo "::kubectl logs"
               zarf tools kubectl logs -n velero -l name=velero
+              echo "::endgroup::"
 
               # be a quitter
               exit 1
