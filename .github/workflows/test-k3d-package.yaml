@@ -24,6 +24,18 @@ jobs:
           username: ${{ secrets.IRON_BANK_ROBOT_USERNAME }}
           password: ${{ secrets.IRON_BANK_ROBOT_PASSWORD }}
 
-      - name: Test k3d package
+      - name: Create k3d pkg
         working-directory: k3d
-        run: uds run test-k3d-pkg
+        run: uds run create-k3d-pkg
+
+      - name: Create k3d cluster
+        working-directory: k3d
+        run: uds run setup-cluster
+
+      - name: Deploy k3d pkg
+        working-directory: k3d
+        run: uds run deploy-k3d-pkg
+
+      - name: Remove k3d pkg
+        working-directory: k3d
+        run: uds run remove-k3d-pkg

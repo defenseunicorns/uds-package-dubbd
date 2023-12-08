@@ -3,7 +3,6 @@ includes:
   - setup: ./tasks/setup.yaml
   - deploy: ./tasks/deploy.yaml
   - remove: ./tasks/remove.yaml
-  - test: ./tasks/test.yaml
 
 tasks:
   - name: setup-cluster
@@ -21,7 +20,3 @@ tasks:
   - name: remove-k3d-pkg
     actions:
       - task: remove:dubbd-k3d-pkg
-
-  - name: test-k3d-pkg
-    actions:
-      - task: test:k3d-pkg
