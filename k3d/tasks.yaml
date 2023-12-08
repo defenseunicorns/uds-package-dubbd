@@ -17,7 +17,7 @@ tasks:
   - name: deploy-k3d-pkg
     actions:
       - task: deploy:dubbd-k3d-pkg
-  
+
   - name: remove-k3d-pkg
     actions:
       - task: remove:dubbd-k3d-pkg
