@@ -17,6 +17,13 @@ jobs:
       - name: Setup Environment
         uses: ./.github/actions/setup
 
+      - name: Login to Registry1
+        uses: docker/login-action@v3
+        with:
+          registry: registry1.dso.mil
+          username: ${{ secrets.IRON_BANK_ROBOT_USERNAME }}
+          password: ${{ secrets.IRON_BANK_ROBOT_PASSWORD }}
+
       - name: Test k3d package
         working-directory: k3d
         run: uds run test-k3d-pkg
