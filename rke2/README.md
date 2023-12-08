@@ -40,4 +40,4 @@ package:
 ```
 
 ## Velero
-Velero is included by default. This requires that the cluster have access to an object storage provider (such as AWS S3, Minio, Nutanix or others). The default configuration used in CI deploys an instance of minio and uses it to perform a simple cluster backup on a schedule. This default configuration can be adopted by setting the exposed velero bucket values, but in all likelyhood it will make more sense to provide a custom velero config at deploy time that overrides the `udsbackup` schedule.
+Velero is included by default. This requires that the cluster have access to an object storage provider (such as AWS S3, Minio, Nutanix or others). The default configuration used in CI deploys an instance of Minio and uses it to perform a simple cluster backup on a schedule. This default configuration can be adopted by setting the exposed velero bucket values, but in all likelyhood it will make more sense to provide a custom velero config at deploy time that overrides the `udsbackup` schedule.
