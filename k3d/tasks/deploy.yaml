@@ -11,4 +11,4 @@ tasks:
       - description: "Deploy the requested Zarf Package"
         cmd: |
           set -e
-          zarf package deploy zart-package-dubbd-k3d-amd64-${VERSION}.tar.zst --confirm
+          zarf package deploy build/zarf-package-dubbd-k3d-amd64-*.tar.zst --confirm
