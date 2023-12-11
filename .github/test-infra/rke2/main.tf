@@ -56,6 +56,7 @@ EOF
   controlplane_internal       = var.controlplane_internal
   associate_public_ip_address = var.associate_public_ip_address
   wait_for_capacity_timeout   = "20m"
+  pre_userdata                = local.pre_userdata
 }
 
 module "agents" {
