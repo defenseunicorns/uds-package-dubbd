@@ -88,6 +88,7 @@ EOF
   wait_for_capacity_timeout = "20m"
   # Required data for identifying cluster to join
   cluster_data = module.rke2.cluster_data
+  pre_userdata = local.pre_userdata
 }
 
 resource "null_resource" "kubeconfig" {
