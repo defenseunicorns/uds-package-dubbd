@@ -19,6 +19,16 @@ terraform {
   }
 }
 
+locals {
+  pre_userdata = <<-EOF
+    echo "Installing awscli"
+    yum install -y unzip
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip awscliv2.zip
+    sudo ./aws/install
+    EOF
+}
+
 module "rke2" {
   source        = "github.com/rancherfederal/rke2-aws-tf?ref=v2.4.0"
   cluster_name  = var.name
