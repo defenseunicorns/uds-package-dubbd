@@ -59,10 +59,10 @@ jobs:
           SHA: ${{ github.sha }}
         run: |
           terraform init -force-copy -upgrade \
-            -backend-config="bucket=uds-ci-state-bucket" \
+            -backend-config="bucket=uds-aws-ci-commercial-us-west-2-5246-tfstate" \
             -backend-config="key=tfstate/ci/install/${SHA:0:7}-rke2.tfstate" \
             -backend-config="region=us-west-2" \
-            -backend-config="dynamodb_table=uds-ci-state-dynamodb"
+            -backend-config="dynamodb_table=uds-aws-ci-commercial-org-us-west-2-5246-tfstate-lock"
           terraform plan
           sleep 15 # time to review
           terraform apply -auto-approve

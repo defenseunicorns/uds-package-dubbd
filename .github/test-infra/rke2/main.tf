@@ -19,11 +19,53 @@ terraform {
   }
 }
 
+data "aws_partition" "current" {}
+
+data "aws_caller_identity" "current" {}
+
+data "aws_subnets" "private_subnets" {
+  filter {
+    name   = "vpc-id"
+    values = [var.vpc_id]
+  }
+
+  filter {
+    name   = "tag:Name"
+    values = ["*private*"]
+  }
+}
+
+data "aws_subnet" "private_subnet" {
+  for_each = toset(data.aws_subnets.private_subnets.ids)
+  id       = each.value
+}
+
+data "aws_subnets" "public_subnets" {
+  filter {
+    name   = "vpc-id"
+    values = [var.vpc_id]
+  }
+
+  filter {
+    name   = "tag:Name"
+    values = ["*public*"]
+  }
+}
+
+data "aws_subnet" "public_subnet" {
+  for_each = toset(data.aws_subnets.public_subnets.ids)
+  id       = each.value
+}
+
+locals {
+  iam_permissions_boundary = var.permissions_boundary_name == null ? null : "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:policy/${var.permissions_boundary_name}"
+}
+
 module "rke2" {
   source        = "github.com/rancherfederal/rke2-aws-tf?ref=v2.4.0"
   cluster_name  = var.name
   vpc_id        = var.vpc_id
-  subnets       = var.public_subnets
+  subnets       = data.aws_subnets.public_subnets.ids
   ami           = var.ami
   servers       = 1
   instance_type = "m5.2xlarge"
@@ -36,7 +78,7 @@ module "rke2" {
     type      = "gp3"
   }
   enable_ccm                  = true
-  iam_permissions_boundary    = var.iam_permissions_boundary
+  iam_permissions_boundary    = local.iam_permissions_boundary
   download                    = false
   rke2_config                 = <<-EOF
 disable:
@@ -53,7 +95,7 @@ module "agents" {
 
   name          = "agent"
   vpc_id        = var.vpc_id
-  subnets       = var.private_subnets
+  subnets       = data.aws_subnets.private_subnets.ids
   ami           = var.ami
   asg           = { min : 2, max : 2, desired : 2, termination_policies : ["Default"] }
   spot          = false
@@ -67,7 +109,7 @@ module "agents" {
     type      = "gp3"
   }
   enable_ccm                = true
-  iam_permissions_boundary  = var.iam_permissions_boundary
+  iam_permissions_boundary  = local.iam_permissions_boundary
   download                  = false
   rke2_config               = <<-EOF
 disable:
