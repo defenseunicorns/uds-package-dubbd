@@ -34,7 +34,7 @@ jobs:
           role-duration-seconds: 21600
 
       - name: Set Terraform version
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "1.5.7"
 
@@ -43,6 +43,14 @@ jobs:
           username: ${{ secrets.REGISTRY1_USERNAME }}
           password: ${{ secrets.REGISTRY1_PASSWORD }}
           working-dir: rke2
+          download-init-package: true
+          timeout-minutes: 60
+
+      - uses: ./.github/actions/create-zarf-package
+        with:
+          username: ${{ secrets.REGISTRY1_USERNAME }}
+          password: ${{ secrets.REGISTRY1_PASSWORD }}
+          working-dir: rke2/test-deps/minio
           download-init-package: true
           timeout-minutes: 60
 
@@ -65,10 +73,76 @@ jobs:
       - name: Zarf init
         run: zarf init -a amd64 --components=git-server --confirm
 
-      - name: Deploy DUBBD on RKE2 cluster
+      - name: Deploy minio on RKE2 cluster
         run: zarf package deploy zarf-package-*.tar.zst --confirm
+        working-directory: rke2/test-deps/minio
+        timeout-minutes: 60
+
+      - name: Deploy DUBBD on RKE2 cluster
+        run: |
+          zarf package deploy zarf-package-*.tar.zst \
+          --confirm \
+          --set VELERO_BUCKET_PROVIDER_URL="http://minio.minio.svc.cluster.local:9000" \
+          --set VELERO_BUCKET=velero \
+          --set VELERO_BUCKET_REGION=us-west-2 \
+          --set VELERO_BUCKET_KEY=admin \
+          --set VELERO_BUCKET_KEY_SECRET=changeme
         working-directory: rke2
         timeout-minutes: 60
+
+      - name: Test Velero
+        run: |
+          # get deployed velero version with bash magic
+          VELERO_VER=$(zarf tools kubectl get pods -n velero -l name=velero -o jsonpath='{.items[0].spec.containers[1].image}' | awk -F':' '{print $3}' | awk -F'-zarf' '{print $1}')
+
+          # install velero CLI
+          wget "https://github.com/vmware-tanzu/velero/releases/download/$VELERO_VER/velero-$VELERO_VER-linux-amd64.tar.gz"
+          tar -xvf velero-$VELERO_VER-linux-amd64.tar.gz
+          mv velero-$VELERO_VER-linux-amd64/velero .
+          chmod +x velero
+
+          # manually kick off a backup and wait for it to complete
+          ./velero backup create --wait --from-schedule velero-velero-udsbackup --labels find=me
+
+          # display status for the logs
+          STATUS=$(zarf tools kubectl get backups -A -o json | jq -r '(.items | last).status.phase')
+          if [[ ${STATUS} != "Completed" ]]; then
+            echo "Status is '$STATUS'... waiting to see if it changes"
+
+            # local testing indicates the status is "Finalizing" for a few seconds after completion
+            sleep 30
+
+            # check again...
+            STATUS=$(zarf tools kubectl get backups -A -o json | jq -r '(.items | last).status.phase')
+            if [[ ${STATUS} != "Completed" ]]; then
+              echo "Status is $STATUS... something isn't right.."
+
+              # get backup object
+              echo "::group::kubectl get backups"
+              zarf tools kubectl get backups -A -o yaml
+              echo "::endgroup::"
+
+              # get backupstoragelocations
+              echo "::group::kubectl get backupstoragelocation"
+              zarf tools kubectl get backupstoragelocation -A -o yaml
+              echo "::endgroup::"
+
+              # describe backup
+              echo "::group velero describe backups"
+              ./velero backup describe -l find=me
+              echo "::endgroup::"
+
+              # velero pod logs
+              echo "::kubectl logs"
+              zarf tools kubectl logs -n velero -l name=velero
+              echo "::endgroup::"
+
+              # be a quitter
+              exit 1
+            fi
+          fi
+          echo "Status is Complete! Great success!"
+        timeout-minutes: 10
 
       - name: Remove DUBBD from RKE2 cluster
         if: always()

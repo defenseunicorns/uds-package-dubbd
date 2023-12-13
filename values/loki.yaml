@@ -3,8 +3,6 @@ loki:
   values:
     # Values for both Monolith & Scalable strategy
     loki:
-      ingester:
-        autoforget_unhealthy: true
       extraMemberlistConfig:
         rejoin_interval: 120s
     # Values for Monolith strategy

@@ -17,6 +17,7 @@ This package is designed to deploy DUBBD to environments leveraging RKE2 as the 
   ```bash
   zarf init --components=git-server --confirm
   ```
+- Existing S3 compatible object storage bucket for Velero backups with a credentials secret
 
 ## Configure DUBBD-RKE2
 
@@ -37,3 +38,6 @@ package:
       # -- If set to true, force delete all resources on removal (i.e. object storage, PVCs, etc)
       ephemeral: false
 ```
+
+## Velero
+Velero is included by default. This requires that the cluster have access to an object storage provider (such as AWS S3, Minio, Nutanix or others). The default configuration used in CI deploys an instance of Minio and uses it to perform a simple cluster backup on a schedule. This default configuration can be adopted by setting the exposed velero bucket values, but in all likelyhood it will make more sense to provide a custom velero config at deploy time that overrides the `udsbackup` schedule.

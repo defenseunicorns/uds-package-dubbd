@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.15.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.14.0...v0.15.0) (2023-12-11)
+
+
+### Features
+
+* add velero for rke2 by default ([d59ff4e](https://github.com/defenseunicorns/uds-package-dubbd/commit/d59ff4ea625fa8d2c3abd8eab3a6af906b461d80))
+
+
+### Miscellaneous
+
+* **deps:** update actions/checkout action to v4 ([#630](https://github.com/defenseunicorns/uds-package-dubbd/issues/630)) ([016b09e](https://github.com/defenseunicorns/uds-package-dubbd/commit/016b09ec888da8e1816811adbb6f9977a2f0827e))
+* **deps:** update dependency defenseunicorns/zarf to v0.31.3 ([#613](https://github.com/defenseunicorns/uds-package-dubbd/issues/613)) ([b4b79d4](https://github.com/defenseunicorns/uds-package-dubbd/commit/b4b79d40eee76ce4ef75c9b6703dc5462bebcdd4))
+* **deps:** update gitlab tag big-bang/bigbang to v2.16.0 ([#642](https://github.com/defenseunicorns/uds-package-dubbd/issues/642)) ([d47c7aa](https://github.com/defenseunicorns/uds-package-dubbd/commit/d47c7aab947088c22079f40add2973bd89f7b18a))
+* **deps:** update hashicorp/setup-terraform action to v3 ([#631](https://github.com/defenseunicorns/uds-package-dubbd/issues/631)) ([042f3bb](https://github.com/defenseunicorns/uds-package-dubbd/commit/042f3bbf449c3b5cd3212795e8ceaafc3f695101))
+* set tf version in publish.dubbd.package.yaml ([#637](https://github.com/defenseunicorns/uds-package-dubbd/issues/637)) ([d2d50ca](https://github.com/defenseunicorns/uds-package-dubbd/commit/d2d50ca5793a3d08900fadc71421562e56ea7ffe))
+
 ## [0.14.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.13.0...v0.14.0) (2023-11-28)
 
 

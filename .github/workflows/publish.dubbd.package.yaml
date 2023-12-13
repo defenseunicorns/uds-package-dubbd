@@ -29,6 +29,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set Terraform version
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.5.7"
+
       - name: Create DUBBD Package
         uses: ./.github/actions/create-zarf-package
         with:
