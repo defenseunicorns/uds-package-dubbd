@@ -75,11 +75,6 @@ module "agents" {
   enable_ccm                = true
   iam_permissions_boundary  = var.iam_permissions_boundary
   download                  = false
-  rke2_config               = <<-EOF
-disable:
-  - rke2-ingress-nginx
-  - rke2-metrics-server
-EOF
   wait_for_capacity_timeout = "20m"
   # Required data for identifying cluster to join
   cluster_data = module.rke2.cluster_data
