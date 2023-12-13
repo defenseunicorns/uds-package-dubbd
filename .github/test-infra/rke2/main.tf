@@ -48,11 +48,6 @@ module "rke2" {
   enable_ccm                  = true
   iam_permissions_boundary    = var.iam_permissions_boundary
   download                    = false
-  rke2_config                 = <<-EOF
-disable:
-  - rke2-ingress-nginx
-  - rke2-metrics-server
-EOF
   controlplane_internal       = var.controlplane_internal
   associate_public_ip_address = var.associate_public_ip_address
   wait_for_capacity_timeout   = "20m"
