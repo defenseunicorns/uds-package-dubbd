@@ -108,9 +108,9 @@ jobs:
             --set ephemeral="true" \
             --set name="${{ steps.get_cluster_name.outputs.eks_cluster_name }}" \
             --set region="us-west-2" \
-            --set state_bucket_name="uds-aws-ci-commercial-us-west-2-5246-tfstate" \
+            --set state_bucket_name="uds-ci-state-bucket" \
             --set state_key="tfstate/ci/upgrade/${SHA:0:7}-dubbd-aws.tfstate" \
-            --set state_dynamodb_table_name="uds-aws-ci-commercial-org-us-west-2-5246-tfstate-lock" \
+            --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
             --confirm
 
             # adds ZARF_PACKAGE_DEPLOY_SET env var for use in zarf package deploy
