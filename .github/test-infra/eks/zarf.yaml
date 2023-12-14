@@ -8,9 +8,7 @@ variables:
   - name: CLUSTER_NAME
     prompt: true
   - name: PERMISSIONS_BOUNDARY_ARN
-    default: ""
   - name: PERMISSIONS_BOUNDARY_NAME
-    default: ""
 
 components:
   - name: load-eksctl
