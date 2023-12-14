@@ -35,11 +35,6 @@ data "aws_subnets" "private_subnets" {
   }
 }
 
-data "aws_subnet" "private_subnet" {
-  for_each = toset(data.aws_subnets.private_subnets.ids)
-  id       = each.value
-}
-
 data "aws_subnets" "public_subnets" {
   filter {
     name   = "vpc-id"
@@ -50,11 +45,6 @@ data "aws_subnets" "public_subnets" {
     name   = "tag:Name"
     values = ["*public*"]
   }
-}
-
-data "aws_subnet" "public_subnet" {
-  for_each = toset(data.aws_subnets.public_subnets.ids)
-  id       = each.value
 }
 
 locals {
