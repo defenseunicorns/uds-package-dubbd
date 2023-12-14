@@ -1,0 +1,7 @@
+tasks:
+  - name: dubbd-k3d-pkg
+    actions:
+      - description: "Deploy the requested Zarf Package"
+        cmd: |
+          set -e
+          zarf package deploy build/zarf-package-dubbd-k3d-amd64-*.tar.zst --confirm
