@@ -23,6 +23,7 @@ locals {
   pre_userdata = <<-EOF
     echo "Installing awscli"
     apt-get install -y unzip
+    apt-get install -y curl
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
     unzip awscliv2.zip
     sudo ./aws/install
