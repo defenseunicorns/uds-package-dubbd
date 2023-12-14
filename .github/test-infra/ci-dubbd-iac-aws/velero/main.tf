@@ -171,4 +171,3 @@ resource "aws_iam_policy" "velero_policy" {
       ]
   })
 }
-
