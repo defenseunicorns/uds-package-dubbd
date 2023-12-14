@@ -82,6 +82,8 @@ jobs:
 
           zarf package deploy zarf-package-distro-eks-multi.tar.zst \
             --set cluster_name="${{ steps.get_cluster_name.outputs.eks_cluster_name }}" \
+            --set permissions_boundary_arn="${{ secrets.OLD_PERMISSIONS_BOUNDARY_ARN }}" \
+            --set permissions_boundary_name="${{ secrets.PERMISSIONS_BOUNDARY_NAME }}" \
             --confirm
         working-directory: .github/test-infra/eks #just holds the zarf-config
         id: create-cluster
@@ -274,6 +276,8 @@ jobs:
 
           zarf package deploy zarf-package-distro-eks-multi.tar.zst \
             --set cluster_name="${{ steps.get_cluster_name.outputs.eks_cluster_name }}" \
+            --set permissions_boundary_arn="${{ secrets.PERMISSIONS_BOUNDARY_ARN }}" \
+            --set permissions_boundary_name="${{ secrets.PERMISSIONS_BOUNDARY_NAME }}" \
             --confirm
         working-directory: .github/test-infra/eks #just holds the zarf-config
         id: create-cluster
