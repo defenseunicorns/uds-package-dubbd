@@ -6,7 +6,7 @@ metadata:
   region: us-west-2
   version: "1.26"
   tags:
-    PermissionsBoundary: "##ZARF_VAR_PERMISSIONS_BOUNDARY_NAME###"
+    PermissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_NAME###"
 
 # May want to look at this for testing
 # privateCluster:
