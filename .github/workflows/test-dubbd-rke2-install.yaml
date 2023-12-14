@@ -65,7 +65,7 @@ jobs:
             -backend-config="dynamodb_table=uds-ci-state-dynamodb"
           terraform plan -var-file=old_org.tfvars
           sleep 15 # time to review
-          terraform apply var-file=old_org.tfvars -auto-approve
+          terraform apply -var-file=old_org.tfvars -auto-approve
           kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.21"
           kubectl apply -f storage-class.yaml
         working-directory: .github/test-infra/rke2
