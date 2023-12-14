@@ -157,7 +157,7 @@ jobs:
 
       - name: Teardown RKE2 cluster
         if: always()
-        run: terraform destroy -auto-approve
+        run: terraform destroy -var-file=old_org.tfvars -auto-approve
         working-directory: .github/test-infra/rke2
 
   test-clean-install:
@@ -309,5 +309,5 @@ jobs:
 
       - name: Teardown RKE2 cluster
         if: always()
-        run: terraform destroy -auto-approve
+        run: terraform destroy -var-file=new_org.tfvars -auto-approve
         working-directory: .github/test-infra/rke2
