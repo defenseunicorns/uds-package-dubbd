@@ -18,6 +18,15 @@ accounts:
         - property: Key
           type: contains
           value: "tfstate"
+  384851857288:
+    filters:
+      S3Bucket:
+        - property: "tag:nuke"
+          value: "DO-NOT-DELETE"
+      S3Object:
+        - property: Key
+          type: contains
+          value: "tfstate"
 
 resource-types:
   # only nuke these three resources

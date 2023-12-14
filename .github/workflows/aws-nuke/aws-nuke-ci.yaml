@@ -5,13 +5,31 @@ on:
     - cron: '0 7 * * *' # everyday at 1 AM Mountain
 
 jobs:
-  aws-nuke:
+  aws-nuke-old:
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ secrets.AWS_COMMERCIAL_ROLE_TO_ASSUME }}
+          role-session-name: ${{ github.job || github.event.client_payload.pull_request.head.sha || github.sha }}
+          aws-region: us-west-2
+          role-duration-seconds: 21600
+
+      - name: Download aws-nuke
+        # renovate: datasource=github-tags depName=rebuy-de/aws-nuke versioning=semver
+        run: wget -c https://github.com/rebuy-de/aws-nuke/releases/download/v2.23.0/aws-nuke-v2.23.0-linux-amd64.tar.gz -O - | tar xz
+
+      - name: Run aws-nuke
+        run: ./aws-nuke-v2.23.0-linux-amd64 --config ./aws-nuke-config.yaml
+
+  aws-nuke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_COMMERCIAL_ORG_ROLE_TO_ASSUME }}
           role-session-name: ${{ github.job || github.event.client_payload.pull_request.head.sha || github.sha }}
           aws-region: us-west-2
           role-duration-seconds: 21600
