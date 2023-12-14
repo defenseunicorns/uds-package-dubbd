@@ -5,6 +5,8 @@ metadata:
   name: "###ZARF_VAR_CLUSTER_NAME###"
   region: us-west-2
   version: "1.26"
+  tags:
+    PermissionsBoundary: "##ZARF_VAR_PERMISSIONS_BOUNDARY_NAME###"
 
 # May want to look at this for testing
 # privateCluster:
@@ -12,6 +14,7 @@ metadata:
 
 iam:
   withOIDC: true
+  serviceRolePermissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_ARN###"
 
 addons:
   - name: aws-ebs-csi-driver
