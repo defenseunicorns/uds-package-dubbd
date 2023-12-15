@@ -83,7 +83,7 @@ jobs:
           zarf package deploy zarf-package-distro-eks-multi.tar.zst \
             --set cluster_name="${{ steps.get_cluster_name.outputs.eks_cluster_name }}" \
             --set permissions_boundary_arn="${{ secrets.OLD_PERMISSIONS_BOUNDARY_ARN }}" \
-            --set permissions_boundary_name="${{ secrets.PERMISSIONS_BOUNDARY_NAME }}" \
+            --set permissions_boundary_name="${{ secrets.OLD_PERMISSIONS_BOUNDARY_NAME }}" \
             --confirm
         working-directory: .github/test-infra/eks #just holds the zarf-config
         id: create-cluster
@@ -113,6 +113,7 @@ jobs:
             --set state_bucket_name="uds-ci-state-bucket" \
             --set state_key="tfstate/ci/upgrade/${SHA:0:7}-dubbd-aws.tfstate" \
             --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
+            --set permissions_boundary_name="${{ secrets.OLD_PERMISSIONS_BOUNDARY_NAME }}" \
             --confirm
 
             # adds ZARF_PACKAGE_DEPLOY_SET env var for use in zarf package deploy
@@ -155,6 +156,7 @@ jobs:
             --set state_bucket_name="uds-ci-state-bucket" \
             --set state_key="tfstate/ci/upgrade/${SHA:0:7}-dubbd-aws.tfstate" \
             --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
+            --set permissions_boundary_name="${{ secrets.OLD_PERMISSIONS_BOUNDARY_NAME }}" \
             --confirm
 
             # adds ZARF_PACKAGE_DEPLOY_SET env var for use in zarf package deploy
@@ -307,6 +309,7 @@ jobs:
             --set state_bucket_name="uds-aws-ci-commercial-us-west-2-5246-tfstate" \
             --set state_key="tfstate/ci/upgrade/${SHA:0:7}-dubbd-aws.tfstate" \
             --set state_dynamodb_table_name="uds-aws-ci-commercial-org-us-west-2-5246-tfstate-lock" \
+            --set permissions_boundary_name="${{ secrets.PERMISSIONS_BOUNDARY_NAME }}" \
             --confirm
 
             # adds ZARF_PACKAGE_DEPLOY_SET env var for use in zarf package deploy
@@ -349,6 +352,7 @@ jobs:
             --set state_bucket_name="uds-aws-ci-commercial-us-west-2-5246-tfstate" \
             --set state_key="tfstate/ci/upgrade/${SHA:0:7}-dubbd-aws.tfstate" \
             --set state_dynamodb_table_name="uds-aws-ci-commercial-org-us-west-2-5246-tfstate-lock" \
+            --set permissions_boundary_name="${{ secrets.PERMISSIONS_BOUNDARY_NAME }}" \
             --confirm
 
             # adds ZARF_PACKAGE_DEPLOY_SET env var for use in zarf package deploy

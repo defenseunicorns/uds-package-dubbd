@@ -6,3 +6,4 @@ force_destroy = "###ZARF_VAR_VELERO_FORCE_DESTROY###"
 kubernetes_service_account = "velero-velero-server"
 kubernetes_namespace       = "velero"
 
+permissions_boundary_name = "###ZARF_VAR_PERMISSIONS_BOUNDARY_NAME###"

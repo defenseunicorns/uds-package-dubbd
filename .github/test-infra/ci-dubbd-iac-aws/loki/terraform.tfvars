@@ -6,3 +6,4 @@ force_destroy = "###ZARF_VAR_LOKI_FORCE_DESTROY###"
 kubernetes_service_account = "logging-loki"
 kubernetes_namespace       = "logging"
 
+permissions_boundary_name = "###ZARF_VAR_PERMISSIONS_BOUNDARY_NAME###"
