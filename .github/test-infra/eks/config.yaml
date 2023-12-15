@@ -22,6 +22,9 @@ addons:
 
     attachPolicyARNs:
       - arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
+    permissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_ARN###"
+    tags:
+      PermissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_NAME###"
 
 managedNodeGroups:
   - name: ng-1
