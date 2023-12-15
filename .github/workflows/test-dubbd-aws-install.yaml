@@ -289,6 +289,8 @@ jobs:
         if: always()
         # can't do a zarf package remove since there's no kubernetes cluster.
         run: |
+          echo "Sleeping before removing the cluster to see what went wrong."
+          sleep 20m
           ./eksctl delete cluster -f config.yaml --disable-nodegroup-eviction --wait
         working-directory: .github/test-infra/eks
         timeout-minutes: 60
