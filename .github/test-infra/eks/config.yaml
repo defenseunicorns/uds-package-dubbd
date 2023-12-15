@@ -26,6 +26,11 @@ addons:
     tags:
       PermissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_NAME###"
 
+  - name: vpc-cni
+    permissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_ARN###"
+    tags:
+      PermissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_NAME###"
+
 managedNodeGroups:
   - name: ng-1
     instanceType: m5.2xlarge
