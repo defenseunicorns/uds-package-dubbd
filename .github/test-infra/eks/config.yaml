@@ -36,3 +36,7 @@ managedNodeGroups:
     instanceType: m5.2xlarge
     desiredCapacity: 3
     volumeSize: 150
+    tags:
+      PermissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_NAME###"
+    iam:
+      instanceRolePermissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_ARN###"
