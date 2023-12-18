@@ -57,8 +57,8 @@ locals {
   iam_permissions_boundary = var.permissions_boundary_name == null ? null : "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:policy/${var.permissions_boundary_name}"
   pre_userdata             = <<-EOF
     echo "Installing awscli"
-    apt-get install -y unzip
-    apt-get install -y curl
+    yum install -y unzip
+    yum install -y curl
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
     unzip awscliv2.zip
     sudo ./aws/install
