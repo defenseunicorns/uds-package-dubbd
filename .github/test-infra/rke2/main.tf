@@ -113,7 +113,7 @@ unzip awscliv2.zip
 sudo ./aws/install
 EOF
 
-	post_userdata = <<-EOF
+  post_userdata = <<-EOF
 # This needs to match https://github.com/defenseunicorns/uds-rke2-image-builder/blob/main/packer/scripts/rke2-startup.sh#L53
 echo "Fixing RKE2 file permissions for STIG"
 dir=/etc/rancher/rke2
@@ -169,7 +169,7 @@ module "rke2" {
     type      = "gp3"
   }
   enable_ccm                  = true
-	ccm_external                = true
+  ccm_external                = true
   iam_permissions_boundary    = local.iam_permissions_boundary
   download                    = false
   rke2_config                 = <<-EOF
@@ -181,7 +181,7 @@ EOF
   associate_public_ip_address = var.associate_public_ip_address
   wait_for_capacity_timeout   = "20m"
 
-  pre_userdata = local.pre_userdata
+  pre_userdata  = local.pre_userdata
   post_userdata = local.post_userdata
 }
 
@@ -204,7 +204,7 @@ module "agents" {
     type      = "gp3"
   }
   enable_ccm                = true
-	ccm_external              = true
+  ccm_external              = true
   iam_permissions_boundary  = local.iam_permissions_boundary
   download                  = false
   rke2_config               = <<-EOF
@@ -216,7 +216,7 @@ EOF
   # Required data for identifying cluster to join
   cluster_data = module.rke2.cluster_data
 
-  pre_userdata = local.pre_userdata
+  pre_userdata  = local.pre_userdata
   post_userdata = local.post_userdata
 }
 
