@@ -26,6 +26,9 @@ variables:
   - name: REGION
     description: "The AWS region to run the Terraform in"
   - name: PERMISSIONS_BOUNDARY_NAME
+    default: ""
+  - name: USE_PERMISSIONS_BOUNDARY
+    default: "true"
 
   - name: EPHEMERAL
     description: "Set whether the cluster should be considered ephemeral - if true all resources will be force destroyed on removal"

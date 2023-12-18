@@ -47,7 +47,7 @@ locals {
   generate_kms_key              = var.create_kms_key ? 1 : 0
   kms_key_arn                   = var.kms_key_arn == null ? module.generate_kms[0].kms_key_arn : var.kms_key_arn
   name                          = "${var.name}-velero"
-  iam_role_permissions_boundary = var.permissions_boundary_name == null ? null : "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:policy/${var.permissions_boundary_name}"
+  iam_role_permissions_boundary = var.use_permissions_boundary ? "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:policy/${var.permissions_boundary_name}" : null
 
   # The conditional may need to look like this depending on how we decide to handle the way varf wants to template things
   # generate_kms_key          = var.kms_key_arn == "" ? 1 : 0

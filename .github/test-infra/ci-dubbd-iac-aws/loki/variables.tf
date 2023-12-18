@@ -59,3 +59,9 @@ variable "permissions_boundary_name" {
   type        = string
   default     = null
 }
+
+variable "use_permissions_boundary" {
+  description = "Whether to use IAM permissions boundary for resources."
+  type        = bool
+  default     = true
+}

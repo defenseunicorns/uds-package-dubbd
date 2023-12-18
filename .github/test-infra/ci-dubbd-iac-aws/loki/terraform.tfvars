@@ -7,3 +7,4 @@ kubernetes_service_account = "logging-loki"
 kubernetes_namespace       = "logging"
 
 permissions_boundary_name = "###ZARF_VAR_PERMISSIONS_BOUNDARY_NAME###"
+use_permissions_boundary  = "###ZARF_VAR_USE_PERMISSIONS_BOUNDARY###"

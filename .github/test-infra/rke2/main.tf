@@ -55,6 +55,14 @@ data "aws_subnets" "public_subnets" {
 
 locals {
   iam_permissions_boundary = var.permissions_boundary_name == null ? null : "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:policy/${var.permissions_boundary_name}"
+  pre_userdata             = <<-EOF
+    echo "Installing awscli"
+    apt-get install -y unzip
+    apt-get install -y curl
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip awscliv2.zip
+    sudo ./aws/install
+	EOF
 }
 
 module "rke2" {
@@ -84,6 +92,8 @@ EOF
   controlplane_internal       = var.controlplane_internal
   associate_public_ip_address = var.associate_public_ip_address
   wait_for_capacity_timeout   = "20m"
+
+  pre_userdata = local.pre_userdata
 }
 
 module "agents" {
@@ -115,6 +125,8 @@ EOF
   wait_for_capacity_timeout = "20m"
   # Required data for identifying cluster to join
   cluster_data = module.rke2.cluster_data
+
+  pre_userdata = local.pre_userdata
 }
 
 resource "null_resource" "kubeconfig" {

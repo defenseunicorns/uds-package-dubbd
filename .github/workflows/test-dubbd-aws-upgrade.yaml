@@ -113,7 +113,7 @@ jobs:
             --set state_bucket_name="uds-ci-state-bucket" \
             --set state_key="tfstate/ci/upgrade/${SHA:0:7}-dubbd-aws.tfstate" \
             --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
-            --set permissions_boundary_name="${{ secrets.OLD_PERMISSIONS_BOUNDARY_NAME }}" \
+            --set use_permissions_boundary="false" \
             --confirm
 
             # adds ZARF_PACKAGE_DEPLOY_SET env var for use in zarf package deploy
@@ -156,7 +156,7 @@ jobs:
             --set state_bucket_name="uds-ci-state-bucket" \
             --set state_key="tfstate/ci/upgrade/${SHA:0:7}-dubbd-aws.tfstate" \
             --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
-            --set permissions_boundary_name="${{ secrets.OLD_PERMISSIONS_BOUNDARY_NAME }}" \
+            --set use_permissions_boundary="false" \
             --confirm
 
             # adds ZARF_PACKAGE_DEPLOY_SET env var for use in zarf package deploy
