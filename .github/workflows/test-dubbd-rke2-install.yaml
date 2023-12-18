@@ -40,16 +40,16 @@ jobs:
 
       - uses: ./.github/actions/create-zarf-package
         with:
-          username: ${{ secrets.REGISTRY1_USERNAME }}
-          password: ${{ secrets.REGISTRY1_PASSWORD }}
+          username: ${{ secrets.IRON_BANK_ROBOT_USERNAME }}
+          password: ${{ secrets.IRON_BANK_ROBOT_PASSWORD }}
           working-dir: rke2
           download-init-package: true
           timeout-minutes: 60
 
       - uses: ./.github/actions/create-zarf-package
         with:
-          username: ${{ secrets.REGISTRY1_USERNAME }}
-          password: ${{ secrets.REGISTRY1_PASSWORD }}
+          username: ${{ secrets.IRON_BANK_ROBOT_USERNAME }}
+          password: ${{ secrets.IRON_BANK_ROBOT_PASSWORD }}
           working-dir: rke2/test-deps/minio
           download-init-package: true
           timeout-minutes: 60
