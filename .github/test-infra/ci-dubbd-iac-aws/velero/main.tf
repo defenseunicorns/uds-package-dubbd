@@ -1,5 +1,11 @@
 provider "aws" {
   region = var.region
+
+  default_tags {
+    tags = {
+      PermissionsBoundary = var.permissions_boundary_name
+    }
+  }
 }
 
 terraform {
@@ -38,9 +44,10 @@ locals {
   oidc_url_without_protocol = substr(data.aws_eks_cluster.existing.identity[0].oidc[0].issuer, 8, -1)
   oidc_arn                  = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/${local.oidc_url_without_protocol}"
 
-  generate_kms_key = var.create_kms_key ? 1 : 0
-  kms_key_arn      = var.kms_key_arn == null ? module.generate_kms[0].kms_key_arn : var.kms_key_arn
-  name             = "${var.name}-velero"
+  generate_kms_key              = var.create_kms_key ? 1 : 0
+  kms_key_arn                   = var.kms_key_arn == null ? module.generate_kms[0].kms_key_arn : var.kms_key_arn
+  name                          = "${var.name}-velero"
+  iam_role_permissions_boundary = var.use_permissions_boundary ? "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:policy/${var.permissions_boundary_name}" : null
 
   # The conditional may need to look like this depending on how we decide to handle the way varf wants to template things
   # generate_kms_key          = var.kms_key_arn == "" ? 1 : 0
@@ -96,11 +103,12 @@ module "generate_kms" {
 }
 
 module "irsa" {
-  source                     = "github.com/defenseunicorns/terraform-aws-uds-irsa?ref=v0.0.2"
-  name                       = local.name
-  kubernetes_service_account = var.kubernetes_service_account
-  kubernetes_namespace       = var.kubernetes_namespace
-  oidc_provider_arn          = local.oidc_arn
+  source                        = "github.com/defenseunicorns/terraform-aws-uds-irsa?ref=v0.0.2"
+  name                          = local.name
+  kubernetes_service_account    = var.kubernetes_service_account
+  kubernetes_namespace          = var.kubernetes_namespace
+  oidc_provider_arn             = local.oidc_arn
+  role_permissions_boundary_arn = local.iam_role_permissions_boundary
 
   role_policy_arns = tomap({
     "velero" = aws_iam_policy.velero_policy.arn
