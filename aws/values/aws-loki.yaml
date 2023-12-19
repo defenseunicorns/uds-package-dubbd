@@ -14,6 +14,8 @@ loki:
       annotations:
         eks.amazonaws.com/role-arn: "###ZARF_VAR_LOKI_S3_ROLE_ARN###"
     loki:
+      commonConfig:
+        replication_factor: 3
       storage:
         s3:
           endpoint: ""
