@@ -70,6 +70,9 @@ jobs:
           kubectl apply -f storage-class.yaml
         working-directory: .github/test-infra/rke2
 
+      - name: RKE2 Cluster readyz Check
+        run: kubectl get --raw='/readyz?verbose'
+
       - name: Zarf init
         run: zarf init -a amd64 --components=git-server --confirm
 
