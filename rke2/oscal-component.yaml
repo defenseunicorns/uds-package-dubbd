@@ -1,5 +1,5 @@
 component-definition:
-  uuid: e2651740-56a2-4c9c-89a6-db469b3dfd9f
+  uuid: 7ac62118-6e25-4def-a302-eb41d19de1fc
   metadata:
     version: 0.0.1
     parties:
@@ -9,12 +9,12 @@ component-definition:
         links:
           - rel: website
             href: https://defenseunicorns.com
-    last-modified: "2023-10-12T00:09:16Z"
+    last-modified: "2023-12-19T15:16:59Z"
     oscal-version: 1.1.1
     title: DUBBD
   components:
     - control-implementations:
-        - source: https://raw.githubusercontent.com/usnistgov/oscal-content/master/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json
+        - source: https://raw.githubusercontent.com/GSA/fedramp-automation/93ca0e20ff5e54fc04140613476fba80f08e3c7d/dist/content/rev5/baselines/json/FedRAMP_rev5_HIGH-baseline-resolved-profile_catalog.json
           description: Controls implemented by authservice for inheritance by applications
           implemented-requirements:
             - uuid: 6EC9C476-9C9D-4EF6-854B-A5B799D8AED1
@@ -22,7 +22,7 @@ component-definition:
               description:
                 Kiali provides visibility into mTLS settings of all Istio traffic
                 in the cluster.
-          uuid: 5108E5FC-C45F-477B-A542-9C5611A92485
+          uuid: d2afb4c4-2cd8-5305-a6cc-d1bc7b388d0c
       uuid: A97D1364-BA7F-46AA-ADE6-1998E846E125
       title: Kiali
       description: |
@@ -34,23 +34,23 @@ component-definition:
           party-uuids:
             - 72134592-08C2-4A77-ABAD-C880F109367A
     - control-implementations:
-        - source: https://raw.githubusercontent.com/usnistgov/oscal-content/master/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json
+        - source: https://raw.githubusercontent.com/GSA/fedramp-automation/93ca0e20ff5e54fc04140613476fba80f08e3c7d/dist/content/rev5/baselines/json/FedRAMP_rev5_HIGH-baseline-resolved-profile_catalog.json
           description: Controls implemented by Tempo for inheritance by applications
           implemented-requirements:
+            - uuid: 3C102ED9-4CE5-4AB1-ABE5-78426DF15BBE
+              control-id: au-4
+              description: Uses scalable object storage to allocate audits logs.
+            - uuid: 9904027A-28A8-4808-8617-D0DD29BF9B8B
+              control-id: au-12.1
+              description: Provides a time-series event compilation audit trail capabilities.
             - uuid: D0EE25CB-DAA8-4298-BBB9-A5AC72034020
               control-id: si-4.4
               description:
                 Jaeger is used, in conjunction with Istio configurations, to
                 collect and aggregate network communications within the system.  This allows
-                the moniotiring of inbound/outbound traffic and payloads within the deployed
+                the monitoring of inbound/outbound traffic and payloads within the deployed
                 environment.
-            - uuid: 3C102ED9-4CE5-4AB1-ABE5-78426DF15BBE
-              control-id: au-4
-              description: Uses scalable object storage
-            - uuid: 9904027A-28A8-4808-8617-D0DD29BF9B8B
-              control-id: au-12.1
-              description: Provides time-series event compilation capabilities
-          uuid: ED0CF1C6-F869-4B7F-8652-464DDD9873D4
+          uuid: d2afb4c4-2cd8-5305-a6cc-d1bc7b388d0c
       uuid: AE3E8F16-D93B-4594-82A3-5DA38AC066BF
       title: Tempo
       description: |
@@ -62,24 +62,24 @@ component-definition:
           party-uuids:
             - 72134592-08C2-4A77-ABAD-C880F109367A
     - control-implementations:
-        - source: https://raw.githubusercontent.com/usnistgov/oscal-content/master/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json
-          description: Controls implemented by authservice for inheritance by applications
+        - source: https://raw.githubusercontent.com/GSA/fedramp-automation/93ca0e20ff5e54fc04140613476fba80f08e3c7d/dist/content/rev5/baselines/json/FedRAMP_rev5_HIGH-baseline-resolved-profile_catalog.json
+          description: Controls implemented by authservice for inheritance by applications.
           implemented-requirements:
             - uuid: B5B39044-B02A-4655-B466-7586B24963A1
               control-id: ac-6.9
               description:
                 "Privileged events, including updating the deployment of an application,
                 or use of privileged containers are collected as metrics by prometheus and
-                displayed by Grafana "
+                displayed by Grafana. "
             - uuid: 8AE237CE-E7FF-42FE-B79F-2DF106B0CC09
               control-id: au-2
               description:
                 "API endpoints suitable for capturing application level metrics
                 are present on each of the supported applications running as containers.
-                \ In addition, system and cluster level metrics are emitted by containers
-                with read only access to host level information.\nMetrics are captured and
+                In addition, system and cluster level metrics are emitted by containers
+                with read only access to host level information. Metrics are captured and
                 stored by Prometheus, an web server capable of scraping endpoints formatted
-                in the appropriate dimensional data format.  Metrics information is stored
+                in the appropriate dimensional data format. Metrics information is stored
                 on disk in a time series data base, and later queried through a separate
                 component providing a web interface for the query language: PromQL. "
             - uuid: F2FFC2FD-6826-43EE-9922-705A76FE63CC
@@ -91,41 +91,38 @@ component-definition:
               control-id: au-4
               description:
                 Prometheus is the log aggregator for audit logs since it is used
-                to scrape/collect violations from ClusterAuditor.  The storage capability
+                to scrape/collect violations from ClusterAuditor. The storage capability
                 can be configured in prometheus to use PVCs to ensure metrics have log retention
-                complioance with the org-defined audit-log retention requirements
-            - uuid: 01975AD9-8F46-48EB-81F1-1DDEB6DB0882
-              control-id: au-5
-              description:
-                Grafana and Alertmanager can both alert on prometheus metrics
-                and alerts can be created in either to support this control
+                compliance with the org-defined audit-log retention requirements.
             - uuid: FA95745B-E13E-4153-ABEE-1970C315A381
               control-id: au-5.1
               description:
                 Alertmanager has pre-built alerts for PVC storage thresholds
-                that would fire for PVCs supporting prometheus metrics storage
+                that would fire for PVCs supporting prometheus metrics storage.
             - uuid: 5D45F4A3-A37F-451D-9670-8FA9DFD1355F
               control-id: au-5.2
-              description: |-
-                Alertmanager has pre-build alerts for failed pods that would show when ClusterAuditor is not processeing events, or  prometheus is unable to scrape events.
-                Prometheus also has a deadman's alert to ensure end users are seeing events from prometheus as part of its configuration
+              description:
+                Alertmanager has pre-build alerts for failed pods that would
+                show when ClusterAuditor is not processing events, or prometheus is unable
+                to scrape events. Prometheus also has a deadman's alert to ensure end users
+                are seeing events from prometheus as part of its configuration.
             - uuid: 603A45C9-E730-4321-B8AE-60D048E14BAB
               control-id: au-6.1
               description:
                 Cluster Audtitor Events/Alerts could be exported from Prometheus
-                to an external system.  Integration for specific tooling would need to be
-                completed by end user
+                to an external system. Integration for specific tooling would need to be
+                completed by end user.
             - uuid: 92D322C1-B4D3-4842-8B06-538218AECA7D
               control-id: au-6.3
               description:
                 Aggregating cluster auditor events across multiple sources (clusters)
-                is possible with a multi-cluster deployment of prometheus/grafana
+                is possible with a multi-cluster deployment of prometheus/grafana.
             - uuid: BB0DF859-827F-4E3A-8C61-DEDCE4A9B3EB
               control-id: au-6.5
               description:
                 Cluster Auditor's audit data is consolidated with system monitoring
                 tooling (node exporters) for consolidated view to enhance inappropriate
-                or unusual activity
+                or unusual activity.
             - uuid: 77C00727-4195-45A8-8BB6-534AE5889E71
               control-id: au-6.6
               description:
@@ -135,49 +132,49 @@ component-definition:
               control-id: au-7
               description:
                 Grafana is configured with a pre-built dashboard for policy violations
-                that displays data collected by Cluster Auditor
+                that displays data collected by Cluster Auditor.
             - uuid: 54D583CE-DB4A-4C03-902D-9A37949F4820
               control-id: au-7.1
               description:
                 Grafana is configured with a pre-built dashboard for policy violations
-                that displays data collected by Cluster Auditor
+                that displays data collected by Cluster Auditor.
             - uuid: 91D9D559-1666-420B-9F2B-240BC7CD1A3E
               control-id: au-8
               description:
-                Prometheus stores all data as timeseries data, so the timestamps
-                of when those violitions were present is part of the datastream
+                Prometheus stores all data as time-series data, so the timestamps
+                of when those violations were present is part of the data-stream.
             - uuid: 2D7AB4A4-1AE7-45A6-BC56-9FBB6402AD98
               control-id: au-9
               description:
                 Grafana has the ability to provide Role Based Access Control
                 to limit the data sources that end users can view by leveraging an identity
-                provider.  Grafana can also limit users to subsets of metrics within a datasource
-                by the use of Label Based Acces Control when using Grafana Enterprise.
+                provider. Grafana can also limit users to subsets of metrics within a datasource
+                by the use of Label Based Access Control when using Grafana Enterprise.
             - uuid: 58B88EBD-ABAD-4505-9243-809D8DEFAEF7
               control-id: au-9.2
               description:
                 Prometheus can scrape external components outside of the system,
                 but this configuration is not easily supported as part of the current big
                 bang configuration of ClusterAuditor since external access to ClusterAuditor
-                metrics is not exposed via Istio
+                metrics is not exposed via Istio.
             - uuid: 8178202C-6E6C-415A-8B0D-C486AAC85B3A
               control-id: au-9.4
               description:
                 Grafana has the ability to provide Role Based Access Control
                 to limit the data sources that end users can view by leveraging an identity
-                provider.  Grafana can also limit users to subsets of metrics within a datasource
-                by the use of Label Based Acces Control when using Grafana Enterprise.
+                provider. Grafana can also limit users to subsets of metrics within a datasource
+                by the use of Label Based Access Control when using Grafana Enterprise.
             - uuid: A471F648-C22C-4217-A3BA-1063E80B4BA3
               control-id: au-12.1
               description:
                 Compatible metrics endpoints emitted from each application is
                 compiled by Prometheus and displayed through Grafana with associated timestamps
                 of when the data was collected
-          uuid: 5108E5FC-C45F-477B-A542-9C5611A92485
+          uuid: d2afb4c4-2cd8-5305-a6cc-d1bc7b388d0c
       uuid: 4045FB97-C11A-4F3B-A021-FD94538F0356
       title: Monitoring
       description: |
-        Aggregator of policy violtions in environment
+        Aggregator of policy violations in environment
       type: software
       purpose: Display policy violations
       responsible-roles:
@@ -185,152 +182,111 @@ component-definition:
           party-uuids:
             - 72134592-08C2-4A77-ABAD-C880F109367A
     - control-implementations:
-        - source: https://raw.githubusercontent.com/usnistgov/oscal-content/master/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json
+        - source: https://raw.githubusercontent.com/GSA/fedramp-automation/93ca0e20ff5e54fc04140613476fba80f08e3c7d/dist/content/rev5/baselines/json/FedRAMP_rev5_HIGH-baseline-resolved-profile_catalog.json
           description: Controls implemented by NeuVector for inheritance by applications
           implemented-requirements:
             - uuid: 7d524c68-a463-4283-9f50-a4f914b0feb9
               control-id: ac-2
               description:
-                NeuVector supports internal user accounts and roles in addition
-                to LDAP and SSO for providing RBAC access. https://open-docs.neuvector.com/configuration/users
+                "NeuVector supports internal user accounts and roles in addition
+                to LDAP and SSO for providing RBAC access. "
             - uuid: c32ebef9-831b-4662-9172-7cec6697b1e5
               control-id: ac-2.1
               description:
-                NeuVector supports internal user accounts and roles in addition
-                to LDAP and SSO for providing RBAC access. https://open-docs.neuvector.com/configuration/users
-            - uuid: 73c55835-6833-48d8-91a8-040815a2ccd9
-              control-id: ac-2.3
-              description: NeuVector logging access related audit events. https://open-docs.neuvector.com/reporting/reporting
+                "NeuVector supports internal user accounts and roles in addition
+                to LDAP and SSO for providing RBAC access. "
             - uuid: 56ab01ce-a2eb-4a9b-9e77-4b598c0c9230
               control-id: ac-3
               description:
-                NeuVector supports internal user accounts and roles in addition
-                to LDAP and SSO for providing RBAC access. https://open-docs.neuvector.com/configuration/users
+                "NeuVector supports internal user accounts and roles in addition
+                to LDAP and SSO for providing RBAC access. "
             - uuid: de3fa1f1-b7ce-43a4-97c7-53a15f9dadaf
               control-id: ac-6
               description:
-                NeuVector supports mapping internal user accounts and roles in
-                addition to LDAP and SSO roles or groups for providing RBAC access. https://open-docs.neuvector.com/configuration/users
+                "NeuVector supports mapping internal user accounts and roles
+                in addition to LDAP and SSO roles or groups for providing RBAC access. "
             - uuid: 4a200112-0c9b-4fae-a9dd-45c8d9a70886
               control-id: ac-6.1
               description:
-                NeuVector supports mapping internal user accounts and roles in
-                addition to LDAP and SSO roles or groups for providing RBAC access. https://open-docs.neuvector.com/configuration/users
+                "NeuVector supports mapping internal user accounts and roles
+                in addition to LDAP and SSO roles or groups for providing RBAC access. "
             - uuid: 37d720fa-d135-49b8-b423-00ad9f77a92d
               control-id: ac-6.3
               description:
-                NeuVector supports mapping internal user accounts and roles in
-                addition to LDAP and SSO roles or groups for providing RBAC access. https://open-docs.neuvector.com/configuration/users
-            - uuid: 08c37e6f-024a-4996-a3e1-8f57ac9e1f9d
-              control-id: ac-6.5
-              description:
-                NeuVector supports mapping internal user accounts and roles in
-                addition to LDAP and SSO roles or groups for providing RBAC access. https://open-docs.neuvector.com/configuration/users
+                "NeuVector supports mapping internal user accounts and roles
+                in addition to LDAP and SSO roles or groups for providing RBAC access. "
             - uuid: 107864dd-f3e6-46b5-8004-2c7f717b2426
               control-id: ac-6.9
-              description: NeuVector logging access related audit events. https://open-docs.neuvector.com/reporting/reporting
+              description: "NeuVector provides logging access related audit events. "
             - uuid: 88d83b17-b238-48e5-b1d2-f500035c6dc0
               control-id: ac-6.10
               description:
-                NeuVector supports mapping internal user accounts and roles in
-                addition to LDAP and SSO roles or groups for providing RBAC access. https://open-docs.neuvector.com/configuration/users
+                "NeuVector supports mapping internal user accounts and roles
+                in addition to LDAP and SSO roles or groups for providing RBAC access. "
             - uuid: 53c7d03b-80f7-42e5-b300-dca43b2b8f05
               control-id: au-2
-              description: NeuVector logging access related audit events. https://open-docs.neuvector.com/reporting/reporting
+              description: "NeuVector provides logging access related audit events. "
             - uuid: 4f50b73f-ff6a-4ce0-8139-dbae4f95b0d5
               control-id: au-3
-              description: NeuVector logging access related audit events. https://open-docs.neuvector.com/reporting/reporting
+              description: "NeuVector provides logging access related audit events. "
             - uuid: 297107b6-bbe9-44e0-a36a-e5d7798f8ddd
               control-id: au-4
               description:
                 NeuVector can scale elastically based upon actual workload demands
-                to allocate audit log storage capacity
-            - uuid: 88910426-f4a5-4d7d-a37f-7e8c088c49ff
-              control-id: au-8
-              description: NeuVector logging related audit events contain timestamps. https://open-docs.neuvector.com/reporting/reporting
-            - uuid: 2f7d8d6c-0487-4df9-9fae-68ede0fd75e9
-              control-id: au-12
-              description: NeuVector keeps audits of the generation of records.
+                to allocate audit log storage capacity.
+            - uuid: 510ce893-a40a-4bf4-92e0-1f1b1cd7d7a4
+              control-id: ca-2.2
+              description:
+                NeuVector continually monitors kubernetes environments and container
+                images to detect misconfigurations, advanced network threats, and vulnerable
+                hosts with all attempts to exploit a vulnerability is documented.
             - uuid: 15d6de3a-14ef-4efd-ab27-329a9adc4979
               control-id: ca-7
               description:
                 NeuVector continually monitors kubernetes environments and container
                 images to detect misconfigurations, advanced network threats, and vulnerable
-                hosts with all attempts to exploit a vulnerability documented.
+                hosts with all attempts to exploit a vulnerability is documented.
             - uuid: 5f04cfad-8aac-4809-970c-aca8067533fd
               control-id: cm-6
               description:
                 NeuVector is configured using Helm Charts. Default settings can
-                be found https://repo1.dso.mil/big-bang/product/packages/neuvector/-/tree/main/chart
+                be found.
             - uuid: f1425616-8ebb-48a9-a774-3d1a20c2d74a
               control-id: cm-7
               description:
-                NeuVector is configured securely and only access to required
-                ports are available. https://repo1.dso.mil/big-bang/product/packages/neuvector/-/tree/main/chart
-            - uuid: 48d2f36e-9c1e-475c-9848-ee17f0fb27b3
-              control-id: ra-1
-              description:
-                NeuVector helps with creating policies and procedures through
-                its comprehensive visibility, threat prevention, compliance assurance, and
-                data protection in a consistent manner across multi-cloud environments
-            - uuid: 2fcd935e-dba4-4f4a-bdab-95c2dadba68e
-              control-id: ra-2
-              description:
-                NeuVector is a Kubernetes native security platform that categorizes
-                the information it processes, stores, and transmits
-            - uuid: 83f96c59-56c0-42cc-9f72-4732fdfc73d2
-              control-id: ra-3
-              description:
-                NeuVector is a a Kubernetes native security platform that identifies
-                threats and vulnerabilities in the system with Vulnerability Protection
-                Profiles
+                "NeuVector is configured securely and only access to required
+                ports are available. "
             - uuid: 6f18f2f4-3796-4189-8bfa-57d5b7bb10e7
               control-id: ra-5
               description:
-                NeuVector is Kubernetes and container security tool. NeuVector
+                "NeuVector is Kubernetes and container security tool. NeuVector
                 will scan containers for vulnerabilities in addition to continuous monitoring
-                for active threats. https://open-docs.neuvector.com/navigation/navigation
+                for active threats. "
             - uuid: c458f99a-78fd-4322-91e9-034b51f3e414
               control-id: ra-5.2
               description:
-                NeuVector container scanning vulnerability database is updated
-                frequently. https://open-docs.neuvector.com/scanning/scanning/vulnerabilities
+                "NeuVector container scanning vulnerability database is updated
+                frequently. "
             - uuid: 3ae44f3f-b44a-44e6-8752-e494b82e0ded
               control-id: ra-5.3
-              description:
-                NeuVector container scanning configurations depth can be modified.
-                https://open-docs.neuvector.com/scanning/scanning/vulnerabilities
+              description: "NeuVector container scanning configurations depth can be modified. "
             - uuid: 142a0165-16de-4a5b-a151-cc646a5a943c
-              control-id: ra-5.6
+              control-id: ra-5.5
               description:
-                NeuVector container scans are stored and can be used for comparison
-                over time. https://open-docs.neuvector.com/scanning/scanning/vulnerabilities
-            - uuid: 0efccbc4-022d-463b-bbc2-e63125a599d0
-              control-id: ra-5.8
-              description:
-                NeuVector container scans include a attack tree to visualize
-                additional risks with a given vulnerability. https://open-docs.neuvector.com/scanning/scanning/vulnerabilities
-            - uuid: dfe42cc6-74e2-48e8-985f-c4846a9b5703
-              control-id: ra-10
-              description:
-                NeuVector allows for monitoring for malicious activity based
-                on security policy rules. https://open-docs.neuvector.com/policy/overview
+                NeuVector supports mapping internal user accounts and roles in
+                addition to LDAP and SSO roles or groups for providing RBAC access.
             - uuid: 8974dd78-8695-41ed-b68e-92e3105ff414
-              control-id: sa-2
+              control-id: sa-11
               description:
-                NeuVector scanners can scale elastically based upon actual workload
-                demands in a consistent manner across multi-cloud environments
+                NeuVector continually monitors kubernetes environments and container
+                images to detect misconfigurations, advanced network threats, and vulnerable
+                hosts with all attempts to exploit a vulnerability is documented.
             - uuid: 4a59d604-10f9-4407-b062-1661063d760d
-              control-id: sa-3
+              control-id: sa-11.1
               description:
-                NeuVector's CI/CD capabilities help incorporate information security,
-                privacy risk management, and privacy roles into development.
-            - uuid: 464b4f53-61e7-49a0-8dcf-243118909cfa
-              control-id: sa-8
-              description:
-                NeuVector powerful CI/CD capabilities allow security teams can
-                set policies that act as system quality control gates that developers must
-                follow for builds
+                NeuVector continually monitors kubernetes environments and container
+                images to detect misconfigurations, advanced network threats, and vulnerable
+                hosts with all attempts to exploit a vulnerability is documented.
             - uuid: 4daa5851-1f8d-41fc-aabe-fafcb97d8b84
               control-id: sc-7
               description:
@@ -343,20 +299,37 @@ component-definition:
                 Data in transit is protected using a TLS connection and secured
                 between components within the data center using an internal certificate
                 until it is terminated at the application node. This ensures that data in
-                transit is encrypted using SSL
+                transit is encrypted using SSL.
+            - uuid: 4427e494-9ff4-4b98-8c41-62dbe056a1ac
+              control-id: si-2.3
+              description:
+                NeuVector continually monitors your Kubernetes environments to
+                detect misconfigurations, advanced network threats, and vulnerable hosts
+                with all attempts to exploit a vulnerability is documented.
             - uuid: 6f165f1a-2f91-4ac6-8eee-fe729a715952
               control-id: si-4
               description:
                 NeuVector continually monitors your Kubernetes environments to
                 detect misconfigurations, advanced network threats, and vulnerable hosts
-                with all attempts to exploit a vulnerability documented.
+                with all attempts to exploit a vulnerability is documented.
             - uuid: e56438e7-b572-450a-b5a9-dc9a4cb93665
               control-id: si-5
               description:
                 NeuVector correlates configuration data with user behavior and
                 network traffic to provide context around misconfigurations and threats
-                in the form of actionable alerts
-          uuid: a5e1398b-de9f-4ffd-8bc3-686abd191f28
+                in the form of actionable alerts.
+            - uuid: 93e508f9-530b-43e6-8fb8-c95b20b7e887
+              control-id: si-6
+              description:
+                NeuVector correlates configuration data and network traffic to
+                provide context around verification in the form of actionable alerts.
+            - uuid: 8392f45f-d74e-4a99-a7bb-d3ba45743b0a
+              control-id: si-11
+              description:
+                NeuVector correlates configuration data and network traffic for
+                error tracking to provide context around misconfigurations and threats in
+                the form of actionable alerts.
+          uuid: d2afb4c4-2cd8-5305-a6cc-d1bc7b388d0c
       uuid: f316b988-dfb0-475c-9f1f-58d35cee9157
       title: NeuVector
       description: |
@@ -409,48 +382,48 @@ component-definition:
           party-uuids:
             - 72134592-08C2-4A77-ABAD-C880F109367A
     - control-implementations:
-        - source: https://raw.githubusercontent.com/usnistgov/oscal-content/master/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json
+        - source: https://raw.githubusercontent.com/GSA/fedramp-automation/93ca0e20ff5e54fc04140613476fba80f08e3c7d/dist/content/rev5/baselines/json/FedRAMP_rev5_HIGH-baseline-resolved-profile_catalog.json
           description: Controls implemented by Loki for inheritance by applications
           implemented-requirements:
             - uuid: DEA798EE-6B68-4BB8-80DE-1BC85952F26C
               control-id: ac-5
               description:
                 GEL implements RBAC to define system authorization and separation
-                of duties
+                of duties.
             - uuid: 642C8714-73E3-4A59-A89A-ACF2A36AAB6D
               control-id: ac-6
-              description: GEL implements RBAC to employ principle of least privilege
+              description: GEL implements RBAC to employ principle of least privilege.
             - uuid: 7BA2A7E8-D7AA-4229-8A32-53DE9147B4A8
               control-id: ac-6.1
-              description: GEL implements RBAC to employ principle of least privilege
+              description: "GEL implements RBAC to employ principle of least privilege. "
             - uuid: 02388229-428F-4896-92A1-AE93210057EC
               control-id: ac-6.9
               description:
                 Privileged events that modify the application are logged in the
-                application itself
+                application itself.
             - uuid: 1A3EA794-360A-492B-8FEB-EE666FCE2010
               control-id: ac-6.10
               description:
                 GEL layers an additional RBAC layer that prohibits non-privileged
-                users from executing privileged functions
+                users from executing privileged functions.
             - uuid: E3221BCB-EFF6-4E6C-9856-3C228735A7D2
               control-id: ac-21
               description:
                 GEL layers an additional RBAC layer that prohibits non-privileged
-                users from executing privileged functions
+                users from executing privileged functions.
             - uuid: AB29AE94-C867-4BBE-AAB4-8BF21DBD31D9
               control-id: au-4
-              description: Uses scalable object storage
+              description: Uses scalable object storage.
             - uuid: B552D3B6-0C38-4B59-9D97-FB1D748EE8EA
               control-id: au-6
               description:
                 Provides audit record query and analysis capabilities. Organization
-                will implement record review and analysis
+                will implement record review and analysis.
             - uuid: D45A7DA4-A9F9-46CD-AFA4-991824D2BAF5
               control-id: au-6.1
               description:
                 Provides audit record query and analysis capabilities. Organization
-                will implement record review and analysis
+                will implement record review and analysis.
             - uuid: 9CCC7BF3-2710-4E00-BC22-2C272FCEC771
               control-id: au7.1
               description: Loki provides an API for retrieving and filtering logs.
@@ -461,10 +434,10 @@ component-definition:
                 behind a private endpoint and not given to mission owners.
             - uuid: E3771199-CBA3-46D0-8632-F745E9B6BFAE
               control-id: au-9.2
-              description: Supports any object storage
+              description: Supports any object storage.
             - uuid: 4D71EA77-3904-4CE4-AFDC-5123C88A8BD7
               control-id: au-9.4
-              description: Enterprise version (GEL) implements RBAC
+              description: Enterprise version (GEL) implements RBAC.
             - uuid: D75DF925-E6CE-49D8-8AB0-BD07DAF559E9
               control-id: au-11
               description:
@@ -472,8 +445,8 @@ component-definition:
                 periods of time via the store(s) Loki is configured to use.
             - uuid: 0833500E-517A-4F52-BD2F-64DE658E22C4
               control-id: au-12.1
-              description: Provides time-series event compilation capabilities
-          uuid: 5108E5FC-C45F-477B-A542-9C5611A92485
+              description: Provides time-series event compilation capabilities.
+          uuid: d2afb4c4-2cd8-5305-a6cc-d1bc7b388d0c
       uuid: 991BD5DF-A3E7-42D6-AC4F-9A8D01E96F91
       title: Loki
       description: |
