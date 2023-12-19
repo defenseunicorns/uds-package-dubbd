@@ -39,7 +39,6 @@ variable "create_kms_key" {
   default     = true
 }
 
-
 variable "bucket_name" {
   description = "Name for S3 bucket"
   type        = string
@@ -53,4 +52,16 @@ variable "kubernetes_service_account" {
 variable "kubernetes_namespace" {
   description = "Name of the namespace that the service account exists in. Used to generate fully qualified subject for the service account."
   type        = string
+}
+
+variable "permissions_boundary_name" {
+  description = "The name of the permissions boundary for IAM resources.  This will be used for tagging and to build out the ARN."
+  type        = string
+  default     = null
+}
+
+variable "use_permissions_boundary" {
+  description = "Whether to use IAM permissions boundary for resources."
+  type        = bool
+  default     = true
 }

@@ -4,7 +4,7 @@ metadata:
   name: dubbd-rke2
   description: "Defense Unicorns Big Bang Distro for RKE2"
   # x-release-please-start-version
-  version: "0.14.0"
+  version: "0.15.0"
   # x-release-please-end
   url: https://p1.dso.mil/products/big-bang
   image: https://p1.dso.mil/img/Big_Bang_Color_Logo_White_text.de14c793.webp
@@ -32,6 +32,24 @@ variables:
     prompt: false
     type: file
     autoIndent: true
+  - name: VELERO_BUCKET_PROVIDER_URL
+    description: "S3 compatible object storage service for use with Velero"
+    #default: "Intentionally no default value is configured"
+    #example: "http://minio.minio.svc.cluster.local:9000"
+  - name: VELERO_BUCKET
+    description: "S3 compatible object storage bucket for use with Velero"
+    #default: "Intentionally no default value is configured"
+    #example: "velero"
+  - name: VELERO_BUCKET_REGION
+    description: "Region of the bucket for use with Velero"
+    #default: "Intentionally no default value is configured"
+  - name: VELERO_BUCKET_KEY
+    description: "Key to use when connecting to the Velero bucket"
+    #default: "Intentionally no default value is configured"
+  - name: VELERO_BUCKET_KEY_SECRET
+    sensitive: true
+    description: "Key secret to use when connecting to the Velero bucket"
+    #default: "Intentionally no default value is configured"
 
 components:
   - name: set-zarf-vars
@@ -42,6 +60,17 @@ components:
     required: true
     import:
       path: ../defense-unicorns-distro
+  - name: rke2-preflight
+    required: true
+    actions:
+      onDeploy:
+        after:
+          - cmd: ./rke2-preflight.sh
+          - cmd: rm rke2-preflight.sh
+    files:
+      - source: scripts/rke2-preflight.sh
+        target: rke2-preflight.sh
+        executable: true
   - name: load-certs
     required: true
     import:
@@ -70,6 +99,7 @@ components:
       bigbang:
         version: "###ZARF_PKG_VAR_BIGBANG_VERSION###"
         valuesFiles:
+          - values/rke2-velero-s3.yaml
           - values/add-dubbd-values.yaml
   - name: dubbd-post-upgrade
     required: true

@@ -36,21 +36,21 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_COMMERCIAL_ROLE_TO_ASSUME }}
+          role-to-assume: ${{ secrets.AWS_COMMERCIAL_ORG_ROLE_TO_ASSUME }}
           role-session-name: ${{ github.job || github.event.client_payload.pull_request.head.sha || github.sha }}
           aws-region: us-west-2
           role-duration-seconds: 21600
 
       - name: Set Terraform version
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "1.5.7"
 
       - uses: ./.github/actions/create-zarf-package
         name: Create CI-DUBBD-IAC-AWS Zarf package
         with:
-          username: ${{ secrets.REGISTRY1_USERNAME }}
-          password: ${{ secrets.REGISTRY1_PASSWORD }}
+          username: ${{ secrets.IRON_BANK_ROBOT_USERNAME }}
+          password: ${{ secrets.IRON_BANK_ROBOT_PASSWORD }}
           working-dir: .github/test-infra/ci-dubbd-iac-aws
           download-init-package: true
           timeout-minutes: 60
@@ -58,8 +58,8 @@ jobs:
       - uses: ./.github/actions/create-zarf-package
         name: Create DUBBD-AWS Zarf package
         with:
-          username: ${{ secrets.REGISTRY1_USERNAME }}
-          password: ${{ secrets.REGISTRY1_PASSWORD }}
+          username: ${{ secrets.IRON_BANK_ROBOT_USERNAME }}
+          password: ${{ secrets.IRON_BANK_ROBOT_PASSWORD }}
           working-dir: aws/dubbd-aws
           download-init-package: true
           timeout-minutes: 60
@@ -82,6 +82,8 @@ jobs:
 
           zarf package deploy zarf-package-distro-eks-multi.tar.zst \
             --set cluster_name="${{ steps.get_cluster_name.outputs.eks_cluster_name }}" \
+            --set permissions_boundary_arn="${{ secrets.PERMISSIONS_BOUNDARY_ARN }}" \
+            --set permissions_boundary_name="${{ secrets.PERMISSIONS_BOUNDARY_NAME }}" \
             --confirm
         working-directory: .github/test-infra/eks #just holds the zarf-config
         id: create-cluster
@@ -108,9 +110,10 @@ jobs:
             --set ephemeral="true" \
             --set name="${{ steps.get_cluster_name.outputs.eks_cluster_name }}" \
             --set region="us-west-2" \
-            --set state_bucket_name="uds-ci-state-bucket" \
+            --set state_bucket_name="uds-aws-ci-commercial-us-west-2-5246-tfstate" \
             --set state_key="tfstate/ci/upgrade/${SHA:0:7}-dubbd-aws.tfstate" \
-            --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
+            --set state_dynamodb_table_name="uds-aws-ci-commercial-org-us-west-2-5246-tfstate-lock" \
+            --set permissions_boundary_name="${{ secrets.PERMISSIONS_BOUNDARY_NAME }}" \
             --confirm
 
             # adds ZARF_PACKAGE_DEPLOY_SET env var for use in zarf package deploy
@@ -150,9 +153,10 @@ jobs:
             --set ephemeral="true" \
             --set name="${{ steps.get_cluster_name.outputs.eks_cluster_name }}" \
             --set region="us-west-2" \
-            --set state_bucket_name="uds-ci-state-bucket" \
+            --set state_bucket_name="uds-aws-ci-commercial-us-west-2-5246-tfstate" \
             --set state_key="tfstate/ci/upgrade/${SHA:0:7}-dubbd-aws.tfstate" \
-            --set state_dynamodb_table_name="uds-ci-state-dynamodb" \
+            --set state_dynamodb_table_name="uds-aws-ci-commercial-org-us-west-2-5246-tfstate-lock" \
+            --set permissions_boundary_name="${{ secrets.PERMISSIONS_BOUNDARY_NAME }}" \
             --confirm
 
             # adds ZARF_PACKAGE_DEPLOY_SET env var for use in zarf package deploy
