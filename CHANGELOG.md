@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.16.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.15.0...v0.16.0) (2023-12-19)
+
+
+### Miscellaneous
+
+* **deps:** update dependency defenseunicorns/zarf to v0.31.4 ([#646](https://github.com/defenseunicorns/uds-package-dubbd/issues/646)) ([d85e047](https://github.com/defenseunicorns/uds-package-dubbd/commit/d85e047c745288e07189e2e181daa6d01926ccb1))
+* **deps:** update gitlab tag big-bang/bigbang to v2.17.0 ([#658](https://github.com/defenseunicorns/uds-package-dubbd/issues/658)) ([935cc84](https://github.com/defenseunicorns/uds-package-dubbd/commit/935cc84e3eaf96e039cf56fd0b81f7e6db504589))
+* **deps:** update google-github-actions/release-please-action action to v4 ([#641](https://github.com/defenseunicorns/uds-package-dubbd/issues/641)) ([7a44bee](https://github.com/defenseunicorns/uds-package-dubbd/commit/7a44beece46e787f27c1924d41c1e273c48d33a0))
+* **deps:** update terraform-linters/setup-tflint action to v4 ([#633](https://github.com/defenseunicorns/uds-package-dubbd/issues/633)) ([d0f36f3](https://github.com/defenseunicorns/uds-package-dubbd/commit/d0f36f33ec3d1c16048632e24200eee7bbe1a647))
+* refactor dubbd-k3d ci to use the uds task runner ([#644](https://github.com/defenseunicorns/uds-package-dubbd/issues/644)) ([1a1e381](https://github.com/defenseunicorns/uds-package-dubbd/commit/1a1e3811b7d84196a7c4c7ef81ab630e1760ba16))
+* update k8s from 1.26 to 1.27 ([#639](https://github.com/defenseunicorns/uds-package-dubbd/issues/639)) ([cd6997c](https://github.com/defenseunicorns/uds-package-dubbd/commit/cd6997c6d1979c074320d438747c86a2c57be7da))
+
 ## [0.15.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.14.0...v0.15.0) (2023-12-11)
 
 
