@@ -125,6 +125,6 @@ The CHANGELOG is not required to be updated, only the release notes must be upda
 release-please debug-config --dry-run --trace --repo-url https://github.com/defenseunicorns/uds-package-dubbd
 ```
 
-- The GitHub CI Release Please workflow should be configured using `command: manifest` and **all** configuration defined in the [release-please-config.json](release-please-config.json) file (none should be provided in the CI yaml)
+- The GitHub CI Release Please workflow should be configured to be [manifest driven](https://github.com/googleapis/release-please/blob/main/docs/manifest-releaser.md) and **all** configuration defined in the [release-please-config.json](release-please-config.json) file (none should be provided in the CI yaml)
 
 - Check [Github Issues for Release Please](https://github.com/googleapis/release-please/issues)
