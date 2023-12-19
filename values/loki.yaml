@@ -3,6 +3,8 @@ loki:
   values:
     # Values for both Monolith & Scalable strategy
     loki:
+      commonConfig:
+        replication_factor: 1
       extraMemberlistConfig:
         rejoin_interval: 120s
     # Values for Monolith strategy
