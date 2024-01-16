@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_COMMERCIAL_ROLE_TO_ASSUME }}
           role-session-name: ${{ github.job || github.event.client_payload.pull_request.head.sha || github.sha }}
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_COMMERCIAL_ORG_ROLE_TO_ASSUME }}
           role-session-name: ${{ github.job || github.event.client_payload.pull_request.head.sha || github.sha }}
