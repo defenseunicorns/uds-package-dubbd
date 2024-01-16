@@ -46,4 +46,3 @@ jobs:
         uses: defenseunicorns/lula-action/lint@095636b7880051e11b05f10a582fdd911526161c
         with:
           oscal-target: "rke2/oscal-component.yaml"
-          
