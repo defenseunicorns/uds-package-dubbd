@@ -273,11 +273,11 @@ components:
         after:
           - cmd: |
               if [ "${ZARF_VAR_IS_UPGRADE}" = "true" ]; then
-                ./zarf tools kubectl apply -f neuvector-controller-pa.yaml
+                ./zarf tools kubectl delete -f neuvector-controller-pa.yaml
               fi
               rm neuvector-controller-pa.yaml
             mute: true
-            description: "Add PeerAuthentication for NeuVector Controller on upgrade"
+            description: "Remove PeerAuthentication for NeuVector Controller before BigBang v2.18.0 upgrade"
     files:
       - source: manifests/neuvector-controller-pa.yaml
         target: neuvector-controller-pa.yaml
