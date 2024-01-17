@@ -273,7 +273,7 @@ components:
         after:
           - cmd: |
               if [ "${ZARF_VAR_IS_UPGRADE}" = "true" ]; then
-                ./zarf tools kubectl delete -f neuvector-controller-pa.yaml
+                ./zarf tools kubectl delete -f neuvector-controller-pa.yaml 2>/dev/null || true
               fi
               rm neuvector-controller-pa.yaml
             mute: true
