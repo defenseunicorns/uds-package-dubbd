@@ -30,7 +30,7 @@ components: # Define paths on the local filesystem or remote paths in git reposi
       path: oscal-component.yaml
     - git: https://repo1.dso.mil/big-bang/product/packages/kyverno.git@3.1.1-bb.0
       path: oscal-component.yaml
-    - git: https://repo1.dso.mil/big-bang/product/packages/grafana.git@6.60.6-bb.3
+    - git: https://repo1.dso.mil/big-bang/product/packages/grafana.git@6.60.6-bb.5
       path: oscal-component.yaml
     # - git: https://repo1.dso.mil/big-bang/product/packages/kyverno-policies.git@3.0.4-bb.17
     #   path: oscal-component.yaml
