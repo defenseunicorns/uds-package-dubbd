@@ -1,4 +1,4 @@
-apiVersion: notification.toolkit.fluxcd.io/v1beta1
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Provider
 metadata:
   name: slack
@@ -8,7 +8,7 @@ spec:
   address: "###ZARF_VAR_SLACK_URL###"
   channel: "###ZARF_VAR_SLACK_CHANNEL###"
 ---
-apiVersion: notification.toolkit.fluxcd.io/v1beta1
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Alert
 metadata:
   name: flux-slack
@@ -29,7 +29,7 @@ spec:
       name: '*'
       namespace: bigbang
 ---
-apiVersion: notification.toolkit.fluxcd.io/v1beta1
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Alert
 metadata:
   name: flux-alert-manager
@@ -50,7 +50,7 @@ spec:
       name: '*'
       namespace: bigbang
 ---
-apiVersion: notification.toolkit.fluxcd.io/v1beta2
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Provider
 metadata:
   name: alertmanager
