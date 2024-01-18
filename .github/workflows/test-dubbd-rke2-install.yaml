@@ -73,8 +73,9 @@ jobs:
       - name: RKE2 Cluster readyz Check
         run: kubectl get --raw='/readyz?verbose'
 
+      # Zarf init with no HPA as a workaround for SELinux EBS issue - https://github.com/bottlerocket-os/bottlerocket/issues/2417
       - name: Zarf init
-        run: zarf init -a amd64 --components=git-server --confirm
+        run: zarf init -a amd64 --components=git-server --confirm --set REGISTRY_HPA_ENABLE="false"
 
       - name: Deploy minio on RKE2 cluster
         run: zarf package deploy zarf-package-*.tar.zst --confirm
