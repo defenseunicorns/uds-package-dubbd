@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.17.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.16.0...v0.17.0) (2024-01-19)
+
+
+### Miscellaneous
+
+* **deps:** update actions/setup-node action to v4 ([#604](https://github.com/defenseunicorns/uds-package-dubbd/issues/604)) ([a05e613](https://github.com/defenseunicorns/uds-package-dubbd/commit/a05e6135c9d96f432cd8bc0b4ff43e9b05fc9851))
+* **deps:** update aws-actions/configure-aws-credentials action to v4 ([#664](https://github.com/defenseunicorns/uds-package-dubbd/issues/664)) ([642e948](https://github.com/defenseunicorns/uds-package-dubbd/commit/642e948ebdc67952d00ed6dfeb8088f326d9e863))
+* **deps:** update dependency defenseunicorns/zarf to v0.32.1 ([#659](https://github.com/defenseunicorns/uds-package-dubbd/issues/659)) ([858fd57](https://github.com/defenseunicorns/uds-package-dubbd/commit/858fd57f273426ea4712411822471de58cf973af))
+* **deps:** update gitlab tag big-bang/bigbang to v2.18.0 ([#666](https://github.com/defenseunicorns/uds-package-dubbd/issues/666)) ([bb3b651](https://github.com/defenseunicorns/uds-package-dubbd/commit/bb3b65108540ff6254b2292103548b4d6d86d85e))
+* **deps:** update terraform null to v3.2.2 ([#628](https://github.com/defenseunicorns/uds-package-dubbd/issues/628)) ([898e8a1](https://github.com/defenseunicorns/uds-package-dubbd/commit/898e8a1e859e14ba356468724780e2a43dd4897a))
+* release 0.17.0 ([#668](https://github.com/defenseunicorns/uds-package-dubbd/issues/668)) ([e7e435f](https://github.com/defenseunicorns/uds-package-dubbd/commit/e7e435f1f1cf17161f0a0b0b86a24b71a3764399))
+
 ## [0.16.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.15.0...v0.16.0) (2023-12-19)
 
 
