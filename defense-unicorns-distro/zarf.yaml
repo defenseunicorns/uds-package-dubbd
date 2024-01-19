@@ -351,7 +351,7 @@ components:
               ./zarf tools kubectl delete helmrelease -n bigbang metrics-server --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete apiservices.apiregistration.k8s.io -l helm.toolkit.fluxcd.io/namespace=bigbang,helm.toolkit.fluxcd.io/name=metrics-server --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete gitrepositories -n bigbang -l app.kubernetes.io/part-of=bigbang --ignore-not-found --timeout=20m
-              ./zarf tools kubectl patch -n bigbang helmchart.source.toolkit.fluxcd.io/bigbang-bigbang -p '{"metadata":{"finalizers":null}}' --type=merge
+              ./zarf tools kubectl delete helmcharts.source.toolkit.fluxcd.io -n bigbang bigbang-bigbang --timeout=20m
             description: "Cleaning up Big Bang resources"
             maxTotalSeconds: 3600 # 1 hour
         after:
