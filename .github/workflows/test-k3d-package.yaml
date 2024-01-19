@@ -39,3 +39,4 @@ jobs:
       - name: Remove k3d pkg
         working-directory: k3d
         run: uds run remove-k3d-pkg
+        continue-on-error: true

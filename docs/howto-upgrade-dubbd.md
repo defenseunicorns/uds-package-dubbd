@@ -92,7 +92,7 @@ zarf package list
 e.g. for DUBBD AWS
 
 ```console
-zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-aws:(PREVIOUS-VERSION)-amd64
+zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-aws:(PREVIOUS-VERSION)
 ```
 
 #### OPTION 2: Remove DUBBD package and re-deploy a previous working version
@@ -115,7 +115,7 @@ zarf package remove <name of deployed DUBBD> --confirm
 e.g. for DUBBD AWS
 
 ```console
-zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-aws:(PREVIOUS-VERSION)-amd64
+zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-aws:(PREVIOUS-VERSION)
 ```
 
 #### OPTION 3: Helm rollback of the DUBBD helm releases (Terraform needs to be handled separately)

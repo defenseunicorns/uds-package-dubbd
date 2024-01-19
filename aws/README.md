@@ -7,7 +7,7 @@
 ## Prerequisites
 
 - [Common Prerequisites](../docs/prereq-steps.md)
-- AWS EKS cluster -- K8s v1.26+
+- AWS EKS cluster -- K8s v1.27+
 - Local K8s context is pointing to the above cluster
 - AWS EKS cluster has Zarf init package deployed (with `git-server` component)
   ```bash
@@ -71,7 +71,7 @@ Once all of the prereqs are met and the `zarf-config.yaml` has been configured:
 
 ```bash
 # To deploy from OCI (recommended)
-zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-aws:<VERSION>-amd64 \
+zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-aws:<VERSION> \
   --oci-concurrency=15 \
   --confirm
 ```
