@@ -50,9 +50,6 @@ runs:
         then
             # Remove 'skeleton' from the package tag
             latest_package_version="${latest_package_version//skeleton/}"
-
-            # Add 'amd64' to the package tag
-            latest_package_version+="amd64"
         fi
 
         echo "latest-package-version=$(echo "$latest_package_version")" >> $GITHUB_OUTPUT
