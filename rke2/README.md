@@ -11,7 +11,7 @@ This package is designed to deploy DUBBD to environments leveraging RKE2 as the 
 ## Prerequisites
 
 - [Common prerequisites](../docs/prereq-steps.md)
-- RKE2 cluster -- K8s v1.26+
+- RKE2 cluster -- K8s v1.27+
 - Local K8s context is pointing to the above cluster
 - RKE2 cluster has Zarf init package deployed (with `git-server` component)
   ```bash

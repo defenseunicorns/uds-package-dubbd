@@ -2,7 +2,7 @@
 
 ## Zarf
 
-You need Zarf installed locally with a minimum version of [v0.30.1](https://github.com/defenseunicorns/zarf/releases/tag/v0.30.1)
+You need Zarf installed locally with a minimum version of [v0.32.1](https://github.com/defenseunicorns/zarf/releases/tag/v0.32.1)
 
 [Install zarf](https://docs.zarf.dev/docs/getting-started/#installing-zarf)
 

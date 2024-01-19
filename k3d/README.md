@@ -33,7 +33,7 @@ zarf package create --confirm
 zarf package deploy --confirm zarf-package-dubbd-*.tar.zst
 #  OR a published OCI package (browse release at
 #    https://github.com/defenseunicorns/uds-package-dubbd/pkgs/container/packages%2Fdubbd-k3d)
-zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-k3d:0.0.1-amd64 --oci-concurrency=15
+zarf package deploy oci://ghcr.io/defenseunicorns/packages/dubbd-k3d:<VERSION> --oci-concurrency=15
 ```
 
 ### Additional Information

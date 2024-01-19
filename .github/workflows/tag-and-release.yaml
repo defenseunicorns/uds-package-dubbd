@@ -47,7 +47,7 @@ jobs:
                 dubbd-k3d"
           # loop thru all the zarf pkgs and build regex
           for pkg in ${PKGS}; do
-            DEPLOY_INFO="${DEPLOY_INFO}\`\`\`console\nzarf package deploy oci://ghcr.io/defenseunicorns/packages/$pkg:${{ needs.tag-new-version.outputs.release_tag }}-amd64\n\`\`\`\n"
+            DEPLOY_INFO="${DEPLOY_INFO}\`\`\`console\nzarf package deploy oci://ghcr.io/defenseunicorns/packages/$pkg:${{ needs.tag-new-version.outputs.release_tag }}\n\`\`\`\n"
           done
           # add the prefix
           DEPLOY_INFO="${PREFIX}${DEPLOY_INFO}"
