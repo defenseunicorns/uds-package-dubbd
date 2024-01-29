@@ -268,20 +268,6 @@ components:
     required: true
   - name: dubbd-pre-upgrade
     required: true
-    actions:
-      onDeploy:
-        after:
-          - cmd: |
-              if [ "${ZARF_VAR_IS_UPGRADE}" = "true" ]; then
-                ./zarf tools kubectl delete -f neuvector-controller-pa.yaml 2>/dev/null || true
-              fi
-              rm neuvector-controller-pa.yaml
-            mute: true
-            description: "Remove PeerAuthentication for NeuVector Controller before BigBang v2.18.0 upgrade"
-    files:
-      - source: manifests/neuvector-controller-pa.yaml
-        target: neuvector-controller-pa.yaml
-
   - name: bigbang
     required: true
     actions:
