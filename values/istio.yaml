@@ -52,7 +52,7 @@ istio:
         proxy:
           resources:
             requests:
-              memory: "256Gi"
+              memory: "256Mi"
             limits:
               memory: "1Gi"
   gateways:
