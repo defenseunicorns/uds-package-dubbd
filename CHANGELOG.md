@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.17.0...v0.18.0) (2024-01-31)
+
+
+### Miscellaneous
+
+* **deps:** update gitlab tag big-bang/bigbang to v2.19.1 ([#675](https://github.com/defenseunicorns/uds-package-dubbd/issues/675)) ([4fe6bd3](https://github.com/defenseunicorns/uds-package-dubbd/commit/4fe6bd3c4c416ba57747a9ea5c1db9c339c8444e))
+
 ## [0.17.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.16.0...v0.17.0) (2024-01-19)
 
 
