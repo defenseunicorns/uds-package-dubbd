@@ -1,5 +1,5 @@
 component-definition:
-  uuid: 78893173-46b0-42dd-8f02-fb69cf2bd5f0
+  uuid: c2e8e392-3b25-4c92-b105-d6a60fb44f95
   metadata:
     version: 0.0.1
     parties:
@@ -9,7 +9,7 @@ component-definition:
         links:
           - rel: website
             href: https://defenseunicorns.com
-    last-modified: "2024-01-17T20:35:49Z"
+    last-modified: "2024-01-30T20:22:05Z"
     oscal-version: 1.1.1
     title: DUBBD
   components:
@@ -344,7 +344,7 @@ component-definition:
           party-uuids:
             - 72134592-08C2-4A77-ABAD-C880F109367A
     - control-implementations:
-        - source: https://raw.githubusercontent.com/usnistgov/oscal-content/master/nist.gov/SP800-53/rev5/json/NIST_SP-800-53_rev5_catalog.json
+        - source: https://raw.githubusercontent.com/GSA/fedramp-automation/93ca0e20ff5e54fc04140613476fba80f08e3c7d/dist/content/rev5/baselines/json/FedRAMP_rev5_HIGH-baseline-resolved-profile_catalog.json
           description: Controls implemented by Promtail for inheritance by applications
           implemented-requirements:
             - uuid: 1E11CEA9-CE73-45F0-BE08-D16B521B8E7E
@@ -355,22 +355,27 @@ component-definition:
                 function calls.
             - uuid: CF81FA93-D365-42C2-82B1-A24EB92556E5
               control-id: au-2
-              description: |-
-                Logging daemons are present on each node that BigBang is installed on.  Out of the box, the following events are captured:
-                * all containers emitting to STDOUT or STDERR (captured  by container runtime translating container logs to /var/log/containers) * all kubernetes api server requests  * all events emitted by the kubelet
+              description:
+                "Logging daemons are present on each node that BigBang is installed
+                on.  Out of the box, the following events are captured: * all containers
+                emitting to STDOUT or STDERR (captured  by container runtime translating
+                container logs to /var/log/containers). * all kubernetes api server requests.
+                * all events emitted by the kubelet."
             - uuid: 6DDD209A-87A4-48BF-B6B9-5925CC7CF4C3
               control-id: au-3
-              description: |-
-                Records captured by the logging daemon are enriched to  ensure the following are always present:
-                * time of the event (UTC) * source of event (pod, namespace, container id)
-                Applications are responsible for providing all other information.
+              description:
+                "Records captured by the logging daemon are enriched to  ensure
+                the following are always present: * time of the event (UTC). * source of
+                event (pod, namespace, container id). Applications are responsible for providing
+                all other information."
             - uuid: D3F883A0-4531-407F-8802-F8233CD1DEE9
               control-id: au-8
-              description: |-
-                Records captured by the logging daemon are enriched to  ensure the following are always present:
-                * time of the event (UTC) * source of event (pod, namespace, container id)
-                Applications are responsible for providing all other information.
-          uuid: 0277E054-45DD-404E-A6A9-4E0BF47AC561
+              description:
+                "Records captured by the logging daemon are enriched to  ensure
+                the following are always present: * time of the event (UTC). * source of
+                event (pod, namespace, container id). Applications are responsible for providing
+                all other information."
+          uuid: d2afb4c4-2cd8-5305-a6cc-d1bc7b388d0c
       uuid: 6266DF09-F893-4D44-9823-4486B91D81ED
       title: Promtail
       description: |
