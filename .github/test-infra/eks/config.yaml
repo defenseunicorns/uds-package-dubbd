@@ -44,4 +44,4 @@ managedNodeGroups:
     amiFamily: AmazonLinux2
     overrideBootstrapCommand: |
       #!/bin/bash
-      /etc/eks/bootstrap.sh bigbang-aws-install --container-runtime containerd
+      /etc/eks/bootstrap.sh ###ZARF_VAR_CLUSTER_NAME### --container-runtime containerd
