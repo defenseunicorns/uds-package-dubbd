@@ -40,3 +40,8 @@ managedNodeGroups:
       PermissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_NAME###"
     iam:
       instanceRolePermissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_ARN###"
+    ami: ami-018391ee17790abe8
+    amiFamily: AmazonLinux2
+    overrideBootstrapCommand: |
+      #!/bin/bash
+      /etc/eks/bootstrap.sh bigbang-aws-install --container-runtime containerd
