@@ -7,21 +7,6 @@ istio:
     public-ingressgateway: null
     tenant-ingressgateway:
       type: "LoadBalancer"
-  postRenderers:
-    - kustomize:
-        patchesStrategicMerge:
-          - kind: IstioOperator
-            apiVersion: install.istio.io/v1alpha1
-            metadata:
-              name: istiocontrolplane
-              namespace: istio-system
-            spec:
-              components:
-                pilot:
-                  k8s:
-                    securityContext:
-                      runAsUser: 1337
-                      runAsGroup: 1337
   values:
     authservice:
       enabled: true
