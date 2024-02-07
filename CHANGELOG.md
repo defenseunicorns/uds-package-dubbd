@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.18.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.18.0...v0.18.1) (2024-02-07)
+
+
+### Miscellaneous
+
+* **deps:** update dependency defenseunicorns/zarf to v0.32.2 ([#672](https://github.com/defenseunicorns/uds-package-dubbd/issues/672)) ([30cd6ed](https://github.com/defenseunicorns/uds-package-dubbd/commit/30cd6ed1d42d3b406dff84cbe6fb9762f06e22b9))
+* **deps:** update gitlab tag big-bang/bigbang to v2.19.2 ([#678](https://github.com/defenseunicorns/uds-package-dubbd/issues/678)) ([76f3a22](https://github.com/defenseunicorns/uds-package-dubbd/commit/76f3a2266153ebc9e5151b8e8379c42d93199317))
+
 ## [0.18.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.17.0...v0.18.0) (2024-01-31)
 
 
