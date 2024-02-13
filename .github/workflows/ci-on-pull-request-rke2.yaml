@@ -31,6 +31,9 @@ jobs:
       - name: Lint YAML files
         run: yamllint . -c .yamllint --no-warnings
   test-release:
+    permissions:
+      id-token: write
+      contents: read
     needs: yaml-lint
     if: needs.yaml-lint.result == 'success' || needs.yaml-lint.result == 'skipped'
     uses: ./.github/workflows/test-dubbd-rke2-install.yaml

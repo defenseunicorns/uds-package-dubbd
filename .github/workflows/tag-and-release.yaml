@@ -28,6 +28,8 @@ jobs:
     outputs:
       header_info: ${{ steps.header-info.outputs.header_info }}
       deploy_info: ${{ steps.deploy-info.outputs.deploy_info }}
+    permissions:
+      contents: write
     steps:
       - name: Build Header Info
         id: header-info
@@ -55,6 +57,7 @@ jobs:
           echo "deploy_info=${DEPLOY_INFO}" >> $GITHUB_OUTPUT
 
   update-release-notes:
+    permissions: write-all
     needs: [tag-new-version, build-release-notes-update]
     if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
     uses: ./.github/workflows/update-release-info-from-tag.yaml
@@ -65,6 +68,9 @@ jobs:
     secrets: inherit
 
   publish-ci-dubbd-iac-aws:
+    permissions:
+      contents: read
+      packages: write
     needs: tag-new-version
     if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
     uses: ./.github/workflows/publish.dubbd.package.yaml
@@ -73,6 +79,9 @@ jobs:
     secrets: inherit
 
   publish-dubbd-aws:
+    permissions:
+      contents: read
+      packages: write
     needs: tag-new-version
     if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
     uses: ./.github/workflows/publish.dubbd.package.yaml
@@ -81,6 +90,9 @@ jobs:
     secrets: inherit
 
   publish-dubbd-rke2:
+    permissions:
+      contents: read
+      packages: write
     needs: tag-new-version
     if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
     uses: ./.github/workflows/publish.dubbd.package.yaml
@@ -89,6 +101,9 @@ jobs:
     secrets: inherit
 
   publish-dubbd-k3d:
+    permissions:
+      contents: read
+      packages: write
     needs: tag-new-version
     if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
     uses: ./.github/workflows/publish.dubbd.package.yaml
@@ -97,6 +112,9 @@ jobs:
     secrets: inherit
 
   publish-dubbd-core:
+    permissions:
+      contents: read
+      packages: write
     needs: tag-new-version
     if: ${{ needs.tag-new-version.outputs.release_created == 'true'}}
     uses: ./.github/workflows/publish.dubbd.package.yaml

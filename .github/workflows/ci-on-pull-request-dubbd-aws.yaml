@@ -35,12 +35,18 @@ jobs:
         run: yamllint . -c .yamllint --no-warnings
 
   test-release:
+    permissions:
+      id-token: write
+      contents: read
     needs: yaml-lint
     if: needs.yaml-lint.result == 'success' || needs.yaml-lint.result == 'skipped'
     uses: ./.github/workflows/test-dubbd-aws-install.yaml
     secrets: inherit
 
   test-upgrade:
+    permissions:
+      id-token: write
+      contents: read
     needs: yaml-lint
     if: needs.yaml-lint.result == 'success' || needs.yaml-lint.result == 'skipped'
     uses: ./.github/workflows/test-dubbd-aws-upgrade.yaml
