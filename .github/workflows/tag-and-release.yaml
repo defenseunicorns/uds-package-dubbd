@@ -28,8 +28,6 @@ jobs:
     outputs:
       header_info: ${{ steps.header-info.outputs.header_info }}
       deploy_info: ${{ steps.deploy-info.outputs.deploy_info }}
-    permissions:
-      contents: write
     steps:
       - name: Build Header Info
         id: header-info
