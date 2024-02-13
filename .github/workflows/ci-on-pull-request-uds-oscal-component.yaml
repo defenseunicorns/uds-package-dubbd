@@ -18,5 +18,8 @@ on:
 
 jobs:
   test-release-oscal:
+    permissions:
+      id-token: write
+      contents: write
     uses: ./.github/workflows/create-uds-oscal-component.yaml
     secrets: inherit

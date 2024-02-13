@@ -16,5 +16,8 @@ on:
 
 jobs:
   test-release-oscal:
+    permissions:
+      id-token: write
+      contents: write
     uses: ./.github/workflows/create-compliance-md-images.yaml
     secrets: inherit
