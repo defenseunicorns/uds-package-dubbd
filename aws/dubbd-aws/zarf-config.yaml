@@ -5,7 +5,7 @@ package:
       # renovate: datasource=gitlab-tags depName=big-bang/bigbang versioning=semver registryUrl=https://repo1.dso.mil
       bigbang_version: "2.22.0"
       # should line up with the flux version in the BB release, see https://repo1.dso.mil/big-bang/bigbang/-/blob/master/base/flux/gotk-components.yaml#L3
-      flux_version: "2.2.2"
+      flux_version: "2.2.3"
   deploy:
     set:
       # -- Domain name for the EKS cluster
