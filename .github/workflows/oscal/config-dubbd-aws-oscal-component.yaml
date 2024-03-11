@@ -14,25 +14,25 @@ components: # Define paths on the local filesystem or remote paths in git reposi
   local:
     - name: ../../../aws/dubbd-aws/velero-oscal-component.yaml
   remote:
-    - git: https://repo1.dso.mil/big-bang/product/packages/kiali.git@1.78.0-bb.5
+    - git: https://repo1.dso.mil/big-bang/product/packages/kiali.git@1.80.0-bb.0
       path: oscal-component.yaml
-    - git: https://repo1.dso.mil/big-bang/product/packages/tempo.git@1.7.1-bb.2
+    - git: https://repo1.dso.mil/big-bang/product/packages/tempo.git@1.7.1-bb.3
       path: oscal-component.yaml
-    - git: https://repo1.dso.mil/big-bang/product/packages/monitoring.git@56.2.1-bb.1
+    - git: https://repo1.dso.mil/big-bang/product/packages/monitoring.git@56.2.1-bb.3
       path: oscal-component.yaml
     - git: https://repo1.dso.mil/big-bang/product/packages/neuvector.git@2.6.3-bb.9
       path: oscal-component.yaml
     - git: https://repo1.dso.mil/big-bang/product/packages/promtail.git@6.15.5-bb.0
       path: oscal-component.yaml
-    - git: https://repo1.dso.mil/big-bang/product/packages/loki.git@5.42.0-bb.5
+    - git: https://repo1.dso.mil/big-bang/product/packages/loki.git@5.42.0-bb.7
       path: oscal-component.yaml
-    - git: https://repo1.dso.mil/big-bang/product/packages/istio-controlplane.git@1.19.6-bb.2
+    - git: https://repo1.dso.mil/big-bang/product/packages/istio-controlplane.git@1.19.7-bb.0
       path: oscal-component.yaml
     - git: https://repo1.dso.mil/big-bang/product/packages/kyverno.git@3.1.4-bb.2
       path: oscal-component.yaml
-    - git: https://repo1.dso.mil/big-bang/product/packages/grafana.git@7.3.0-bb.1
+    - git: https://repo1.dso.mil/big-bang/product/packages/grafana.git@7.3.1-bb.0
       path: oscal-component.yaml
-    # - git: https://repo1.dso.mil/big-bang/product/packages/kyverno-policies.git@3.0.4-bb.24
+    # - git: https://repo1.dso.mil/big-bang/product/packages/kyverno-policies.git@3.0.4-bb.25
     #   path: oscal-component.yaml
     # - git: https://repo1.dso.mil/big-bang/product/packages/kyverno-reporter.git@2.22.0-bb.0
     #   path: oscal-component.yaml
