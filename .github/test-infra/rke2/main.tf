@@ -153,7 +153,7 @@ EOF
 }
 
 module "rke2" {
-  source        = "github.com/rancherfederal/rke2-aws-tf?ref=v2.4.0"
+  source        = "github.com/rancherfederal/rke2-aws-tf?ref=v2.5.0"
   cluster_name  = var.name
   vpc_id        = var.vpc_id
   subnets       = data.aws_subnets.public_subnets.ids
@@ -181,7 +181,7 @@ module "rke2" {
 }
 
 module "agents" {
-  source = "github.com/rancherfederal/rke2-aws-tf//modules/agent-nodepool?ref=v2.4.0"
+  source = "github.com/rancherfederal/rke2-aws-tf//modules/agent-nodepool?ref=v2.5.0"
 
   name          = "agent"
   vpc_id        = var.vpc_id
