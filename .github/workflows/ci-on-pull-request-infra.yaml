@@ -25,7 +25,7 @@ jobs:
       # Uses a custom action to filter paths for capabilities.
       - name: Check paths
         id: path-filter
-        uses: dorny/paths-filter@v2
+        uses: dorny/paths-filter@v3
         with:
           filters: .github/filters.yml
 
