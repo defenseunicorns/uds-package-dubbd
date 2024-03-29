@@ -8,7 +8,7 @@ kyvernoPolicies:
             names:
               - "helper-pod-create-pvc-*"
         - resources:
-            namespaces: 
+            namespaces:
               - uds-dev-stack
 
     policies:
