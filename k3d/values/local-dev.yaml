@@ -1,5 +1,13 @@
 kyvernoPolicies:
   values:
+    exclude:
+      any:
+        - resources:
+            kinds: # Required, list of kinds
+              - Pod
+            names:
+              - "helper-pod-create-pvc-*"
+
     policies:
       disallow-host-namespaces:
         exclude:
@@ -25,3 +33,29 @@ kyvernoPolicies:
             - resources:
                 namespaces:
                   - metallb-system
+
+    additionalPolicies:
+      restrict-image-registries:
+        spec:
+          rules:
+            - name: validate-registries
+              exclude:
+                any:
+                  - resources:
+                      namespaces: ###ZARF_VAR_EXEMPT_NAMESPACES###
+                  - resources:
+                      kinds:
+                        - Pod
+                      names:
+                        - "helper-pod-create-pvc-*"
+              match:
+                any:
+                  - resources:
+                      kinds:
+                        - Pod
+              validate:
+                foreach:
+                  - list: request.object.spec.[ephemeralContainers, initContainers, containers][]
+                    pattern:
+                      image: 127.0.0.1:31999/* | ###ZARF_VAR_APPROVED_REGISTRIES###
+                    message: "Image registry is not in the approved list"

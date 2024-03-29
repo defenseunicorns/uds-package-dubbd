@@ -17,4 +17,4 @@ package:
       # -- TLS cert
       cert_file: bigbang.dev.cert
       # -- k3d host path
-      host_path: "/var/lib/rancher/k3s/storage/*"
+      host_path: "/*"
