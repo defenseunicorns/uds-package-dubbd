@@ -7,6 +7,9 @@ kyvernoPolicies:
               - Pod
             names:
               - "helper-pod-create-pvc-*"
+        - resources:
+            namespaces: 
+              - uds-dev-stack
 
     policies:
       disallow-host-namespaces:
