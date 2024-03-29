@@ -47,6 +47,8 @@ kyvernoPolicies:
                   - resources:
                       namespaces: ###ZARF_VAR_EXEMPT_NAMESPACES###
                   - resources:
+                      namespaces: uds-dev-stack
+                  - resources:
                       kinds:
                         - Pod
                       names:
