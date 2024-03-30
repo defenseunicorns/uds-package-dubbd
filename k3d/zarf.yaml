@@ -17,7 +17,7 @@ metadata:
 
 variables:
   - name: HOST_PATH
-    default: /*
+    default: /var/lib/rancher/k3s/storage/*
     prompt: false
   - name: CONTAINER_RUNTIME_SOCKET
     default: "/run/k3s/containerd/containerd.sock"
