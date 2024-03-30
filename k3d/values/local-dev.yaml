@@ -3,13 +3,10 @@ kyvernoPolicies:
     exclude:
       any:
         - resources:
-            kinds: # Required, list of kinds
+            kinds:
               - Pod
             names:
               - "helper-pod-create-pvc-*"
-        - resources:
-            namespaces:
-              - uds-dev-stack
 
     policies:
       disallow-host-namespaces:
@@ -46,8 +43,6 @@ kyvernoPolicies:
                 any:
                   - resources:
                       namespaces: ###ZARF_VAR_EXEMPT_NAMESPACES###
-                  - resources:
-                      namespaces: uds-dev-stack
                   - resources:
                       kinds:
                         - Pod

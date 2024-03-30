@@ -18,3 +18,5 @@ package:
       cert_file: bigbang.dev.cert
       # -- k3d host path
       host_path: "/*"
+      # -- Exempt namespaces
+      exempt_namespaces: '[ "zarf", "uds-dev-stack" ]'
