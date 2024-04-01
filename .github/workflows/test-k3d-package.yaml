@@ -37,6 +37,7 @@ jobs:
         run: uds run deploy-k3d-pkg
 
       - name: Output debug info
+        if: always()
         working-directory: k3d
         run: uds zarf tools kubectl get events -A --sort-by='.lastTimestamp'
 
