@@ -3,4 +3,4 @@ tasks:
     description: "Create k3d zarf package"
     actions:
       - description: "Create the requested Zarf Package"
-        cmd: zarf package create . -o build/ --confirm
+        cmd: zarf package create . -o build/ --confirm --no-progress
