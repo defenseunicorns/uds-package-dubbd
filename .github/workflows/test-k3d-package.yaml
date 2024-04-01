@@ -36,6 +36,10 @@ jobs:
         working-directory: k3d
         run: uds run deploy-k3d-pkg
 
+      - name: Output debug info
+        working-directory: k3d
+        run: uds zarf kubectl get events -A --sort-by='.lastTimestamp'
+
       - name: Remove k3d pkg
         working-directory: k3d
         run: uds run remove-k3d-pkg
