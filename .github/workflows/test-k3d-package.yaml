@@ -26,15 +26,15 @@ jobs:
 
       - name: Create k3d pkg
         working-directory: k3d
-        run: uds run create-k3d-pkg
+        run: uds run create-k3d-pkg --no-tea
 
       - name: Create k3d cluster
         working-directory: k3d
-        run: uds run setup-cluster
+        run: uds run setup-cluster --no-tea
 
       - name: Deploy k3d pkg
         working-directory: k3d
-        run: uds run deploy-k3d-pkg
+        run: uds run deploy-k3d-pkg --no-tea
 
       - name: Output debug info
         if: always()
@@ -43,5 +43,5 @@ jobs:
 
       - name: Remove k3d pkg
         working-directory: k3d
-        run: uds run remove-k3d-pkg
+        run: uds run remove-k3d-pkg --no-tea
         continue-on-error: true
