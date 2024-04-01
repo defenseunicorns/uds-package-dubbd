@@ -39,7 +39,9 @@ jobs:
       - name: Output debug info
         if: always()
         working-directory: k3d
-        run: uds zarf tools kubectl get events -A --sort-by='.lastTimestamp'
+        run: |
+          uds zarf tools kubectl get events -A --sort-by='.lastTimestamp'
+          uds zarf tools kubectl logs -n promtail daemonset.apps/promtail-promtail --all-containers
 
       - name: Remove k3d pkg
         working-directory: k3d
