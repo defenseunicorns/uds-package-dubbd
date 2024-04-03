@@ -5,7 +5,7 @@ package:
     max_package_size: "1000000000"
     set:
       # renovate: datasource=gitlab-tags depName=big-bang/bigbang versioning=semver registryUrl=https://repo1.dso.mil
-      bigbang_version: "2.22.0"
+      bigbang_version: "2.23.0"
       # should line up with the flux version in the BB release, see https://repo1.dso.mil/big-bang/bigbang/-/blob/master/base/flux/gotk-components.yaml#L3
       flux_version: "2.2.3"
   deploy:
@@ -17,4 +17,6 @@ package:
       # -- TLS cert
       cert_file: bigbang.dev.cert
       # -- k3d host path
-      host_path: "/var/lib/rancher/k3s/storage/*"
+      host_path: "/opt/local-path-provisioner-rwx/*"
+      # -- Exempt namespaces
+      exempt_namespaces: '[ "zarf", "uds-dev-stack" ]'
