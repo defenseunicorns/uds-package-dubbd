@@ -24,7 +24,7 @@ components: # Define paths on the local filesystem or remote paths in git reposi
       path: oscal-component.yaml
     - git: https://repo1.dso.mil/big-bang/product/packages/loki.git@5.42.0-bb.10
       path: oscal-component.yaml
-    - git: https://repo1.dso.mil/big-bang/product/packages/istio-controlplane.git@1.19.7-bb.2
+    - git: https://repo1.dso.mil/big-bang/product/packages/istio-controlplane.git@1.19.7-bb.0
       path: oscal-component.yaml
     - git: https://repo1.dso.mil/big-bang/product/packages/kyverno.git@3.1.4-bb.4
       path: oscal-component.yaml
