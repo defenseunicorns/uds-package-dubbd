@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.22.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.21.0...v0.22.0) (2024-04-03)
+
+
+### Miscellaneous
+
+* **deps:** update gitlab tag big-bang/bigbang to v2.23.0 ([#697](https://github.com/defenseunicorns/uds-package-dubbd/issues/697)) ([4e07de7](https://github.com/defenseunicorns/uds-package-dubbd/commit/4e07de7bac0af25dc63b7e5747aa3088fb7f17fa))
+* **deps:** update terraform github.com/defenseunicorns/terraform-aws-uds-kms to v0.0.3 ([#698](https://github.com/defenseunicorns/uds-package-dubbd/issues/698)) ([18e230b](https://github.com/defenseunicorns/uds-package-dubbd/commit/18e230b17ee5f66c6d185fc6b3713089aba54890))
+
 ## [0.21.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.20.0...v0.21.0) (2024-03-11)
 
 
