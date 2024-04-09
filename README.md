@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> DUBBD will be maintained until summer of 2024, when it will be deprecated in favor of [uds-core](https://github.com/defenseunicorns/uds-core)
+
 # Defense Unicorns Big Bang Distro (DUBBD)
 
 Pre-built Zarf Package of [DoD-Platform-One/big-bang](https://github.com/DoD-Platform-One/big-bang) configured for production use by Defense Unicorns.
