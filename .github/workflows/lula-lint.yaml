@@ -1,0 +1,48 @@
+name: lula-lint
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash -e -o pipefail {0}
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "**/*oscal-component.yaml"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repo and setup the tooling for this job
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Lula Setup
+        uses: defenseunicorns/lula-action/setup@095636b7880051e11b05f10a582fdd911526161c
+
+      - name: Lula Lint DUBBD
+        uses: defenseunicorns/lula-action/lint@095636b7880051e11b05f10a582fdd911526161c
+        with:
+          oscal-target: "defense-unicorns-distro/oscal-component.yaml"
+
+      - name: Lula Lint AWS DUBBD
+        uses: defenseunicorns/lula-action/lint@095636b7880051e11b05f10a582fdd911526161c
+        with:
+          oscal-target: "aws/dubbd-aws/oscal-component.yaml"
+
+      - name: Lula Lint AWS DUBBD - Velero
+        uses: defenseunicorns/lula-action/lint@095636b7880051e11b05f10a582fdd911526161c
+        with:
+          oscal-target: "aws/dubbd-aws/velero-oscal-component.yaml"
+
+      - name: Lula Lint RKE2
+        uses: defenseunicorns/lula-action/lint@095636b7880051e11b05f10a582fdd911526161c
+        with:
+          oscal-target: "rke2/oscal-component.yaml"

@@ -13,17 +13,17 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
         with:
           ref: ${{ github.head_ref }}
 
       - name: Uses Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
         with:
           go-version: "1.20"
 
       - name: Node and NPM
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8 # v4.0.1
         with:
           node-version: latest
 
@@ -54,6 +54,29 @@ jobs:
           rm -rf node_modules/
           rm package.json
           rm package-lock.json
+
+      - name: Lula Setup
+        uses: defenseunicorns/lula-action/setup@095636b7880051e11b05f10a582fdd911526161c # Commit Tag
+
+      - name: Lula Lint DUBBD
+        uses: defenseunicorns/lula-action/lint@095636b7880051e11b05f10a582fdd911526161c # Commit Tag
+        with:
+          oscal-target: "defense-unicorns-distro/oscal-component.yaml"
+
+      - name: Lula Lint AWS DUBBD
+        uses: defenseunicorns/lula-action/lint@095636b7880051e11b05f10a582fdd911526161c # Commit Tag
+        with:
+          oscal-target: "aws/dubbd-aws/oscal-component.yaml"
+
+      - name: Lula Lint AWS DUBBD - Velero
+        uses: defenseunicorns/lula-action/lint@095636b7880051e11b05f10a582fdd911526161c # Commit Tag
+        with:
+          oscal-target: "aws/dubbd-aws/velero-oscal-component.yaml"
+
+      - name: Lula Lint RKE2
+        uses: defenseunicorns/lula-action/lint@095636b7880051e11b05f10a582fdd911526161c # Commit Tag
+        with:
+          oscal-target: "rke2/oscal-component.yaml"
 
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v5
