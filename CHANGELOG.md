@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.25.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.24.0...v0.25.0) (2024-05-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* dubbd deprecation in summer of 2024, replaced by uds-core ([#703](https://github.com/defenseunicorns/uds-package-dubbd/issues/703))
+
+### Miscellaneous
+
+* **deps:** update gitlab tag big-bang/bigbang to v2.26.0 ([#717](https://github.com/defenseunicorns/uds-package-dubbd/issues/717)) ([0e86de0](https://github.com/defenseunicorns/uds-package-dubbd/commit/0e86de0ceb5b714a8bfdfab63cdf62d379944f0e))
+* dubbd deprecation in summer of 2024, replaced by uds-core ([#703](https://github.com/defenseunicorns/uds-package-dubbd/issues/703)) ([8ab3566](https://github.com/defenseunicorns/uds-package-dubbd/commit/8ab35668a01eafaa0631af59b2c6c191d3f46e6f))
+
 ## [0.24.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.23.0...v0.24.0) (2024-04-24)
 
 
