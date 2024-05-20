@@ -4,7 +4,7 @@ This document provides guidance on how to create DUBBD releases, address release
 
 ## Creating releases
 
-This project uses [release-please-action](https://github.com/google-github-actions/release-please-action) for versioning and releasing OCI packages.
+This project uses [release-please-action](https://github.com/googleapis/release-please-action) for versioning and releasing OCI packages.
 
 ### How should I write my commits?
 
