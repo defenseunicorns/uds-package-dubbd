@@ -270,11 +270,11 @@ components:
     required: true
     actions:
       onDeploy:
-        before:
+        after:
           - cmd: |
+              # BigBang 2.27.0 requires deleting specific Neuvector CRDs on upgrade (if they exist)
               ./zarf tools kubectl delete crd nvvulnerabilityprofiles.neuvector.com --ignore-not-found --timeout=20m
               ./zarf tools kubectl delete crd nvcomplianceprofiles.neuvector.com --ignore-not-found --timeout=20m
-            description: "BigBang 2.27.0 requires deleting specific Neuvector CRDs on upgrade (if they exist)"
   - name: bigbang
     required: true
     actions:
