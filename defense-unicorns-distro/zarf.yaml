@@ -268,6 +268,16 @@ components:
     required: true
   - name: dubbd-pre-upgrade
     required: true
+    actions:
+      onDeploy:
+        before:
+          - cmd: |
+              ./zarf tools kubectl delete crd nvvulnerabilityprofiles.neuvector.com --ignore-not-found --timeout=20m
+              ./zarf tools kubectl delete crd nvcomplianceprofiles.neuvector.com --ignore-not-found --timeout=20m
+            description: "BigBang 2.27.0 requires deleting specific Neuvector CRDs on upgrade (if they exist)"
+    # manually adding this Neuvector image to fix an issue with BigBang 2.27.0
+    images:
+      - registry1.dso.mil/ironbank/neuvector/neuvector/prometheus-exporter:5.3.0
   - name: bigbang
     required: true
     actions:
