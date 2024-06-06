@@ -9,9 +9,6 @@ neuvector:
         CTRL_PASSWORD: ###ZARF_VAR_NEUVECTOR_METRICS_PASSWORD###
         podAnnotations:
           checksum/metrics-pass: dubbd-override
-        # manually setting this Neuvector image tag to fix an issue with BigBang 2.27.0
-        image:
-          tag: 5.3.2
     containerd:
       enabled: true
       path: "###ZARF_VAR_CONTAINER_RUNTIME_SOCKET###"
