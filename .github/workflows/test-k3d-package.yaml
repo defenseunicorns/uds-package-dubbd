@@ -26,24 +26,25 @@ jobs:
 
       - name: Create k3d pkg
         working-directory: k3d
-        run: uds run create-k3d-pkg
+        run: uds run create-k3d-pkg --no-progress
 
       - name: Create k3d cluster
         working-directory: k3d
-        run: uds run setup-cluster
+        run: uds run setup-cluster --no-progress
 
       - name: Deploy k3d pkg
         working-directory: k3d
-        run: uds run deploy-k3d-pkg
+        run: uds run deploy-k3d-pkg --no-progress
 
       - name: Output debug info
         if: always()
         working-directory: k3d
         run: |
+          uds zarf tools kubectl describe nodes
           uds zarf tools kubectl get events -A --sort-by='.lastTimestamp'
           uds zarf tools kubectl logs -n promtail daemonset.apps/promtail-promtail --all-containers
 
       - name: Remove k3d pkg
         working-directory: k3d
-        run: uds run remove-k3d-pkg
+        run: uds run remove-k3d-pkg --no-progress
         continue-on-error: true
