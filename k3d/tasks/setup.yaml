@@ -7,4 +7,4 @@ tasks:
 
       - description: "Initialize the cluster with Zarf"
         # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
-        cmd: "zarf package deploy oci://defenseunicorns/init:v0.32.4 --confirm --components=git-server --no-progress"
+        cmd: "zarf package deploy oci://defenseunicorns/init:v0.36.0 --confirm --components=git-server --no-progress"

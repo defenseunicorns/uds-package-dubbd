@@ -34,7 +34,7 @@ runs:
       uses: defenseunicorns/setup-zarf@main
       with:
         # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
-        version: v0.35.0
+        version: v0.36.0
         download-init-package: ${{ inputs.download-init-package }}
 
     - name: Create Zarf Package
