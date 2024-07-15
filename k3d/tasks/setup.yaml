@@ -6,5 +6,5 @@ tasks:
         cmd: "zarf package deploy oci://defenseunicorns/uds-k3d:0.6.0 --confirm --no-progress"
 
       - description: "Initialize the cluster with Zarf"
-        # renovate: datasource=github-tags depName=defenseunicorns/init versioning=semver
+        # renovate: datasource=github-tags depName=defenseunicorns/zarf versioning=semver
         cmd: "zarf package deploy oci://defenseunicorns/init:v0.32.4 --confirm --components=git-server --no-progress"
