@@ -70,7 +70,7 @@
       "matchStrings": [
         "# renovate: datasource=github-tags depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?version:\\s*(?<currentValue>.*)\\s",
         "# renovate: datasource=github-tags depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?version:\\s*['\"](?<currentValue>.*)['\"]\\s",
-        "# renovate: datasource=github-tags depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?[\"']?oci:\/\/(?<depName>.+?):(?<currentValue>.+?)[\"']?\\s"
+        "# renovate: datasource=github-tags depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?[\"']?oci:.+:(?<currentValue>.+?)[\"']?\\s"
       ],
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
       "datasourceTemplate": "github-tags"
