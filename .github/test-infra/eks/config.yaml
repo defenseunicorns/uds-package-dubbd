@@ -25,6 +25,8 @@ addons:
       PermissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_NAME###"
 
   - name: vpc-cni
+    attachPolicyARNs:
+      - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
     permissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_ARN###"
     tags:
       PermissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_NAME###"
