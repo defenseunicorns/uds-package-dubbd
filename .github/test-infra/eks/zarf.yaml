@@ -10,7 +10,8 @@ variables:
   - name: PERMISSIONS_BOUNDARY_ARN
   - name: PERMISSIONS_BOUNDARY_NAME
   - name: AMI_ID
-    default: ami-068ab6ac1cec494e0
+    # EKS-optimized Kubernetes node based on Amazon Linux 2023, (k8s: 1.29.3, containerd: *)
+    default: ami-0844b244c49b1dc67
 
 components:
   - name: load-eksctl

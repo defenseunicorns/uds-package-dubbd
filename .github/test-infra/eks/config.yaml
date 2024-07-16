@@ -4,7 +4,7 @@ kind: ClusterConfig
 metadata:
   name: "###ZARF_VAR_CLUSTER_NAME###"
   region: us-west-2
-  version: "1.27"
+  version: "1.29"
   tags:
     PermissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_NAME###"
 
@@ -18,7 +18,7 @@ iam:
 
 addons:
   - name: aws-ebs-csi-driver
-    version: v1.25.0-eksbuild.1
+    version: v1.32.0-eksbuild.1
 
     attachPolicyARNs:
       - arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
