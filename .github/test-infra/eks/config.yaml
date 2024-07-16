@@ -4,7 +4,7 @@ kind: ClusterConfig
 metadata:
   name: "###ZARF_VAR_CLUSTER_NAME###"
   region: us-west-2
-  version: "1.27"
+  version: "1.29"
   tags:
     PermissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_NAME###"
 
@@ -18,8 +18,6 @@ iam:
 
 addons:
   - name: aws-ebs-csi-driver
-    version: v1.25.0-eksbuild.1
-
     attachPolicyARNs:
       - arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
     permissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_ARN###"
@@ -27,6 +25,8 @@ addons:
       PermissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_NAME###"
 
   - name: vpc-cni
+    attachPolicyARNs:
+      - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
     permissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_ARN###"
     tags:
       PermissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_NAME###"
@@ -40,8 +40,8 @@ managedNodeGroups:
       PermissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_NAME###"
     iam:
       instanceRolePermissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_ARN###"
-    ami: "###ZARF_VAR_AMI_ID###"
-    amiFamily: AmazonLinux2
-    overrideBootstrapCommand: |
-      #!/bin/bash
-      /etc/eks/bootstrap.sh ###ZARF_VAR_CLUSTER_NAME### --container-runtime containerd
+#    ami: "###ZARF_VAR_AMI_ID###"
+#    amiFamily: AmazonLinux2
+#    overrideBootstrapCommand: |
+#      #!/bin/bash
+#      /etc/eks/bootstrap.sh ###ZARF_VAR_CLUSTER_NAME### --container-runtime containerd

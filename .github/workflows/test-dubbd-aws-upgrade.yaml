@@ -90,7 +90,7 @@ jobs:
 
       - name: Show Cluster
         run: |
-          kubectl get nodes
+          kubectl get nodes -o wide
           kubectl config get-contexts
 
       - name: Zarf init

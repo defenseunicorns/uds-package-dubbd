@@ -9,8 +9,9 @@ variables:
     prompt: true
   - name: PERMISSIONS_BOUNDARY_ARN
   - name: PERMISSIONS_BOUNDARY_NAME
-  - name: AMI_ID
-    default: ami-068ab6ac1cec494e0
+#  - name: AMI_ID
+#    # EKS Kubernetes Worker AMI with AmazonLinux2 image, (k8s: 1.29.3, containerd: 1.7.*)
+#    default: ami-0b5962c42db856256
 
 components:
   - name: load-eksctl
