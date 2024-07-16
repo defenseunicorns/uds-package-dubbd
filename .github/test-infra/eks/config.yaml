@@ -18,8 +18,6 @@ iam:
 
 addons:
   - name: aws-ebs-csi-driver
-    version: v1.32.0-eksbuild.1
-
     attachPolicyARNs:
       - arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
     permissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_ARN###"
