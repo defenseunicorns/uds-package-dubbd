@@ -4,7 +4,7 @@ kind: ClusterConfig
 metadata:
   name: "###ZARF_VAR_CLUSTER_NAME###"
   region: us-west-2
-  version: "1.29"
+  version: "1.30"
   tags:
     PermissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_NAME###"
 
