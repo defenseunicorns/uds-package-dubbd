@@ -129,6 +129,14 @@ jobs:
         working-directory: aws/dubbd-aws
         timeout-minutes: 60
 
+      - name: Output debug info
+        if: always()
+        working-directory: k3d
+        run: |
+          zarf tools kubectl describe nodes -owide
+          zarf tools kubectl get pods -owide -A
+          zarf tools kubectl get events -A --sort-by='.lastTimestamp'
+
       - name: Remove DUBBD-AWS
         if: always()
         run: zarf package remove zarf-package-*.tar.zst --confirm
