@@ -103,7 +103,7 @@ module "generate_kms" {
 }
 
 module "irsa" {
-  source                        = "github.com/defenseunicorns/terraform-aws-uds-irsa?ref=v0.0.2"
+  source                        = "github.com/defenseunicorns/terraform-aws-uds-irsa?ref=v0.0.3"
   name                          = local.name
   kubernetes_service_account    = var.kubernetes_service_account
   kubernetes_namespace          = var.kubernetes_namespace
