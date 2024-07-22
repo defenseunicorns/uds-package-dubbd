@@ -1,18 +1,18 @@
 name: CI DUBBD OSCAL
 
 on:
-  pull_request:
-    branches:
-      - main
-    paths-ignore:
-      - ".gitignore"
-      - "LICENSE"
-      - "**/*.md"
-      - "**/*.json"
-      - "**/*.png"
-      - "**/*.svg"
-      - "k3d/**"
-      - ".github/workflows/*k3d*.y*ml"
+#  pull_request:
+#    branches:
+#      - main
+#    paths-ignore:
+#      - ".gitignore"
+#      - "LICENSE"
+#      - "**/*.md"
+#      - "**/*.json"
+#      - "**/*.png"
+#      - "**/*.svg"
+#      - "k3d/**"
+#      - ".github/workflows/*k3d*.y*ml"
 
   workflow_call:
 
