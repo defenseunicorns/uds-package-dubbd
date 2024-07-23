@@ -186,6 +186,7 @@ jobs:
         working-directory: k3d
         run: |
           zarf tools kubectl describe nodes
+          zarf tools kubectl get sc
           zarf tools kubectl get pods -owide -A
           zarf tools kubectl get events -A --sort-by='.lastTimestamp'
 
