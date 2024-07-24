@@ -18,6 +18,8 @@ iam:
 
 addons:
   - name: aws-ebs-csi-driver
+    configurationValues: |-
+      defaultStorageClass.enabled: true
     permissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_ARN###"
     tags:
       PermissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_NAME###"
