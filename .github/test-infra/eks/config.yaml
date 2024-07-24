@@ -41,7 +41,7 @@ managedNodeGroups:
       withAddonPolicies:
         cloudWatch: true
         ebs: true
-    amiFamily: AmazonLinux2
+#    amiFamily: AmazonLinux2
 #    ami: "###ZARF_VAR_AMI_ID###"
 #    overrideBootstrapCommand: |
 #      #!/bin/bash
