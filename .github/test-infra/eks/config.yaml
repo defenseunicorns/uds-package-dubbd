@@ -39,9 +39,21 @@ managedNodeGroups:
     iam:
       instanceRolePermissionsBoundary: "###ZARF_VAR_PERMISSIONS_BOUNDARY_ARN###"
       withAddonPolicies:
+        cloudWatch: true
         ebs: true
     amiFamily: AmazonLinux2
 #    ami: "###ZARF_VAR_AMI_ID###"
 #    overrideBootstrapCommand: |
 #      #!/bin/bash
 #      /etc/eks/bootstrap.sh ###ZARF_VAR_CLUSTER_NAME### --container-runtime containerd
+
+cloudWatch:
+  clusterLogging:
+    # enable specific types of cluster control plane logs
+    enableTypes: ["*"]
+    # all supported types: "api", "audit", "authenticator", "controllerManager", "scheduler"
+    # supported special values: "*" and "all"
+
+    # Sets the number of days to retain the logs for (see [CloudWatch docs](https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_PutRetentionPolicy.html#API_PutRetentionPolicy_RequestSyntax)).
+    # By default, log data is stored in CloudWatch Logs indefinitely.
+    logRetentionInDays: 1
