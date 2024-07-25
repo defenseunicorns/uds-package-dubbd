@@ -80,10 +80,6 @@ jobs:
         working-directory: .github/test-infra/eks #just holds the zarf-config
         id: create-cluster
 
-      - name: Set default StorageClass (EBS = gp2)
-        run: |
-          kubectl patch storageclass gp2 -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
-
       - name: Show Cluster
         run: |
           kubectl get nodes -o wide
