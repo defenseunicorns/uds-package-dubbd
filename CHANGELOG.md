@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.30.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.30.0...v0.30.1) (2024-08-05)
+
+
+### Miscellaneous
+
+* **deps:** update actions/checkout action to v4.1.7 ([#712](https://github.com/defenseunicorns/uds-package-dubbd/issues/712)) ([f4a39c5](https://github.com/defenseunicorns/uds-package-dubbd/commit/f4a39c517fcf93a4c4b2d42f0e593c470a9f3b95))
+* **deps:** update dependency defenseunicorns/zarf to v0.36.1 ([#743](https://github.com/defenseunicorns/uds-package-dubbd/issues/743)) ([e2605bc](https://github.com/defenseunicorns/uds-package-dubbd/commit/e2605bc892e1ffa8f25c483001b17c16bde34960))
+* update bigbang.dev cert ([#752](https://github.com/defenseunicorns/uds-package-dubbd/issues/752)) ([45536dc](https://github.com/defenseunicorns/uds-package-dubbd/commit/45536dcecd98c280d3c0719793d1ebc46e4a4458))
+
 ## [0.30.0](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.29.0...v0.30.0) (2024-07-17)
 
 
