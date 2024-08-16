@@ -97,7 +97,7 @@ jobs:
       - name: Test Velero
         run: |
           # get deployed velero version with bash magic
-          VELERO_VER=$(zarf tools kubectl get pods -n velero -l name=velero -o jsonpath='{.items[0].spec.containers[1].image}' | awk -F':' '{print $3}' | awk -F'-zarf' '{print $1}')
+          VELERO_VER=$(zarf tools kubectl get pods -n velero -l name=velero -o jsonpath='{.items[0].spec.containers[?(@.name=="velero")].image}' | awk -F':|-zarf' '{print $3}')
 
           # install velero CLI
           wget "https://github.com/vmware-tanzu/velero/releases/download/$VELERO_VER/velero-$VELERO_VER-linux-amd64.tar.gz"
