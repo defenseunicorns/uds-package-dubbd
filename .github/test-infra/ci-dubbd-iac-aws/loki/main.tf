@@ -90,7 +90,7 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
 
 module "generate_kms" {
   count  = local.generate_kms_key
-  source = "github.com/defenseunicorns/terraform-aws-uds-kms?ref=v0.0.3"
+  source = "github.com/defenseunicorns/terraform-aws-uds-kms?ref=v0.0.6"
 
   key_owners = var.key_owner_arns
   # A list of IAM ARNs for those who will have full key permissions (`kms:*`)
