@@ -1,5 +1,5 @@
 > [!IMPORTANT]
-> DUBBD will be maintained until summer of 2024, when it will be deprecated in favor of [uds-core](https://github.com/defenseunicorns/uds-core)
+> DUBBD has been deprecated in favor of [uds-core](https://github.com/defenseunicorns/uds-core)
 
 # Defense Unicorns Big Bang Distro (DUBBD)
 
