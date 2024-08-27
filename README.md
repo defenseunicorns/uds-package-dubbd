@@ -56,9 +56,7 @@ For deploying other flavors of DUBBD:
 
 ### When to expect new releases
 
-New DUBBD versions can be expected (at a minimum) shortly after each Big Bang release is available.
-
-Following semantic versioning for releases, a new release version is created upon implementing changes that are categorized as fixes or features.
+DUBBD is no longer supported, please see [uds-core](https://github.com/defenseunicorns/uds-core)
 
 ### Creating releases
 
