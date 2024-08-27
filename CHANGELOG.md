@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.30.2](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.30.1...v0.30.2) (2024-08-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* dubbd deprecated, replaced by uds-core ([#757](https://github.com/defenseunicorns/uds-package-dubbd/issues/757))
+
+### Miscellaneous
+
+* dubbd deprecated, replaced by uds-core ([#757](https://github.com/defenseunicorns/uds-package-dubbd/issues/757)) ([b24e389](https://github.com/defenseunicorns/uds-package-dubbd/commit/b24e3898c588727e6fc119152a608e522c5d1753))
+
 ## [0.30.1](https://github.com/defenseunicorns/uds-package-dubbd/compare/v0.30.0...v0.30.1) (2024-08-05)
 
 
